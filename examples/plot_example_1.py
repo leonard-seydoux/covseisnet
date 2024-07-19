@@ -36,11 +36,11 @@ channels = [trace.stats.channel for trace in stream]
 # )
 
 # show covariance from first window and first frequency
-covariance_show = np.random.randn(3, 3)
+covariance_show = np.random.rand(3, 3)
 
 # Show
 fig, ax = plt.subplots()
-mappable = ax.matshow(covariance_show)
+mappable = ax.matshow(covariance_show, vmin=0)
 
 # Labels
 ax.set_xticks(range(len(channels)), labels=channels)

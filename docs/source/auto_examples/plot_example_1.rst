@@ -83,11 +83,11 @@ estimated over 5 consecutive windows.
     # )
 
     # show covariance from first window and first frequency
-    covariance_show = np.random.randn(3, 3)
+    covariance_show = np.random.rand(3, 3)
 
     # Show
     fig, ax = plt.subplots()
-    mappable = ax.matshow(covariance_show)
+    mappable = ax.matshow(covariance_show, vmin=0)
 
     # Labels
     ax.set_xticks(range(len(channels)), labels=channels)
@@ -101,7 +101,7 @@ estimated over 5 consecutive windows.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.545 seconds)
+   **Total running time of the script:** (0 minutes 0.421 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_1.py:

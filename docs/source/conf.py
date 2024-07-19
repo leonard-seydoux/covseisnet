@@ -61,6 +61,7 @@ sphinx_gallery_conf = {
     "gallery_dirs": "auto_examples",
     "image_srcset": ["4x"],
     "reset_modules": ("matplotlib"),
+    "download_all_examples": False,
 }
 
 # Add any paths that contain templates here, relative to this directory.

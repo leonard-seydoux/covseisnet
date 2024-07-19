@@ -75,4 +75,4 @@
 .highlight .vi { color: #000000 } /* Name.Variable.Instance */
 .highlight .vm { color: #000000 } /* Name.Variable.Magic */
 .highlight .il { color: #1aa5d8;} /* Literal.Number.Integer.Long */
-.highlight a {text-decoration-thickness: 0 !important; }
+a[class^="sphx-glr-backref-"] { text-decoration: none; } /* Sphinx Gallery link to module */
