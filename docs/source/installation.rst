@@ -1,23 +1,30 @@
-Installation
-============
+Installation Guide
+==================
 
-Manual installation
--------------------
+You can install the Covseisnet package using either ``pip`` or ``conda``. Follow the instructions below based on your preferred package manager.
 
-The package is available from the PyPI repository. To install using pip, execute the following line:
+1. **Using pip**
 
-.. code-block:: bash
+   The package is available on the PyPI repository. To install it using ``pip``, run the following command in your terminal:
 
-    pip install covseisnet
+   .. code-block:: bash
 
-Alternatively, you may install the package from the conda-forge repository. To install using conda, execute the following line:
+       pip install covseisnet
 
-.. code-block:: bash
+2. **Using conda**
 
-    conda install -c conda-forge covseisnet
+   Alternatively, you can install the package from the conda-forge repository. To do this, use the ``conda`` command:
 
-Once you've installed the package, you can verify your install by executing the following command in a python shell (outside the package repository).
+   .. code-block:: bash
+
+       conda install -c conda-forge covseisnet
+
+
+
+After installation, you can check if the package was installed correctly by running a simple test in a Python environment (such as a Python shell). Execute the following command:
 
 .. code-block:: python
 
     import covseisnet as csn
+
+If you don’t encounter any errors, the package has been installed successfully.
