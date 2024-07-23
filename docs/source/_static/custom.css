@@ -1,0 +1,20 @@
+/* Remove underline from links in code blocks */
+.highlight a, .highlight a:link, .highlight a:visited {
+    text-decoration: none;
+}
+
+/* Bold links in code blocks on hover */
+.highlight a:hover, .highlight a:focus, .highlight a:active {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Control link style */
+a.reference, .reference {
+    text-decoration: none;
+}
+
+/* Control the logo size */
+.navbar-brand img {
+    width: 70% !important;
+}
