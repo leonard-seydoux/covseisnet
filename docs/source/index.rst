@@ -39,9 +39,9 @@ Contents
    :maxdepth: 1
 
    installation
-   license
    auto_examples/index
    api
+   license
 
 How to cite this package
 ------------------------
