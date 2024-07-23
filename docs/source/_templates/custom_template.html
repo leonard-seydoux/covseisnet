@@ -1,0 +1,4 @@
+{% extends "!base.html" %}
+{% block content %}
+{{ content | replace('Parameters', '<h2 class="field-odd">Parameters</h2>') }}
+{% endblock %}

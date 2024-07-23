@@ -31,6 +31,15 @@ extensions = [
     "sphinx_gallery.gen_gallery",
 ]
 
+# Napoleon settings
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
+napoleon_use_param = False
+napoleon_use_rtype = False
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = True
+napoleon_preprocess_types = True
+
 # Autosummary
 autosummary_generate = True
 
@@ -85,6 +94,7 @@ html_theme_options = {
     "pygments_light_style": "paraiso-light",
     "pygments_dark_style": "monokai",
     "home_page_in_toc": True,
+    "show_toc_level": 3,
 }
 
 

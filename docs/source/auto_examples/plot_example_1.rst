@@ -32,31 +32,18 @@ channels of the station RJOB, and has three components.
 The following example use a Fourier estimation window of 1 second and is
 estimated over 5 consecutive windows.
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-53
+.. GENERATED FROM PYTHON SOURCE LINES 16-78
 
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_example_1_001.png
-   :alt: Single-station multiple channels covariance
+   :alt: plot example 1
    :srcset: /auto_examples/images/sphx_glr_plot_example_1_001.png, /auto_examples/images/sphx_glr_plot_example_1_001_4_00x.png 4.00x
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    Network Stream of 3 traces from 1 stations:
-    BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples
-    BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples
-    BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples
 
 
-
-
-
-
-|
 
 .. code-block:: Python
 
@@ -69,39 +56,64 @@ estimated over 5 consecutive windows.
     # Read example stream
     stream = csn.read()
 
-    # Echo stream
-    print(stream)
+    # Pre-process stream
+    stream.detrend("linear")
+    stream.taper(max_percentage=0.05)
+    stream.filter("highpass", freq=2)
+
 
     # Get channels
     channels = [trace.stats.channel for trace in stream]
 
-    # # calculate covariance from stream
-    # window_duration_sec = 1.0
-    # average = 5
-    # times, frequencies, covariances = csn.covariancematrix.calculate(
-    #     stream, window_duration_sec, average
-    # )
+    # Calculate covariance matrix
+    times, frequencies, covariances = csn.calculate_covariance_matrix(
+        stream,
+        window_duration_sec=1.0,
+        average=4,
+    )
+
+    # Calculate coherence
+    coherence = covariances.coherence()
 
     # show covariance from first window and first frequency
     covariance_show = np.random.rand(3, 3)
 
     # Show
-    fig, ax = plt.subplots()
-    mappable = ax.matshow(covariance_show, vmin=0)
+    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True, constrained_layout=True)
+
+    # Show trace
+    for index, trace in enumerate(stream):
+        waveform = trace.data
+        waveform /= np.max(np.abs(waveform))
+        ax[0].plot(trace.times(), waveform + index, label=trace.stats.channel)
+    mappable = ax[1].pcolormesh(
+        times, frequencies, coherence.T, cmap="magma_r", vmin=0, vmax=1
+    )
 
     # Labels
-    ax.set_xticks(range(len(channels)), labels=channels)
-    ax.set_yticks(range(len(channels)), labels=channels)
-    ax.set_title("Single-station multiple channels covariance")
-    plt.colorbar(mappable).set_label("Covariance modulus")
+    ax[0].grid()
+    ax[0].set_ylabel("Amplitude (counts)")
+    ax[1].set_yscale("log")
+    ax[1].set_ylim(frequencies[1], frequencies[-1] / 2)
+    ax[1].set_xlabel("Time (s)")
+    ax[1].set_ylabel("Frequency (Hz)")
+    plt.colorbar(mappable).set_label("Covariance matrix\nspectral width")
 
-    # Show
-    plt.show()
+    # mappable = ax.matshow(covariance_show, vmin=0, vmax=1, cmap="RdPu")
+
+    # Axes
+    # channels = [trace.stats.channel for trace in stream]
+    # ax.set_xticks(range(len(stream)), labels=channels)
+    # ax.set_yticks(range(len(stream)), labels=channels)
+
+    # # Labels
+    # ax.set_title("Single-station channel-wise covariance")
+    # plt.colorbar(mappable).set_label("Covariance modulus")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.421 seconds)
+   **Total running time of the script:** (0 minutes 0.981 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_1.py:
