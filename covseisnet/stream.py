@@ -53,8 +53,8 @@ class NetworkStream(obspy.Stream):
     ):
         """Cut (trim) stream between given start and end times.
 
-        This function is a wrapper to the
-        :meth:`obspy.core.stream.Stream.trim` method, but works directly with
+        This function is a wrapper to the ObsPy
+        :meth:`~obspy.core.stream.Stream.trim` method, but works directly with
         datetimes in :class:`str` format. The function uses the native ObsPy
         :class:`~obspy.core.utcdatetime.UTCDateTime` class in order to convert
         the datetimes from :class:`str` into
@@ -65,12 +65,12 @@ class NetworkStream(obspy.Stream):
 
         starttime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
             The start date time.
-        endtime : str
+        endtime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
             The end date time.
         **kwargs: dict, optional
             Additional keyword arguments passed to the
-            :meth:`obspy.core.stream.Stream.trim` method. Check the ObsPy
-            documentation for more details on the available options.
+            :meth:`~obspy.core.stream.Stream.trim` method of ObsPy. Check the
+            ObsPy documentation for more details on the available options.
 
         Example
         -------
@@ -79,10 +79,11 @@ class NetworkStream(obspy.Stream):
         stream is first read from the example data, and then cut between two
         given times.
 
+        >>> import covseisnet as csn
         >>> stream = csn.read()
         >>> stream.cut("2009-08-24 00:20:05", "2009-08-24 00:20:12")
         >>> print(stream)
-        3 Trace(s) in Stream:
+        Network Stream of 3 traces from 1 stations:
         BW.RJOB..EHZ | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
         W.RJOB..EHN  | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
         BW.RJOB..EHE | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
@@ -94,6 +95,50 @@ class NetworkStream(obspy.Stream):
 
         # Trim stream
         self.trim(starttime, endtime, **kwargs)
+
+    def times(
+        self,
+        **kwargs: dict,
+    ):
+        """Common time vector of the NetworkStream.
+
+        Because the :class:`~covseisnet.stream.NetworkStream` handles traces
+        sampled on the same time vector, this function only returns the times
+        of the first trace with the Trace method
+        :meth:`~obspy.core.trace.Trace.times` if the traces are synchronized.
+
+        Arguments
+        ---------
+        **kwargs: dict, optional
+            Additional keyword arguments are directly passed to the Trace
+            method :meth:`~obspy.core.trace.Trace.times` (for instance,
+            ``type="matplotlib"`` allows to recover matplotlib timestamps
+            provided by the :func:`matplotlib.dates.date2num` function.
+
+        Returns
+        -------
+        :class:`numpy.ndarray` or :class:`list`
+            An array of timestamps in a :class:`numpy.ndarray` or in a
+            :class:`list`.
+
+
+        .. tip::
+
+            By default, the method returns the times in seconds since the
+            start of the trace. In order to extract times in matplotlib
+            format, you can set the ``type`` parameter of the
+            :meth:`~obspy.core.trace.Trace.times` method such as
+
+            >>> import covseisnet as csn
+            >>> stream = csn.read()
+            >>> stream.times(type="matplotlib")
+            array([14480.01392361, 14480.01392373, 14480.01392384, ...,
+            14480.01427049, 14480.0142706 , 14480.01427072])
+
+        """
+        # Check if the traces are synchronized
+        self.assert_synchronized
+        return self[0].times(**kwargs)
 
     def __str__(self, extended=False):
         # get longest id
@@ -136,11 +181,10 @@ class NetworkStream(obspy.Stream):
         performing any operation that requires the traces to be sampled on the
         same time vector.
 
-        Returns
-        -------
-        bool
-            True if all traces are sampled on the same time vector, False
-            otherwise.
+        Raises
+        ------
+        ValueError
+            If the traces are not synchronized.
         """
         # Collect time vectors
         time_vectors = [trace.times() for trace in self]
@@ -149,8 +193,10 @@ class NetworkStream(obspy.Stream):
         for i, t1 in enumerate(time_vectors):
             for j, t2 in enumerate(time_vectors):
                 if len(t1) != len(t2) or not np.allclose(t1, t2):
-                    return False
-        return True
+                    raise ValueError(
+                        "The traces are not synchronized.\n"
+                        + "Please check the `synchronize` method."
+                    )
 
     @property
     def stations(self) -> set[str]:
@@ -247,50 +293,6 @@ class NetworkStream(obspy.Stream):
             tr_i.data = np.interp(ti, t, tr.data)
 
         return stream_i
-
-    def times(
-        self,
-        **kwargs: dict,
-    ):
-        """Common time vector of the NetworkStream.
-
-        Because the :class:`~covseisnet.stream.NetworkStream` handles traces
-        sampled on the same time vector, this function only returns the times
-        of one of the traces, accessible from the
-        :meth:`obspy.core.trace.Trace.times` method.
-
-        Arguments
-        ---------
-        **kwargs: dict, optional
-            Additional keyword arguments are directly passed to the
-            :meth:`obspy.core.trace.Trace.times` (for instance,
-            ``type="matplotlib"`` allows to recover matplotlib timestamps
-            provided by the :func:`matplotlib.dates.date2num` function.
-
-        Returns
-        -------
-        :class:`numpy.ndarray` or :class:`list`
-            An array of timestamps in a :class:`numpy.ndarray` or in a
-            :class:`list`.
-
-        Raises
-        ------
-            ValueError If the traces are not synchronized.
-
-        Tips
-        ----
-        In order to extract times in matplotlib format, you can set the
-        ``type`` parameter of the :meth:`~obspy.core.trace.Trace.times` method
-        such as.
-        """
-        # Check if the traces are synchronized
-        if not self.assert_synchronized:
-            raise ValueError(
-                "The traces are not synchronized.\n"
-                + "Please check the `synchronize` method."
-            )
-
-        return self[0].times(**kwargs)
 
 
 def read(pathname_or_url=None, **kwargs):
