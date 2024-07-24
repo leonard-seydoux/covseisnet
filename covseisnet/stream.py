@@ -26,7 +26,7 @@ class NetworkStream(obspy.Stream):
     provide network-wide methods such as the calculation of the common time
     vector of the traces.
 
-    .. tip::
+    .. note::
 
         This class is not meant to be instantiated directly. Instead, it is
         returned by the :func:`~covseisnet.stream.read` function when reading
@@ -38,12 +38,36 @@ class NetworkStream(obspy.Stream):
             >>> stream = csn.read()
             >>> print(type(stream))
             <class 'covseisnet.stream.NetworkStream'>
-
     """
 
     def __init__(self, *args, **kwargs):
-        # Call the parent class constructor
         super().__init__(*args, **kwargs)
+
+    def __str__(self, extended=False):
+        """Print the NetworkStream object.
+
+        This method prints the NetworkStream object in a human-readable
+        format. The methods ressembles the ObsPy Stream object, but with
+        additional information about the number of traces and stations in the
+        stream. By default, the method prints all traces in the stream.
+        """
+        # Get longest trace id index among traces
+        if self.traces:
+            longest_id = self and max(len(tr.id) for tr in self) or 0
+        else:
+            longest_id = 0
+
+        # Get number of traces and stations
+        n_traces = len(self.traces)
+        n_stations = len(self.stations)
+
+        # Initialize output string
+        out = f"Network Stream of {n_traces} traces from {n_stations} stations:\n"
+
+        # Print all traces
+        out = out + "\n".join([trace.__str__(longest_id) for trace in self])
+
+        return out
 
     def cut(
         self,
@@ -111,13 +135,14 @@ class NetworkStream(obspy.Stream):
         ---------
         **kwargs: dict, optional
             Additional keyword arguments are directly passed to the Trace
-            method :meth:`~obspy.core.trace.Trace.times` (for instance,
+            method :meth:`~obspy.core.trace.Trace.times`. For instance, passing
             ``type="matplotlib"`` allows to recover matplotlib timestamps
-            provided by the :func:`matplotlib.dates.date2num` function.
+            provided by the :func:`matplotlib.dates.date2num` function and thus
+            enables the use of date labels in plots.
 
         Returns
         -------
-        :class:`numpy.ndarray` or :class:`list`
+        :class:`numpy.ndarray`
             An array of timestamps in a :class:`numpy.ndarray` or in a
             :class:`list`.
 
@@ -140,40 +165,58 @@ class NetworkStream(obspy.Stream):
         self.assert_synchronized
         return self[0].times(**kwargs)
 
-    def __str__(self, extended=False):
-        # get longest id
-        if self.traces:
-            longest_id = self and max(len(tr.id) for tr in self) or 0
-        else:
-            longest_id = 0
+    def synchronize(
+        self,
+        start="2010-01-01T00:00:00.00",
+        duration_sec=24 * 3600,
+        method="linear",
+    ):
+        """Synchronize seismic traces into the same times.
 
-        # Initialize output string
-        n_traces = len(self.traces)
-        n_stations = len(self.stations)
-        out = f"Network Stream of {n_traces} traces from {n_stations} stations:\n"
+        This function uses the
+        :meth:`obspy.core.stream.Stream.trim` method in order to cut all
+        traces of the Stream object to given start and end time with
+        padding if necessary, and the
+        :meth:`obspy.core.trace.Trace.interpolate` method in order to
+        synchronize the traces. Then data are linearly interpolated.
 
-        # Print all traces if there are less than 20
-        if n_traces <= 20 or extended is True:
-            out = out + "\n".join(
-                [trace.__str__(longest_id) for trace in self]
+        Keyword arguments
+        -----------------
+        start: str, default
+            Start date of the interpolation.
+            Default to "2010-01-01T00:00:00.00".
+
+        duration_sec: int, default
+            Duration of the data traces in second. Default to 86,400 seconds,
+            the total number of seconds on a single day.
+
+        method: str, default
+            Interpolation method. Default to "linear".
+        """
+        # Duplicate stream
+        stream_i = self.copy()
+        start = obspy.UTCDateTime(start)
+        end = start + duration_sec
+        sampling = self[0].stats.sampling_rate
+        npts = int(sampling * duration_sec)
+        stream_i.trim(start, end, pad=True, fill_value=0, nearest_sample=False)
+
+        for tr, tr_i in zip(self, stream_i):
+            t = tr.times() / duration_sec + tr.stats.starttime.matplotlib_date
+            shift = tr_i.stats.starttime - start
+            tr_i.interpolate(
+                sampling, method, start=start, npts=npts, time_shift=-shift
             )
-
-        # Otherwise, print only the first and last traces
-        else:
-            out = (
-                out
-                + "\n"
-                + self.traces[0].__str__()
-                + "\n"
-                + "...\n(%i other traces)\n...\n" % (n_traces - 2)
-                + self.traces[-1].__str__()
-                + '\n\n[Use "print('
-                + 'Stream.__str__(extended=True))" to print all Traces]'
+            ti = (
+                tr_i.times() / duration_sec
+                + tr_i.stats.starttime.matplotlib_date
             )
-        return out
+            tr_i.data = np.interp(ti, t, tr.data)
+
+        return stream_i
 
     @property
-    def assert_synchronized(self) -> bool:
+    def assert_synchronized(self) -> None:
         """Check if all traces are sampled on the same time vector.
 
         This method checks if all traces are sampled on the same time vector.
@@ -190,8 +233,8 @@ class NetworkStream(obspy.Stream):
         time_vectors = [trace.times() for trace in self]
 
         # Loop over all combinations of time vectors
-        for i, t1 in enumerate(time_vectors):
-            for j, t2 in enumerate(time_vectors):
+        for t1 in time_vectors:
+            for t2 in time_vectors:
                 if len(t1) != len(t2) or not np.allclose(t1, t2):
                     raise ValueError(
                         "The traces are not synchronized.\n"
@@ -243,56 +286,6 @@ class NetworkStream(obspy.Stream):
                 )
             )
         pass
-
-    def synchronize(
-        self,
-        start="2010-01-01T00:00:00.00",
-        duration_sec=24 * 3600,
-        method="linear",
-    ):
-        """Synchronize seismic traces into the same times.
-
-        This function uses the
-        :meth:`obspy.core.stream.Stream.trim` method in order to cut all
-        traces of the Stream object to given start and end time with
-        padding if necessary, and the
-        :meth:`obspy.core.trace.Trace.interpolate` method in order to
-        synchronize the traces. Then data are linearly interpolated.
-
-        Keyword arguments
-        -----------------
-        start: str, default
-            Start date of the interpolation.
-            Default to "2010-01-01T00:00:00.00".
-
-        duration_sec: int, default
-            Duration of the data traces in second. Default to 86,400 seconds,
-            the total number of seconds on a single day.
-
-        method: str, default
-            Interpolation method. Default to "linear".
-        """
-        # Duplicate stream
-        stream_i = self.copy()
-        start = obspy.UTCDateTime(start)
-        end = start + duration_sec
-        sampling = self[0].stats.sampling_rate
-        npts = int(sampling * duration_sec)
-        stream_i.trim(start, end, pad=True, fill_value=0, nearest_sample=False)
-
-        for tr, tr_i in zip(self, stream_i):
-            t = tr.times() / duration_sec + tr.stats.starttime.matplotlib_date
-            shift = tr_i.stats.starttime - start
-            tr_i.interpolate(
-                sampling, method, start=start, npts=npts, time_shift=-shift
-            )
-            ti = (
-                tr_i.times() / duration_sec
-                + tr_i.stats.starttime.matplotlib_date
-            )
-            tr_i.data = np.interp(ti, t, tr.data)
-
-        return stream_i
 
 
 def read(pathname_or_url=None, **kwargs):
