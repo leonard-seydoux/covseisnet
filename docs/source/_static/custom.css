@@ -18,3 +18,8 @@ a.reference, .reference {
 .navbar-brand img {
     width: 70% !important;
 }
+
+/* Sphinx gallery */
+html[data-theme=dark] .bd-content img:not(.only-dark,.dark-light) {
+    background-color: transparent;
+}

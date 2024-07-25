@@ -1,8 +1,13 @@
 """Configuration file for the Sphinx documentation builder.
 
-This file does only contain a selection of the most common options. For a
-full list see the documentation: http://www.sphinx-doc.org/en/stable/config.
+This file does only contain a selection of the most common options. For a full
+list see the documentation: http://www.sphinx-doc.org/en/stable/config.
 """
+
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 # Project information
 project = "covseisnet"
@@ -47,12 +52,14 @@ autosummary_generate = True
 autodoc_member_order = "bysource"
 autoclass_content = "both"
 
+
 # Gallery
 sphinx_gallery_conf = {
     "examples_dirs": "../../examples",
     "gallery_dirs": "auto_examples",
     "image_srcset": ["4x"],
-    "reset_modules": ("matplotlib"),
+    "image_scrapers": ("sphinxext.matplotlib_svg_scraper",),
+    "reset_modules": ("sphinxext.reset_mpl"),
     "download_all_examples": False,
 }
 

@@ -363,6 +363,98 @@ class NetworkStream(obspy.Stream):
         # Return the sampling rate of the first trace
         return self[0].stats.sampling_rate
 
+    def whiten(
+        self,
+        method: str = "onebit",
+        window_duration_sec: float = 2.0,
+        smooth_length: int = 11,
+        smooth_order: int = 1,
+        epsilon: float = 1e-10,
+        **kwargs: dict,
+    ):
+        r"""Whiten traces in the spectral domain.
+
+        The action of whitening a seismic trace is to normalize the trace in
+        the spectral domain. Typically, the spectrum becomes flat after
+        whitening, resembling white noise. This strategy is often used to
+        remove the influence of time-localized signal and diminish the site
+        effects from a seismic station to another. Any local source is also
+        drastically reduced thanks to the whitening process.
+
+        Arguments
+        ---------
+        method: str, optional
+            Must be one of "onebit" (default), or "smooth".
+
+            - ``"onebit"`` divides the spectrum by its modulus, and keeps the
+              phase.
+
+            - ``"smooth"`` divides the spectrum by a smoothed version of its
+              modulus. The smoothing is performed with the Savitzky-Golay
+              filter, and the order and length of the filter are set by the
+              ``smooth_length`` and ``smooth_order`` parameters.
+        window_duration_sec: float, optional
+            The duration of the Fourier whitening window in seconds. This
+            value should be set to the duration of the averaged window
+            :math:`\Delta T` of the coaviance matrix (e.g., :math:`\Delta T =
+            rM\delta t`, where :math:`r` is the overlap between two windows,
+            :math:`M` is the number of windows, and :math:`\delta t` is the
+            window duration).
+        smooth_length: int, optional
+            The length of the Savitzky-Golay filter for smoothing the
+            spectrum. This parameter is only used if the ``method`` parameter
+            is set to "smooth". Default to 11 points in frequency.
+        smooth_order: int, optional
+            The order of the Savitzky-Golay filter for smoothing the spectrum.
+            This parameter is only used if the ``method`` parameter is set to
+            "smooth". Default to 1, which corresponds to a linear filter.
+        epsilon: float, optional
+            Regularization parameter in division, set to ``1e-10`` by default.
+        **kwargs: dict, optional
+            Additional keyword arguments are passed to the
+            :func:`scipy.signal.stft` and :func:`scipy.signal.istft` functions.
+            Check the SciPy documentation for more details on the available
+            options.
+
+        """
+        # Infer fft samples
+        fft_size = int(window_duration_sec * self.sampling_rate)
+
+        # Define the whitening method
+        if method == "onebit":
+            whiten_method = phase
+        elif method == "smooth":
+            whiten_method = partial(
+                detrend_spectrum,
+                smooth=smooth_length,
+                order=smooth_order,
+                epsilon=epsilon,
+            )
+        else:
+            raise ValueError("Unknown method {}".format(method))
+
+        # Set up short-time Fourier transform kwargs
+        kwargs.setdefault("nperseg", fft_size)
+        kwargs.setdefault("return_onesided", True)
+
+        # Set up inverse short-time Fourier transform kwargs
+        kwargs_istft = kwargs.copy()
+        kwargs_istft["input_onesided"] = kwargs_istft.pop("return_onesided")
+
+        # Loop over traces
+        for trace in self:
+
+            # Calculate the Short-Time Fourier Transform
+            waveform = trace.data
+            spectrum = signal.stft(waveform, **kwargs)[-1]
+
+            # Whiten the spectrum
+            spectrum = whiten_method(spectrum)
+
+            # Inverse Short-Time Fourier Transform
+            waveform = signal.istft(spectrum, **kwargs_istft)[-1]
+            trace.data = waveform
+
     def preprocess(self, domain="spectral", **kwargs):
         r"""Pre-process each trace in temporal or spectral domain."""
         kwargs.setdefault("epsilon", 1e-10)
