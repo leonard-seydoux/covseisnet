@@ -13,5 +13,3 @@ assert len(stations) == 1
 # Check that there are three channels in the stream
 channels = stream.channels
 assert len(channels) == 3
-
-#

@@ -16,6 +16,23 @@ Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to synchronize a stream of traces using the synchronize method.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_example_2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_example_2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Stream synchronization</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Interchannel spectral covariance matrix calculated from the example trace available in obspy.">
 
 .. only:: html
@@ -41,6 +58,7 @@ Gallery
 .. toctree::
    :hidden:
 
+   /auto_examples/plot_example_2
    /auto_examples/plot_example_1
 
 

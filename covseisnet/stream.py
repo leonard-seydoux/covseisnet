@@ -43,7 +43,7 @@ class NetworkStream(obspy.Stream):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __str__(self, extended=False):
+    def __str__(self):
         """Print the NetworkStream object.
 
         This method prints the NetworkStream object in a human-readable
@@ -61,8 +61,11 @@ class NetworkStream(obspy.Stream):
         n_traces = len(self.traces)
         n_stations = len(self.stations)
 
+        # Synced flag
+        synced_flag = "synced" if self.are_time_vectors_equal else "not synced"
+
         # Initialize output string
-        out = f"Network Stream of {n_traces} traces from {n_stations} stations:\n"
+        out = f"Network Stream of {n_traces} traces from {n_stations} stations ({synced_flag}):\n"
 
         # Print all traces
         out = out + "\n".join([trace.__str__(longest_id) for trace in self])
@@ -162,84 +165,151 @@ class NetworkStream(obspy.Stream):
 
         """
         # Check if the traces are synchronized
-        self.assert_synchronized
+        assert (
+            self.are_time_vectors_equal
+        ), "Traces are not synced, check the `synchronize` method."
+
+        # Return the times of the first trace
         return self[0].times(**kwargs)
 
     def synchronize(
         self,
-        start="2010-01-01T00:00:00.00",
-        duration_sec=24 * 3600,
-        method="linear",
-    ):
-        """Synchronize seismic traces into the same times.
+        interpolation_method: str = "linear",
+        **kwargs: dict,
+    ) -> None:
+        """Synchronize seismic traces into the same times with interpolation.
 
-        This function uses the
-        :meth:`obspy.core.stream.Stream.trim` method in order to cut all
-        traces of the Stream object to given start and end time with
-        padding if necessary, and the
-        :meth:`obspy.core.trace.Trace.interpolate` method in order to
-        synchronize the traces. Then data are linearly interpolated.
+        This method synchronizes the seismic traces in the stream by
+        interpolating the traces to a common time vector. The method uses the
+        largest start time and the smallest end time of the traces to
+        interpolate all traces to the same time vector with the ObsPy
+        method :meth:`~obspy.core.trace.Trace.interpolate`.
 
-        Keyword arguments
-        -----------------
-        start: str, default
-            Start date of the interpolation.
-            Default to "2010-01-01T00:00:00.00".
-
-        duration_sec: int, default
-            Duration of the data traces in second. Default to 86,400 seconds,
-            the total number of seconds on a single day.
-
+        Arguments
+        ---------
         method: str, default
             Interpolation method. Default to "linear".
+        **kwargs: dict, optional
+            Additional keyword arguments are passed to the
+            :meth:`~obspy.core.trace.Trace.interpolate` method. Check the ObsPy
+            documentation for more details on the available options.
         """
-        # Duplicate stream
-        stream_i = self.copy()
-        start = obspy.UTCDateTime(start)
-        end = start + duration_sec
-        sampling = self[0].stats.sampling_rate
-        npts = int(sampling * duration_sec)
-        stream_i.trim(start, end, pad=True, fill_value=0, nearest_sample=False)
+        # Find out the largest start time and the smallest end time
+        largest_starttime = max([trace.stats.starttime for trace in self])
+        smallest_endtime = min([trace.stats.endtime for trace in self])
+        duration = smallest_endtime - largest_starttime
+        npts = int(duration * self[0].stats.sampling_rate) + 1
 
-        for tr, tr_i in zip(self, stream_i):
-            t = tr.times() / duration_sec + tr.stats.starttime.matplotlib_date
-            shift = tr_i.stats.starttime - start
-            tr_i.interpolate(
-                sampling, method, start=start, npts=npts, time_shift=-shift
-            )
-            ti = (
-                tr_i.times() / duration_sec
-                + tr_i.stats.starttime.matplotlib_date
-            )
-            tr_i.data = np.interp(ti, t, tr.data)
+        # Update kwargs
+        kwargs.setdefault("method", interpolation_method)
+        kwargs.setdefault("npts", npts)
+        kwargs.setdefault("starttime", largest_starttime)
+        kwargs.setdefault("endtime", smallest_endtime)
+        kwargs.setdefault("sampling_rate", self.sampling_rate)
 
-        return stream_i
+        # Interpolate all traces
+        for trace in self:
+            trace.interpolate(**kwargs)
 
     @property
-    def assert_synchronized(self) -> None:
-        """Check if all traces are sampled on the same time vector.
+    def are_ready_to_process(self) -> bool:
+        """Check if traces are ready to be processed.
+
+        This method checks if the traces are ready to be processed. This is
+        useful to ensure that the traces are synchronized before performing any
+        operation that requires the traces to be sampled on the same time vector.
+
+        Returns
+        -------
+        bool
+            True if all traces are ready
+        """
+        # Assert sampling rate
+        assert (
+            self.are_sampling_rates_equal
+        ), "Traces have different sampling rates."
+
+        # Assert number of samples
+        assert self.are_npts_equal, "Traces have different number of samples."
+
+        # Check if all traces are ready
+        return self.are_time_vectors_equal
+
+    @property
+    def are_time_vectors_equal(self) -> bool:
+        """Check if traces are sampled on the same time vector.
 
         This method checks if all traces are sampled on the same time vector.
         This is useful to ensure that the traces are synchronized before
         performing any operation that requires the traces to be sampled on the
         same time vector.
 
-        Raises
-        ------
-        ValueError
-            If the traces are not synchronized.
+        Returns
+        -------
+        bool
+            True if all traces are sampled on the same time vector, False
+            otherwise.
         """
-        # Collect time vectors
-        time_vectors = [trace.times() for trace in self]
+        # Assert sampling rate
+        assert (
+            self.are_sampling_rates_equal
+        ), "Traces have different sampling rates."
 
-        # Loop over all combinations of time vectors
-        for t1 in time_vectors:
-            for t2 in time_vectors:
-                if len(t1) != len(t2) or not np.allclose(t1, t2):
-                    raise ValueError(
-                        "The traces are not synchronized.\n"
-                        + "Please check the `synchronize` method."
-                    )
+        # Assert number of samples
+        assert self.are_npts_equal, "Traces have different number of samples."
+
+        # Collect time vectors. We use the matplotlib format for comparison of
+        # the absolute values of the time vectors.
+        time_vectors = [trace.times(type="matplotlib") for trace in self]
+
+        # Check if all time vectors are the same (only the first is enough)
+        for time_vector in time_vectors:
+            if not np.allclose(time_vector, time_vectors[0], rtol=0):
+                return False
+        return True
+
+    @property
+    def are_sampling_rates_equal(self) -> bool:
+        """Check if all traces have the same sampling rate.
+
+        This method checks if all traces have the same sampling rate. This is
+        useful to ensure that the traces are synchronized before performing any
+        operation that requires the traces to be sampled on the same time vector.
+
+        Returns
+        -------
+        bool
+            True if all traces have the same sampling rate, False otherwise.
+        """
+        # Collect sampling rates
+        sampling_rates = [trace.stats.sampling_rate for trace in self]
+
+        # Check if all sampling rates are the same (only the first is enough)
+        if len(set(sampling_rates)) > 1:
+            return False
+        return True
+
+    @property
+    def are_npts_equal(self) -> bool:
+        """Check if all traces have the same number of samples.
+
+        This method checks if all traces have the same number of samples. This
+        is useful to ensure that the traces are synchronized before performing
+        any operation that requires the traces to be sampled on the same time
+        vector.
+
+        Returns
+        -------
+        bool
+            True if all traces have the same number of samples, False otherwise.
+        """
+        # Collect number of samples
+        npts = [trace.stats.npts for trace in self]
+
+        # Check if all number of samples are the same (only the first is enough)
+        if len(set(npts)) > 1:
+            return False
+        return True
 
     @property
     def stations(self) -> set[str]:
@@ -271,6 +341,27 @@ class NetworkStream(obspy.Stream):
         {'EHZ', 'EHN', 'EHE'}
         """
         return set([trace.stats.channel for trace in self.traces])
+
+    @property
+    def sampling_rate(self) -> float:
+        """Sampling rate of the traces.
+
+        This property is also available directly from looping over the traces
+        and accessing the :attr:`~obspy.core.trace.Trace.stats.sampling_rate` attribute.
+
+        Example
+        -------
+        >>> stream = csn.read()
+        >>> stream.sampling_rate
+        100.0
+        """
+        # Assert sampling rate
+        assert (
+            self.are_sampling_rates_equal
+        ), "Traces have different sampling rates."
+
+        # Return the sampling rate of the first trace
+        return self[0].stats.sampling_rate
 
     def preprocess(self, domain="spectral", **kwargs):
         r"""Pre-process each trace in temporal or spectral domain."""
