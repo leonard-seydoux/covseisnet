@@ -97,7 +97,6 @@ html_theme_options = {
     "show_toc_level": 2,
 }
 
-
 # Intersphinx
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),

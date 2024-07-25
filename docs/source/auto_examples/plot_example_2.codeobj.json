@@ -1,0 +1,746 @@
+{
+ "ax": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "covseisnet.stream.Stream.synchronize": [
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "covseisnet.stream.Stream",
+   "module_short": "covseisnet.stream.Stream",
+   "name": "synchronize"
+  },
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "covseisnet.stream.Stream",
+   "module_short": "covseisnet.stream.Stream",
+   "name": "synchronize"
+  }
+ ],
+ "csn.read": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet",
+   "module_short": "covseisnet",
+   "name": "read"
+  }
+ ],
+ "fig": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.figure",
+   "module_short": "matplotlib.figure",
+   "name": "Figure"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Figure"
+  }
+ ],
+ "mdates.AutoDateLocator": [
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib.dates",
+   "module_short": "matplotlib.dates",
+   "name": "AutoDateLocator"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "AutoDateLocator"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib.dates",
+   "module_short": "matplotlib.dates",
+   "name": "DateLocator"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "DateLocator"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib.ticker",
+   "module_short": "matplotlib.ticker",
+   "name": "Locator"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Locator"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib.ticker",
+   "module_short": "matplotlib.ticker",
+   "name": "TickHelper"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "TickHelper"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.dates",
+   "module_short": "matplotlib.dates",
+   "name": "AutoDateLocator"
+  }
+ ],
+ "mdates.ConciseDateFormatter": [
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib.dates",
+   "module_short": "matplotlib.dates",
+   "name": "ConciseDateFormatter"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "ConciseDateFormatter"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib.ticker",
+   "module_short": "matplotlib.ticker",
+   "name": "Formatter"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Formatter"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib.ticker",
+   "module_short": "matplotlib.ticker",
+   "name": "TickHelper"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "TickHelper"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.dates",
+   "module_short": "matplotlib.dates",
+   "name": "ConciseDateFormatter"
+  }
+ ],
+ "n_samples": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "plt.subplots": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.pyplot",
+   "module_short": "matplotlib.pyplot",
+   "name": "subplots"
+  }
+ ],
+ "sampling_interval": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "float"
+  }
+ ],
+ "sart_sample": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "starttime": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.utcdatetime",
+   "module_short": "obspy",
+   "name": "UTCDateTime"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "UTCDateTime"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "UTCDateTime"
+  }
+ ],
+ "stream": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet.stream",
+   "module_short": "covseisnet",
+   "name": "NetworkStream"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet",
+   "module_short": "covseisnet",
+   "name": "NetworkStream"
+  }
+ ],
+ "stream.copy": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet.stream",
+   "module_short": "covseisnet",
+   "name": "NetworkStream.copy"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet",
+   "module_short": "covseisnet",
+   "name": "NetworkStream.copy"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.stream",
+   "module_short": "obspy",
+   "name": "Stream.copy"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "Stream.copy"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Stream.copy"
+  }
+ ],
+ "stream.filter": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet.stream",
+   "module_short": "covseisnet",
+   "name": "NetworkStream.filter"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet",
+   "module_short": "covseisnet",
+   "name": "NetworkStream.filter"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.stream",
+   "module_short": "obspy",
+   "name": "Stream.filter"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "Stream.filter"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Stream.filter"
+  }
+ ],
+ "stream_sync": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet.stream",
+   "module_short": "covseisnet",
+   "name": "NetworkStream"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet",
+   "module_short": "covseisnet",
+   "name": "NetworkStream"
+  }
+ ],
+ "stream_sync.synchronize": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet.stream",
+   "module_short": "covseisnet",
+   "name": "NetworkStream.synchronize"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "covseisnet",
+   "module_short": "covseisnet",
+   "name": "NetworkStream.synchronize"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.stream",
+   "module_short": "obspy.core.stream",
+   "name": "Stream.synchronize"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy.core",
+   "name": "Stream.synchronize"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Stream.synchronize"
+  }
+ ],
+ "subplot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Axes"
+  }
+ ],
+ "subplot.grid": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes.grid"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes.grid"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Axes.grid"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._base",
+   "module_short": "matplotlib.axes._base",
+   "name": "_AxesBase.grid"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "_AxesBase.grid"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "_AxesBase.grid"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.artist",
+   "module_short": "matplotlib.artist",
+   "name": "Artist.grid"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Artist.grid"
+  }
+ ],
+ "subplot.plot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Axes.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._base",
+   "module_short": "matplotlib.axes._base",
+   "name": "_AxesBase.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "_AxesBase.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "_AxesBase.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.artist",
+   "module_short": "matplotlib.artist",
+   "name": "Artist.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Artist.plot"
+  }
+ ],
+ "subplot.set_title": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes.set_title"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes.set_title"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Axes.set_title"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._base",
+   "module_short": "matplotlib.axes._base",
+   "name": "_AxesBase.set_title"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "_AxesBase.set_title"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "_AxesBase.set_title"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.artist",
+   "module_short": "matplotlib.artist",
+   "name": "Artist.set_title"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Artist.set_title"
+  }
+ ],
+ "synced": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.trace",
+   "module_short": "obspy",
+   "name": "Trace"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "Trace"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Trace"
+  }
+ ],
+ "synced.data": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "synced.times": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.trace",
+   "module_short": "obspy",
+   "name": "Trace.times"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "Trace.times"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Trace.times"
+  }
+ ],
+ "trace": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.trace",
+   "module_short": "obspy",
+   "name": "Trace"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "Trace"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Trace"
+  }
+ ],
+ "trace.data": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "trace.id": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.trace",
+   "module_short": "obspy",
+   "name": "Trace.id"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "Trace.id"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Trace.id"
+  }
+ ],
+ "trace.times": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core.trace",
+   "module_short": "obspy",
+   "name": "Trace.times"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy.core",
+   "module_short": "obspy",
+   "name": "Trace.times"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "obspy",
+   "module_short": "obspy",
+   "name": "Trace.times"
+  }
+ ],
+ "xticklabels": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.dates",
+   "module_short": "matplotlib.dates",
+   "name": "ConciseDateFormatter"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "ConciseDateFormatter"
+  }
+ ],
+ "xticks": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.dates",
+   "module_short": "matplotlib.dates",
+   "name": "AutoDateLocator"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "AutoDateLocator"
+  }
+ ]
+}

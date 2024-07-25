@@ -16,7 +16,7 @@ Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to synchronize a stream of traces using the synchronize method.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to synchronize a stream of traces using the synchronize method. This method finds the  latest start time and the earliest end time among the traces in the stream, and interpolates the traces between these times with a common sampling interval. More information about the method can be found in the documentation.">
 
 .. only:: html
 
@@ -44,7 +44,7 @@ Gallery
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Single-station covariance matrix</div>
+      <div class="sphx-glr-thumbnail-title">Single-station coherence</div>
     </div>
 
 

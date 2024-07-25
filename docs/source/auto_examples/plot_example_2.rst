@@ -22,13 +22,12 @@ Stream synchronization
 ======================
 
 This example demonstrates how to synchronize a stream of traces using the
-:func:`~covseisnet.stream.Stream.synchronize` method.
+:func:`~covseisnet.stream.Stream.synchronize` method. This method finds the 
+latest start time and the earliest end time among the traces in the stream, and
+interpolates the traces between these times with a common sampling interval.
+More information about the method can be found in the documentation.
 
-The :func:`~covseisnet.stream.Stream.synchronize` method aligns the traces in a
-stream to a common start time. The method is useful when the traces in a stream
-have different start times, but the same sampling rate.
-
-.. GENERATED FROM PYTHON SOURCE LINES 13-26
+.. GENERATED FROM PYTHON SOURCE LINES 11-24
 
 .. code-block:: Python
 
@@ -38,7 +37,7 @@ have different start times, but the same sampling rate.
 
     import covseisnet as csn
 
-    # Read example stream
+    # Read the example stream (shipped with ObsPy)
     stream = csn.read()
 
     # Highpass filter the stream to better see the sync in high frequencies
@@ -61,24 +60,28 @@ have different start times, but the same sampling rate.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-32
+.. GENERATED FROM PYTHON SOURCE LINES 25-32
 
 Desynchronize the traces
 ------------------------
 
-This first section allows to desynchronize the traces in the stream, in
-order to demonstrate the synchronization method from the example stream.
+This first section desynchronizes the traces in the stream, in order to
+demonstrate the synchronization method from the example stream. The traces
+are shifted in time by different amounts, and a small number of samples are
+collected for visualization.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-47
+.. GENERATED FROM PYTHON SOURCE LINES 32-49
 
 .. code-block:: Python
 
 
-    # Make the traces start at different times
-    reference_starttime = stream[0].stats.starttime
+    # Collect a reference start time and sampling interval
+    starttime = stream[0].stats.starttime
     sampling_interval = stream[0].stats.delta
-    stream[1].stats.starttime = reference_starttime + sampling_interval * 1.3
-    stream[2].stats.starttime = reference_starttime + sampling_interval * 0.6
+
+    # Desynchronize the traces
+    stream[1].stats.starttime = starttime + sampling_interval * 1.3
+    stream[2].stats.starttime = starttime + sampling_interval * 0.6
 
     # Collect a small number of samples for visualization
     sart_sample = 1000
@@ -104,7 +107,7 @@ order to demonstrate the synchronization method from the example stream.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-55
+.. GENERATED FROM PYTHON SOURCE LINES 50-57
 
 Synchronize the traces
 ----------------------
@@ -114,7 +117,7 @@ We now synchronize the traces in the stream using the
 latest start time and the earliest end time among the traces in the stream,
 and aligns the traces to these times with interpolation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-61
+.. GENERATED FROM PYTHON SOURCE LINES 57-63
 
 .. code-block:: Python
 
@@ -140,27 +143,40 @@ and aligns the traces to these times with interpolation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-64
+.. GENERATED FROM PYTHON SOURCE LINES 64-71
 
 Compare synchronized and original traces
 ----------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-80
+The synchronized traces are plotted alongside the original traces to compare
+the effect of the synchronization method. Note that several interpolation
+methods are available in the synchronization method. Chech the documentation
+for more information.
+
+.. GENERATED FROM PYTHON SOURCE LINES 71-95
 
 .. code-block:: Python
 
 
-    # Plot
-    fig, ax = plt.subplots(3, sharex=True, sharey=True)
+    # Create figure
+    fig, ax = plt.subplots(3, sharex=True, sharey=True, constrained_layout=True)
+
+    # Loop over traces
     for trace, synced, subplot in zip(stream, stream_sync, ax):
+
+        # Plot traces
         subplot.plot(trace.times("matplotlib"), trace.data, ".-", label="Original")
         subplot.plot(synced.times("matplotlib"), synced.data, ".-", label="Synced")
+
+        # Local settings
         subplot.grid()
         subplot.set_title(trace.id, size="medium", weight="normal")
 
     # Labels
     ax[0].legend(loc="upper right")
     ax[1].set_ylabel("Amplitude (counts)")
+
+    # Date formatting
     xticks = mdates.AutoDateLocator()
     xticklabels = mdates.ConciseDateFormatter(xticks)
     ax[2].xaxis.set_major_locator(xticks)
@@ -180,7 +196,7 @@ Compare synchronized and original traces
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.387 seconds)
+   **Total running time of the script:** (0 minutes 0.824 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_2.py:
@@ -196,6 +212,10 @@ Compare synchronized and original traces
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_example_2.py <plot_example_2.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_example_2.zip <plot_example_2.zip>`
 
 
 .. only:: html
