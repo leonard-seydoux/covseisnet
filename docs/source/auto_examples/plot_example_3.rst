@@ -28,12 +28,10 @@ applies a Fourier transform to the traces, divides the spectrum of the traces
 by the modulus of the spectrum (or a smooth version of it), and then applies the
 inverse Fourier transform to the traces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-17
+.. GENERATED FROM PYTHON SOURCE LINES 12-15
 
 .. code-block:: Python
 
-
-    import matplotlib.pyplot as plt
 
     import covseisnet as csn
 
@@ -44,7 +42,7 @@ inverse Fourier transform to the traces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-23
+.. GENERATED FROM PYTHON SOURCE LINES 16-21
 
 Read the example stream (shipped with ObsPy)
 --------------------------------------------
@@ -52,7 +50,7 @@ Read the example stream (shipped with ObsPy)
 The stream is read from the obspy example data, and is available without any
 argument. The stream is then plotted to visualize the traces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-29
+.. GENERATED FROM PYTHON SOURCE LINES 21-27
 
 .. code-block:: Python
 
@@ -60,7 +58,7 @@ argument. The stream is then plotted to visualize the traces.
     stream = csn.read()
 
     # Plot trace and corresponding spectrum
-    csn.plotting.plot_trace_and_spectrum(stream[0])
+    csn.plot.trace_and_spectrum(stream[0])
 
 
 
@@ -74,7 +72,7 @@ argument. The stream is then plotted to visualize the traces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-38
+.. GENERATED FROM PYTHON SOURCE LINES 28-36
 
 Spectral whitening on a small window
 ------------------------------------
@@ -85,7 +83,7 @@ transform to the traces, divides the spectrum of the traces by the modulus of
 the spectrum (or a smooth version of it), and then applies the inverse Fourier
 transform to the traces. The whit
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-45
+.. GENERATED FROM PYTHON SOURCE LINES 36-43
 
 .. code-block:: Python
 
@@ -94,7 +92,7 @@ transform to the traces. The whit
     whitened_stream.whiten(window_duration_sec=2)
 
     # Plot whitened trace and corresponding spectrum
-    csn.plotting.plot_trace_and_spectrum(whitened_stream[0])
+    csn.plot.trace_and_spectrum(whitened_stream[0])
 
 
 
@@ -108,7 +106,7 @@ transform to the traces. The whit
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-54
+.. GENERATED FROM PYTHON SOURCE LINES 44-52
 
 Spectral whitening on the entire signal
 ---------------------------------------
@@ -119,7 +117,7 @@ transform to the traces, divides the spectrum of the traces by the modulus of
 the spectrum (or a smooth version of it), and then applies the inverse Fourier
 transform to the traces. The whit
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-60
+.. GENERATED FROM PYTHON SOURCE LINES 52-58
 
 .. code-block:: Python
 
@@ -128,7 +126,7 @@ transform to the traces. The whit
     whitened_stream.whiten(window_duration_sec=20)
 
     # Plot whitened trace and corresponding spectrum
-    csn.plotting.plot_trace_and_spectrum(whitened_stream[0])
+    csn.plot.trace_and_spectrum(whitened_stream[0])
 
 
 
@@ -144,7 +142,7 @@ transform to the traces. The whit
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.511 seconds)
+   **Total running time of the script:** (0 minutes 1.445 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_3.py:

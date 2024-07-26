@@ -61,6 +61,7 @@ sphinx_gallery_conf = {
     "image_scrapers": ("sphinxext.matplotlib_svg_scraper",),
     "reset_modules": ("sphinxext.reset_mpl"),
     "download_all_examples": False,
+    "remove_config_comments": True,
 }
 
 # Templates

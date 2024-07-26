@@ -147,7 +147,7 @@ calculated using the method
 measure the spectral width of the eigenvalue distribution at each frequency,
 or with applying the formula of the Neumann entropy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-124
+.. GENERATED FROM PYTHON SOURCE LINES 87-123
 
 .. code-block:: Python
 
@@ -157,7 +157,6 @@ or with applying the formula of the Neumann entropy.
 
 
     # Show
-    # sphinx_gallery_thumbnail_number = 2
     fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True, constrained_layout=True)
 
     # Show traces
@@ -208,7 +207,7 @@ in the home of this documentation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.765 seconds)
+   **Total running time of the script:** (0 minutes 0.758 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_1.py:

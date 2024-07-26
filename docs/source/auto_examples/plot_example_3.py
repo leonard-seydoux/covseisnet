@@ -10,8 +10,6 @@ by the modulus of the spectrum (or a smooth version of it), and then applies the
 inverse Fourier transform to the traces.
 """
 
-import matplotlib.pyplot as plt
-
 import covseisnet as csn
 
 # %%
@@ -24,7 +22,7 @@ import covseisnet as csn
 stream = csn.read()
 
 # Plot trace and corresponding spectrum
-csn.plotting.plot_trace_and_spectrum(stream[0])
+csn.plot.trace_and_spectrum(stream[0])
 
 # %%
 # Spectral whitening on a small window
@@ -40,7 +38,7 @@ whitened_stream = stream.copy()
 whitened_stream.whiten(window_duration_sec=2)
 
 # Plot whitened trace and corresponding spectrum
-csn.plotting.plot_trace_and_spectrum(whitened_stream[0])
+csn.plot.trace_and_spectrum(whitened_stream[0])
 
 # %%
 # Spectral whitening on the entire signal
@@ -56,4 +54,5 @@ whitened_stream = stream.copy()
 whitened_stream.whiten(window_duration_sec=20)
 
 # Plot whitened trace and corresponding spectrum
-csn.plotting.plot_trace_and_spectrum(whitened_stream[0])
+# sphinx_gallery_thumbnail_number = 3
+csn.plot.trace_and_spectrum(whitened_stream[0])
