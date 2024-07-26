@@ -163,3 +163,4 @@ cython_debug/
 
 # Sphinx source builds
 source/auto_examples/*
+source/auto_examples
