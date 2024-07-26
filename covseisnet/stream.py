@@ -417,8 +417,23 @@ class NetworkStream(obspy.Stream):
             options.
 
         """
-        # Infer fft samples
-        fft_size = int(window_duration_sec * self.sampling_rate)
+        # Infer number of samples per segments
+        kwargs.setdefault(
+            "nperseg", int(window_duration_sec * self.sampling_rate)
+        )
+
+        # Get window for transformation
+        window = signal.windows.hann(kwargs["nperseg"])
+
+        # Define hop
+        hop = kwargs["nperseg"] // 2
+        # hop = kwargs["nperseg"]
+
+        # Instanciate ShortTimeFFT object
+        transform = signal.ShortTimeFFT(window, hop, fs=self.sampling_rate)
+
+        # Assert that the transform is invertible
+        assert transform.invertible, "The transform is not invertible."
 
         # Define the whitening method
         if method == "onebit":
@@ -433,26 +448,18 @@ class NetworkStream(obspy.Stream):
         else:
             raise ValueError("Unknown method {}".format(method))
 
-        # Set up short-time Fourier transform kwargs
-        kwargs.setdefault("nperseg", fft_size)
-        kwargs.setdefault("return_onesided", True)
-
-        # Set up inverse short-time Fourier transform kwargs
-        kwargs_istft = kwargs.copy()
-        kwargs_istft["input_onesided"] = kwargs_istft.pop("return_onesided")
-
         # Loop over traces
         for trace in self:
 
             # Calculate the Short-Time Fourier Transform
             waveform = trace.data
-            spectrum = signal.stft(waveform, **kwargs)[-1]
+            spectrum = transform.stft(waveform)
 
             # Whiten the spectrum
             spectrum = whiten_method(spectrum)
 
             # Inverse Short-Time Fourier Transform
-            waveform = signal.istft(spectrum, **kwargs_istft)[-1]
+            waveform = transform.istft(spectrum)
             trace.data = waveform
 
     def preprocess(self, domain="spectral", **kwargs):

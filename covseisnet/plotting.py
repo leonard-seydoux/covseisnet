@@ -15,6 +15,7 @@ def plot_trace_and_spectrum(trace):
     ax[0].plot(times, waveform)
     ax[0].set_xlabel("Time (seconds)")
     ax[0].set_ylabel("Amplitude")
+    ax[0].grid()
 
     # Calculate spectrum
     spectrum = rfft(waveform)
@@ -22,3 +23,4 @@ def plot_trace_and_spectrum(trace):
     ax[1].loglog(frequencies, abs(spectrum))
     ax[1].set_xlabel("Frequency (Hz)")
     ax[1].set_ylabel("Spectrum")
+    ax[1].grid()

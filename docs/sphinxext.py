@@ -12,7 +12,7 @@ def reset_mpl(gallery_conf, fname, when):
 
     mpl.rcParams["lines.linewidth"] = 0.7
     mpl.rcParams["font.sans-serif"] = ["Arial"]
-    mpl.rcParams["axes.facecolor"] = (1, 1, 1, 0.07)
+    mpl.rcParams["axes.facecolor"] = (1, 1, 1, 0)
     mpl.rcParams["figure.facecolor"] = "none"
     mpl.rcParams["axes.edgecolor"] = grey
     mpl.rcParams["axes.labelcolor"] = grey

@@ -27,8 +27,8 @@ stream = csn.read()
 csn.plotting.plot_trace_and_spectrum(stream[0])
 
 # %%
-# Apply spectral whitening
-# ------------------------
+# Spectral whitening on a small window
+# ------------------------------------
 #
 # The spectral whitening is applied to the stream using the method
 # :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a Fourier
@@ -38,6 +38,22 @@ csn.plotting.plot_trace_and_spectrum(stream[0])
 
 whitened_stream = stream.copy()
 whitened_stream.whiten(window_duration_sec=2)
+
+# Plot whitened trace and corresponding spectrum
+csn.plotting.plot_trace_and_spectrum(whitened_stream[0])
+
+# %%
+# Spectral whitening on the entire signal
+# ---------------------------------------
+#
+# The spectral whitening is applied to the stream using the method
+# :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a Fourier
+# transform to the traces, divides the spectrum of the traces by the modulus of
+# the spectrum (or a smooth version of it), and then applies the inverse Fourier
+# transform to the traces. The whit
+
+whitened_stream = stream.copy()
+whitened_stream.whiten(window_duration_sec=20)
 
 # Plot whitened trace and corresponding spectrum
 csn.plotting.plot_trace_and_spectrum(whitened_stream[0])
