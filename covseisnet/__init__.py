@@ -6,8 +6,9 @@ __all__ = [
     "NetworkStream",
     "read",
     "plot",
+    "calculate_spectrogram",
 ]
 
 from .covariance import CovarianceMatrix, calculate_covariance_matrix
-from .stream import NetworkStream, read
+from .stream import NetworkStream, read, calculate_spectrogram
 from . import plot

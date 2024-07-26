@@ -366,7 +366,6 @@ class NetworkStream(obspy.Stream):
     def whiten(
         self,
         method: str = "onebit",
-        window_duration_sec: float = 2.0,
         smooth_length: int = 11,
         smooth_order: int = 1,
         epsilon: float = 1e-10,
@@ -393,13 +392,6 @@ class NetworkStream(obspy.Stream):
               modulus. The smoothing is performed with the Savitzky-Golay
               filter, and the order and length of the filter are set by the
               ``smooth_length`` and ``smooth_order`` parameters.
-        window_duration_sec: float, optional
-            The duration of the Fourier whitening window in seconds. This
-            value should be set to the duration of the averaged window
-            :math:`\Delta T` of the coaviance matrix (e.g., :math:`\Delta T =
-            rM\delta t`, where :math:`r` is the overlap between two windows,
-            :math:`M` is the number of windows, and :math:`\delta t` is the
-            window duration).
         smooth_length: int, optional
             The length of the Savitzky-Golay filter for smoothing the
             spectrum. This parameter is only used if the ``method`` parameter
@@ -411,26 +403,13 @@ class NetworkStream(obspy.Stream):
         epsilon: float, optional
             Regularization parameter in division, set to ``1e-10`` by default.
         **kwargs: dict, optional
-            Additional keyword arguments are passed to the
-            :func:`scipy.signal.stft` and :func:`scipy.signal.istft` functions.
-            Check the SciPy documentation for more details on the available
-            options.
+            Additional keyword arguments passed to the :func:`self.stft`
+            method.
 
         """
-        # Infer number of samples per segments
-        kwargs.setdefault(
-            "nperseg", int(window_duration_sec * self.sampling_rate)
-        )
-
-        # Get window for transformation
-        window = signal.windows.hann(kwargs["nperseg"])
-
-        # Define hop
-        hop = kwargs["nperseg"] // 2
-        # hop = kwargs["nperseg"]
-
         # Instanciate ShortTimeFFT object
-        transform = signal.ShortTimeFFT(window, hop, fs=self.sampling_rate)
+        kwargs.setdefault("sampling_rate", self.sampling_rate)
+        transform = stft(**kwargs)
 
         # Assert that the transform is invertible
         assert transform.invertible, "The transform is not invertible."
@@ -462,20 +441,20 @@ class NetworkStream(obspy.Stream):
             waveform = transform.istft(spectrum)
             trace.data = waveform
 
-    def preprocess(self, domain="spectral", **kwargs):
-        r"""Pre-process each trace in temporal or spectral domain."""
-        kwargs.setdefault("epsilon", 1e-10)
-        if domain == "spectral":
-            whiten(self, **kwargs)
-        elif domain == "temporal":
-            normalize(self, **kwargs)
-        else:
-            raise ValueError(
-                "Invalid preprocessing domain {} - please specify 'spectral' or 'temporal'".format(
-                    domain
-                )
-            )
-        pass
+    # def preprocess(self, domain="spectral", **kwargs):
+    #     r"""Pre-process each trace in temporal or spectral domain."""
+    #     kwargs.setdefault("epsilon", 1e-10)
+    #     if domain == "spectral":
+    #         whiten(self, **kwargs)
+    #     elif domain == "temporal":
+    #         normalize(self, **kwargs)
+    #     else:
+    #         raise ValueError(
+    #             "Invalid preprocessing domain {} - please specify 'spectral' or 'temporal'".format(
+    #                 domain
+    #             )
+    #         )
+    #     pass
 
 
 def read(pathname_or_url=None, **kwargs):
@@ -535,37 +514,6 @@ def read(pathname_or_url=None, **kwargs):
     stream = obspy.read(pathname_or_url, **kwargs)
     stream = NetworkStream(stream)
     return stream
-
-
-def whiten(
-    stream,
-    method="onebit",
-    window_duration_sec=2,
-    smooth_length=11,
-    smooth_order=1,
-    epsilon=1e-10,
-):
-    r"""Normalize in the spectral domain."""
-    if method == "onebit":
-        whiten_method = phase
-    elif method == "smooth":
-        whiten_method = partial(
-            detrend_spectrum,
-            smooth=smooth_length,
-            order=smooth_order,
-            epsilon=epsilon,
-        )
-    else:
-        raise ValueError("Unknown method {}".format(method))
-    r"""Whiten traces in the spectral domain."""
-    fft_size = int(window_duration_sec * stream[0].stats.sampling_rate)
-    for index, trace in enumerate(stream):
-        data = trace.data
-        _, _, data_fft = signal.stft(data, nperseg=fft_size)
-        data_fft = whiten_method(data_fft)
-        _, data = signal.istft(data_fft, nperseg=fft_size)
-        trace.data = data
-    pass
 
 
 def detrend_spectrum(x, smooth=None, order=None, epsilon=1e-10):
@@ -688,3 +636,83 @@ def phase(x):
         The complex-valued data to extract the complex phase from.
     """
     return np.exp(1j * np.angle(x)) * 0.5
+
+
+def stft(
+    window_duration_sec: float = 2.0,
+    window_step_sec: None | float = None,
+    window_function: str = "hann",
+    sampling_rate: None | float = 1.0,
+    **kwargs,
+):
+    r"""Short-Time Fourier Transform instance.
+
+    This function creates a Short-Time Fourier Transform instance for
+    transforming seismic traces into the spectral domain. The transformation
+    is performed with the :func:`scipy.signal.ShortTimeFFT` function. This
+    instance can both calculate the forward and inverse Short-Time Fourier
+    Transform, and other useful methods.
+
+    Arguments
+    ---------
+    window_duration_sec: float, optional
+        The duration of the Fourier window in seconds. Default to 2 seconds.
+    window_step_sec: float, optional
+        The step between two consecutive windows in seconds. If not provided,
+        the step is set to half the window size.
+    window_function: str, optional
+        The window function to use for the Short-Time Fourier Transform.
+        Default to "hann".
+    sampling_rate: float, optional
+        The sampling rate of the seismic traces. Default to 1.0 Hz.
+    **kwargs: dict, optional
+        Additional keyword arguments are passed to the
+        :func:`scipy.signal.ShortTimeFFT` class constructor. Check the SciPy
+        documentation for more details on the available options.
+
+    Returns
+    -------
+    :class:`scipy.signal.ShortTimeFFT`
+        A Short-Time Fourier Transform instance.
+    """
+    # Get window
+    window_size = int(window_duration_sec * sampling_rate)
+    window = signal.windows.get_window(window_function, window_size)
+
+    # Define hop
+    if window_step_sec is not None:
+        hop = int(window_step_sec * sampling_rate)
+    else:
+        hop = window_size // 2
+
+    # Set sampling rate
+    kwargs.setdefault("fs", sampling_rate)
+
+    return signal.ShortTimeFFT(window, hop, **kwargs)
+
+
+def calculate_spectrogram(trace, **kwargs):
+    """Calculate the spectrogram of a seismic traces.
+
+    The spectrogram is calculated with the :func:`covseisnet.stream.stft`
+    function, and the Short-Time Fourier Transform is applied to the trace.
+
+    Arguments
+    ---------
+    trace: :class:`~obspy.core.trace.Trace`
+        The seismic trace to calculate the spectrogram from.
+    **kwargs: dict, optional
+        Additional keyword arguments are passed to the
+        :func:`covseisnet.stream.stft` function. Check the function
+        documentation for more details on the available options.
+    """
+    # Instanciate ShortTimeFFT object
+    kwargs.setdefault("sampling_rate", trace.stats.sampling_rate)
+    transform = stft(**kwargs)
+
+    # Calculate the Short-Time Fourier Transform
+    waveform = trace.data
+    short_time_fft = transform.stft(waveform)
+    times = transform.times()
+
+    return short_time_fft
