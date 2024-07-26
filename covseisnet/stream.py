@@ -687,4 +687,4 @@ def phase(x):
     x: :class:`np.ndarray`
         The complex-valued data to extract the complex phase from.
     """
-    return np.exp(1j * np.angle(x))
+    return np.exp(1j * np.angle(x)) * 0.5
