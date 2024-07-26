@@ -162,5 +162,5 @@ cython_debug/
 #.idea/
 
 # Sphinx source builds
-source/auto_examples/*
-source/auto_examples
+docs/source/auto_examples/*
+docs/source/auto_examples
