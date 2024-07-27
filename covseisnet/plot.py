@@ -47,10 +47,16 @@ def trace_and_spectrum(trace):
 def trace_and_spectrogram(trace, **kwargs):
     """Plot a trace and its spectrogram.
 
+    This function is deliberately simple and does not allow to customize the
+    spectrogram plot. For more advanced plotting, you should consider creating
+    a derived function.
+
     Arguments
     ---------
     trace : obspy.Trace
         The trace to plot.
+    **kwargs
+        Additional arguments to pass to :func:`~covseisnet.calculate_spectrogram`.
     """
     # Create figure
     _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
@@ -73,7 +79,7 @@ def trace_and_spectrogram(trace, **kwargs):
     ax[0].grid()
 
     # Plot spectrogram
-    mappable = ax[1].pcolormesh(times, frequencies, spectrogram, cmap="magma")
+    mappable = ax[1].pcolormesh(times, frequencies, spectrogram)
     ax[1].set_xlabel("Time (seconds)")
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].grid()
