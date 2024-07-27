@@ -1,7 +1,7 @@
 .. _guide:
 
-Package structure
-=================
+Programming interface 
+=====================
 
 Stream
 ------
@@ -10,9 +10,9 @@ Stream
     :members:
     :show-inheritance:
 
-Covariance
-----------
+Plot    
+-----
 
-.. automodule:: covseisnet.covariance
+.. automodule:: covseisnet.plot
     :members:
     :show-inheritance:
