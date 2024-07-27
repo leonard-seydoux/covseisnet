@@ -12,9 +12,11 @@ inverse Fourier transform to the traces.
 
 # sphinx_gallery_thumbnail_number = 2
 
+import numpy as np
+
 import covseisnet as csn
 
-WINDOW_DURATION = 2
+WINDOW_DURATION = 2.0
 
 # %%
 # Read waveforms
@@ -25,6 +27,12 @@ WINDOW_DURATION = 2
 
 # Read the example stream (shipped with ObsPy)
 stream = csn.read()
+
+# Extract the first trace, and preprocess it
+trace = stream[0]
+trace.filter("highpass", freq=0.4)
+trace.data /= np.max(np.abs(trace.data))
+
 
 # Plot trace and corresponding spectrum
 csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
@@ -50,7 +58,6 @@ csn.plot.trace_and_spectrogram(
     window_duration_sec=WINDOW_DURATION,
 )
 
-exit()
 
 # %%
 # Spectral whitening (smooth)

@@ -11,6 +11,44 @@ import obspy
 from scipy.fft import rfft, rfftfreq
 
 import covseisnet as csn
+from covseisnet.stream import short_time_fourier_transform
+
+
+def utc_to_datetime(utc_array: np.ndarray) -> np.ndarray:
+    """Convert an array of UTC times to datetime objects.
+
+    Arguments
+    ---------
+    utc_array : :class:`~numpy.ndarray`
+        The array of UTC times.
+
+    Returns
+    -------
+    :class:`~numpy.ndarray`
+        The array of datetime objects.
+    """
+    return np.array([t.datetime for t in utc_array])
+
+
+def make_axis_symmetric(ax: plt.Axes, axis: str = "both") -> None:
+    """Make the axis of a plot symmetric.
+
+    Arguments
+    ---------
+    ax : :class:`~matplotlib.axes.Axes`
+        The axis to modify.
+    axis : str
+        The axis to modify. Can be "both", "x", or "y".
+    """
+    if axis in ["both", "x"]:
+        xlim = ax.get_xlim()
+        xabs = np.abs(xlim)
+        ax.set_xlim(-max(xabs), max(xabs))
+
+    if axis in ["both", "y"]:
+        ylim = ax.get_ylim()
+        yabs = np.abs(ylim)
+        ax.set_ylim(-max(yabs), max(yabs))
 
 
 def trace_and_spectrum(trace: obspy.core.trace.Trace) -> None:
@@ -69,32 +107,50 @@ def trace_and_spectrogram(
     _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Calculate spectrogram
-    times, frequencies, spectrogram = csn.calculate_spectrogram(
+    spectra_times, frequencies, spectra = short_time_fourier_transform(
         trace, **kwargs
     )
 
     # Remove zero frequencies
     frequencies = frequencies[1:]
-    spectrogram = spectrogram[1:, :]
+    spectra = spectra[:, 1:]
+
+    # Add one frequency to frequencies for pcolormesh
+    df = frequencies[1] - frequencies[0]
+    frequencies = np.concatenate([frequencies, [frequencies[-1] + df]])
+
+    # Time vectors
+    trace_times = [t.datetime for t in trace.times("utcdatetime")]
+    spectra_times = [t.datetime for t in spectra_times]
+    d_spectra_times = spectra_times[1] - spectra_times[0]
+    spectra_times.append(spectra_times[-1] + 2 * d_spectra_times)
 
     # Make sure the spectrogram is in dB
-    spectrogram = 20 * np.log10(spectrogram)
+    spectrogram = np.log10(np.abs(spectra) + 1e-10)
 
     # Plot trace
-    ax[0].plot(trace.times(), trace.data)
-    ax[0].set_ylabel("Amplitude")
+    ax[0].plot(trace_times, trace.data)
     ax[0].grid()
+    ax[0].set_ylabel("Amplitude")
+    ax[0].set_title("Trace")
+    make_axis_symmetric(ax[0], axis="y")
 
     # Plot spectrogram
-    mappable = ax[1].pcolormesh(times, frequencies, spectrogram)
-    ax[1].set_xlabel("Time (seconds)")
-    ax[1].set_ylabel("Frequency (Hz)")
+    mappable = ax[1].pcolormesh(
+        spectra_times,
+        frequencies,
+        spectrogram.T,
+        shading="flat",
+    )
     ax[1].grid()
     ax[1].set_yscale("log")
+    ax[1].set_xlabel("Time (seconds)")
+    ax[1].set_ylabel("Frequency (Hz)")
+    ax[1].set_title("Spectrogram")
 
     # Colorbar
     colorbar = plt.colorbar(mappable, ax=ax[1])
-    colorbar.set_label("Spectral energy (dB)")
+    colorbar.set_label("Spectral energy (dBA)")
 
     plt.savefig("spectrogram.png")
 
@@ -129,23 +185,28 @@ def stream_and_coherence(
     fig, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Show traces
+    trace_times = utc_to_datetime(stream.times(type="utcdatetime"))
     global_max = np.max([np.max(np.abs(trace.data)) for trace in stream])
     for index, trace in enumerate(stream):
         waveform = trace.data
         waveform /= global_max
-        ax[0].plot(
-            trace.times("matplotlib"), waveform + index, color="k", lw=0.5
-        )
+        ax[0].plot(trace_times, waveform + index, color="k", lw=0.5)
 
-    # Get times in matplotlib format
-    starttimes = stream[0].stats.starttime.datetime
-    times = mdates.date2num(starttimes) + times / 86400.0
+    # Get time
+    times = utc_to_datetime(times)
+    d_times = times[1] - times[0]
+    times = np.concatenate([times, [times[-1] + 2 * d_times]])
+
+    # Add one frequency to frequencies for pcolormesh
+    df = frequencies[1] - frequencies[0]
+    frequencies = np.concatenate([frequencies, [frequencies[-1] + df]])
 
     # Show coherence
     mappable = ax[1].pcolormesh(
         times,
         frequencies,
         coherence.T,
+        shading="flat",
         cmap="magma_r",
         vmin=0,
         **kwargs,

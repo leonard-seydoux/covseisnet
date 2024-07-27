@@ -6,7 +6,7 @@ import numpy as np
 import obspy
 from numpy.linalg import eigvalsh, eigh
 
-from .stream import calculate_short_time_fourier_spectra, NetworkStream
+from .stream import short_time_fourier_transforms, NetworkStream
 
 
 class CovarianceMatrix(np.ndarray):
@@ -364,33 +364,33 @@ def calculate_covariance_matrix(
 
     """
     # Short-time Fourier transform
-    times, frequencies, spectra = calculate_short_time_fourier_spectra(
+    times, frequencies, spectra = short_time_fourier_transforms(
         stream, **kwargs
     )
 
     # Remove first and last
-    times = times[1:-1]
-    spectra = spectra[..., 1:-1]
+    # times = times[1:-1]
+    # spectra = spectra[..., 1:-1]
 
     # Parametrization
     step = average // 2 if average_step is None else average * average_step
-    n_traces, n_frequencies, _ = spectra.shape
+    n_traces, n_times, n_frequencies = spectra.shape
 
     # Times of the covariance matrix
-    indices = range(0, len(times), step)
+    indices = range(0, len(times) - average + 1, step)
     covariance_n_times = len(indices)
     covariance_shape = (covariance_n_times, n_frequencies, n_traces, n_traces)
 
     # Initialization
-    covariance_times = np.zeros(covariance_n_times)
+    covariance_times = []
     covariances = np.zeros(covariance_shape, dtype=complex)
 
     # Compute with Einstein convention
     for i, index in enumerate(indices):
-        spectra_slice = spectra[..., index : index + average]
-        covariance_times[i] = np.mean(times[index : index + average])
+        spectra_slice = spectra[:, index : index + average]
+        covariance_times.append(times[index])
         covariances[i] = np.einsum(
-            "ift,jft -> fij", spectra_slice, np.conj(spectra_slice)
+            "itf,jtf -> fij", spectra_slice, np.conj(spectra_slice)
         )
 
     # Add stations

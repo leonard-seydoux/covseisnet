@@ -15,6 +15,7 @@ synchronization of traces.
 
 from functools import partial
 
+from joblib import Parallel, delayed
 import numpy as np
 import obspy
 from scipy import signal
@@ -752,6 +753,105 @@ def smooth_envelope_division(
     envelope = np.abs(signal.hilbert(x))
     smooth_envelope = signal.savgol_filter(envelope, smooth, order)
     return x / (smooth_envelope + epsilon)
+
+
+def short_time_fourier_transform(
+    trace: obspy.Trace,
+    window_duration_sec: float = 2.0,
+    window_step_sec: None | float = None,
+    window_function: str = "hann",
+    sampling_rate: None | float = 1.0,
+    **kwargs,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    r"""Short-Time Fourier Transform of a seismic trace.
+
+    This function calculates the Short-Time Fourier Transform of a seismic
+    trace. The transformation is performed with the
+    :func:`scipy.signal.stft` function. The function returns the timestamps,
+    frequencies, and the Short-Time Fourier Transform of the seismic trace.
+
+    Arguments
+    ---------
+    trace: :class:`~obspy.core.trace.Trace`
+        The seismic trace to calculate the spectrogram from.
+    window_duration_sec: float, optional
+        The duration of the Fourier window in seconds. Default to 2 seconds.
+    window_step_sec: float, optional
+        The step between two consecutive windows in seconds. If not provided,
+        the step is set to half the window size.
+    window_function: str, optional
+        The window function to use for the Short-Time Fourier Transform.
+        Default to "hann".
+    sampling_rate: float, optional
+        The sampling rate of the seismic traces. Default to 1.0 Hz.
+    **kwargs: dict, optional
+        Additional keyword arguments are passed to the
+        :func:`scipy.signal.stft` function. Check the SciPy documentation for
+        more details on the available options.
+
+    Returns
+    -------
+    numpy.ndarray
+        The timestamps with shape ``(n_times,)``.
+    numpy.ndarray
+        The frequencies with shape ``(n_frequencies,)``.
+    numpy.ndarray
+        The Short-Time Fourier Transform with shape ``(n_frequencies, n_times)``.
+    """
+    # Get window
+    sampling_rate = trace.stats.sampling_rate
+    window_size = int(window_duration_sec * sampling_rate)
+    window = signal.windows.get_window(window_function, window_size)
+
+    # Define hop
+    if window_step_sec is not None:
+        hop = int(window_step_sec * sampling_rate)
+    else:
+        hop = window_size // 2
+
+    # Spectrum calculation function
+    def calculate_spectrum(index):
+        waveform = trace.data[index : index + window_size]
+        return np.fft.rfft(waveform * window)
+
+    # Calculate the Short-Time Fourier Transform
+    indices = np.arange(trace.stats.npts - window_size + 1, step=hop)
+    spectra = Parallel(n_jobs=-1)(
+        delayed(calculate_spectrum)(index) for index in indices
+    )
+
+    # Time and frequency vectors
+    times = trace.times(type="utcdatetime")[indices]
+    frequencies = np.fft.rfftfreq(window_size, trace.stats.delta)
+    spectra = np.array(spectra)
+
+    return times, frequencies, spectra
+
+
+def short_time_fourier_transforms(
+    stream: NetworkStream,
+    **kwargs,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Wrapper for short_time_fourier_transform function for multiple traces."""
+    # Check if the traces are ready
+    assert stream.are_ready_to_process, "Traces are not ready to be processed."
+
+    # Calculate the first short-time Fourier transform
+    times, frequencies, short_time_fft = short_time_fourier_transform(
+        stream[0], **kwargs
+    )
+
+    # Loop over the other traces
+    short_time_ffts = np.zeros(
+        (len(stream), *short_time_fft.shape), dtype=complex
+    )
+    short_time_ffts[0] = short_time_fft
+    for i, trace in enumerate(stream[1:], start=1):
+        _, _, short_time_ffts[i] = short_time_fourier_transform(
+            trace, **kwargs
+        )
+
+    return times, frequencies, short_time_ffts
 
 
 def stft(

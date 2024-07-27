@@ -29,9 +29,9 @@ import covseisnet as csn
 # Read example stream
 stream = csn.read("../data/unvervolc_sample.mseed")
 stream = stream.select(station="UV1*")
-starttime = stream[0].stats.starttime
-endtime = starttime + 600
-stream.cut(starttime, endtime)
+# starttime = stream[0].stats.starttime
+# endtime = starttime + 1200
+# stream.cut(starttime, endtime)
 
 # Get channels
 channels = [trace.stats.channel for trace in stream]
@@ -40,7 +40,7 @@ channels = [trace.stats.channel for trace in stream]
 stream.detrend("linear")
 stream.filter("highpass", freq=0.5)
 # stream.taper(max_percentage=0.05)
-stream.whiten(window_duration_sec=50)
+# stream.whiten(window_duration_sec=50)
 
 # %%
 # Covariance matrix
@@ -49,7 +49,7 @@ stream.whiten(window_duration_sec=50)
 # The covariance matrix is calculated using the method :func:`~covseisnet.covariance.calculate_covariance_matrix`. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix. We can then visualize the covariance matrix at a given time and frequency, and its corresponding eigenvalues.
 
 times, frequencies, covariances = csn.calculate_covariance_matrix(
-    stream, window_duration_sec=20, average=15
+    stream, window_duration_sec=20, average=14
 )
 
 # Show covariance from first window and first frequency
