@@ -101,7 +101,7 @@ html_theme_options = {
     "use_download_button": False,
     "use_issues_button": True,
     "pygments_light_style": "paraiso-light",
-    "pygments_dark_style": "monokai",
+    "pygments_dark_style": "paraiso-dark",
     "home_page_in_toc": True,
     "show_toc_level": 2,
 }
