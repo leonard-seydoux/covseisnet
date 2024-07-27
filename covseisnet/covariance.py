@@ -385,7 +385,7 @@ def calculate_covariance_matrix(
     covariance_times = np.zeros(covariance_n_times)
     covariances = np.zeros(covariance_shape, dtype=complex)
 
-    # Compute with Einstein convention\
+    # Compute with Einstein convention
     for i, index in enumerate(indices):
         spectra_slice = spectra[..., index : index + average]
         covariance_times[i] = np.mean(times[index : index + average])

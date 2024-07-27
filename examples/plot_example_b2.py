@@ -39,7 +39,7 @@ channels = [trace.stats.channel for trace in stream]
 # Pre-process stream
 stream.detrend("linear")
 stream.filter("highpass", freq=0.5)
-stream.taper(max_percentage=0.05)
+# stream.taper(max_percentage=0.05)
 
 # %%
 # Covariance matrix
@@ -60,13 +60,13 @@ stream_2.normalize(smooth_length=11)
 # Pre-process stream with whitening
 case_3 = "Whitening"
 stream_3 = stream.copy()
-stream_3.whiten(window_duration_sec=300, smooth_length=11)
+stream_3.whiten(window_duration_sec=150, smooth_length=11)
 
 # Pre-process stream with whitening and temporal normalization
 case_4 = "Whitening and temporal normalization"
 stream_4 = stream.copy()
 stream_4.normalize(smooth_length=11)
-stream_4.whiten(window_duration_sec=300, smooth_length=11)
+stream_4.whiten(window_duration_sec=150, smooth_length=11)
 
 
 # Calculate covariance matrix
