@@ -713,6 +713,10 @@ def calculate_spectrogram(trace, **kwargs):
     # Calculate the Short-Time Fourier Transform
     waveform = trace.data
     short_time_fft = transform.stft(waveform)
-    times = transform.times()
+    spectrogram = np.abs(short_time_fft)
 
-    return short_time_fft
+    # Get metadata
+    time = transform.t(trace.stats.npts)
+    frequencies = transform.f
+
+    return time, frequencies, spectrogram

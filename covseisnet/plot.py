@@ -6,6 +6,7 @@ Made by Leonard Seydoux in 2024.
 """
 
 import matplotlib.pyplot as plt
+import numpy as np
 from scipy.fft import rfft, rfftfreq
 
 import covseisnet as csn
@@ -20,7 +21,7 @@ def trace_and_spectrum(trace):
         The trace to plot.
     """
     # Create figure
-    fig, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
+    _, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
 
     # Extract data
     times = trace.times()
@@ -43,7 +44,7 @@ def trace_and_spectrum(trace):
     ax[1].grid()
 
 
-def trace_and_spectrogram(trace):
+def trace_and_spectrogram(trace, **kwargs):
     """Plot a trace and its spectrogram.
 
     Arguments
@@ -52,25 +53,32 @@ def trace_and_spectrogram(trace):
         The trace to plot.
     """
     # Create figure
-    fig, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
-
-    # Extract data
-    times = trace.times()
-    waveform = trace.data
+    _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Calculate spectrogram
-    f, t, Sxx = csn.stream.spectrogram(
-        waveform, fs=1 / trace.stats.delta, nperseg=256
+    times, frequencies, spectrogram = csn.calculate_spectrogram(
+        trace, **kwargs
     )
 
+    # Remove zero frequencies
+    frequencies = frequencies[1:]
+    spectrogram = spectrogram[1:, :]
+
+    # Make sure the spectrogram is in dB
+    spectrogram = 20 * np.log10(spectrogram)
+
     # Plot trace
-    ax[0].plot(times, waveform)
-    ax[0].set_xlabel("Time (seconds)")
+    ax[0].plot(trace.times(), trace.data)
     ax[0].set_ylabel("Amplitude")
     ax[0].grid()
 
     # Plot spectrogram
-    ax[1].pcolormesh(t, f, Sxx, shading="gouraud")
+    mappable = ax[1].pcolormesh(times, frequencies, spectrogram, cmap="magma")
     ax[1].set_xlabel("Time (seconds)")
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].grid()
+    ax[1].set_yscale("log")
+
+    # Colorbar
+    colorbar = plt.colorbar(mappable, ax=ax[1])
+    colorbar.set_label("Spectral energy (dB)")

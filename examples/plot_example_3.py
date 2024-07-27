@@ -22,7 +22,7 @@ import covseisnet as csn
 stream = csn.read()
 
 # Plot trace and corresponding spectrum
-csn.plot.trace_and_spectrum(stream[0])
+csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=2)
 
 # %%
 # Spectral whitening on a small window
@@ -34,11 +34,16 @@ csn.plot.trace_and_spectrum(stream[0])
 # the spectrum (or a smooth version of it), and then applies the inverse Fourier
 # transform to the traces. The whit
 
+window_duration = 2
+
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=2)
+whitened_stream.whiten(window_duration_sec=window_duration)
 
 # Plot whitened trace and corresponding spectrum
-csn.plot.trace_and_spectrum(whitened_stream[0])
+csn.plot.trace_and_spectrogram(
+    whitened_stream[0],
+    window_duration_sec=window_duration,
+)
 
 # %%
 # Spectral whitening on the entire signal
@@ -50,9 +55,14 @@ csn.plot.trace_and_spectrum(whitened_stream[0])
 # the spectrum (or a smooth version of it), and then applies the inverse Fourier
 # transform to the traces. The whit
 
+window_duration = 20
+
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=20)
+whitened_stream.whiten(window_duration_sec=window_duration)
 
 # Plot whitened trace and corresponding spectrum
 # sphinx_gallery_thumbnail_number = 3
-csn.plot.trace_and_spectrum(whitened_stream[0])
+csn.plot.trace_and_spectrogram(
+    whitened_stream[0],
+    window_duration_sec=window_duration,
+)
