@@ -1,6 +1,6 @@
 """
-Stream whitening
-================
+Spectral whitening
+==================
 
 This example show the effect of spectral whitening on a stream of traces.
 The stream is read from the obspy example data, and the whitening is performed
@@ -10,7 +10,11 @@ by the modulus of the spectrum (or a smooth version of it), and then applies the
 inverse Fourier transform to the traces.
 """
 
+# sphinx_gallery_thumbnail_number = 2
+
 import covseisnet as csn
+
+WINDOW_DURATION = 2
 
 # %%
 # Read the example stream (shipped with ObsPy)
@@ -22,7 +26,7 @@ import covseisnet as csn
 stream = csn.read()
 
 # Plot trace and corresponding spectrum
-csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=2)
+csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
 
 # %%
 # Spectral whitening on a small window
@@ -34,20 +38,19 @@ csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=2)
 # the spectrum (or a smooth version of it), and then applies the inverse Fourier
 # transform to the traces. The whit
 
-window_duration = 2
 
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=window_duration)
+whitened_stream.whiten(window_duration_sec=WINDOW_DURATION)
 
 # Plot whitened trace and corresponding spectrum
 csn.plot.trace_and_spectrogram(
     whitened_stream[0],
-    window_duration_sec=window_duration,
+    window_duration_sec=WINDOW_DURATION,
 )
 
 # %%
-# Spectral whitening on the entire signal
-# ---------------------------------------
+# Spectral whitening on a small
+# -----------------------------
 #
 # The spectral whitening is applied to the stream using the method
 # :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a Fourier
@@ -55,14 +58,15 @@ csn.plot.trace_and_spectrogram(
 # the spectrum (or a smooth version of it), and then applies the inverse Fourier
 # transform to the traces. The whit
 
-window_duration = 20
-
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=window_duration)
+whitened_stream.whiten(
+    window_duration_sec=WINDOW_DURATION,
+    method="smooth",
+    smooth_length=11,
+)
 
 # Plot whitened trace and corresponding spectrum
-# sphinx_gallery_thumbnail_number = 3
 csn.plot.trace_and_spectrogram(
     whitened_stream[0],
-    window_duration_sec=window_duration,
+    window_duration_sec=WINDOW_DURATION,
 )
