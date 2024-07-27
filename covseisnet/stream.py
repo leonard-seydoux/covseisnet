@@ -1,13 +1,16 @@
-"""Read and pre-process network seismic data.
+"""
+The package **covseisnet** provides a comprehensive toolkit for analyzing
+seismic data recorded on seismic networks. To achieve this, we offer a set of
+classes and methods designed for reading, pre-processing, and analyzing
+seismic data from these networks.
 
-The core idea of Covseisnet is to provide a set of tools for the analysis of
-seismic data from networks. To that end, we provide a set of classes and
-methods for reading, pre-processing, and analyzing seismic data from networks.
-The essential idea is to work on traces that have been synchronized and
-pre-processed with the same methods. In order to do so, we build the concept of
-a NetworkStream, a subclass of the ObsPy Stream object that offers the same 
-methods of the Stream object, but with additional methods for pre-processing and
-synchronization of the traces.
+The workflow involves working on traces that have been synchronized and
+pre-processed using consistent methods. To facilitate this, we introduce the
+concept of a :class:`~covseisnet.stream.NetworkStream`, a subclass of the
+ObsPy :class:`~obspy.core.stream.Stream` object. The
+:class:`~covseisnet.stream.NetworkStream` object retains all the methods of
+the Stream object while adding specialized methods for the pre-processing and
+synchronization of traces.
 """
 
 from functools import partial
@@ -25,6 +28,48 @@ class NetworkStream(obspy.Stream):
     methods for pre-processing and synchronization of the traces. It also
     provide network-wide methods such as the calculation of the common time
     vector of the traces.
+
+    .. rubric:: _`Attributes`
+
+    - :attr:`~covseisnet.stream.NetworkStream.are_ready_to_process` — check if
+      traces are ready to be processed.
+
+    - :attr:`~covseisnet.stream.NetworkStream.are_time_vectors_equal` — check
+      if traces are sampled on the same time vector.
+
+    - :attr:`~covseisnet.stream.NetworkStream.are_sampling_rates_equal` —
+      check if all traces have the same sampling rate.
+
+    - :attr:`~covseisnet.stream.NetworkStream.are_npts_equal` — check if all
+      traces have the same number
+
+    - :attr:`~covseisnet.stream.NetworkStream.stations` — list of unique
+      station
+
+    - :attr:`~covseisnet.stream.NetworkStream.channels` — list of unique
+      channel
+
+    - :attr:`~covseisnet.stream.NetworkStream.sampling_rate` — sampling rate
+      of the traces.
+
+    .. rubric:: _`Methods`
+
+    - :meth:`~covseisnet.stream.NetworkStream.cut()` — trim stream between
+      given start and end times.
+
+    - :meth:`~covseisnet.stream.NetworkStream.times()` — common time vector of
+      the NetworkStream.
+
+    - :meth:`~covseisnet.stream.NetworkStream.synchronize()` — synchronize the
+      traces into the same times with interpolation.
+
+    - :meth:`~covseisnet.stream.NetworkStream.whiten()` — whiten traces in the
+      spectral domain.
+
+    - :meth:`~covseisnet.stream.NetworkStream.normalize()` — normalize the
+      traces in the temporal domain.
+
+
 
     .. note::
 
@@ -70,7 +115,7 @@ class NetworkStream(obspy.Stream):
         synced_flag = "synced" if self.are_time_vectors_equal else "not synced"
 
         # Initialize output string
-        out = f"Network Stream of {n_traces} traces from {n_stations} stations ({synced_flag}):\n"
+        out = f"NetworkStream of {n_traces} traces from {n_stations} stations ({synced_flag}):\n"
 
         # Print all traces
         out = out + "\n".join([trace.__str__(longest_id) for trace in self])
@@ -83,14 +128,13 @@ class NetworkStream(obspy.Stream):
         endtime: str | obspy.UTCDateTime,
         **kwargs: dict,
     ):
-        """Cut (trim) stream between given start and end times.
+        """Trim traces between start and end date times.
 
         This function is a wrapper to the ObsPy
-        :meth:`~obspy.core.stream.Stream.trim` method, but works directly with
-        datetimes in :class:`str` format. The function uses the native ObsPy
-        :class:`~obspy.core.utcdatetime.UTCDateTime` class in order to convert
-        the datetimes from :class:`str` into
-        :class:`obspy.core.utcdatetime.UTCDateTime` format.
+        :meth:`~obspy.core.stream.Stream.trim` method, but supports string
+        format for the start and end times. The function uses the ObsPy
+        :class:`~obspy.core.utcdatetime.UTCDateTime` function in order to
+        parse the start and end times.
 
         Arguments
         ---------
@@ -100,9 +144,7 @@ class NetworkStream(obspy.Stream):
         endtime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
             The end date time.
         **kwargs: dict, optional
-            Additional keyword arguments passed to the
-            :meth:`~obspy.core.stream.Stream.trim` method of ObsPy. Check the
-            ObsPy documentation for more details on the available options.
+            Arguments passed to the :meth:`~obspy.core.stream.Stream.trim` method.
 
         Example
         -------
@@ -128,11 +170,8 @@ class NetworkStream(obspy.Stream):
         # Trim stream
         self.trim(starttime, endtime, **kwargs)
 
-    def times(
-        self,
-        **kwargs: dict,
-    ):
-        """Common time vector of the NetworkStream.
+    def times(self, **kwargs: dict) -> np.ndarray:
+        """Common time vector.
 
         Because the :class:`~covseisnet.stream.NetworkStream` handles traces
         sampled on the same time vector, this function only returns the times
@@ -142,17 +181,24 @@ class NetworkStream(obspy.Stream):
         Arguments
         ---------
         **kwargs: dict, optional
-            Additional keyword arguments are directly passed to the Trace
-            method :meth:`~obspy.core.trace.Trace.times`. For instance, passing
+            Arguments passed to the method
+            :meth:`~obspy.core.trace.Trace.times`. For instance, passing
             ``type="matplotlib"`` allows to recover matplotlib timestamps
-            provided by the :func:`matplotlib.dates.date2num` function and thus
-            enables the use of date labels in plots.
+            instead of seconds from the start of the trace (default).
 
         Returns
         -------
-        :class:`numpy.ndarray`
-            An array of timestamps in a :class:`numpy.ndarray` or in a
-            :class:`list`.
+        numpy.ndarray
+            The timestamps.
+
+        Raises
+        ------
+        AssertionError
+            If the traces are not synchronized.
+
+        See Also
+        --------
+        :meth:`~obspy.core.trace.Trace.times`
 
 
         .. tip::
@@ -182,7 +228,7 @@ class NetworkStream(obspy.Stream):
         interpolation_method: str = "linear",
         **kwargs: dict,
     ) -> None:
-        """Synchronize seismic traces into the same times with interpolation.
+        """Synchronize seismic traces with interpolation.
 
         This method synchronizes the seismic traces in the stream by
         interpolating the traces to a common time vector. The method uses the

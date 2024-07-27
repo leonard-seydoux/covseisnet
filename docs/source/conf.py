@@ -83,7 +83,10 @@ language = "english"
 exclude_patterns = []
 add_module_names = True
 
+
 # Theme
+# pygments_style = "paraiso-light"
+# pygments_style_dark = "monokai"
 html_theme = "sphinx_book_theme"
 html_css_path = ["_static"]
 html_static_path = ["_static"]

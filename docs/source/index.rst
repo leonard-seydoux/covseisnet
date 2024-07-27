@@ -9,7 +9,7 @@ The package builts on the `ObsPy <https://github.com/obspy/obspy/wiki/>`_ and `N
 
 .. image:: https://zenodo.org/badge/263984678.svg
    :target: https://zenodo.org/doi/10.5281/zenodo.10990031
-
+   
 .. image:: https://img.shields.io/pypi/v/covseisnet.svg
    :target: https://pypi.org/project/covseisnet/
 
