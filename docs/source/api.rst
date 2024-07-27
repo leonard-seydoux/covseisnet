@@ -16,3 +16,10 @@ Plot
 .. automodule:: covseisnet.plot
     :members:
     :show-inheritance:
+
+Covariance
+----------
+
+.. automodule:: covseisnet.covariance
+    :members:
+    :show-inheritance:
