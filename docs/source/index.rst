@@ -1,6 +1,7 @@
 Home
 ====
 
+
 **Covseisnet** is a Python package for array signal processing, with a focus on data from seismic networks. The central mathematical object of the package is the network covariance matrix, used for signal detection, source separation, localisation, and plane-wave beamforming. 
 
 The core signal detection algorithms are based on the analysis of the spectrum of the network covariance matrix. Eigendecomposition provides a basis for signal detection and blind source separation. In addition, the covariance matrix can be used as input for classical array processing tools such as beamforming and inter-station cross-correlations. 
@@ -67,3 +68,22 @@ References
 
 .. bibliography:: references.bib
    :style: unsrt
+
+About us
+--------
+
+This package was mainly developed by `Léonard Seydoux
+<https://sites.google.com/view/leonard-seydoux/accueil>`_ during his PhD at
+the Institut de Physique du Globe de Paris, under the supervision of Nikolai
+Shapiro. Several contributions for the core program were made by Jean
+Soubestre and Cyril Journeau. Francis Tong contributed to the distribution of
+the packge via PyPI and Conda. 
+
+Several other versions of this package are available (not distributed yet,
+planned for the future). A first version was developed in Matlab by Léonard
+Seydoux. For computational efficiency, a second version was developed in C++
+by Matthieu Landès. For now, it works only with SAC files. 
+
+If you have any questions, please contact us via the GitHub repository at
+https://github.com/covseisnet/covseisnet. You can also consider opening an
+issue on the repository, or creating pull requests.

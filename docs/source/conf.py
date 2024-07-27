@@ -141,7 +141,7 @@ html_theme_options = {
     "pygments_light_style": "paraiso-light",
     "pygments_dark_style": "paraiso-dark",
     "home_page_in_toc": True,
-    "show_toc_level": 2,
+    "show_toc_level": 1,
 }
 
 # Intersphinx
