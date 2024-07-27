@@ -58,7 +58,6 @@ sphinx_gallery_conf = {
     "examples_dirs": "../../examples",
     "gallery_dirs": "auto_examples",
     "image_srcset": ["4x"],
-    "reset_modules": ("sphinx_gallery_conf.reset_matplotlib",),
     "download_all_examples": False,
     "remove_config_comments": True,
 }
