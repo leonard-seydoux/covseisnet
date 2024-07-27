@@ -60,6 +60,7 @@ sphinx_gallery_conf = {
     "image_srcset": ["4x"],
     "download_all_examples": False,
     "remove_config_comments": True,
+    "within_subsection_order": "FileNameSortKey",
 }
 
 # Templates

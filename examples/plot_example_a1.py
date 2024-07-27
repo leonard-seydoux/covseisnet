@@ -3,10 +3,10 @@ Traces synchronization
 ======================
 
 This example demonstrates how to synchronize a stream of traces using the
-:func:`~covseisnet.stream.Stream.synchronize` method. This method finds the 
-latest start time and the earliest end time among the traces in the stream, and
-interpolates the traces between these times with a common sampling interval.
-More information about the method can be found in the documentation.
+:func:`~covseisnet.stream.NetworkStream.synchronize` method. This method finds
+the latest start time and the earliest end time among the traces in the
+stream, and interpolates the traces between these times with a common sampling
+interval. More information about the method can be found in the documentation.
 """
 
 import matplotlib.dates as mdates
@@ -14,16 +14,26 @@ import matplotlib.pyplot as plt
 
 import covseisnet as csn
 
+# %%
+# Read waveforms
+# --------------
+#
+# This section reads an example stream of seismic data, which is shipped with
+# ObsPy. The stream contains three traces, which are highpass at a very high
+# frequency to see more details in the synchronization.
+
 # Read the example stream (shipped with ObsPy)
 stream = csn.read()
 
 # Highpass filter the stream to better see the sync in high frequencies
 stream.filter("highpass", freq=30)
+
+# Print the original stream
 print(stream)
 
 # %%
-# Desynchronize the traces
-# ------------------------
+# Desynchronization
+# -----------------
 #
 # This first section desynchronizes the traces in the stream, in order to
 # demonstrate the synchronization method from the example stream. The traces
@@ -44,16 +54,16 @@ n_samples = 20
 for trace in stream:
     trace.data = trace.data[sart_sample : sart_sample + n_samples]
 
+# Print the desynchronized stream
 print(stream)
 
-# %%
-# Synchronize the traces
-# ----------------------
+# %% Synchronization
+# ---------------
 #
 # We now synchronize the traces in the stream using the
-# :func:`~covseisnet.stream.Stream.synchronize` method. The method finds the
-# latest start time and the earliest end time among the traces in the stream,
-# and aligns the traces to these times with interpolation.
+# :func:`~covseisnet.stream.NetworkStream.synchronize` method. The method
+# finds the latest start time and the earliest end time among the traces in
+# the stream, and aligns the traces to these times with interpolation.
 
 # Synchronize the traces
 stream_sync = stream.copy()
