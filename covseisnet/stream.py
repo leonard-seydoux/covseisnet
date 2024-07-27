@@ -560,6 +560,25 @@ class NetworkStream(obspy.Stream):
         # Return the sampling rate of the first trace
         return self[0].stats.sampling_rate
 
+    @property
+    def npts(self) -> int:
+        """Number of samples of the traces.
+
+        This property is also available directly from looping over the traces
+        and accessing the :attr:`~obspy.core.trace.Trace.stats.npts` attribute.
+
+        Example
+        -------
+        >>> stream = csn.read()
+        >>> stream.npts
+        3000
+        """
+        # Assert number of samples
+        assert self.are_npts_equal, "Traces have different number of samples."
+
+        # Return the number of samples of the first trace
+        return self[0].stats.npts
+
 
 def read(pathname_or_url=None, **kwargs) -> NetworkStream:
     """Read seismic waveforms files into an NetworkStream object.
@@ -788,10 +807,56 @@ def stft(
     return signal.ShortTimeFFT(window, hop, **kwargs)
 
 
+def calculate_short_time_fourier_spectra(
+    stream: NetworkStream, **kwargs: dict
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Calculate the spectrograms of seismic traces.
+
+    The spectrogram are calculated with the
+    :func:`covseisnet.stream.spectrogram` function, and the Short-Time Fourier
+    Transform is applied to the trace.
+
+    Arguments
+    ---------
+    stream: :class:`~covseisnet.stream.NetworkStream`
+        The seismic trace to calculate the spectrogram from.
+    **kwargs: dict, optional
+        Additional keyword arguments are passed to the
+        :func:`covseisnet.stream.stft` function. Check the function
+        documentation for more details on the available options.
+
+    Returns
+    -------
+    numpy.ndarray
+        The timestamps with shape ``(n_times,)``.
+    numpy.ndarray
+        The frequencies with shape ``(n_frequencies,)``.
+    numpy.ndarray
+        The spectrograms with shape ``(n_frequencies, n_times)``.
+    """
+    # Instanciate ShortTimeFFT object
+    kwargs.setdefault("sampling_rate", stream.sampling_rate)
+    transform = stft(**kwargs)
+
+    # Instanciate ShortTimeFFT object
+    kwargs.setdefault("sampling_rate", stream.sampling_rate)
+    transform = stft(**kwargs)
+
+    # Calculate the Short-Time Fourier Transform
+    waveforms = np.vstack([trace.data for trace in stream])
+    short_time_ffts = transform.stft(waveforms)
+
+    # Get metadata
+    time = transform.t(stream.npts)
+    frequencies = transform.f
+
+    return time, frequencies, short_time_ffts
+
+
 def calculate_spectrogram(
     trace: obspy.Trace, **kwargs: dict
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Calculate the spectrogram of a seismic traces.
+    """Calculate the spectrogram of a seismic trace.
 
     The spectrogram is calculated with the :func:`covseisnet.stream.stft`
     function, and the Short-Time Fourier Transform is applied to the trace.
