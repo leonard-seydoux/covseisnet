@@ -46,39 +46,24 @@ Contents
 How to cite this package
 ------------------------
 
+Citation statement   
+~~~~~~~~~~~~~~~~~~~
    
-This package is released under the GNU General Public License v3.0 (see :ref:`license`). Please include the following statement in the ackowledgements section of your publication, and please include a reference to one the paper listed in the :ref:`references` section below.
-
-.. admonition:: Citation statement
+This package is released under the GNU General Public License v3.0 (see :ref:`license`). Please include the following statement in the ackowledgements section of your publication, and/or reference one the paper listed in the :ref:`references` section below.
 
    This work made use of the Covseisnet package, a Python package for array signal processing, developed by Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro.
 
+Publication history
+~~~~~~~~~~~~~~~~~~~
 
+The method was first introduced in :cite:`seydoux_detecting_2016` with an
+application to the monitoring of the Piton de la Fournaise eruptions. We then
+applied it to the analysis of USArray data in :cite:`seydoux_spatial_2016`. We then proposed a pre-processing method for ambient noise cross-correlations in :cite:`seydoux_pre-processing_2017`. The method was then applied to the detection and classification of seismovolcanic tremors in :cite:`soubestre_network-based_2018` and to the depth migration of seismovolcanic tremor sources in :cite:`soubestre_depth_2019`. The method was also applied to the study of localized modes on a metasurface in :cite:`lott_localized_2020`. Finally, the method was applied to the detection, classification, and location of seismovolcanic signals at the Piton de la Fournaise volcano in :cite:`journeau_detection_2020`.
 
 .. _references:
 
 References
-----------
+~~~~~~~~~~
 
-The following publications have made use of this package, or of a development version of it. Please refer to the description provided therein in order to get in-depth descriptions of the tools defined in the package as well as an overview of possible applications.
-
-1. Seydoux, L., Shapiro, N. M., de Rosny, J., Brenguier, F., & Landès, M. (2016). "Detecting seismic activity with a covariance matrix analysis of data recorded on seismic arrays." Geophysical Journal International, 204(3), 1430-1442. https://doi.org/10.1093/gji/ggv531
-
-
-2. Seydoux, L., Shapiro, N. M., de Rosny, J., & Landès, M. (2016). "Spatial coherence of the seismic wavefield continuously recorded by the USArray." Geophysical Research Letters, 43, 9644-9652. https://doi.org/10.1002/2016GL070320
-
-
-3. Seydoux, L., de Rosny, J., & Shapiro, N. M. (2017). "Pre-processing ambient noise cross-correlations with equalizing the covariance matrix eigenspectrum." Geophysical Journal International, 210(3), 1432-1449. https://doi.org/10.1093/gji/ggx250
-
-
-4. Soubestre, J., Seydoux, L., Shapiro, N. M., de Rosny, J., & others. (2018). "Network-based detection and classification of seismovolcanic tremors: Example from the Klyuchevskoy Volcanic Group in Kamchatka." Journal of Geophysical Research: Solid Earth, 123(1), 564-582. https://doi.org/10.1002/2017JB014726
-
-
-5. Soubestre, J., Seydoux, L., Shapiro, N. M., de Rosny, J., Droznin, D. V., Droznina, S. Ya., Senyukov, S. L., & Gordeev, E. I. (2019). "Depth migration of seismovolcanic tremor sources below the Klyuchevskoy Volcanic Group (Kamchatka) determined from a network-based analysis." Geophysical Research Letters, 46(14), 8018-8030. https://doi.org/10.1029/2019GL083465
-
-
-6. Lott, M., Roux, P., Seydoux, L., Tallon, B., Pelat, A., Skipetrov, S., & Colombi, A. (2020). "Localized modes on a metasurface through multi-wave interactions." Physical Review Materials, 4(6), 065203. https://doi.org/10.1103/PhysRevMaterials.4.065203
-
-
-7. Journeau, C., Shapiro, N. M., Seydoux, L., Soubestre, J., Ferrazzini, V., & Peltier, A. (2020). "Detection, classification, and location of seismovolcanic signals with multicomponent seismic data: Example from the Piton de la Fournaise volcano (La Réunion, France)." Journal of Geophysical Research: Solid Earth, 125, e2019JB019333. https://doi.org/10.1029/2019JB019333
-
+.. bibliography:: references.bib
+   :style: unsrt

@@ -9,6 +9,40 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
+from dataclasses import dataclass, field
+import sphinxcontrib.bibtex.plugin
+from sphinxcontrib.bibtex.style.referencing import BracketStyle
+from sphinxcontrib.bibtex.style.referencing.author_year import (
+    AuthorYearReferenceStyle,
+)
+
+
+# Define the bracket style for the references
+def bracket_style() -> BracketStyle:
+    return BracketStyle(
+        left="(",
+        right=")",
+    )
+
+
+# Define the reference style
+@dataclass
+class BracketReferenceStyle(AuthorYearReferenceStyle):
+    bracket_parenthetical: BracketStyle = field(default_factory=bracket_style)
+    bracket_textual: BracketStyle = field(default_factory=bracket_style)
+    bracket_author: BracketStyle = field(default_factory=bracket_style)
+    bracket_label: BracketStyle = field(default_factory=bracket_style)
+    bracket_year: BracketStyle = field(default_factory=bracket_style)
+
+
+# Register the plugin
+sphinxcontrib.bibtex.plugin.register_plugin(
+    "sphinxcontrib.bibtex.style.referencing",
+    "author_year_round",
+    BracketReferenceStyle,
+)
+
+
 # Project information
 project = "covseisnet"
 copyright = "2022, The Covseisnet Team"
@@ -70,7 +104,7 @@ templates_path = ["_templates"]
 # Sources
 source_suffix = [".rst", ".md"]
 bibtex_bibfiles = ["references.bib"]
-bibtex_default_style = "plain"
+bibtex_reference_style = "author_year_round"
 
 # The master toctree document.
 master_doc = "index"

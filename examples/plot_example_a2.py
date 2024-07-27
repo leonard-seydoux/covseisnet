@@ -32,7 +32,7 @@ print(stream)
 #
 # This section normalizes the traces in the stream with different methods. The
 # methods are applied to the stream, and the normalized traces are stored in a
-# list. See :cite:`bensen2007processing` for more information on the normalization
+# list. See\ :footcite:`bensen2007processing` for more information on the normalization
 
 # Initialize the list of normalized streams
 normalization_methods = ["onebit", "smooth"]
@@ -82,4 +82,4 @@ plt.show()
 # References
 # ----------
 #
-# .. bibliography::
+# .. footbibliography::
