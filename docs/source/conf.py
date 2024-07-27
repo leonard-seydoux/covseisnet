@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
+    "sphinxcontrib.bibtex",
 ]
 
 # Napoleon settings
@@ -68,6 +69,8 @@ templates_path = ["_templates"]
 
 # Sources
 source_suffix = [".rst", ".md"]
+bibtex_bibfiles = ["references.bib"]
+bibtex_default_style = "plain"
 
 # The master toctree document.
 master_doc = "index"

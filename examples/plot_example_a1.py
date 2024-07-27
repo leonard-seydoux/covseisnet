@@ -32,8 +32,8 @@ stream.filter("highpass", freq=30)
 print(stream)
 
 # %%
-# Desynchronization
-# -----------------
+# Desynchronize
+# -------------
 #
 # This first section desynchronizes the traces in the stream, in order to
 # demonstrate the synchronization method from the example stream. The traces
@@ -57,8 +57,9 @@ for trace in stream:
 # Print the desynchronized stream
 print(stream)
 
-# %% Synchronization
-# ---------------
+# %%
+# Synchronize
+# -----------
 #
 # We now synchronize the traces in the stream using the
 # :func:`~covseisnet.stream.NetworkStream.synchronize` method. The method
@@ -68,11 +69,13 @@ print(stream)
 # Synchronize the traces
 stream_sync = stream.copy()
 stream_sync.synchronize()
+
+# Print the synchronized stream
 print(stream_sync)
 
 # %%
-# Compare synchronized and original traces
-# ----------------------------------------
+# Compare traces
+# --------------
 #
 # The synchronized traces are plotted alongside the original traces to compare
 # the effect of the synchronization method. Note that several interpolation
@@ -80,25 +83,30 @@ print(stream_sync)
 # for more information.
 
 # Create figure
-fig, ax = plt.subplots(3, sharex=True, sharey=True, constrained_layout=True)
+fig, axes = plt.subplots(
+    3,
+    sharex=True,
+    sharey=True,
+    constrained_layout=True,
+)
 
 # Loop over traces
-for trace, synced, subplot in zip(stream, stream_sync, ax):
+for trace, synced, ax in zip(stream, stream_sync, axes):
 
     # Plot traces
-    subplot.plot(trace.times("matplotlib"), trace.data, ".-", label="Original")
-    subplot.plot(synced.times("matplotlib"), synced.data, ".-", label="Synced")
+    ax.plot(trace.times("matplotlib"), trace.data, ".-", label="Original")
+    ax.plot(synced.times("matplotlib"), synced.data, ".-", label="Synced")
 
     # Local settings
-    subplot.grid()
-    subplot.set_title(trace.id, size="medium", weight="normal")
+    ax.grid()
+    ax.set_title(trace.id, size="medium", weight="normal")
 
 # Labels
-ax[0].legend(loc="upper right")
-ax[1].set_ylabel("Amplitude (counts)")
+axes[0].legend(loc="upper right")
+axes[1].set_ylabel("Amplitude (counts)")
 
 # Date formatting
 xticks = mdates.AutoDateLocator()
 xticklabels = mdates.ConciseDateFormatter(xticks)
-ax[2].xaxis.set_major_locator(xticks)
-ax[2].xaxis.set_major_formatter(xticklabels)
+axes[2].xaxis.set_major_locator(xticks)
+axes[2].xaxis.set_major_formatter(xticklabels)
