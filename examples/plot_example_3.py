@@ -29,14 +29,14 @@ stream = csn.read()
 csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
 
 # %%
-# Spectral whitening on a small window
+# Spectral whitening without smoothing
 # ------------------------------------
 #
 # The spectral whitening is applied to the stream using the method
-# :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a Fourier
-# transform to the traces, divides the spectrum of the traces by the modulus of
-# the spectrum (or a smooth version of it), and then applies the inverse Fourier
-# transform to the traces. The whit
+# :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a
+# Fourier transform to the traces, divides the spectrum of the traces by the
+# modulus of the spectrum, and then applies the inverse Fourier transform to
+# the traces.
 
 
 whitened_stream = stream.copy()
@@ -49,20 +49,21 @@ csn.plot.trace_and_spectrogram(
 )
 
 # %%
-# Spectral whitening on a small
-# -----------------------------
+# Spectral whitening with smoothing
+# ---------------------------------
 #
 # The spectral whitening is applied to the stream using the method
 # :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a Fourier
-# transform to the traces, divides the spectrum of the traces by the modulus of
-# the spectrum (or a smooth version of it), and then applies the inverse Fourier
-# transform to the traces. The whit
+# transform to the traces, divides the spectrum of the traces by a smooth
+# version of the modulus of the spectrum, and then applies the inverse Fourier
+# transform. The smoothing is performed with a Savitzky-Golay filter, with a
+# window length of 31 frequency bins.
 
 whitened_stream = stream.copy()
 whitened_stream.whiten(
     window_duration_sec=WINDOW_DURATION,
     method="smooth",
-    smooth_length=11,
+    smooth_length=31,
 )
 
 # Plot whitened trace and corresponding spectrum

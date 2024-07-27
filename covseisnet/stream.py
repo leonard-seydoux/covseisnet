@@ -386,12 +386,14 @@ class NetworkStream(obspy.Stream):
             Must be one of "onebit" (default), or "smooth".
 
             - ``"onebit"`` divides the spectrum by its modulus, and keeps the
-              phase.
+              phase. It uses the :func:`modulus_division` function.
 
             - ``"smooth"`` divides the spectrum by a smoothed version of its
               modulus. The smoothing is performed with the Savitzky-Golay
               filter, and the order and length of the filter are set by the
-              ``smooth_length`` and ``smooth_order`` parameters.
+              ``smooth_length`` and ``smooth_order`` parameters. It makes use
+              of the :func:`smooth_modulus_division` function.
+
         smooth_length: int, optional
             The length of the Savitzky-Golay filter for smoothing the
             spectrum. This parameter is only used if the ``method`` parameter
@@ -416,10 +418,13 @@ class NetworkStream(obspy.Stream):
 
         # Define the whitening method
         if method == "onebit":
-            whiten_method = phase
+            whiten_method = partial(
+                modulus_division,
+                epsilon=epsilon,
+            )
         elif method == "smooth":
             whiten_method = partial(
-                detrend_spectrum,
+                smooth_modulus_division,
                 smooth=smooth_length,
                 order=smooth_order,
                 epsilon=epsilon,
@@ -516,37 +521,6 @@ def read(pathname_or_url=None, **kwargs):
     return stream
 
 
-def detrend_spectrum(x, smooth=None, order=None, epsilon=1e-10):
-    r"""Smooth modulus spectrum.
-
-    Arugments
-    ---------
-    x: :class:`np.ndarray`
-        The spectra to detrend. Must be of shape `(n_frequencies, n_times)`.
-
-    smooth: int
-        Smoothing window size in points.
-
-    order: int
-        Smoothing order. Please check the :func:`savitzky_golay` function
-        for more details.
-
-    Keyword arguments
-    -----------------
-    epsilon: float, optional
-        A regularizer for avoiding zero division.
-
-    Returns
-    -------
-    The spectrum divided by the smooth modulus spectrum.
-    """
-    n_frequencies, n_times = x.shape
-    for t in range(n_times):
-        x_smooth = signal.savgol_filter(np.abs(x[:, t]), smooth, order)
-        x[:, t] /= x_smooth + epsilon
-    return x
-
-
 def normalize(
     stream, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
 ):
@@ -618,24 +592,73 @@ def normalize(
         raise ValueError("Unknown method {}".format(method))
 
 
-def phase(x):
-    r"""Complex phase extraction.
+def modulus_division(x, epsilon=1e-10):
+    r"""Modulus division of a complex number.
 
-    Given a complex number (or complex-valued array)
-    :math:`x = r e^{\imath \phi}`, where :math:`r` is the complex modulus
-    and :math:`phi` the complex phase, the function returns the unitary-modulus
-    complex number such as
+    Given a complex number (or complex-valued array) :math:`x = a e^{i\phi}`,
+    where :math:`a` is the modulus and :math:`\phi` the phase, the function
+    returns the unit-modulus complex number such as
 
     .. math::
 
-              \tilde{x} = e^{\imath \phi}
+              \tilde{x} = e^{i\phi} = \frac{x}{|x| + \epsilon}
+
+    This method normalizes the input complex number by dividing it by its modulus
+    plus a small epsilon value to prevent division by zero, effectively scaling
+    the modulus to 1 while preserving the phase.
 
     Arguments
     ---------
     x: :class:`np.ndarray`
-        The complex-valued data to extract the complex phase from.
+        The complex-valued data to extract the unit complex number from.
+    epsilon: float, optional
+        A small value added to the modulus to avoid division by zero. Default is 1e-10.
+
+    Returns
+    -------
+    :class:`np.ndarray`
+        The unit complex number with the same phase as the input data.
     """
-    return np.exp(1j * np.angle(x))
+    return x / (np.abs(x) + epsilon)
+
+
+def smooth_modulus_division(x, smooth=None, order=None, epsilon=1e-10):
+    r"""Modulus division of a complex number with smoothing.
+
+    Given a complex array :math:`x[n] = a[n] e^{i\phi[n]}`, where :math:`a[n]`
+    is the modulus and :math:`\phi[n]` the phase, the function returns the
+    normalized complex array :math:`\tilde{x}[n]` such as
+
+    .. math::
+
+        \tilde{x}[n] = \frac{x[n]}{s(a)[n] + \epsilon}
+
+    where :math:`s(a)[n]` is a smoothed version of the modulus array
+    :math:`a[n]`. The smoothing function is performed with the Savitzky-Golay
+    filter, and the order and length of the filter are set by the ``smooth``
+    and ``order`` parameters.].
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The spectra to detrend. Must be of shape ``(n_frequencies, n_times)``.
+    smooth: int
+        Smoothing window size in points.
+    order: int
+        Smoothing order. Check the scipy function
+        :func:`~scipy.signal.savgol_filter` function for more details.
+
+    Keyword arguments
+    -----------------
+    epsilon: float, optional
+        A regularizer for avoiding zero division.
+
+    Returns
+    -------
+    The spectrum divided by the smooth modulus spectrum.
+    """
+    smooth_modulus = signal.savgol_filter(np.abs(x), smooth, order, axis=0)
+    return x / (smooth_modulus + epsilon)
 
 
 def stft(
