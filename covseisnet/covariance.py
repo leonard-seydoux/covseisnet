@@ -1,65 +1,102 @@
-"""Covariance matrix in spectral domain.
+"""Spectral analysis and covariance matrix calculation."""
 
-Made in 2017 by Leonard Seydoux.
-"""
+from joblib import Parallel, delayed
 
 import numpy as np
 import obspy
+from numpy.linalg import eigvalsh, eigh
 
-from scipy.linalg import eigvalsh, eigh
+from .stream import calculate_short_time_fourier_spectra, NetworkStream
 
 
 class CovarianceMatrix(np.ndarray):
-    """Covariance matrix.
+    r"""
+    This class is a subclass of :class:`numpy.ndarray`, which means it
+    inherits all the methods of standard numpy arrays, along with extra
+    methods tailored for array processing. Any numpy method or function
+    applied to an instance of :class:`~covseisnet.covariance.CovarianceMatrix`
+    will return an instance of
+    :class:`~covseisnet.covariance.CovarianceMatrix`.
 
-    This class is a subclass of :class:`numpy.ndarray`, meaning that
-    all the methods available with regular numpy arrays are also available
-    here, plus additional arrayprocessing-oriented methods. Note that
-    any numpy method or function applied to a
-    :class:`~covseisnet.covariancematrix.CovarianceMatrix` instance returns a
-    :class:`~covseisnet.covariancematrix.CovarianceMatrix` instance.
+    Let's consider a continuous set of network seismograms
+    :math:`\{u_i(t)\}_{i=1\dots N}` with :math:`N` traces. The Fourier
+    transform of the traces is defined as :math:`u_i(f)`, with :math:`f` the
+    frequency. The spectral covariance matrix is defined as
 
-    The shape of a covariance matrix calculate from :math:`N` traces is at
-    least :math:`N \times N`. Depending on the averaging size and frequency
-    content, the covariance matrix can be of shape
+    .. math::
 
-    - ``(n_sta, n_sta)`` if a single frequency and time sample is given.
+        C_{ij}(f) = \sum_{m=1}^M u_{i}(t \in \tau_m, f) u_{j}^*(t \in \tau_m,
+        f)
 
-    - ``(n_freq, n_sta, n_sta)`` for a single time sample and ``n_freq``
-      frequency points.
+    where :math:`M` is the number of windows used to estimate the covariance,
+    :math:`^*` is the complex conjugate, and :math:`\tau_m` is the time window
+    of index :math:`m`. The covariance matrix is a complex-valued matrix of
+    shape :math:`N \times N`. Depending on the averaging size and frequency
+    content, the covariance matrix can have a different shape:
 
-    - ``(n_times, n_freq, n_sta, n_sta)`` for ``n_times`` and ``n_freq``
-      dimensions.
+    - ``(n_traces, n_traces)`` if a single frequency and time sample is given.
+
+    - ``(n_frequencies, n_traces, n_traces)`` if only one time frame is given,
+      for ``n_frequencies`` frequencies, which depends on the window size and
+      sampling rate.
+
+    - ``(n_times, n_frequencies, n_traces, n_traces)`` if multiple time frames
+      are given.
 
     All the methods defined in the the
-    :class:`~covseisnet.covariancematrix.CovarianceMatrix` class are performed
-    on the flattened array with the private method
-    :func:`~covseisnet.covariancematrix.CovarianceMatrix._flat`, which allow
+    :class:`~covseisnet.covariance.CovarianceMatrix` class are performed on
+    the flattened array with the
+    :meth:`~covseisnet.covariance.CovarianceMatrix.flat` method, which allow
     to obtain as many :math:`N \times N` covariance matrices as time and
-    frequency samples. Given a method that outputs a shape ``shape_out``
-    given a covariance matrix of shape ``(n_sta, n_sta)``, the output of this
-    method on a covariance matrix of shape ``(n_times, n_freq, n_sta, n_sta)``
-    will be of shape ``(n_times, n_freq, *shape_out)``.
+    frequency samples.
 
-    Tip
-    ---
-    Any :class:`numpy.ndarray` can be turned into a
-    :class:`~covseisnet.covariancematrix.CovarianceMatrix` object with
+    Note
+    ----
+
+    The :class:`~covseisnet.covariance.CovarianceMatrix` class is not meant to
+    be instantiated directly. It should be obtained from the output of the
+    :func:`~covseisnet.covariance.calculate_covariance_matrix` function.
+
+    If you want to create a :class:`~covseisnet.covariance.CovarianceMatrix`
+    object from a numpy array, you can use the :meth:`~numpy.ndarray.view`
+    method:
 
     >>> import covseisnet as cn
     >>> import numpy as np
     >>> c = np.zeros((4, 4)).view(cn.CovarianceMatrix)
     >>> c
     CovarianceMatrix([[ 0.,  0.,  0.,  0.],
-                      [ 0.,  0.,  0.,  0.],
-                      [ 0.,  0.,  0.,  0.],
-                      [ 0.,  0.,  0.,  0.]])
+                        [ 0.,  0.,  0.,  0.],
+                        [ 0.,  0.,  0.,  0.],
+                        [ 0.,  0.,  0.,  0.]])
     """
 
     def __new__(cls, input_array):
-        """Subclassing."""
         obj = np.asarray(input_array, dtype=complex).view(cls)
+        obj.stations = None
         return obj
+
+    def __array_finalize__(self, obj):
+        if obj is None:
+            return
+        self.stations = getattr(obj, "stations", None)
+
+    def __getitem__(self, index):
+        result = super(CovarianceMatrix, self).__getitem__(index)
+        if isinstance(result, np.ndarray):
+            result = result.view(CovarianceMatrix)
+            result.stations = self.stations
+        return result
+
+    def set_stations(self, stations):
+        """Set the station names.
+
+        Arguments
+        ---------
+        stations: list
+            The list of station names.
+        """
+        self.stations = stations
 
     def coherence(self, kind="spectral_width", epsilon=1e-10):
         r"""Covariance-based coherence estimation.
@@ -107,18 +144,18 @@ class CovarianceMatrix(np.ndarray):
 
         """
         if kind == "spectral_width":
-            eigenvalues = self.eigenvalues(norm=sum)
+            eigenvalues = self.eigenvalues(norm=np.sum)
             indices = np.arange(self.shape[-1])
             return np.multiply(eigenvalues, indices).sum(axis=-1)
         elif kind == "entropy":
-            eigenvalues = self.eigenvalues(norm=sum)
+            eigenvalues = self.eigenvalues(norm=np.sum)
             log_eigenvalues = np.log(eigenvalues + epsilon)
             return -np.sum(eigenvalues * log_eigenvalues, axis=-1)
         else:
             message = "{} is not an available option for kind."
             raise ValueError(message.format(kind))
 
-    def eigenvalues(self, norm=max):
+    def eigenvalues(self, norm=np.max):
         """Eigenvalue decomposition.
 
         The eigenvalue decomposition is performed onto the two last dimensions
@@ -140,12 +177,20 @@ class CovarianceMatrix(np.ndarray):
             The eigenvalues of maximal shape ``(n_times, n_freq, n_sta)``.
 
         """
-        matrices = self._flat()
-        eigenvalues = np.zeros((matrices.shape[0], matrices.shape[-1]))
-        for i, matrix in enumerate(matrices):
-            eigenvalues[i] = np.sort(np.abs(eigvalsh(matrix)))[::-1]
-            eigenvalues[i] /= norm(eigenvalues[i])
-        return eigenvalues.reshape(self.shape[:-1])
+        # Flatten the array
+        matrices = self.flat()
+
+        # Parallel computation of eigenvalues
+        eigs = Parallel(n_jobs=-1)(delayed(eigvalsh)(m) for m in matrices)
+        eigs = np.array(eigs)
+
+        # Sort and normalize
+        eigs = np.sort(np.abs(eigs), axis=-1)[:, ::-1]
+        eigs /= norm(eigs, axis=-1, keepdims=True)
+
+        # Original shape
+        eigevalue_shape = self.shape[:-1]
+        return eigs.reshape(eigevalue_shape)
 
     def eigenvectors(self, rank=0, covariance=False):
         """Extract eigenvectors of given rank.
@@ -183,7 +228,7 @@ class CovarianceMatrix(np.ndarray):
 
         """
         # Initialization
-        matrices = self._flat()
+        matrices = self.flat()
         eigenvectors = np.zeros(
             (matrices.shape[0], matrices.shape[-1]), dtype=complex
         )
@@ -197,7 +242,7 @@ class CovarianceMatrix(np.ndarray):
         if covariance:
             ec = np.zeros(self.shape, dtype=complex)
             ec = ec.view(CovarianceMatrix)
-            ec = ec._flat()
+            ec = ec.flat()
             for i in range(eigenvectors.shape[0]):
                 ec[i] = eigenvectors[i, :, None] * np.conj(eigenvectors[i])
             ec = ec.reshape(self.shape)
@@ -205,7 +250,7 @@ class CovarianceMatrix(np.ndarray):
         else:
             return eigenvectors.reshape(self.shape[:-1])
 
-    def _flat(self):
+    def flat(self):
         """Covariance matrices with flatten first dimensions.
 
         Returns
@@ -246,226 +291,110 @@ class CovarianceMatrix(np.ndarray):
 
 
 def calculate_covariance_matrix(
-    stream, window_duration_sec, average, average_step=None, **kwargs
-):
-    """Calculate covariance matrix from the streams.
+    stream: NetworkStream,
+    average: int,
+    average_step: int | None = None,
+    **kwargs: dict,
+) -> tuple[np.ndarray, np.ndarray, CovarianceMatrix]:
+    r"""Calculate covariance matrix.
+
+    The covariance matrix is calculated from the Fourier transform of the
+    input stream. The covariance matrix is calculated for each time window and
+    frequency, and averaged over a given number of windows.
+
+    Given a stream of :math:`N` traces :math:`\{u_i(t)\}_{i=1\dots N}` with
+    :math:`N` traces, the Fourier transform of the traces is defined as
+    :math:`u_i(f)`, with :math:`f` the frequency. The spectral covariance
+    matrix is defined as
+
+    .. math::
+
+        C_{ij}(f) = \sum_{m=1}^M u_{i}(t \in \tau_m, f) u_{j}^*(t \in \tau_m,
+        f)
+
+    where :math:`M` is the number of windows used to estimate the covariance,
+    :math:`^*` is the complex conjugate, and :math:`\tau_m` is the time window
+    of index :math:`m`. The covariance matrix is a complex-valued matrix of
+    shape :math:`N \times N`. Depending on the averaging size and frequency
+    content, the covariance matrix can have a different shape. Please refer to
+    the :class:`~covseisnet.covariance.CovarianceMatrix` class for more
+    information. You can also find more information on the covariance matrix
+    in the paper of :footcite:`seydoux_detecting_2016`.
 
     Arguments
     ---------
-    stream: :class:`ArrayStream` or :class:`obspy.core.stream.Stream`
-        The input data stream. If an :class:`obspy.core.stream.Stream` given,
-        the calculation assumes a synchronized stream, and raises and error
-        if not.
-
-    window_duration_sec: float
-        The Fourier calculation window in seconds.
-
+    stream: :class:`~covseisnet.stream.NetworkStream`
+        The input data stream.
     average: int
         The number of window used to estimate the sample covariance.
-
-    Keyword arguments
-    -----------------
     average_step: int, optional
         The sliding window step for covariance matrix calculation (in number
         of windows).
-
     **kwargs: dict, optional
         Additional keyword arguments passed to the
-        :func:`~covseisnet.covariance.stft` function.
+        :func:`~covseisnet.stream.calculate_short_time_spectra` function.
 
     Returns
     -------
     :class:`numpy.ndarray`
         The time vector of the beginning of each covariance window.
-
     :class:`numpy.ndarray`
         The frequency vector.
-
     :class:`covseisnet.covariance.CovarianceMatrix`
-        The complex covariance matrix in a maximal shape
-        ``(n_time, n_freq, n_sta, n_sta)``.
+        The complex covariance matrix, with a shape depending on the number of
+        time windows and frequencies, maximum shape ``(n_times, n_frequencies,
+        n_traces, n_traces)``.
 
 
     Example
     -------
-    Calculate the covariance matrix of the example stream with 1 second windows
-    averaged over 5 windows:
+    Calculate the covariance matrix of the example stream with 1 second
+    windows averaged over 5 windows:
 
-    >>> import covseisnet as cn
-    >>> stream = cn.arraystream.read()
-    >>> t, f, c = cn.covariance.calculate(stream, 1., 5)
-    >>> print(c.shape)  # (n_times, n_freq, n_cha, n_cha)
+    >>> import covseisnet as csn
+    >>> stream = csn.read()
+    >>> t, f, c = csn.covariance.calculate_covariance_matrix(stream, 1., 5)
+    >>> print(c.shape)
         (28, 199, 3, 3)
-    >>>> print(c[0, 1])  # first window, second frequency
-    CovarianceMatrix([[  4.84823507e+08       +0.j        ,
-                         8.36715570e+07+55825525.33551149j,
-                        -2.47008776e+08-60728089.46938748j],
-                      [  8.36715570e+07-55825525.33551149j,
-                         1.67037017e+08       +0.j        ,
-                        -1.82827585e+08+27408763.38879033j],
-                      [ -2.47008776e+08+60728089.46938748j,
-                        -1.82827585e+08-27408763.38879033j,
-                         2.66448583e+08       +0.j        ]])
 
+
+    References
+    ----------
+    .. footbibliography::
 
     """
-    times, frequencies, spectra = stft(stream, window_duration_sec, **kwargs)
+    # Short-time Fourier transform
+    times, frequencies, spectra = calculate_short_time_fourier_spectra(
+        stream, **kwargs
+    )
+
+    # Remove first and last
+    times = times[1:-1]
+    spectra = spectra[..., 1:-1]
 
     # Parametrization
     step = average // 2 if average_step is None else average * average_step
-    n_traces, n_windows, n_frequencies = spectra.shape
+    n_traces, n_frequencies, _ = spectra.shape
 
-    # Times
-    t_end = times[-1]
-    times = times[:-1]
-    times = times[: 1 - average : step]
-    n_average = len(times)
-    times = np.hstack((times, t_end))
+    # Times of the covariance matrix
+    indices = range(0, len(times), step)
+    covariance_n_times = len(indices)
+    covariance_shape = (covariance_n_times, n_frequencies, n_traces, n_traces)
 
     # Initialization
-    cov_shape = (n_average, n_traces, n_traces, n_frequencies)
-    covariance = np.zeros(cov_shape, dtype=complex)
+    covariance_times = np.zeros(covariance_n_times)
+    covariances = np.zeros(covariance_shape, dtype=complex)
 
-    # Compute
-    for t in range(n_average):
-        covariance[t] = xcov(t, spectra, step, average)
+    # Compute with Einstein convention\
+    for i, index in enumerate(indices):
+        spectra_slice = spectra[..., index : index + average]
+        covariance_times[i] = np.mean(times[index : index + average])
+        covariances[i] = np.einsum(
+            "ift,jft -> fij", spectra_slice, np.conj(spectra_slice)
+        )
 
-    # Create frequencies vector for plotting as matplotlib now requires coordinates of pixel edges
-    fs = stream[0].stats.sampling_rate
-    frequencies_plotting = np.linspace(0, fs, len(frequencies) + 1)
+    # Add stations
+    covariances = covariances.view(CovarianceMatrix)
+    covariances.set_stations(stream.stations)
 
-    return (
-        times,
-        frequencies_plotting,
-        covariance.view(CovarianceMatrix).transpose([0, -1, 1, 2]),
-    )
-
-
-def stft(
-    stream,
-    window_duration_sec,
-    bandwidth=None,
-    window_step_sec=None,
-    window=np.hanning,
-    times_kw=dict(),
-    **kwargs
-):
-    """Short-time fourier transform.
-
-    Arguments
-    ---------
-    stream: :class:`ArrayStream` or :class:`obspy.core.stream.Stream`
-        The input data stream. If an :class:`obspy.core.stream.Stream` given,
-        the calculation assumes a synchronized stream, and raises and error
-        if not.
-
-    window_duration_sec: float
-        The Fourier calculation window in seconds.
-
-    Keyword arguments
-    -----------------
-    window_step_sec: float, optional
-        The step between two consecutive Fourier windows in seconds. Default
-        (None) considers half the ``window_duration_sec``.
-
-    bandwidth: list, optional
-        The restricted frequencies onto which the Fourier transform is
-        calculated. This improve performances when Fourier windows are large.
-
-    times_kw: string, optional
-        The keyword arguments passed to the
-        :class:`covseisnet.data.ArrayStream.times` or
-        :meth:`obspy.core.trace.Trace.times` method depending on the input
-        stream class.
-
-    window: function, optional
-        The window function, by default :func:`numpy.hanning`. A list of
-        available window functions is available at
-        https://numpy.org/doc/stable/reference/routines.window.html. Any
-        function taking as argument a integer is accepted.
-
-    **kwargs: dict, optional
-        Additional keyword arguments passed to the :func:`numpy.fft.fft`
-        function. By default, ``kwargs['n']`` is defined as
-        ``2 * npts - 1`` in order to calculate the cross-correlation.
-
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        The time vector of the beginning of each Fourier window.
-
-    :class:`numpy.ndarray`
-        The frequency vector.
-
-    :class:`numpy.ndarray`
-        The complex spectrograms of each timeseries in a
-        ``(n_sta, n_time, n_freq)`` array.
-    """
-    # Time vector
-    fs = stream[0].stats.sampling_rate
-    npts = int(window_duration_sec * fs)
-    step = npts // 2 if window_step_sec is None else int(window_step_sec * fs)
-    times_kw.setdefault("type", "relative")
-    times_kw.setdefault("reftime", None)
-    if type(stream) is obspy.core.stream.Stream:
-        times = stream[0].times(**times_kw)[: 1 - npts : step]
-    else:
-        times = stream.times(**times_kw)[: 1 - npts : step]
-    n_times = len(times)
-
-    # Frequency vector
-    kwargs.setdefault("n", 2 * npts - 1)
-    frequencies = np.linspace(0, fs, kwargs["n"])
-
-    if bandwidth is not None:
-        fin = (frequencies >= bandwidth[0]) & (frequencies <= bandwidth[1])
-    else:
-        fin = np.ones_like(frequencies, dtype=bool)
-    frequencies = frequencies[fin]
-
-    # Calculate spectra
-    spectra_shape = len(stream), n_times, sum(fin)
-    spectra = np.zeros(spectra_shape, dtype=complex)
-    for trace_id, trace in enumerate(stream):
-        tr = trace.data
-        for time_id in range(n_times):
-            start = time_id * step
-            end = start + npts
-            segment = tr[start:end] * window(npts)
-            spectra[trace_id, time_id] = np.fft.fft(segment, **kwargs)[fin]
-
-    # Times are extended with last time of traces
-    t_end = stream[0].times(**times_kw)[-1]
-    times = np.hstack((times, t_end))
-    return times, frequencies, spectra
-
-
-def xcov(wid, spectra_full, overlap, average):
-    """Calculation of the array covariance matrix from the array data vectors.
-
-    This function is not fully documented yet, as may be reformulated.
-    Allow to possibly reformulate this part with Einstein convention for
-    faster computation, clarity and TensorFlow GPU transparency.
-
-    Arguments
-    ---------
-    spectra_full: :class:`numpy.ndarray`
-        The stream's spectra.
-    overlap: int
-        The average step.
-    average: int
-        The number of averaging windows.
-
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        The covariance matrix.
-    """
-    n_traces, n_windows, n_frequencies = spectra_full.shape
-    beg = overlap * wid
-    end = beg + average
-    spectra = spectra_full[:, beg:end, :].copy()
-    x = spectra[:, None, 0, :] * np.conj(spectra[:, 0, :])
-    for swid in range(1, average):
-        x += spectra[:, None, swid, :] * np.conj(spectra[:, swid, :])
-    return x
+    return covariance_times, frequencies, covariances

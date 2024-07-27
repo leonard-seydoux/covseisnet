@@ -27,8 +27,8 @@ stream.filter("highpass", freq=1.0)
 print(stream)
 
 # %%
-# Temporal normalizations
-# -----------------------
+# Temporal normalization
+# ----------------------
 #
 # This section normalizes the traces in the stream with different methods. The
 # methods are applied to the stream, and the normalized traces are stored in a

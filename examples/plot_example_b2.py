@@ -1,6 +1,6 @@
 """
-Spatial coherence
-=================
+Compare pre-processing
+======================
 
 Spatial coherence on the Piton de la Fournaise volcano.
 
@@ -30,6 +30,8 @@ import covseisnet as csn
 stream = csn.read("../data/unvervolc_sample.mseed")
 stream = stream.select(station="UV1*")
 starttime = stream[0].stats.starttime
+endtime = starttime + 3600
+stream.cut(starttime, endtime)
 
 # Get channels
 channels = [trace.stats.channel for trace in stream]
@@ -38,7 +40,6 @@ channels = [trace.stats.channel for trace in stream]
 stream.detrend("linear")
 stream.filter("highpass", freq=0.5)
 stream.taper(max_percentage=0.05)
-stream.whiten(window_duration_sec=300, smooth_length=11)
 
 # %%
 # Covariance matrix
@@ -46,34 +47,39 @@ stream.whiten(window_duration_sec=300, smooth_length=11)
 #
 # The covariance matrix is calculated using the method :func:`~covseisnet.covariance.calculate_covariance_matrix`. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix. We can then visualize the covariance matrix at a given time and frequency, and its corresponding eigenvalues.
 
-times, frequencies, covariances = csn.calculate_covariance_matrix(
-    stream, window_duration_sec=20, average=15
-)
 
-# Show covariance from first window and first frequency
-t_index = 1
-f_index = np.abs(frequencies - 1).argmin()
-csn.plot.covariance_matrix_modulus_and_spectrum(covariances[t_index, f_index])
+# No pre-processing
+case_1 = "Original"
+stream_1 = stream.copy()
 
-# %%
-# Spectral width
-# --------------
-#
-# We here extract the coherence from the covariance matrix. The coherence is
-# calculated using the method
-# :func:`~covseisnet.covariance.CovarianceMatrix.coherence`. It can either
-# measure the spectral width of the eigenvalue distribution at each frequency,
-# or with applying the formula of the Neumann entropy.
+# Pre-process stream with temporal normalization
+case_2 = "Temporal normalization"
+stream_2 = stream.copy()
+stream_2.normalize(smooth_length=11)
 
-# Calculate coherence
-coherence = covariances.coherence()
+# Pre-process stream with whitening
+case_3 = "Whitening"
+stream_3 = stream.copy()
+stream_3.whiten(window_duration_sec=300, smooth_length=11)
 
-# Show
-# sphinx_gallery_thumbnail_number = 2
-csn.plot.stream_and_coherence(stream, times, frequencies, coherence)
+# Pre-process stream with whitening and temporal normalization
+case_4 = "Whitening and temporal normalization"
+stream_4 = stream.copy()
+stream_4.normalize(smooth_length=11)
+stream_4.whiten(window_duration_sec=300, smooth_length=11)
 
-# %%
-# More about this result in the papers associated with the package, presented
-# in the home of this documentation.
-#
-# .. footbibliography::
+
+# Calculate covariance matrix
+for stream, case in zip(
+    [stream_1, stream_2, stream_3, stream_4], [case_1, case_2, case_3, case_4]
+):
+    times, frequencies, covariances = csn.calculate_covariance_matrix(
+        stream, window_duration_sec=20, average=15
+    )
+
+    # Calculate coherence
+    coherence = covariances.coherence()
+
+    # Show
+    # sphinx_gallery_thumbnail_number = 2
+    csn.plot.stream_and_coherence(stream, times, frequencies, coherence)

@@ -17,20 +17,21 @@ import covseisnet as csn
 WINDOW_DURATION = 2
 
 # %%
-# Read the example stream (shipped with ObsPy)
-# --------------------------------------------
+# Read waveforms
+# --------------
 #
-# The stream is read from the obspy example data, and is available without any
-# argument. The stream is then plotted to visualize the traces.
+# This section reads an example stream of seismic data, which is shipped with
+# ObsPy. The stream contains three traces.
 
+# Read the example stream (shipped with ObsPy)
 stream = csn.read()
 
 # Plot trace and corresponding spectrum
 csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
 
 # %%
-# Spectral whitening without smoothing
-# ------------------------------------
+# Spectral whitenin (onebit)
+# --------------------------
 #
 # The spectral whitening is applied to the stream using the method
 # :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a
@@ -49,8 +50,8 @@ csn.plot.trace_and_spectrogram(
 )
 
 # %%
-# Spectral whitening with smoothing
-# ---------------------------------
+# Spectral whitening (smooth)
+# ---------------------------
 #
 # The spectral whitening is applied to the stream using the method
 # :func:`~covseisnet.stream.NetworkStream.whiten`. The method applies a Fourier
