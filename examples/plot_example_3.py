@@ -40,7 +40,7 @@ csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
 
 
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=WINDOW_DURATION)
+whitened_stream.whiten(window_duration_sec=WINDOW_DURATION, smooth_length=0)
 
 # Plot whitened trace and corresponding spectrum
 csn.plot.trace_and_spectrogram(
@@ -62,7 +62,6 @@ csn.plot.trace_and_spectrogram(
 whitened_stream = stream.copy()
 whitened_stream.whiten(
     window_duration_sec=WINDOW_DURATION,
-    method="smooth",
     smooth_length=31,
 )
 

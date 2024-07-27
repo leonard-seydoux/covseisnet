@@ -17,7 +17,7 @@ from functools import partial
 
 import numpy as np
 import obspy
-from scipy import signal, stats
+from scipy import signal
 
 
 class NetworkStream(obspy.Stream):
@@ -162,6 +162,9 @@ class NetworkStream(obspy.Stream):
         W.RJOB..EHN  | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
         BW.RJOB..EHE | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
 
+        See Also
+        --------
+        :meth:`~obspy.core.stream.Stream.trim`
         """
         # Convert start and end times to UTCDateTime
         starttime = obspy.UTCDateTime(starttime)
@@ -196,10 +199,6 @@ class NetworkStream(obspy.Stream):
         AssertionError
             If the traces are not synchronized.
 
-        See Also
-        --------
-        :meth:`~obspy.core.trace.Trace.times`
-
 
         .. tip::
 
@@ -214,6 +213,10 @@ class NetworkStream(obspy.Stream):
             array([14480.01392361, 14480.01392373, 14480.01392384, ...,
             14480.01427049, 14480.0142706 , 14480.01427072])
 
+
+        See Also
+        --------
+        :meth:`~obspy.core.trace.Trace.times`
         """
         # Check if the traces are synchronized
         assert (
@@ -233,17 +236,21 @@ class NetworkStream(obspy.Stream):
         This method synchronizes the seismic traces in the stream by
         interpolating the traces to a common time vector. The method uses the
         largest start time and the smallest end time of the traces to
-        interpolate all traces to the same time vector with the ObsPy
-        method :meth:`~obspy.core.trace.Trace.interpolate`.
+        interpolate all traces to the same time vector with the ObsPy method
+        :meth:`~obspy.core.trace.Trace.interpolate`.
 
         Arguments
         ---------
         method: str, default
-            Interpolation method. Default to "linear".
+            Interpolation method. Default to ``"linear"``.
         **kwargs: dict, optional
-            Additional keyword arguments are passed to the
-            :meth:`~obspy.core.trace.Trace.interpolate` method. Check the ObsPy
-            documentation for more details on the available options.
+            Additional keyword arguments passed to the
+            :meth:`~obspy.core.trace.Trace.interpolate` method. Check the
+            ObsPy documentation for more details on the available options.
+
+        See Also
+        --------
+        :meth:`~obspy.core.trace.Trace.interpolate`
         """
         # Find out the largest start time and the smallest end time
         largest_starttime = max([trace.stats.starttime for trace in self])
@@ -261,6 +268,145 @@ class NetworkStream(obspy.Stream):
         # Interpolate all traces
         for trace in self:
             trace.interpolate(**kwargs)
+
+    def whiten(
+        self,
+        smooth_length: int = 0,
+        smooth_order: int = 1,
+        epsilon: float = 1e-10,
+        **kwargs: dict,
+    ):
+        r"""Whiten traces in the spectral domain.
+
+        The action of whitening a seismic trace is to normalize the trace in
+        the spectral domain. Typically, the spectrum becomes flat after
+        whitening, resembling white noise. This strategy is often used to
+        remove the influence of time-localized signal and diminish the site
+        effects from a seismic station to another. Any local source is also
+        drastically reduced thanks to the whitening process.
+
+        Given a spectrum :math:`u(f)` of a seismic trace :math:`u(t)`, the
+        whitening process is defined as
+
+        .. math::
+
+            \tilde{u}(f) = \frac{u(f)}{F(u(f)) + \epsilon}
+
+        where :math:`F(u(f))` is a function of the spectrum :math:`u(f)` that
+        depends on the smoothing-related parameters. If the ``smooth_length``
+        parameter is set to 0, the function :math:`F(u(f))` is defined as
+
+        .. math::
+
+                F(u(f)) = |u(f)|
+
+        This is returned by the :func:`~covseisnet.stream.one_bit_normalize`
+        function. If the ``smooth_length`` parameter is set to a value greater
+        than 0, the function :math:`F(u(f))` is defined as the smoothed
+        modulus of the spectrum, returned by the
+        :func:`~covseisnet.stream.smooth_modulus_division` function. The
+        smoothing is performed with the Savitzky-Golay filter, and the order
+        and length of the filter are set by the ``smooth_length`` and
+        ``smooth_order`` parameters.
+
+        Arguments
+        ---------
+        smooth_length: int, optional
+            The length of the Savitzky-Golay filter for smoothing the
+            spectrum. If set to 0, the spectrum is not smoothed (default).
+        smooth_order: int, optional
+            The order of the Savitzky-Golay filter for smoothing the spectrum.
+            This parameter is only used if ``smooth_length`` is greater than 0.
+        epsilon: float, optional
+            Regularization parameter in division, set to ``1e-10`` by default.
+        **kwargs: dict, optional
+            Additional keyword arguments passed to the covseisnet
+            :func:`~covseisnet.stream.stft` method.
+
+        """
+        # Instanciate ShortTimeFFT object
+        kwargs.setdefault("sampling_rate", self.sampling_rate)
+        transform = stft(**kwargs)
+
+        # Assert that the transform is invertible
+        assert transform.invertible, "The transform is not invertible."
+
+        # Define the whitening method
+        if smooth_length == 0:
+            whiten_method = partial(one_bit_normalize, epsilon=epsilon)
+        else:
+            whiten_method = partial(
+                smooth_modulus_division,
+                smooth=smooth_length,
+                order=smooth_order,
+                epsilon=epsilon,
+            )
+
+        # Loop over traces
+        for trace in self:
+
+            # Calculate the Short-Time Fourier Transform
+            waveform = trace.data
+            spectrum = transform.stft(waveform)
+
+            # Whiten the spectrum
+            spectrum = whiten_method(spectrum)
+
+            # Inverse Short-Time Fourier Transform
+            waveform = transform.istft(spectrum)
+            trace.data = waveform
+
+    def normalize(
+        self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
+    ):
+        r"""Normalize the seismic traces in temporal domain.
+
+        Considering the seismic trace :math:`u(t)`, the normalized trace
+        :math:`\tilde{u}(t)` is obtained with
+
+        .. math::
+
+            \tilde{u}(t) = \frac{u(t)}{F(u(t)) + \epsilon}
+
+        where :math:`F` is a function of the trace :math:`u` that depends on
+        the ``method`` argument, and :math:`\epsilon > 0` is a regularization
+        value to avoid division by 0, set by the ``epsilon`` keyword argument.
+
+        Arguments
+        ---------
+        method : str, optional
+            Must be one of ``"onebit"`` (default) or ``"smooth"``.
+
+            - ``"onebit"`` compress the seismic trace into a series of -1 and
+              1. In this case, :math:`F` is defined as :math:`F(x) = |x|`.
+
+            - ``"smooth"`` normalize each trace by a smooth version of its
+              envelope. In this case, :math:`F` is obtained from the signal's
+              Hilbert envelope and smoothed with the Savitzky-Golay filter.
+
+        smooth_length: int, optional
+            If the ``method`` keyword argument is set to ``"smooth"``, the
+            normalization is performed with the smoothed trace envelopes,
+            calculated over a sliding window of ``smooth_length`` samples.
+        smooth_order: int, optional
+            If the ``method`` keyword argument is set to "smooth", the
+            normalization is performed with the smoothed trace envelopes. The
+            smoothing order is set by the ``smooth_order`` parameter.
+        epsilon: float, optional
+            Regularization parameter in division, set to ``1e-10`` by default.
+
+        """
+        if method == "onebit":
+            for trace in self:
+                trace.data = one_bit_normalize(trace.data, epsilon=epsilon)
+        elif method == "smooth":
+            for trace in self:
+                trace.data = smooth_envelope_division(
+                    trace.data, smooth_length, smooth_order, epsilon
+                )
+
+        else:
+            raise ValueError("Unknown method {}".format(method))
 
     @property
     def are_ready_to_process(self) -> bool:
@@ -414,148 +560,6 @@ class NetworkStream(obspy.Stream):
         # Return the sampling rate of the first trace
         return self[0].stats.sampling_rate
 
-    def whiten(
-        self,
-        method: str = "onebit",
-        smooth_length: int = 11,
-        smooth_order: int = 1,
-        epsilon: float = 1e-10,
-        **kwargs: dict,
-    ):
-        r"""Whiten traces in the spectral domain.
-
-        The action of whitening a seismic trace is to normalize the trace in
-        the spectral domain. Typically, the spectrum becomes flat after
-        whitening, resembling white noise. This strategy is often used to
-        remove the influence of time-localized signal and diminish the site
-        effects from a seismic station to another. Any local source is also
-        drastically reduced thanks to the whitening process.
-
-        Arguments
-        ---------
-        method: str, optional
-            Must be one of "onebit" (default), or "smooth".
-
-            - ``"onebit"`` divides the spectrum by its modulus, and keeps the
-              phase. It uses the :func:`modulus_division` function.
-
-            - ``"smooth"`` divides the spectrum by a smoothed version of its
-              modulus. The smoothing is performed with the Savitzky-Golay
-              filter, and the order and length of the filter are set by the
-              ``smooth_length`` and ``smooth_order`` parameters. It makes use
-              of the :func:`smooth_modulus_division` function.
-
-        smooth_length: int, optional
-            The length of the Savitzky-Golay filter for smoothing the
-            spectrum. This parameter is only used if the ``method`` parameter
-            is set to "smooth". Default to 11 points in frequency.
-        smooth_order: int, optional
-            The order of the Savitzky-Golay filter for smoothing the spectrum.
-            This parameter is only used if the ``method`` parameter is set to
-            "smooth". Default to 1, which corresponds to a linear filter.
-        epsilon: float, optional
-            Regularization parameter in division, set to ``1e-10`` by default.
-        **kwargs: dict, optional
-            Additional keyword arguments passed to the :func:`self.stft`
-            method.
-
-        """
-        # Instanciate ShortTimeFFT object
-        kwargs.setdefault("sampling_rate", self.sampling_rate)
-        transform = stft(**kwargs)
-
-        # Assert that the transform is invertible
-        assert transform.invertible, "The transform is not invertible."
-
-        # Define the whitening method
-        if method == "onebit":
-            whiten_method = partial(
-                modulus_division,
-                epsilon=epsilon,
-            )
-        elif method == "smooth":
-            whiten_method = partial(
-                smooth_modulus_division,
-                smooth=smooth_length,
-                order=smooth_order,
-                epsilon=epsilon,
-            )
-        else:
-            raise ValueError("Unknown method {}".format(method))
-
-        # Loop over traces
-        for trace in self:
-
-            # Calculate the Short-Time Fourier Transform
-            waveform = trace.data
-            spectrum = transform.stft(waveform)
-
-            # Whiten the spectrum
-            spectrum = whiten_method(spectrum)
-
-            # Inverse Short-Time Fourier Transform
-            waveform = transform.istft(spectrum)
-            trace.data = waveform
-
-    def normalize(
-        self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
-    ):
-        r"""Normalize the seismic traces in temporal domain.
-        Considering :math:`x_i(t)` being the seismic trace :math:`x_i(t)`, the
-        normalized trace :math:`\tilde{x}_i(t)` is obtained with
-
-        .. math::
-
-            \tilde{x}_i(t) = \frac{x_i(t)}{Fx_i(t) + \epsilon}
-
-        where :math:`Fx` is a characteristic of the trace :math:`x` that
-        depends on the ``method`` argument, and :math:`\epsilon > 0` is a
-        regularization value to avoid division by 0, set by the ``epsilon``
-        keyword argument.
-
-        Keyword arguments
-        -----------------
-        method : str, optional
-            Must be one of "onebit" (default), "mad", or "smooth".
-
-            - "onebit" compress the seismic trace into a series of 0 and 1. In
-              this case, :math:`F` is defined as :math:`Fx(t) = |x(t)|`.
-
-            - "mad" normalize each trace by its median absolute deviation. In
-              this case, :math:`F` delivers a scalar value defined as
-              :math:`Fx(t) = \text{MAD}x(t) = \text{median}(|x(t) - \langle
-              x(t)\rangle|)`, where :math:`\langle x(t)\rangle)` is the
-              signal's average.
-
-            - "smooth" normalize each trace by a smooth version of its
-              envelope. In this case, :math:`F` is obtained from the signal's
-              Hilbert envelope.
-
-        smooth_length: int, optional
-            If the ``method`` keyword argument is set to "smooth", the
-            normalization is performed with the smoothed trace envelopes,
-            calculated over a sliding window of `smooth_length` samples.
-        smooth_order: int, optional
-            If the ``method`` keyword argument is set to "smooth", the
-            normalization is performed with the smoothed trace envelopes. The
-            smoothing order is set by the ``smooth_order`` parameter.
-        epsilon: float, optional
-            Regularization parameter in division, set to ``1e-10`` by default.
-
-        """
-        if method == "onebit":
-            for trace in self:
-                trace.data = trace.data / (np.abs(trace.data) + epsilon)
-        elif method == "smooth":
-            for trace in self:
-                envelope = np.abs(signal.hilbert(trace.data))
-                smooth_envelope = signal.savgol_filter(
-                    envelope, smooth_length, smooth_order
-                )
-                trace.data = trace.data / (smooth_envelope + epsilon)
-        else:
-            raise ValueError("Unknown method {}".format(method))
-
 
 def read(pathname_or_url=None, **kwargs):
     """Read seismic waveforms files into an NetworkStream object.
@@ -616,103 +620,42 @@ def read(pathname_or_url=None, **kwargs):
     return stream
 
 
-def normalize(
-    stream, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
-):
-    r"""Normalize the seismic traces in temporal domain.
-
-    Considering :math:`x_i(t)` being the seismic trace :math:`x_i(t)`, the
-    normalized trace :math:`\tilde{x}_i(t)` is obtained with
-
-    .. math::
-        \tilde{x}_i(t) = \frac{x_i(t)}{Fx_i(t) + \epsilon}
-
-    where :math:`Fx` is a characteristic of the trace :math:`x` that
-    depends on the ``method`` argument, and :math:`\epsilon > 0` is a
-    regularization value to avoid division by 0, set by the ``epsilon``
-    keyword argument.
-
-    Keyword arguments
-    -----------------
-    method : str, optional
-        Must be one of "onebit" (default), "mad", or "smooth".
-
-        - "onebit" compress the seismic trace into a series of 0 and 1.
-          In this case, :math:`F` is defined as :math:`Fx(t) = |x(t)|`.
-
-        - "mad" normalize each trace by its median absolute deviation.
-          In this case, :math:`F` delivers a scalar value defined as
-          :math:`Fx(t) = \text{MAD}x(t) =
-          \text{median}(|x(t) - \langle x(t)\rangle|)`, where
-          :math:`\langle x(t)\rangle)` is the signal's average.
-
-        - "smooth" normalize each trace by a smooth version of its
-          envelope. In this case, :math:`F` is obtained from the
-          signal's Hilbert envelope.
-
-    smooth_length: int, optional
-        If the ``method`` keyword argument is set to "smooth", the
-        normalization is performed with the smoothed trace envelopes,
-        calculated over a sliding window of `smooth_length` samples.
-
-
-    smooth_order: int, optional
-        If the ``method`` keyword argument is set to "smooth", the
-        normalization is performed with the smoothed trace envelopes.
-        The smoothing order is set by the ``smooth_order`` parameter.
-
-
-    epsilon: float, optional
-        Regularization parameter in division, set to ``1e-10`` by default.
-
-    """
-    if method == "onebit":
-        for trace in stream:
-            trace.data = trace.data / (np.abs(trace.data) + epsilon)
-
-    elif method == "smooth":
-        for trace in stream:
-            trace_env_smooth = signal.savgol_filter(
-                np.abs(trace.data), smooth_length, smooth_order
-            )
-            trace.data = trace.data / (trace_env_smooth + epsilon)
-
-    elif method == "mad":
-        for trace in stream:
-            trace.data = trace.data / (
-                stats.median_absolute_deviation(trace.data) + epsilon
-            )
-
-    else:
-        raise ValueError("Unknown method {}".format(method))
-
-
-def modulus_division(x, epsilon=1e-10):
+def one_bit_normalize(x: np.ndarray, epsilon=1e-10):
     r"""Modulus division of a complex number.
 
-    Given a complex number (or complex-valued array) :math:`x = a e^{i\phi}`,
+    Given a complex number (or array) :math:`x = a e^{i\phi}`,
     where :math:`a` is the modulus and :math:`\phi` the phase, the function
     returns the unit-modulus complex number such as
 
     .. math::
 
-              \tilde{x} = e^{i\phi} = \frac{x}{|x| + \epsilon}
+              \mathbb{C} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx e^{i\phi}
 
-    This method normalizes the input complex number by dividing it by its modulus
-    plus a small epsilon value to prevent division by zero, effectively scaling
-    the modulus to 1 while preserving the phase.
+    This method normalizes the input complex number by dividing it by its
+    modulus plus a small epsilon value to prevent division by zero,
+    effectively scaling the modulus to 1 while preserving the phase.
+
+    Note that this function also work with real-valued arrays, in which case
+    the modulus is the absolute value of the real number. It is useful to
+    normalize seismic traces in the temporal domain. It writes
+
+    .. math::
+
+        \mathbb{R} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx \text{sign}(x)
 
     Arguments
     ---------
-    x: :class:`np.ndarray`
+    x: numpy.ndarray
         The complex-valued data to extract the unit complex number from.
     epsilon: float, optional
-        A small value added to the modulus to avoid division by zero. Default is 1e-10.
+        A small value added to the modulus to avoid division by zero. Default
+        is 1e-10.
 
     Returns
     -------
-    :class:`np.ndarray`
-        The unit complex number with the same phase as the input data.
+    numpy.ndarray
+        The unit complex number with the same phase as the input data, or the
+        sign of the real number if the input is real-valued.
     """
     return x / (np.abs(x) + epsilon)
 
@@ -754,6 +697,35 @@ def smooth_modulus_division(x, smooth=None, order=None, epsilon=1e-10):
     """
     smooth_modulus = signal.savgol_filter(np.abs(x), smooth, order, axis=0)
     return x / (smooth_modulus + epsilon)
+
+
+def smooth_envelope_division(x, smooth, order, epsilon=1e-10):
+    r"""Normalize seismic traces by a smooth version of its envelope.
+
+    This function normalizes seismic traces by a smooth version of its
+    envelope. The envelope is calculated with the Hilbert transform, and then
+    smoothed with the Savitzky-Golay filter. The order and length of the
+    filter are set by the ``smooth`` and ``order`` parameters.
+
+    Arguments
+    ---------
+    x: numpy.ndarray
+        The seismic trace to normalize.
+    smooth: int
+        The length of the Savitzky-Golay filter for smoothing the envelope.
+    order: int
+        The order of the Savitzky-Golay filter for smoothing the envelope.
+    epsilon: float, optional
+        Regularization parameter in division, set to ``1e-10`` by default.
+
+    Returns
+    -------
+    numpy.ndarray
+        The normalized seismic trace.
+    """
+    envelope = np.abs(signal.hilbert(x))
+    smooth_envelope = signal.savgol_filter(envelope, smooth, order)
+    return x / (smooth_envelope + epsilon)
 
 
 def stft(
