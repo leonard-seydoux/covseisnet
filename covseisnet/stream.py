@@ -275,7 +275,7 @@ class NetworkStream(obspy.Stream):
         smooth_order: int = 1,
         epsilon: float = 1e-10,
         **kwargs: dict,
-    ):
+    ) -> None:
         r"""Whiten traces in the spectral domain.
 
         The action of whitening a seismic trace is to normalize the trace in
@@ -358,7 +358,7 @@ class NetworkStream(obspy.Stream):
 
     def normalize(
         self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
-    ):
+    ) -> None:
         r"""Normalize the seismic traces in temporal domain.
 
         Considering the seismic trace :math:`u(t)`, the normalized trace
@@ -561,7 +561,7 @@ class NetworkStream(obspy.Stream):
         return self[0].stats.sampling_rate
 
 
-def read(pathname_or_url=None, **kwargs):
+def read(pathname_or_url=None, **kwargs) -> NetworkStream:
     """Read seismic waveforms files into an NetworkStream object.
 
     This function uses the :func:`obspy.core.stream.read` function to read
@@ -620,7 +620,7 @@ def read(pathname_or_url=None, **kwargs):
     return stream
 
 
-def one_bit_normalize(x: np.ndarray, epsilon=1e-10):
+def one_bit_normalize(x: np.ndarray, epsilon=1e-10) -> np.ndarray:
     r"""Modulus division of a complex number.
 
     Given a complex number (or array) :math:`x = a e^{i\phi}`,
@@ -660,7 +660,12 @@ def one_bit_normalize(x: np.ndarray, epsilon=1e-10):
     return x / (np.abs(x) + epsilon)
 
 
-def smooth_modulus_division(x, smooth=None, order=None, epsilon=1e-10):
+def smooth_modulus_division(
+    x: np.ndarray,
+    smooth: None | int = None,
+    order: int = 1,
+    epsilon: float = 1e-10,
+) -> np.ndarray:
     r"""Modulus division of a complex number with smoothing.
 
     Given a complex array :math:`x[n] = a[n] e^{i\phi[n]}`, where :math:`a[n]`
@@ -699,7 +704,9 @@ def smooth_modulus_division(x, smooth=None, order=None, epsilon=1e-10):
     return x / (smooth_modulus + epsilon)
 
 
-def smooth_envelope_division(x, smooth, order, epsilon=1e-10):
+def smooth_envelope_division(
+    x: np.ndarray, smooth: int, order: int, epsilon: float = 1e-10
+) -> np.ndarray:
     r"""Normalize seismic traces by a smooth version of its envelope.
 
     This function normalizes seismic traces by a smooth version of its
@@ -734,7 +741,7 @@ def stft(
     window_function: str = "hann",
     sampling_rate: None | float = 1.0,
     **kwargs,
-):
+) -> signal.ShortTimeFFT:
     r"""Short-Time Fourier Transform instance.
 
     This function creates a Short-Time Fourier Transform instance for
@@ -781,7 +788,9 @@ def stft(
     return signal.ShortTimeFFT(window, hop, **kwargs)
 
 
-def calculate_spectrogram(trace, **kwargs):
+def calculate_spectrogram(
+    trace: obspy.Trace, **kwargs: dict
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Calculate the spectrogram of a seismic traces.
 
     The spectrogram is calculated with the :func:`covseisnet.stream.stft`
