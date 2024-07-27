@@ -1,5 +1,5 @@
 """
-Stream synchronization
+Traces synchronization
 ======================
 
 This example demonstrates how to synchronize a stream of traces using the
