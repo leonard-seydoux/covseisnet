@@ -30,6 +30,8 @@ import covseisnet as csn
 stream = csn.read("../data/unvervolc_sample.mseed")
 stream = stream.select(station="UV1*")
 starttime = stream[0].stats.starttime
+endtime = starttime + 600
+stream.cut(starttime, endtime)
 
 # Get channels
 channels = [trace.stats.channel for trace in stream]
@@ -37,8 +39,8 @@ channels = [trace.stats.channel for trace in stream]
 # Pre-process stream
 stream.detrend("linear")
 stream.filter("highpass", freq=0.5)
-stream.taper(max_percentage=0.05)
-stream.whiten(window_duration_sec=300, smooth_length=11)
+# stream.taper(max_percentage=0.05)
+stream.whiten(window_duration_sec=50)
 
 # %%
 # Covariance matrix

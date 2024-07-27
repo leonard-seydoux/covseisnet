@@ -96,6 +96,8 @@ def trace_and_spectrogram(
     colorbar = plt.colorbar(mappable, ax=ax[1])
     colorbar.set_label("Spectral energy (dB)")
 
+    plt.savefig("spectrogram.png")
+
 
 def stream_and_coherence(
     stream: csn.stream.NetworkStream,
@@ -170,6 +172,8 @@ def stream_and_coherence(
     xticklabels = mdates.ConciseDateFormatter(xticks)
     ax[1].xaxis.set_major_locator(xticks)
     ax[1].xaxis.set_major_formatter(xticklabels)
+
+    fig.savefig("coherence.png")
 
 
 def covariance_matrix_modulus_and_spectrum(

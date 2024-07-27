@@ -29,6 +29,7 @@ stream = csn.read()
 # Plot trace and corresponding spectrum
 csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
 
+
 # %%
 # Spectral whitenin (onebit)
 # --------------------------
@@ -48,6 +49,8 @@ csn.plot.trace_and_spectrogram(
     whitened_stream[0],
     window_duration_sec=WINDOW_DURATION,
 )
+
+exit()
 
 # %%
 # Spectral whitening (smooth)
