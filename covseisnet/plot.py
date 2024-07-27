@@ -1,23 +1,27 @@
-"""Utilities to simplify the examples.
-
-This module contains functions to simplify the examples in the documentation.
-
-Made by Leonard Seydoux in 2024.
+"""
+This module contains functions to simplify the examples in the documentation, 
+mostly plotting functions, but also to provide basic tools to quickly visualize
+data and results from this package.
 """
 
 import matplotlib.pyplot as plt
 import numpy as np
+import obspy
 from scipy.fft import rfft, rfftfreq
 
 import covseisnet as csn
 
 
-def trace_and_spectrum(trace):
-    """Plot a trace and its spectrum.
+def trace_and_spectrum(trace: obspy.core.trace.Trace) -> None:
+    """Plot a trace and its spectrum side by side.
+
+    The spectrum is calculated with the :func:`scipy.fft.rfft` function, which
+    assumes that the trace is real-valued and therefore only returns the
+    positive frequencies.
 
     Arguments
     ---------
-    trace : obspy.Trace
+    trace : :class:`~obspy.core.trace.Trace`
         The trace to plot.
     """
     # Create figure
@@ -44,7 +48,9 @@ def trace_and_spectrum(trace):
     ax[1].grid()
 
 
-def trace_and_spectrogram(trace, **kwargs):
+def trace_and_spectrogram(
+    trace: obspy.core.trace.Trace, **kwargs: dict
+) -> None:
     """Plot a trace and its spectrogram.
 
     This function is deliberately simple and does not allow to customize the
@@ -53,10 +59,10 @@ def trace_and_spectrogram(trace, **kwargs):
 
     Arguments
     ---------
-    trace : obspy.Trace
+    trace : :class:`~obspy.core.trace.Trace`
         The trace to plot.
     **kwargs
-        Additional arguments to pass to :func:`~covseisnet.calculate_spectrogram`.
+        Additional arguments to pass to :func:`~covseisnet.stream.calculate_spectrogram`.
     """
     # Create figure
     _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
