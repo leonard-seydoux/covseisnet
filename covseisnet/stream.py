@@ -43,13 +43,18 @@ class NetworkStream(obspy.Stream):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self, **kwargs):
         """Print the NetworkStream object.
 
         This method prints the NetworkStream object in a human-readable
         format. The methods ressembles the ObsPy Stream object, but with
         additional information about the number of traces and stations in the
         stream. By default, the method prints all traces in the stream.
+
+        Arguments
+        ---------
+        **kwargs: dict, optional
+            A way to handle legacy arguments. No argument is used in this method.
         """
         # Get longest trace id index among traces
         if self.traces:
@@ -446,20 +451,64 @@ class NetworkStream(obspy.Stream):
             waveform = transform.istft(spectrum)
             trace.data = waveform
 
-    # def preprocess(self, domain="spectral", **kwargs):
-    #     r"""Pre-process each trace in temporal or spectral domain."""
-    #     kwargs.setdefault("epsilon", 1e-10)
-    #     if domain == "spectral":
-    #         whiten(self, **kwargs)
-    #     elif domain == "temporal":
-    #         normalize(self, **kwargs)
-    #     else:
-    #         raise ValueError(
-    #             "Invalid preprocessing domain {} - please specify 'spectral' or 'temporal'".format(
-    #                 domain
-    #             )
-    #         )
-    #     pass
+    def normalize(
+        self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
+    ):
+        r"""Normalize the seismic traces in temporal domain.
+        Considering :math:`x_i(t)` being the seismic trace :math:`x_i(t)`, the
+        normalized trace :math:`\tilde{x}_i(t)` is obtained with
+
+        .. math::
+
+            \tilde{x}_i(t) = \frac{x_i(t)}{Fx_i(t) + \epsilon}
+
+        where :math:`Fx` is a characteristic of the trace :math:`x` that
+        depends on the ``method`` argument, and :math:`\epsilon > 0` is a
+        regularization value to avoid division by 0, set by the ``epsilon``
+        keyword argument.
+
+        Keyword arguments
+        -----------------
+        method : str, optional
+            Must be one of "onebit" (default), "mad", or "smooth".
+
+            - "onebit" compress the seismic trace into a series of 0 and 1. In
+              this case, :math:`F` is defined as :math:`Fx(t) = |x(t)|`.
+
+            - "mad" normalize each trace by its median absolute deviation. In
+              this case, :math:`F` delivers a scalar value defined as
+              :math:`Fx(t) = \text{MAD}x(t) = \text{median}(|x(t) - \langle
+              x(t)\rangle|)`, where :math:`\langle x(t)\rangle)` is the
+              signal's average.
+
+            - "smooth" normalize each trace by a smooth version of its
+              envelope. In this case, :math:`F` is obtained from the signal's
+              Hilbert envelope.
+
+        smooth_length: int, optional
+            If the ``method`` keyword argument is set to "smooth", the
+            normalization is performed with the smoothed trace envelopes,
+            calculated over a sliding window of `smooth_length` samples.
+        smooth_order: int, optional
+            If the ``method`` keyword argument is set to "smooth", the
+            normalization is performed with the smoothed trace envelopes. The
+            smoothing order is set by the ``smooth_order`` parameter.
+        epsilon: float, optional
+            Regularization parameter in division, set to ``1e-10`` by default.
+
+        """
+        if method == "onebit":
+            for trace in self:
+                trace.data = trace.data / (np.abs(trace.data) + epsilon)
+        elif method == "smooth":
+            for trace in self:
+                envelope = np.abs(signal.hilbert(trace.data))
+                smooth_envelope = signal.savgol_filter(
+                    envelope, smooth_length, smooth_order
+                )
+                trace.data = trace.data / (smooth_envelope + epsilon)
+        else:
+            raise ValueError("Unknown method {}".format(method))
 
 
 def read(pathname_or_url=None, **kwargs):
