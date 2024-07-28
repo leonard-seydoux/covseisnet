@@ -42,7 +42,8 @@ channels = [trace.stats.channel for trace in stream]
 stream.detrend("linear")
 stream.filter("highpass", freq=0.5)
 # stream.taper(max_percentage=0.05)
-stream.whiten(window_duration_sec=50)
+# stream.whiten(window_duration_sec=100)
+# stream.normalize(smooth_length=11)
 
 # %%
 # Covariance matrix
@@ -59,7 +60,7 @@ tic = time.time()
 t_index = 1
 f_index = np.abs(frequencies - 1).argmin()
 csn.plot.covariance_matrix_modulus_and_spectrum(covariances[t_index, f_index])
-print(f"Elapsed time: {time.time() - tic:.2f} s")
+print(f"Elapsed time cov: {time.time() - tic:.2f} s")
 
 # %%
 # Spectral width
@@ -74,7 +75,7 @@ print(f"Elapsed time: {time.time() - tic:.2f} s")
 # Calculate coherence
 tic = time.time()
 coherence = covariances.coherence()
-print(f"Elapsed time: {time.time() - tic:.2f} s")
+print(f"Elapsed time coherence: {time.time() - tic:.2f} s")
 
 # Show
 # sphinx_gallery_thumbnail_number = 2

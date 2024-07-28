@@ -359,7 +359,7 @@ class NetworkStream(obspy.Stream):
             trace.data = waveform
 
             # Taper the trace
-            trace.taper(max_percentage=0.05)
+            trace.taper(max_percentage=0.01)
 
     def normalize(
         self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10

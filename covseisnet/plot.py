@@ -208,6 +208,11 @@ def stream_and_coherence(
     # df = frequencies[1] - frequencies[0]
     # frequencies = np.concatenate([frequencies, [frequencies[-1] + df]])
 
+    # Remove zero frequency
+    n = 6
+    frequencies = frequencies[n:]
+    coherence = coherence[:, n:]
+
     # Show coherence
     tic = time.time()
     mappable = ax[1].pcolormesh(
@@ -216,7 +221,7 @@ def stream_and_coherence(
         coherence.T,
         shading="nearest",
         cmap="magma_r",
-        vmin=0,
+        # vmin=0,
         **kwargs,
     )
     print(f"Elapsed time: {time.time() - tic:.2f} s")
@@ -237,7 +242,7 @@ def stream_and_coherence(
     ax[1].xaxis.set_major_formatter(xticklabels)
     ax[1].set_xlim(xlim)
 
-    fig.savefig("coherence.png")
+    fig.savefig("coherence.png", dpi=300)
 
 
 def covariance_matrix_modulus_and_spectrum(
