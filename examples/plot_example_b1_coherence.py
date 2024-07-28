@@ -30,6 +30,7 @@ import covseisnet as csn
 
 # Read example stream
 stream = csn.read("../data/unvervolc_sample.mseed")
+stream = stream[::2]
 # stream = stream.select(station="UV1*")
 # stream.cut("2010-10-14 15:00", "2010-10-14 16:00")
 
@@ -38,11 +39,12 @@ stream = csn.read("../data/unvervolc_sample.mseed")
 channels = [trace.stats.channel for trace in stream]
 
 # Pre-process stream
+stream.decimate(5)
 stream.detrend("linear")
 stream.filter("highpass", freq=0.5)
 # stream.taper(max_percentage=0.05)
-# stream.whiten(window_duration_sec=500)
-# stream.normalize(smooth_length=11)
+stream.whiten(window_duration_sec=500, smooth_length=11)
+stream.normalize(smooth_length=101)
 
 # %%
 # Covariance matrix
@@ -51,7 +53,7 @@ stream.filter("highpass", freq=0.5)
 # The covariance matrix is calculated using the method :func:`~covseisnet.covariance.calculate_covariance_matrix`. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix. We can then visualize the covariance matrix at a given time and frequency, and its corresponding eigenvalues.
 
 times, frequencies, covariances = csn.calculate_covariance_matrix(
-    stream, window_duration_sec=30, average=40
+    stream, window_duration_sec=20, average=20
 )
 
 
@@ -79,9 +81,7 @@ print(f"Elapsed time coherence: {time.time() - tic:.2f} s")
 
 # Show
 # sphinx_gallery_thumbnail_number = 2
-csn.plot.stream_and_coherence(
-    stream, times, frequencies, coherence, f_min=0.25
-)
+csn.plot.stream_and_coherence(stream, times, frequencies, coherence, f_min=0.1)
 
 
 # %%
