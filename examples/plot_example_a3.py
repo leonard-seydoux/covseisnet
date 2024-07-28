@@ -16,7 +16,7 @@ import numpy as np
 
 import covseisnet as csn
 
-WINDOW_DURATION = 2.0
+WINDOW_DURATION = 2
 
 # %%
 # Read waveforms
@@ -72,7 +72,7 @@ csn.plot.trace_and_spectrogram(
 
 whitened_stream = stream.copy()
 whitened_stream.whiten(
-    window_duration_sec=WINDOW_DURATION,
+    window_duration_sec=5 * WINDOW_DURATION,
     smooth_length=31,
 )
 

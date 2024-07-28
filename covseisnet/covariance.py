@@ -3,10 +3,10 @@
 from joblib import Parallel, delayed
 
 import numpy as np
-import obspy
 from numpy.linalg import eigvalsh, eigh
 
-from .stream import short_time_fourier_transforms, NetworkStream
+from .stream import NetworkStream
+from .signal import ShortTimeFourierTransform
 
 
 class CovarianceMatrix(np.ndarray):
@@ -181,8 +181,7 @@ class CovarianceMatrix(np.ndarray):
         matrices = self.flat()
 
         # Parallel computation of eigenvalues
-        eigs = Parallel(n_jobs=-1)(delayed(eigvalsh)(m) for m in matrices)
-        eigs = np.array(eigs)
+        eigs = eigvalsh(matrices)
 
         # Sort and normalize
         eigs = np.sort(np.abs(eigs), axis=-1)[:, ::-1]
@@ -363,21 +362,17 @@ def calculate_covariance_matrix(
     .. footbibliography::
 
     """
-    # Short-time Fourier transform
-    times, frequencies, spectra = short_time_fourier_transforms(
-        stream, **kwargs
-    )
-
-    # Remove first and last
-    # times = times[1:-1]
-    # spectra = spectra[..., 1:-1]
+    # Calculate spectrogram
+    kwargs["sampling_rate"] = stream.sampling_rate
+    stft = ShortTimeFourierTransform(**kwargs)
+    spectra_times, frequencies, spectra = stft.map_transform(stream)
 
     # Parametrization
     step = average // 2 if average_step is None else average * average_step
-    n_traces, n_times, n_frequencies = spectra.shape
+    n_traces, n_frequencies, n_times = spectra.shape
 
     # Times of the covariance matrix
-    indices = range(0, len(times) - average + 1, step)
+    indices = range(0, n_times - average + 1, step)
     covariance_n_times = len(indices)
     covariance_shape = (covariance_n_times, n_frequencies, n_traces, n_traces)
 
@@ -387,11 +382,16 @@ def calculate_covariance_matrix(
 
     # Compute with Einstein convention
     for i, index in enumerate(indices):
-        spectra_slice = spectra[:, index : index + average]
-        covariance_times.append(times[index])
+        # Slice
+        selection = slice(index, index + average)
+        spectra_slice = spectra[..., selection]
         covariances[i] = np.einsum(
-            "itf,jtf -> fij", spectra_slice, np.conj(spectra_slice)
+            "ift,jft -> fij", spectra_slice, np.conj(spectra_slice)
         )
+
+        # Center time
+        duration = spectra_times[selection][-1] - spectra_times[selection][0]
+        covariance_times.append(spectra_times[selection][0] + duration / 2)
 
     # Add stations
     covariances = covariances.view(CovarianceMatrix)

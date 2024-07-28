@@ -15,10 +15,10 @@ synchronization of traces.
 
 from functools import partial
 
-from joblib import Parallel, delayed
 import numpy as np
 import obspy
-from scipy import signal
+
+from . import signal
 
 
 class NetworkStream(obspy.Stream):
@@ -327,17 +327,17 @@ class NetworkStream(obspy.Stream):
         """
         # Instanciate ShortTimeFFT object
         kwargs.setdefault("sampling_rate", self.sampling_rate)
-        transform = stft(**kwargs)
+        stft_instance = signal.ShortTimeFourierTransform(**kwargs)
 
         # Assert that the transform is invertible
-        assert transform.invertible, "The transform is not invertible."
+        assert stft_instance.invertible, "The transform is not invertible."
 
         # Define the whitening method
         if smooth_length == 0:
-            whiten_method = partial(one_bit_normalize, epsilon=epsilon)
+            whiten_method = partial(signal.one_bit_normalize, epsilon=epsilon)
         else:
             whiten_method = partial(
-                smooth_modulus_division,
+                signal.smooth_modulus_division,
                 smooth=smooth_length,
                 order=smooth_order,
                 epsilon=epsilon,
@@ -348,14 +348,18 @@ class NetworkStream(obspy.Stream):
 
             # Calculate the Short-Time Fourier Transform
             waveform = trace.data
-            spectrum = transform.stft(waveform)
+            spectrum = stft_instance.stft(waveform)
 
             # Whiten the spectrum
             spectrum = whiten_method(spectrum)
 
             # Inverse Short-Time Fourier Transform
-            waveform = transform.istft(spectrum)
+            waveform = stft_instance.istft(spectrum)
+            waveform = waveform[: trace.stats.npts]
             trace.data = waveform
+
+            # Taper the trace
+            trace.taper(max_percentage=0.05)
 
     def normalize(
         self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
@@ -399,10 +403,12 @@ class NetworkStream(obspy.Stream):
         """
         if method == "onebit":
             for trace in self:
-                trace.data = one_bit_normalize(trace.data, epsilon=epsilon)
+                trace.data = signal.one_bit_normalize(
+                    trace.data, epsilon=epsilon
+                )
         elif method == "smooth":
             for trace in self:
-                trace.data = smooth_envelope_division(
+                trace.data = signal.smooth_envelope_division(
                     trace.data, smooth_length, smooth_order, epsilon
                 )
 
@@ -638,349 +644,3 @@ def read(pathname_or_url=None, **kwargs) -> NetworkStream:
     stream = obspy.read(pathname_or_url, **kwargs)
     stream = NetworkStream(stream)
     return stream
-
-
-def one_bit_normalize(x: np.ndarray, epsilon=1e-10) -> np.ndarray:
-    r"""Modulus division of a complex number.
-
-    Given a complex number (or array) :math:`x = a e^{i\phi}`,
-    where :math:`a` is the modulus and :math:`\phi` the phase, the function
-    returns the unit-modulus complex number such as
-
-    .. math::
-
-              \mathbb{C} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx e^{i\phi}
-
-    This method normalizes the input complex number by dividing it by its
-    modulus plus a small epsilon value to prevent division by zero,
-    effectively scaling the modulus to 1 while preserving the phase.
-
-    Note that this function also work with real-valued arrays, in which case
-    the modulus is the absolute value of the real number. It is useful to
-    normalize seismic traces in the temporal domain. It writes
-
-    .. math::
-
-        \mathbb{R} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx \text{sign}(x)
-
-    Arguments
-    ---------
-    x: numpy.ndarray
-        The complex-valued data to extract the unit complex number from.
-    epsilon: float, optional
-        A small value added to the modulus to avoid division by zero. Default
-        is 1e-10.
-
-    Returns
-    -------
-    numpy.ndarray
-        The unit complex number with the same phase as the input data, or the
-        sign of the real number if the input is real-valued.
-    """
-    return x / (np.abs(x) + epsilon)
-
-
-def smooth_modulus_division(
-    x: np.ndarray,
-    smooth: None | int = None,
-    order: int = 1,
-    epsilon: float = 1e-10,
-) -> np.ndarray:
-    r"""Modulus division of a complex number with smoothing.
-
-    Given a complex array :math:`x[n] = a[n] e^{i\phi[n]}`, where :math:`a[n]`
-    is the modulus and :math:`\phi[n]` the phase, the function returns the
-    normalized complex array :math:`\tilde{x}[n]` such as
-
-    .. math::
-
-        \tilde{x}[n] = \frac{x[n]}{s(a)[n] + \epsilon}
-
-    where :math:`s(a)[n]` is a smoothed version of the modulus array
-    :math:`a[n]`. The smoothing function is performed with the Savitzky-Golay
-    filter, and the order and length of the filter are set by the ``smooth``
-    and ``order`` parameters.].
-
-    Arguments
-    ---------
-    x: :class:`numpy.ndarray`
-        The spectra to detrend. Must be of shape ``(n_frequencies, n_times)``.
-    smooth: int
-        Smoothing window size in points.
-    order: int
-        Smoothing order. Check the scipy function
-        :func:`~scipy.signal.savgol_filter` function for more details.
-
-    Keyword arguments
-    -----------------
-    epsilon: float, optional
-        A regularizer for avoiding zero division.
-
-    Returns
-    -------
-    The spectrum divided by the smooth modulus spectrum.
-    """
-    smooth_modulus = signal.savgol_filter(np.abs(x), smooth, order, axis=0)
-    return x / (smooth_modulus + epsilon)
-
-
-def smooth_envelope_division(
-    x: np.ndarray, smooth: int, order: int, epsilon: float = 1e-10
-) -> np.ndarray:
-    r"""Normalize seismic traces by a smooth version of its envelope.
-
-    This function normalizes seismic traces by a smooth version of its
-    envelope. The envelope is calculated with the Hilbert transform, and then
-    smoothed with the Savitzky-Golay filter. The order and length of the
-    filter are set by the ``smooth`` and ``order`` parameters.
-
-    Arguments
-    ---------
-    x: numpy.ndarray
-        The seismic trace to normalize.
-    smooth: int
-        The length of the Savitzky-Golay filter for smoothing the envelope.
-    order: int
-        The order of the Savitzky-Golay filter for smoothing the envelope.
-    epsilon: float, optional
-        Regularization parameter in division, set to ``1e-10`` by default.
-
-    Returns
-    -------
-    numpy.ndarray
-        The normalized seismic trace.
-    """
-    envelope = np.abs(signal.hilbert(x))
-    smooth_envelope = signal.savgol_filter(envelope, smooth, order)
-    return x / (smooth_envelope + epsilon)
-
-
-def short_time_fourier_transform(
-    trace: obspy.Trace,
-    window_duration_sec: float = 2.0,
-    window_step_sec: None | float = None,
-    window_function: str = "hann",
-    sampling_rate: None | float = 1.0,
-    **kwargs,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    r"""Short-Time Fourier Transform of a seismic trace.
-
-    This function calculates the Short-Time Fourier Transform of a seismic
-    trace. The transformation is performed with the
-    :func:`scipy.signal.stft` function. The function returns the timestamps,
-    frequencies, and the Short-Time Fourier Transform of the seismic trace.
-
-    Arguments
-    ---------
-    trace: :class:`~obspy.core.trace.Trace`
-        The seismic trace to calculate the spectrogram from.
-    window_duration_sec: float, optional
-        The duration of the Fourier window in seconds. Default to 2 seconds.
-    window_step_sec: float, optional
-        The step between two consecutive windows in seconds. If not provided,
-        the step is set to half the window size.
-    window_function: str, optional
-        The window function to use for the Short-Time Fourier Transform.
-        Default to "hann".
-    sampling_rate: float, optional
-        The sampling rate of the seismic traces. Default to 1.0 Hz.
-    **kwargs: dict, optional
-        Additional keyword arguments are passed to the
-        :func:`scipy.signal.stft` function. Check the SciPy documentation for
-        more details on the available options.
-
-    Returns
-    -------
-    numpy.ndarray
-        The timestamps with shape ``(n_times,)``.
-    numpy.ndarray
-        The frequencies with shape ``(n_frequencies,)``.
-    numpy.ndarray
-        The Short-Time Fourier Transform with shape ``(n_frequencies, n_times)``.
-    """
-    # Get window
-    sampling_rate = trace.stats.sampling_rate
-    window_size = int(window_duration_sec * sampling_rate)
-    window = signal.windows.get_window(window_function, window_size)
-
-    # Define hop
-    if window_step_sec is not None:
-        hop = int(window_step_sec * sampling_rate)
-    else:
-        hop = window_size // 2
-
-    # Spectrum calculation function
-    def calculate_spectrum(index):
-        waveform = trace.data[index : index + window_size]
-        return np.fft.rfft(waveform * window)
-
-    # Calculate the Short-Time Fourier Transform
-    indices = np.arange(trace.stats.npts - window_size + 1, step=hop)
-    spectra = Parallel(n_jobs=-1)(
-        delayed(calculate_spectrum)(index) for index in indices
-    )
-
-    # Time and frequency vectors
-    times = trace.times(type="utcdatetime")[indices]
-    frequencies = np.fft.rfftfreq(window_size, trace.stats.delta)
-    spectra = np.array(spectra)
-
-    return times, frequencies, spectra
-
-
-def short_time_fourier_transforms(
-    stream: NetworkStream,
-    **kwargs,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Wrapper for short_time_fourier_transform function for multiple traces."""
-    # Check if the traces are ready
-    assert stream.are_ready_to_process, "Traces are not ready to be processed."
-
-    # Calculate the first short-time Fourier transform
-    times, frequencies, short_time_fft = short_time_fourier_transform(
-        stream[0], **kwargs
-    )
-
-    # Loop over the other traces
-    short_time_ffts = np.zeros(
-        (len(stream), *short_time_fft.shape), dtype=complex
-    )
-    short_time_ffts[0] = short_time_fft
-    for i, trace in enumerate(stream[1:], start=1):
-        _, _, short_time_ffts[i] = short_time_fourier_transform(
-            trace, **kwargs
-        )
-
-    return times, frequencies, short_time_ffts
-
-
-def stft(
-    window_duration_sec: float = 2.0,
-    window_step_sec: None | float = None,
-    window_function: str = "hann",
-    sampling_rate: None | float = 1.0,
-    **kwargs,
-) -> signal.ShortTimeFFT:
-    r"""Short-Time Fourier Transform instance.
-
-    This function creates a Short-Time Fourier Transform instance for
-    transforming seismic traces into the spectral domain. The transformation
-    is performed with the :func:`scipy.signal.ShortTimeFFT` function. This
-    instance can both calculate the forward and inverse Short-Time Fourier
-    Transform, and other useful methods.
-
-    Arguments
-    ---------
-    window_duration_sec: float, optional
-        The duration of the Fourier window in seconds. Default to 2 seconds.
-    window_step_sec: float, optional
-        The step between two consecutive windows in seconds. If not provided,
-        the step is set to half the window size.
-    window_function: str, optional
-        The window function to use for the Short-Time Fourier Transform.
-        Default to "hann".
-    sampling_rate: float, optional
-        The sampling rate of the seismic traces. Default to 1.0 Hz.
-    **kwargs: dict, optional
-        Additional keyword arguments are passed to the
-        :func:`scipy.signal.ShortTimeFFT` class constructor. Check the SciPy
-        documentation for more details on the available options.
-
-    Returns
-    -------
-    :class:`scipy.signal.ShortTimeFFT`
-        A Short-Time Fourier Transform instance.
-    """
-    # Get window
-    window_size = int(window_duration_sec * sampling_rate)
-    window = signal.windows.get_window(window_function, window_size)
-
-    # Define hop
-    if window_step_sec is not None:
-        hop = int(window_step_sec * sampling_rate)
-    else:
-        hop = window_size // 2
-
-    # Set sampling rate
-    kwargs.setdefault("fs", sampling_rate)
-
-    return signal.ShortTimeFFT(window, hop, **kwargs)
-
-
-def calculate_short_time_fourier_spectra(
-    stream: NetworkStream, **kwargs: dict
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Calculate the spectrograms of seismic traces.
-
-    The spectrogram are calculated with the
-    :func:`covseisnet.stream.spectrogram` function, and the Short-Time Fourier
-    Transform is applied to the trace.
-
-    Arguments
-    ---------
-    stream: :class:`~covseisnet.stream.NetworkStream`
-        The seismic trace to calculate the spectrogram from.
-    **kwargs: dict, optional
-        Additional keyword arguments are passed to the
-        :func:`covseisnet.stream.stft` function. Check the function
-        documentation for more details on the available options.
-
-    Returns
-    -------
-    numpy.ndarray
-        The timestamps with shape ``(n_times,)``.
-    numpy.ndarray
-        The frequencies with shape ``(n_frequencies,)``.
-    numpy.ndarray
-        The spectrograms with shape ``(n_frequencies, n_times)``.
-    """
-    # Instanciate ShortTimeFFT object
-    kwargs.setdefault("sampling_rate", stream.sampling_rate)
-    transform = stft(**kwargs)
-
-    # Instanciate ShortTimeFFT object
-    kwargs.setdefault("sampling_rate", stream.sampling_rate)
-    transform = stft(**kwargs)
-
-    # Calculate the Short-Time Fourier Transform
-    waveforms = np.vstack([trace.data for trace in stream])
-    short_time_ffts = transform.stft(waveforms)
-
-    # Get metadata
-    time = transform.t(stream.npts)
-    frequencies = transform.f
-
-    return time, frequencies, short_time_ffts
-
-
-def calculate_spectrogram(
-    trace: obspy.Trace, **kwargs: dict
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Calculate the spectrogram of a seismic trace.
-
-    The spectrogram is calculated with the :func:`covseisnet.stream.stft`
-    function, and the Short-Time Fourier Transform is applied to the trace.
-
-    Arguments
-    ---------
-    trace: :class:`~obspy.core.trace.Trace`
-        The seismic trace to calculate the spectrogram from.
-    **kwargs: dict, optional
-        Additional keyword arguments are passed to the
-        :func:`covseisnet.stream.stft` function. Check the function
-        documentation for more details on the available options.
-    """
-    # Instanciate ShortTimeFFT object
-    kwargs.setdefault("sampling_rate", trace.stats.sampling_rate)
-    transform = stft(**kwargs)
-
-    # Calculate the Short-Time Fourier Transform
-    waveform = trace.data
-    short_time_fft = transform.stft(waveform)
-    spectrogram = np.abs(short_time_fft)
-
-    # Get metadata
-    time = transform.t(trace.stats.npts)
-    frequencies = transform.f
-
-    return time, frequencies, spectrogram
