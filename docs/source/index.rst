@@ -1,12 +1,24 @@
 Home
 ====
 
+**Covseisnet** is a Python package for array signal processing, with a focus
+on data from seismic networks. The core mathematical object of the package is
+the network covariance matrix, used for signal detection, source separation,
+localisation, and plane-wave beamforming. More precisely, the signal detection
+and processing methods are based on the analysis of the covariance matrix
+spectrum. The covariance matrix can be used as input for classical array
+processing tools such as beamforming and inter-station cross-correlations. 
 
-**Covseisnet** is a Python package for array signal processing, with a focus on data from seismic networks. The central mathematical object of the package is the network covariance matrix, used for signal detection, source separation, localisation, and plane-wave beamforming. 
+In order to provide tools that are user-friendly and efficient, the package
+builts on `ObsPy <https://github.com/obspy/obspy/wiki/>`_, a Python toolbox
+for seismology, on `Scipy <https://www.scipy.org>`_, and `Numpy
+<https://numpy.org>`_, two Python libraries for scientific computing and
+linear algebra. 
 
-The core signal detection algorithms are based on the analysis of the spectrum of the network covariance matrix. Eigendecomposition provides a basis for signal detection and blind source separation. In addition, the covariance matrix can be used as input for classical array processing tools such as beamforming and inter-station cross-correlations. 
-
-The package builts on the `ObsPy <https://github.com/obspy/obspy/wiki/>`_ and `Numpy <https://numpy.org>`_. The code repository is hosted on GitHub at https://github.com/covseisnet/covseisnet and is distributed under the GNU General Public License v3.0.
+This library is hosted on GitHub at
+https://github.com/covseisnet/covseisnet and is distributed under the GNU
+General Public License v3.0. Contributions are welcome, and can be made via
+pull requests on the GitHub repository.
 
 .. image:: https://zenodo.org/badge/263984678.svg
    :target: https://zenodo.org/doi/10.5281/zenodo.10990031
@@ -32,7 +44,6 @@ The package builts on the `ObsPy <https://github.com/obspy/obspy/wiki/>`_ and `N
 .. image:: https://codecov.io/gh/covseisnet/covseisnet/branch/develop/graph/badge.svg?token=N462A7PPRF
    :target: https://codecov.io/gh/covseisnet/covseisnet
 
-
 Contents
 --------
 
@@ -50,16 +61,37 @@ How to cite this package
 Citation statement   
 ~~~~~~~~~~~~~~~~~~~
    
-This package is released under the GNU General Public License v3.0 (see :ref:`license`). Please include the following statement in the ackowledgements section of your publication, and/or reference one the paper listed in the :ref:`references` section below.
+This package is released under the GNU General Public License v3.0 (see the
+:ref:`license` section for more information). Please include the following
+statement in the ackowledgements section of your publication, and/or reference
+one the paper listed in the :ref:`references` section below.
 
-   This work made use of the Covseisnet package, a Python package for array signal processing, developed by Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro.
+   This work made use of Covseisnet, a Python package for array signal
+   processing, developed by Léonard Seydoux, Jean Soubestre, Cyril Journeau,
+   Francis Tong & Nikolai Shapiro.
 
-Publication history
-~~~~~~~~~~~~~~~~~~~
+Publications summary
+~~~~~~~~~~~~~~~~~~~~
 
-The method was first introduced in :cite:`seydoux_detecting_2016` with an
+The method was first introduced in :cite:t:`seydoux_detecting_2016` with an
 application to the monitoring of the Piton de la Fournaise eruptions. We then
-applied it to the analysis of USArray data in :cite:`seydoux_spatial_2016`. We then proposed a pre-processing method for ambient noise cross-correlations in :cite:`seydoux_pre-processing_2017`. The method was then applied to the detection and classification of seismovolcanic tremors in :cite:`soubestre_network-based_2018` and to the depth migration of seismovolcanic tremor sources in :cite:`soubestre_depth_2019`. The method was also applied to the study of localized modes on a metasurface in :cite:`lott_localized_2020`. Finally, the method was applied to the detection, classification, and location of seismovolcanic signals at the Piton de la Fournaise volcano in :cite:`journeau_detection_2020`.
+applied it to the analysis of USArrays data :cite:p:`seydoux_spatial_2016`. We
+also proposed a pre-processing method for ambient noise cross-correlations
+:cite:p:`seydoux_pre-processing_2017`. 
+
+The method was then applied to the detection and classification of
+seismovolcanic tremors :cite:p:`soubestre_network-based_2018` and to the depth
+migration of seismovolcanic tremor sources :cite:p:`soubestre_depth_2019`. The
+method was also applied to the study of localized modes on a metasurface
+:cite:p:`lott_localized_2020`, and to the detection, classification, and
+location of seismovolcanic signals at the Piton de la Fournaise volcano in
+:cite:p:`journeau_detection_2020`.
+
+In the context of unsuperised learning, we also used the covariance matrix
+representation to reveal patterns in the continuous seismic wavefield during
+the 2009 L'Aquila earthquake :cite:p:`shi_unsupervised_2021`. We also
+investigated the dynamics of the Kamchatka volcanic systen in
+:cite:t:`journeau_seismic_2022`.
 
 .. _references:
 
