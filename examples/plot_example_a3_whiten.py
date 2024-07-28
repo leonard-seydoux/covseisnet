@@ -12,11 +12,8 @@ inverse Fourier transform to the traces.
 
 # sphinx_gallery_thumbnail_number = 2
 
-import numpy as np
-
 import covseisnet as csn
 
-WINDOW_DURATION = 2
 
 # %%
 # Read waveforms
@@ -31,11 +28,9 @@ stream = csn.read()
 # Extract the first trace, and preprocess it
 trace = stream[0]
 trace.filter("highpass", freq=0.4)
-trace.data /= np.max(np.abs(trace.data))
-
 
 # Plot trace and corresponding spectrum
-csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
+ax = csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=2)
 
 
 # %%
@@ -50,13 +45,12 @@ csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=WINDOW_DURATION)
 
 
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=WINDOW_DURATION, smooth_length=0)
+whitened_stream.whiten(window_duration_sec=10, smooth_length=0)
 
 # Plot whitened trace and corresponding spectrum
-csn.plot.trace_and_spectrogram(
-    whitened_stream[0],
-    window_duration_sec=WINDOW_DURATION,
-)
+ax = csn.plot.trace_and_spectrogram(whitened_stream[0], window_duration_sec=2)
+ax[0].set_title("Whitened trace")
+ax[1].set_title("Whitened spectrogram")
 
 
 # %%
@@ -71,13 +65,9 @@ csn.plot.trace_and_spectrogram(
 # window length of 31 frequency bins.
 
 whitened_stream = stream.copy()
-whitened_stream.whiten(
-    window_duration_sec=5 * WINDOW_DURATION,
-    smooth_length=31,
-)
+whitened_stream.whiten(window_duration_sec=10, smooth_length=31)
 
 # Plot whitened trace and corresponding spectrum
-csn.plot.trace_and_spectrogram(
-    whitened_stream[0],
-    window_duration_sec=WINDOW_DURATION,
-)
+ax = csn.plot.trace_and_spectrogram(whitened_stream[0], window_duration_sec=2)
+ax[0].set_title("Whitened trace (smooth)")
+ax[1].set_title("Whitened spectrogram (smooth)")

@@ -1,7 +1,5 @@
 """Spectral analysis and covariance matrix calculation."""
 
-from joblib import Parallel, delayed
-
 import numpy as np
 from numpy.linalg import eigvalsh, eigh
 
@@ -365,10 +363,12 @@ def calculate_covariance_matrix(
     # Calculate spectrogram
     kwargs["sampling_rate"] = stream.sampling_rate
     stft = ShortTimeFourierTransform(**kwargs)
+
+    # Extract spectra
     spectra_times, frequencies, spectra = stft.map_transform(stream)
 
     # Remove modulus
-    spectra /= np.abs(spectra) + 1e-5
+    # spectra /= np.abs(spectra) + 1e-5
 
     # Parametrization
     step = average // 2 if average_step is None else average * average_step
@@ -388,13 +388,15 @@ def calculate_covariance_matrix(
         # Slice
         selection = slice(index, index + average)
         spectra_slice = spectra[..., selection]
-        # spectra_slice /= np.mean(np.abs(spectra_slice), axis=-1, keepdims=True)
+        spectra_slice /= np.mean(np.abs(spectra_slice), axis=-1, keepdims=True)
         covariances[i] = np.einsum(
             "ift,jft -> fij", spectra_slice, np.conj(spectra_slice)
         )
 
         # Center time
         duration = spectra_times[selection][-1] - spectra_times[selection][0]
+        # print(spectra_times[selection][0])
+        # print(spectra_times[selection][-1])
         covariance_times.append(spectra_times[selection][0] + duration / 2)
 
     # Add stations

@@ -17,6 +17,34 @@ import covseisnet as csn
 from .signal import ShortTimeFourierTransform
 
 
+def dateticks(
+    ax: plt.Axes,
+    locator: mdates.DateLocator = mdates.AutoDateLocator,
+    formatter: mdates.DateFormatter = mdates.ConciseDateFormatter,
+) -> None:
+    """Set date ticks on the x-axis of a plot.
+
+    Arguments
+    ---------
+    ax : :class:`~matplotlib.axes.Axes`
+        The axis to modify.
+    locator : :class:`~matplotlib.dates.DateLocator`
+        The locator to use for the date ticks. This can be an instance of
+        :class:`~matplotlib.dates.AutoDateLocator`,
+        :class:`~matplotlib.dates.DayLocator`, etc. Check the documentation
+        for more information.
+    formatter : :class:`~matplotlib.dates.DateFormatter`
+        The formatter to use for the date ticks. This can be an instance of
+        :class:`~matplotlib.dates.ConciseDateFormatter` for example. Check the
+        documentation for more information.
+
+    """
+    xticks = locator()
+    xticklabels = formatter(xticks)
+    ax.xaxis.set_major_locator(xticks)
+    ax.xaxis.set_major_formatter(xticklabels)
+
+
 def utc2datetime(utc_array: np.ndarray) -> np.ndarray:
     """Convert an array of UTC times to datetime objects.
 
@@ -112,26 +140,27 @@ def trace_and_spectrogram(
     _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Calculate spectrogram
-    kwargs["sampling_rate"] = trace.stats.sampling_rate
-    stft = ShortTimeFourierTransform(**kwargs)
+    stft = ShortTimeFourierTransform(
+        sampling_rate=trace.stats.sampling_rate,
+        **kwargs,
+    )
+
+    # Extract spectra
     spectra_times, frequencies, spectra = stft.transform(trace)
-    spectrogram = np.log10(np.abs(spectra) + 1e-10)
 
     # Remove zero frequencies for display
     frequencies = frequencies[1:]
     spectra = spectra[1:]
 
-    # Turn times into datetime objects
-    trace_times = utc2datetime(trace.times("utcdatetime"))
-    spectra_times = utc2datetime(spectra_times)
+    # Calculate spectrogram
+    spectrogram = np.log10(np.abs(spectra) + 1e-10)
 
     # Plot trace
-    ax[0].plot(trace_times, trace.data)
-    ax[0].grid()
+    ax[0].plot(trace.times("matplotlib"), trace.data)
     ax[0].set_ylabel("Amplitude")
     ax[0].set_title("Trace")
+    ax[0].grid()
     xlim = ax[0].get_xlim()
-    make_axis_symmetric(ax[0], axis="y")
 
     # Plot spectrogram
     mappable = ax[1].pcolormesh(
@@ -145,12 +174,13 @@ def trace_and_spectrogram(
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].set_title("Spectrogram")
     ax[1].set_xlim(xlim)
+    csn.plot.dateticks(ax[1])
 
     # Colorbar
     colorbar = plt.colorbar(mappable, ax=ax[1])
     colorbar.set_label("Spectral energy (dBA)")
 
-    plt.savefig("spectrogram.png")
+    return ax
 
 
 def stream_and_coherence(
@@ -158,6 +188,7 @@ def stream_and_coherence(
     times: np.ndarray,
     frequencies: np.ndarray,
     coherence: np.ndarray,
+    f_min: float = None,
     **kwargs: dict,
 ) -> None:
     """Plot a stream of traces and the coherence matrix.
@@ -183,14 +214,13 @@ def stream_and_coherence(
     fig, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Show traces
-    tic = time.time()
     trace_times = stream.times(type="matplotlib")
-    print(f"Elapsed time: {time.time() - tic:.2f} s")
     global_max = np.max([np.max(np.abs(trace.data)) for trace in stream])
     for index, trace in enumerate(stream):
         waveform = trace.data
         waveform /= global_max
         ax[0].plot(trace_times, waveform + index, color="k", lw=0.5)
+
     # Labels
     stations = stream.stations
     ax[0].set_title("Normalized seismograms")
@@ -199,32 +229,21 @@ def stream_and_coherence(
     ax[0].set_ylabel("Normalized amplitude")
     xlim = ax[0].get_xlim()
 
-    # Get time
-    times = utc2datetime(times)
-    # d_times = times[1] - times[0]
-    # times = np.concatenate([times, [times[-1] + 2 * d_times]])
-
-    # Add one frequency to frequencies for pcolormesh
-    # df = frequencies[1] - frequencies[0]
-    # frequencies = np.concatenate([frequencies, [frequencies[-1] + df]])
-
-    # Remove zero frequency
-    n = 6
-    frequencies = frequencies[n:]
-    coherence = coherence[:, n:]
+    # Remove low frequencies
+    if f_min is not None:
+        n = np.abs(frequencies - f_min).argmin()
+        frequencies = frequencies[n:]
+        coherence = coherence[:, n:]
 
     # Show coherence
-    tic = time.time()
     mappable = ax[1].pcolormesh(
         times,
         frequencies,
         coherence.T,
         shading="nearest",
         cmap="magma_r",
-        # vmin=0,
         **kwargs,
     )
-    print(f"Elapsed time: {time.time() - tic:.2f} s")
 
     # Frequency axis
     ax[1].set_yscale("log")
@@ -233,13 +252,10 @@ def stream_and_coherence(
     ax[1].set_title("Spatial coherence")
 
     # Colorbar
-    plt.colorbar(mappable, ax=ax[1]).set_label("Coherence")
+    plt.colorbar(mappable, ax=ax[1]).set_label("Spectral width")
 
     # Date formatter
-    xticks = mdates.AutoDateLocator()
-    xticklabels = mdates.ConciseDateFormatter(xticks)
-    ax[1].xaxis.set_major_locator(xticks)
-    ax[1].xaxis.set_major_formatter(xticklabels)
+    dateticks(ax[1])
     ax[1].set_xlim(xlim)
 
     fig.savefig("coherence.png", dpi=300)

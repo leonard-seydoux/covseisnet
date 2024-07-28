@@ -32,8 +32,8 @@ class NetworkStream(obspy.Stream):
 
     .. rubric:: _`Attributes`
 
-    - :attr:`~covseisnet.stream.NetworkStream.are_ready_to_process` — check if
-      traces are ready to be processed.
+    - :attr:`~covseisnet.stream.NetworkStream.is_ready_to_process` — check if
+      stream is ready to be processed.
 
     - :attr:`~covseisnet.stream.NetworkStream.are_time_vectors_equal` — check
       if traces are sampled on the same time vector.
@@ -126,7 +126,8 @@ class NetworkStream(obspy.Stream):
     def cut(
         self,
         starttime: str | obspy.UTCDateTime,
-        endtime: str | obspy.UTCDateTime,
+        endtime: str | obspy.UTCDateTime | None = None,
+        duration_sec: float = None,
         **kwargs: dict,
     ):
         """Trim traces between start and end date times.
@@ -144,6 +145,10 @@ class NetworkStream(obspy.Stream):
             The start date time.
         endtime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
             The end date time.
+        duration_sec : float, optional
+            The duration of the trace in seconds. If set, the end time is
+            calculated as ``starttime + duration_sec``. This parameter is
+            ignored if the ``endtime`` parameter is set.
         **kwargs: dict, optional
             Arguments passed to the :meth:`~obspy.core.stream.Stream.trim` method.
 
@@ -158,7 +163,7 @@ class NetworkStream(obspy.Stream):
         >>> stream = csn.read()
         >>> stream.cut("2009-08-24 00:20:05", "2009-08-24 00:20:12")
         >>> print(stream)
-        Network Stream of 3 traces from 1 stations:
+        Network Stream of 3 traces from 1 stations (synced):
         BW.RJOB..EHZ | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
         W.RJOB..EHN  | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
         BW.RJOB..EHE | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
@@ -169,12 +174,17 @@ class NetworkStream(obspy.Stream):
         """
         # Convert start and end times to UTCDateTime
         starttime = obspy.UTCDateTime(starttime)
-        endtime = obspy.UTCDateTime(endtime)
+        if endtime:
+            endtime = obspy.UTCDateTime(endtime)
+        elif duration_sec:
+            endtime = starttime + duration_sec
+        else:
+            raise ValueError("One of endtime or duration_sec must be set.")
 
         # Trim stream
         self.trim(starttime, endtime, **kwargs)
 
-    def times(self, **kwargs: dict) -> np.ndarray:
+    def times(self, *args, **kwargs: dict) -> np.ndarray:
         """Common time vector.
 
         Because the :class:`~covseisnet.stream.NetworkStream` handles traces
@@ -184,6 +194,11 @@ class NetworkStream(obspy.Stream):
 
         Arguments
         ---------
+        *args: tuple
+            Arguments passed to the method
+            :meth:`~obspy.core.trace.Trace.times`. For instance, passing
+            ``"matplotlib"`` allows to recover matplotlib timestamps instead
+            of seconds from the start of the trace (default).
         **kwargs: dict, optional
             Arguments passed to the method
             :meth:`~obspy.core.trace.Trace.times`. For instance, passing
@@ -210,7 +225,7 @@ class NetworkStream(obspy.Stream):
 
             >>> import covseisnet as csn
             >>> stream = csn.read()
-            >>> stream.times(type="matplotlib")
+            >>> stream.times("matplotlib")
             array([14480.01392361, 14480.01392373, 14480.01392384, ...,
             14480.01427049, 14480.0142706 , 14480.01427072])
 
@@ -225,7 +240,7 @@ class NetworkStream(obspy.Stream):
         ), "Traces are not synced, check the `synchronize` method."
 
         # Return the times of the first trace
-        return self[0].times(**kwargs)
+        return self[0].times(*args, **kwargs)
 
     def synchronize(
         self,
@@ -253,17 +268,20 @@ class NetworkStream(obspy.Stream):
         --------
         :meth:`~obspy.core.trace.Trace.interpolate`
         """
+        # Return if the traces are already synchronized
+        if self.are_time_vectors_equal:
+            return
+
         # Find out the largest start time and the smallest end time
-        largest_starttime = max([trace.stats.starttime for trace in self])
-        smallest_endtime = min([trace.stats.endtime for trace in self])
-        duration = smallest_endtime - largest_starttime
+        time_extent = get_minimal_time_extent(self)
+        duration = time_extent[-1] - time_extent[0]
         npts = int(duration * self[0].stats.sampling_rate) + 1
 
         # Update kwargs
         kwargs.setdefault("method", interpolation_method)
         kwargs.setdefault("npts", npts)
-        kwargs.setdefault("starttime", largest_starttime)
-        kwargs.setdefault("endtime", smallest_endtime)
+        kwargs.setdefault("starttime", time_extent[0])
+        kwargs.setdefault("endtime", time_extent[-1])
         kwargs.setdefault("sampling_rate", self.sampling_rate)
 
         # Interpolate all traces
@@ -286,29 +304,49 @@ class NetworkStream(obspy.Stream):
         effects from a seismic station to another. Any local source is also
         drastically reduced thanks to the whitening process.
 
-        Given a spectrum :math:`u(f)` of a seismic trace :math:`u(t)`, the
-        whitening process is defined as
+        The following description is applied to every trace in the stream. For
+        the sake of simplicity, we consider a single trace :math:`x(t)`. Note
+        that the method is applied in every window of a short-time Fourier
+        transform of the trace, namely :math:`s(t, \omega)` before applying
+        the inverse short-time Fourier transform to obtain the whitened
+        seismogram :math:`\hat x(t)`. We here nore :math:`x(\omega)` the
+        spectrum of the trace within a given window. For more information on
+        the short-time Fourier transform, see the
+        :class:`~covseisnet.signal.ShortTimeFourierTransform` class
+        documentation.
+
+        We define the whitening process as
 
         .. math::
 
-            \tilde{u}(f) = \frac{u(f)}{F(u(f)) + \epsilon}
+            \hat x(\omega) = \frac{x(\omega)}{\mathcal{S}x(\omega) +
+            \epsilon},
 
-        where :math:`F(u(f))` is a function of the spectrum :math:`u(f)` that
-        depends on the smoothing-related parameters. If the ``smooth_length``
-        parameter is set to 0, the function :math:`F(u(f))` is defined as
+        where :math:`\mathcal{S}` is a smoothing operator applied to the
+        spectrum :math:`x(\omega)`, and :math:`\epsilon` is a regularization
+        parameter to avoid division by zero. The smoothing operator is defined
+        by the ``smooth_length`` parameter. We distinguish two cases:
 
-        .. math::
+        - If the ``smooth_length`` parameter is set to 0, the operator
+          :math:`\mathcal{S}` is defined as :math:`\mathcal{S}x(\omega) =
+          |x(\omega)|`, and therefore
 
-                F(u(f)) = |u(f)|
+          .. math::
 
-        This is returned by the :func:`~covseisnet.stream.one_bit_normalize`
-        function. If the ``smooth_length`` parameter is set to a value greater
-        than 0, the function :math:`F(u(f))` is defined as the smoothed
-        modulus of the spectrum, returned by the
-        :func:`~covseisnet.stream.smooth_modulus_division` function. The
-        smoothing is performed with the Savitzky-Golay filter, and the order
-        and length of the filter are set by the ``smooth_length`` and
-        ``smooth_order`` parameters.
+              \hat x(\omega) = \frac{x(\omega)}{|x(\omega)| + \epsilon}
+              \approx e^{i\phi}.
+
+          In this case, the method calls the
+          :func:`~covseisnet.signal.modulus_division`.
+
+        - If the ``smooth_length`` parameter is set to a value greater than 0,
+          the operator :math:`\mathcal{S}` is defined as a `Savitzky-Golay
+          filter
+          <https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter>`_ with
+          parameters set by ``smooth_length`` and ``smooth_order``. This
+          allows to introduce less artifacts in the whitening process. In this
+          case, the method calls the
+          :func:`~covseisnet.signal.smooth_modulus_division`.
 
         Arguments
         ---------
@@ -317,16 +355,22 @@ class NetworkStream(obspy.Stream):
             spectrum. If set to 0, the spectrum is not smoothed (default).
         smooth_order: int, optional
             The order of the Savitzky-Golay filter for smoothing the spectrum.
-            This parameter is only used if ``smooth_length`` is greater than 0.
+            This parameter is only used if ``smooth_length`` is greater than
+            0.
         epsilon: float, optional
-            Regularization parameter in division, set to ``1e-10`` by default.
+            Regularization parameter in division, set to 1e-10 by default.
         **kwargs: dict, optional
             Additional keyword arguments passed to the covseisnet
-            :func:`~covseisnet.stream.stft` method.
+            :func:`~covseisnet.signal.ShortTimeFourierTransform` class
+            constructor. The main parameter is the ``window_duration_sec``
+            parameter, which defines the window duration of the short-time
+            Fourier transform.
 
         """
-        # Instanciate ShortTimeFFT object
+        # Automatically set the sampling rate from self
         kwargs.setdefault("sampling_rate", self.sampling_rate)
+
+        # Short-Time Fourier Transform instance
         stft_instance = signal.ShortTimeFourierTransform(**kwargs)
 
         # Assert that the transform is invertible
@@ -334,14 +378,19 @@ class NetworkStream(obspy.Stream):
 
         # Define the whitening method
         if smooth_length == 0:
-            whiten_method = partial(signal.one_bit_normalize, epsilon=epsilon)
-        else:
+            whiten_method = partial(
+                signal.modulus_division,
+                epsilon=epsilon,
+            )
+        elif smooth_length > 0:
             whiten_method = partial(
                 signal.smooth_modulus_division,
                 smooth=smooth_length,
                 order=smooth_order,
                 epsilon=epsilon,
             )
+        else:
+            raise ValueError(f"Incorrect smooth_length value: {smooth_length}")
 
         # Loop over traces
         for trace in self:
@@ -355,89 +404,116 @@ class NetworkStream(obspy.Stream):
 
             # Inverse Short-Time Fourier Transform
             waveform = stft_instance.istft(spectrum)
+
+            # Truncate the waveform and replace the trace data
             waveform = waveform[: trace.stats.npts]
             trace.data = waveform
-
-            # Taper the trace
-            trace.taper(max_percentage=0.01)
 
     def normalize(
         self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
     ) -> None:
         r"""Normalize the seismic traces in temporal domain.
 
-        Considering the seismic trace :math:`u(t)`, the normalized trace
-        :math:`\tilde{u}(t)` is obtained with
+        Considering the seismic trace :math:`x(t)`, the normalized trace
+        :math:`\hat x(t)` is obtained with
 
         .. math::
 
-            \tilde{u}(t) = \frac{u(t)}{F(u(t)) + \epsilon}
+            \hat u(t) = \frac{u(t)}{\mathcal{A}u(t) + \epsilon}
 
-        where :math:`F` is a function of the trace :math:`u` that depends on
-        the ``method`` argument, and :math:`\epsilon > 0` is a regularization
-        value to avoid division by 0, set by the ``epsilon`` keyword argument.
+        where :math:`A` is an operator applied to the trace :math:`u(t)`, and
+        :math:`\epsilon > 0` is a regularization value to avoid division by 0.
+        The operator :math:`\mathcal{A}` is defined by the ``method``
+        parameter. We distinguish two cases:
+
+        - If the ``method`` parameter is set to ``"onebit"``, the operator
+          :math:`\mathcal{A}` is defined as :math:`\mathcal{A}u(t) = |u(t)|`,
+          and therefore
+
+          .. math::
+
+            \hat u(t) = \frac{u(t)}{|u(t)| + \epsilon} \approx
+            \text{sign}(u(t)).
+
+          In this case, the method calls the
+          :func:`~covseisnet.signal.modulus_division`.
+
+        - If the ``method`` parameter is set to ``"smooth"``, the operator
+          :math:`\mathcal{A}` is defined as a `Savitzky-Golay filter
+          <https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter>`_
+          applied to the Hilbert envelope of the trace. The Savitzky-Golay
+          filter is defined by the ``smooth_length`` and ``smooth_order``
+          parameters. This allows to introduce less artifacts in the
+          normalization process. In this case, the method calls the
+          :func:`~covseisnet.signal.smooth_envelope_division`.
 
         Arguments
         ---------
         method : str, optional
             Must be one of ``"onebit"`` (default) or ``"smooth"``.
 
-            - ``"onebit"`` compress the seismic trace into a series of -1 and
-              1. In this case, :math:`F` is defined as :math:`F(x) = |x|`.
+            - ``"onebit"``: compress the seismic trace into a series of -1 and
+              1.
 
-            - ``"smooth"`` normalize each trace by a smooth version of its
-              envelope. In this case, :math:`F` is obtained from the signal's
-              Hilbert envelope and smoothed with the Savitzky-Golay filter.
+            - ``"smooth"``: normalize each trace by a smooth version of its
+              envelope.
 
         smooth_length: int, optional
             If the ``method`` keyword argument is set to ``"smooth"``, the
             normalization is performed with the smoothed trace envelopes,
             calculated over a sliding window of ``smooth_length`` samples.
         smooth_order: int, optional
-            If the ``method`` keyword argument is set to "smooth", the
+            If the ``method`` keyword argument is set to ``"smooth"``, the
             normalization is performed with the smoothed trace envelopes. The
             smoothing order is set by the ``smooth_order`` parameter.
         epsilon: float, optional
-            Regularization parameter in division, set to ``1e-10`` by default.
+            Regularization parameter in division, set to 1e-10 by default.
 
         """
         if method == "onebit":
             for trace in self:
-                trace.data = signal.one_bit_normalize(
-                    trace.data, epsilon=epsilon
+                trace.data = signal.modulus_division(
+                    trace.data,
+                    epsilon=epsilon,
                 )
         elif method == "smooth":
             for trace in self:
                 trace.data = signal.smooth_envelope_division(
-                    trace.data, smooth_length, smooth_order, epsilon
+                    trace.data,
+                    smooth_length,
+                    smooth_order,
+                    epsilon,
                 )
-
         else:
-            raise ValueError("Unknown method {}".format(method))
+            raise ValueError(f"Unknown method {method}")
 
     @property
-    def are_ready_to_process(self) -> bool:
+    def is_ready_to_process(self) -> bool:
         """Check if traces are ready to be processed.
 
         This method checks if the traces are ready to be processed. This is
         useful to ensure that the traces are synchronized before performing any
         operation that requires the traces to be sampled on the same time vector.
 
+        This property performs the following checks in order:
+
+        - :attr:`~covseisnet.stream.NetworkStream.are_sampling_rates_equal`
+
+        - :attr:`~covseisnet.stream.NetworkStream.are_npts_equal`
+
+        - :attr:`~covseisnet.stream.NetworkStream.are_time_vectors_equal`
+
         Returns
         -------
         bool
-            True if all traces are ready
+            True if all the checks are passed, False otherwise.
         """
-        # Assert sampling rate
-        assert (
-            self.are_sampling_rates_equal
-        ), "Traces have different sampling rates."
-
-        # Assert number of samples
-        assert self.are_npts_equal, "Traces have different number of samples."
-
-        # Check if all traces are ready
-        return self.are_time_vectors_equal
+        checks = (
+            self.are_sampling_rates_equal,
+            self.are_npts_equal,
+            self.are_time_vectors_equal,
+        )
+        return all(checks)
 
     @property
     def are_time_vectors_equal(self) -> bool:
@@ -453,11 +529,14 @@ class NetworkStream(obspy.Stream):
         bool
             True if all traces are sampled on the same time vector, False
             otherwise.
+
+        Raises
+        ------
+        AssertionError
+            If the traces have different sampling rates or number of samples.
         """
         # Assert sampling rate
-        assert (
-            self.are_sampling_rates_equal
-        ), "Traces have different sampling rates."
+        assert self.are_sampling_rates_equal, "Traces have different rates."
 
         # Assert number of samples
         assert self.are_npts_equal, "Traces have different number of samples."
@@ -520,7 +599,7 @@ class NetworkStream(obspy.Stream):
         """List of unique station names.
 
         This property is also available directly from looping over the traces
-        and accessing the :attr:`~obspy.core.trace.Trace.stats.station` attribute.
+        and accessing the :attr:`stats.station` attribute.
 
         Example
         -------
@@ -536,7 +615,7 @@ class NetworkStream(obspy.Stream):
         """List of unique channel names.
 
         This property is also available directly from looping over the traces
-        and accessing the :attr:`~obspy.core.trace.Trace.stats.channel` attribute.
+        and accessing the :attr:`stats.channel` attribute.
 
         Example
         -------
@@ -547,11 +626,26 @@ class NetworkStream(obspy.Stream):
         return set([trace.stats.channel for trace in self.traces])
 
     @property
-    def sampling_rate(self) -> float:
-        """Sampling rate of the traces.
+    def ids(self) -> set[str]:
+        """List of unique trace ids.
 
         This property is also available directly from looping over the traces
-        and accessing the :attr:`~obspy.core.trace.Trace.stats.sampling_rate` attribute.
+        and accessing the :attr:`id` attribute.
+
+        Example
+        -------
+        >>> stream = csn.read()
+        >>> stream.ids
+        {'BW.RJOB..EHE', 'BW.RJOB..EHN', 'BW.RJOB..EHZ'}
+        """
+        return set([trace.id for trace in self.traces])
+
+    @property
+    def sampling_rate(self) -> float:
+        """Sampling rate of the traces in Hz.
+
+        This property is also available directly from looping over the traces
+        and accessing the :attr:`stats.sampling_rate` attribute.
 
         Example
         -------
@@ -572,7 +666,7 @@ class NetworkStream(obspy.Stream):
         """Number of samples of the traces.
 
         This property is also available directly from looping over the traces
-        and accessing the :attr:`~obspy.core.trace.Trace.stats.npts` attribute.
+        and accessing the :attr:`stats.npts` attribute.
 
         Example
         -------
@@ -587,60 +681,85 @@ class NetworkStream(obspy.Stream):
         return self[0].stats.npts
 
 
+def get_minimal_time_extent(stream: NetworkStream) -> tuple[obspy.UTCDateTime]:
+    """Get the minimal time extent of traces in a stream.
+
+    This function returns the minimal start and end times of the traces in the
+    stream. This is useful when synchronizing the traces to the same time
+    vector. The start time is defined as the maximum start time of the traces,
+    and the end time is defined as the minimum end time of the traces.
+
+    Arguments
+    ---------
+    stream: :class:`~covseisnet.stream.NetworkStream` or :class:`~obspy.core.stream.Stream`
+        The stream object.
+
+    Returns
+    -------
+    tuple of :class:`~obspy.core.utcdatetime.UTCDateTime`
+        The minimal start and end times of the traces.
+
+    Example
+    -------
+    >>> import covseisnet as csn
+    >>> stream = csn.read()
+    >>> get_minimal_time_extent(stream)
+    (2009-08-24T00:20:03.000000Z, 2009-08-24T00:20:32.990000Z)
+    """
+    # Get the minimal start and end times
+    starttime = max([trace.stats.starttime for trace in stream])
+    endtime = min([trace.stats.endtime for trace in stream])
+
+    return starttime, endtime
+
+
 def read(pathname_or_url=None, **kwargs) -> NetworkStream:
     """Read seismic waveforms files into an NetworkStream object.
 
-    This function uses the :func:`obspy.core.stream.read` function to read
-    the streams. A detailed list of arguments and options are available at
-    https://docs.obspy.org. This function opens either one or multiple
-    waveform files given via file name or URL using the ``pathname_or_url``
-    attribute. The format of the waveform file will be automatically detected
-    if not given. See the `Supported Formats` section in
-    the :func:`obspy.core.stream.read` function.
+    This function uses the :func:`obspy.core.stream.read` function to read the
+    streams. A detailed list of arguments and options are available in the
+    documentation. This function opens either one or multiple waveform files
+    given via file name or URL using the ``pathname_or_url`` attribute. The
+    format of the waveform file will be automatically detected if not given.
+    See the `Supported Formats` section in the :func:`obspy.core.stream.read`
+    function.
 
-    This function returns an :class:`~covseisnet.arraystream.ArrayStream` object, an
-    object directly inherited from the :class:`obspy.core.stream.Stream`
-    object.
+    This function returns an :class:`~covseisnet.stream.NetworkStream` object
+    which directly inherits from the :class:`obspy.core.stream.Stream` object.
 
-    Keyword arguments
-    -----------------
+    Arguments
+    ---------
     pathname_or_url: str or io.BytesIO or None
         String containing a file name or a URL or a open file-like object.
         Wildcards are allowed for a file name. If this attribute is omitted,
-        an example :class:`~covseisnet.arraystream.ArrayStream` object will be
+        an example :class:`~covseisnet.stream.NetworkStream` object will be
         returned.
-
-    Other parameters
-    ----------------
-    **kwargs: dict
+    **kwargs: dict, optional
         Other parameters are passed to the :func:`obspy.core.stream.read`
         directly.
 
     Returns
     -------
-    :class:`~covseisnet.arraystream.ArrayStream`
-        An :class:`~covseisnet.arraystream.ArrayStream` object.
+    :class:`~covseisnet.stream.NetworkStream`
+        The seismic waveforms.
 
     Example
     -------
 
-    In most cases a filename is specified as the only argument to
-    :func:`obspy.core.stream.read`. For a quick start you may omit all
-    arguments and ObsPy will create and return a basic example seismogram.
-    Further usages of this function can be seen in the ObsPy documentation.
+    For a quick start you may omit all arguments and ObsPy will load a basic
+    example seismogram. Further usages of this function can be seen in the
+    ObsPy documentation.
 
-    >>> import covseisnet as cn
-    >>> stream = cn.arraystream.read()
+    >>> import covseisnet as csn
+    >>> stream = csn.read()
     >>> print(stream)
-    3 Trace(s) in Stream:
-    BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z - ... | 100.0 Hz, 3000 samples
-    BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z - ... | 100.0 Hz, 3000 samples
-    BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - ... | 100.0 Hz, 3000 samples
+    Network Stream of 3 traces from 1 stations (synced):
+    BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples
+    BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples
+    BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples
 
-    .. rubric:: _`Further Examples`
-
-    Example waveform files may be retrieved via https://examples.obspy.org.
+    See Also
+    --------
+    :func:`~obspy.core.stream.read`
     """
-    stream = obspy.read(pathname_or_url, **kwargs)
-    stream = NetworkStream(stream)
-    return stream
+    return NetworkStream(obspy.read(pathname_or_url, **kwargs))

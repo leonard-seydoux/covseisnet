@@ -4,9 +4,10 @@ API Reference
 =============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     stream
     signal
     covariance
     plot
+

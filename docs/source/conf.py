@@ -95,9 +95,10 @@ sphinx_gallery_conf = {
     "examples_dirs": "../../examples",
     "gallery_dirs": "auto_examples",
     "image_srcset": ["4x"],
-    "download_all_examples": False,
+    "download_all_examples": True,
     "remove_config_comments": True,
     "within_subsection_order": "FileNameSortKey",
+    "capture_repr": (),
 }
 
 # Templates

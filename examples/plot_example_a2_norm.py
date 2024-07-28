@@ -26,26 +26,21 @@ stream.filter("highpass", freq=1.0)
 # Print the original stream
 print(stream)
 
-# %%
-# Temporal normalization
+# %% Temporal normalization
 # ----------------------
 #
-# This section normalizes the traces in the stream with different methods. The
-# methods are applied to the stream, and the normalized traces are stored in a
-# list. See\ :footcite:`bensen2007processing` for more information on the normalization
+# We here show the trace normalized with different methods. The methods are
+# applied to the stream, and the normalized traces are stored in a list. See\
+# :footcite:`bensen2007processing` for more information on the normalization
 
 # Initialize the list of normalized streams
 normalization_methods = ["onebit", "smooth"]
 normalized_streams = []
 
-# Loop over the normalization methods
+# Normalize the stream with the different methods
 for method in normalization_methods:
-
-    # Apply the normalization
     normalized_stream = stream.copy()
     normalized_stream.normalize(method=method)
-
-    # Append to the list of normalized streams
     normalized_streams.append(normalized_stream)
 
 # %%
@@ -57,26 +52,22 @@ for method in normalization_methods:
 # and the normalized streams are plotted below.
 
 # Concatenate the original stream with the normalized streams
-all_streams = [stream] + normalized_streams
-all_titles = ["Original"] + normalization_methods
+streams = [stream] + normalized_streams
+labels = ["original"] + normalization_methods
 
 # Create gigure
-fig, axes = plt.subplots(
-    nrows=len(all_streams), sharex=True, constrained_layout=True
-)
+fig, axes = plt.subplots(len(streams), sharex=True, constrained_layout=True)
 
-# Loop over the streams
-for ax, traces, title in zip(axes, all_streams, all_titles):
-    ax.plot(traces[0].times(), traces[0].data, label=traces[0].id)
-    ax.set_title(title.title())
-    ax.grid()
+# Plot each case
+for ax, stream, label in zip(axes, streams, labels):
+    ax.plot(stream[0].times("matplotlib"), stream[0].data)
+    ax.set_title(label.title())
     ax.set_ylabel("Amplitude")
+    ax.grid()
 
 # Set the x-axis label
-axes[-1].set_xlabel("Time (seconds)")
+csn.plot.dateticks(axes[-1])
 
-# Show the figure
-plt.show()
 
 # %%
 # References

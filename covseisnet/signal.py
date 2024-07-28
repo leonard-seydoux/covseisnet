@@ -1,5 +1,6 @@
 """Spectral tools."""
 
+import matplotlib.dates as mdates
 import numpy as np
 import obspy
 from scipy import signal
@@ -50,7 +51,7 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         return out
 
     def transform(self, trace: obspy.core.trace.Trace) -> tuple:
-        """Transform a trace into the spectral domain.
+        """Short-time Fourier Transform of a trace.
 
         Arguments
         ---------
@@ -63,7 +64,7 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         Returns
         -------
         times : list
-            The times of the spectrogram in class:`~obspy.UTCDateTime` format.
+            The times of the window centers in matplotlib datenum format.
         frequencies : numpy.ndarray
             The frequencies of the spectrogram.
         spectrogram : numpy.ndarray
@@ -84,13 +85,16 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         frequencies = self.f
 
         # Get times
-        times = self.t(npts, p0=p0, p1=p1)
-        times = [trace.stats.starttime + t for t in times]
+        starttime_matplotlib = mdates.date2num(trace.stats.starttime.datetime)
+        times = self.t(npts, p0=p0, p1=p1).copy()
+        times /= 86400
+        times += starttime_matplotlib
 
         return times, frequencies, short_time_spectra
 
     def map_transform(
-        self, stream: obspy.core.stream.Stream, **kwargs: dict
+        self,
+        stream: obspy.core.stream.Stream,
     ) -> tuple:
         """Transform a stream into the spectral domain.
 
@@ -98,9 +102,6 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         ---------
         stream : :class:`~obspy.core.stream.Stream`
             The stream to transform.
-        **kwargs: dict, optional
-            Additional keyword arguments are passed to the
-            :meth:`scipy.signal.ShortTimeFFT.stft` method.
 
         Returns
         -------
@@ -120,7 +121,7 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         return times, frequencies, np.array(short_time_spectra)
 
 
-def one_bit_normalize(x: np.ndarray, epsilon=1e-10) -> np.ndarray:
+def modulus_division(x: np.ndarray, epsilon=1e-10) -> np.ndarray:
     r"""Modulus division of a complex number.
 
     Given a complex number (or array) :math:`x = a e^{i\phi}`,
