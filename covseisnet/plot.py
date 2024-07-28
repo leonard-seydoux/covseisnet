@@ -4,14 +4,12 @@ mostly plotting functions, but also to provide basic tools to quickly visualize
 data and results from this package.
 """
 
-import time
-
-
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import obspy
 from scipy.fft import rfft, rfftfreq
+from scipy.stats import median_abs_deviation
 
 import covseisnet as csn
 from .signal import ShortTimeFourierTransform
@@ -121,7 +119,9 @@ def trace_and_spectrum(trace: obspy.core.trace.Trace) -> None:
 
 
 def trace_and_spectrogram(
-    trace: obspy.core.trace.Trace, **kwargs: dict
+    trace: obspy.core.trace.Trace,
+    f_min: None | float = None,
+    **kwargs: dict,
 ) -> None:
     """Plot a trace and its spectrogram.
 
@@ -149,8 +149,12 @@ def trace_and_spectrogram(
     spectra_times, frequencies, spectra = stft.transform(trace)
 
     # Remove zero frequencies for display
-    frequencies = frequencies[1:]
-    spectra = spectra[1:]
+    if f_min is not None:
+        n = np.abs(frequencies - f_min).argmin()
+    else:
+        n = 1
+    frequencies = frequencies[n:]
+    spectra = spectra[n:]
 
     # Calculate spectrogram
     spectrogram = np.log10(np.abs(spectra) + 1e-10)
@@ -164,10 +168,7 @@ def trace_and_spectrogram(
 
     # Plot spectrogram
     mappable = ax[1].pcolormesh(
-        spectra_times,
-        frequencies,
-        spectrogram,
-        shading="nearest",
+        spectra_times, frequencies, spectrogram, shading="nearest", vmin=4
     )
     ax[1].grid()
     ax[1].set_yscale("log")
@@ -247,7 +248,7 @@ def stream_and_coherence(
 
     # Frequency axis
     ax[1].set_yscale("log")
-    ax[1].set_ylim(frequencies[1], frequencies[-1] / 2)
+    ax[1].set_ylim(frequencies[1], frequencies[-1])
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].set_title("Spatial coherence")
 

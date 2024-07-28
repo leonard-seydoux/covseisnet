@@ -388,7 +388,7 @@ def calculate_covariance_matrix(
         # Slice
         selection = slice(index, index + average)
         spectra_slice = spectra[..., selection]
-        # spectra_slice /= np.mean(np.abs(spectra_slice), axis=-1, keepdims=True)
+        spectra_slice /= np.mean(np.abs(spectra_slice), axis=-1, keepdims=True)
         covariances[i] = np.einsum(
             "ift,jft -> fij", spectra_slice, np.conj(spectra_slice)
         )
