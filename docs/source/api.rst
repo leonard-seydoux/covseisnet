@@ -1,25 +1,12 @@
 .. _guide:
 
-Programming interface 
-=====================
+API Reference
+=============
 
-Stream
-------
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: covseisnet.stream
-    :members:
-    :show-inheritance:
-
-Plot    
------
-
-.. automodule:: covseisnet.plot
-    :members:
-    :show-inheritance:
-
-Covariance
-----------
-
-.. automodule:: covseisnet.covariance
-    :members:
-    :show-inheritance:
+    stream
+    signal
+    covariance
+    plot
