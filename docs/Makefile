@@ -23,7 +23,6 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 	rm -rf source/auto_examples/
-	rm -rf source/_autosummary/
 	echo "Removing auto_examples directory"
 
 html-noplot:
