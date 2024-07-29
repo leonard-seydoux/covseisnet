@@ -595,7 +595,7 @@ class NetworkStream(obspy.Stream):
         return True
 
     @property
-    def stations(self) -> set[str]:
+    def stations(self) -> list[str]:
         """List of unique station names.
 
         This property is also available directly from looping over the traces
@@ -605,13 +605,13 @@ class NetworkStream(obspy.Stream):
         -------
         >>> stream = csn.read()
         >>> stream.stations
-        {'RJOB'}
+        ['RJOB']
 
         """
-        return set([trace.stats.station for trace in self.traces])
+        return [trace.stats.station for trace in self.traces]
 
     @property
-    def channels(self) -> set[str]:
+    def channels(self) -> list[str]:
         """List of unique channel names.
 
         This property is also available directly from looping over the traces
@@ -621,12 +621,12 @@ class NetworkStream(obspy.Stream):
         -------
         >>> stream = csn.read()
         >>> stream.channels
-        {'EHZ', 'EHN', 'EHE'}
+        ['EHZ', 'EHN', 'EHE']
         """
-        return set([trace.stats.channel for trace in self.traces])
+        return [trace.stats.channel for trace in self.traces]
 
     @property
-    def ids(self) -> set[str]:
+    def ids(self) -> list[str]:
         """List of unique trace ids.
 
         This property is also available directly from looping over the traces
@@ -636,9 +636,9 @@ class NetworkStream(obspy.Stream):
         -------
         >>> stream = csn.read()
         >>> stream.ids
-        {'BW.RJOB..EHE', 'BW.RJOB..EHN', 'BW.RJOB..EHZ'}
+        ['BW.RJOB..EHE', 'BW.RJOB..EHN', 'BW.RJOB..EHZ']
         """
-        return set([trace.id for trace in self.traces])
+        return [trace.id for trace in self.traces]
 
     @property
     def sampling_rate(self) -> float:
