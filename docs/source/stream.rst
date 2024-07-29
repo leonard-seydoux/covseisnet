@@ -1,5 +1,5 @@
-Stream
-======
+Network stream
+==============
 
 .. automodule:: covseisnet.stream
     :members:
