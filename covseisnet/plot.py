@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import obspy
 from scipy.fft import rfft, rfftfreq
-from scipy.stats import median_abs_deviation
 
 import covseisnet as csn
 from .signal import ShortTimeFourierTransform
