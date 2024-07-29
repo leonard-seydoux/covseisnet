@@ -326,23 +326,56 @@ class CovarianceMatrix(np.ndarray):
             return eigenvectors.reshape(self.shape[:-1])
 
     def flat(self):
-        """Covariance matrices with flatten first dimensions.
+        r"""Covariance matrices with flatten first dimensions.
+
+        The shape of the covariance matrix depend on the number of time
+        windows and frequencies. The method
+        :meth:`~covseisnet.covariance.CovarianceMatrix.flat` allows to obtain
+        as many :math:`N \times N` covariance matrices as time and frequency
+        samples.
 
         Returns
         -------
-
         :class:`np.ndarray`
             The covariance matrices in a shape ``(a * b, n, n)``.
+
+        Example
+        -------
+        >>> import covseisnet as cn
+        >>> import numpy as np
+        >>> c = np.arange(16).reshape((2, 2, 2, 2)).view(cn.CovarianceMatrix)
+        >>> c.shape
+            (2, 2, 2, 2)
+        >>> c.flat().shape
+            (4, 2, 2)
         """
         return self.reshape(-1, *self.shape[-2:])
 
     def triu(self, **kwargs):
         """Extract upper triangular on flatten array.
 
-        Keyword arguments
-        -----------------
+        This method is useful when calculating the cross-correlation matrix
+        associated with the covariance matrix. Indeed, since the covariance
+        matrix is Hermitian, the cross-correlation matrix is symmetric, so
+        there is no need to calculate the lower triangular part.
+
+        The method :meth:`~covseisnet.covariance.CovarianceMatrix.triu` is
+        applied to the flattened array, then reshaped to the original shape of
+        the covariance matrix. The last dimension of the returned matrix is
+        the number of upper triangular elements of the covariance matrix.
+
+        Arguments
+        ---------
         **kwargs: dict, optional
-            The keyword arguments passed to the :func:`numpy.triu` function.
+            Keyword arguments passed to the :func:`numpy.triu_indices`
+            function.
+
+        Returns
+        -------
+        :class:`~covseisnet.covariance.CovarianceMatrix`
+            The upper triangular part of the covariance matrix, with a maximum
+            shape of ``(n_times, n_frequencies, n_traces * (n_traces + 1) //
+            2)``.
 
 
         Example
@@ -397,6 +430,31 @@ def calculate_covariance_matrix(
     information. You can also find more information on the covariance matrix
     in the paper of :footcite:`seydoux_detecting_2016`.
 
+    The whitening parameter can be used to normalize the covariance matrix.
+    The parameter can be set to "none" (default), "slice", or "window". The
+    "none" option does not apply any whitening to the covariance matrix. The
+    "slice" option normalizes the spectra :math:`u_i(t \in \tau_m, f)` by the
+    mean of the absolute value of the spectra within the same group of time
+    windows :math:`\{\tau_m\}_{m=1\dots M}`, so that
+
+    .. math::
+
+        u_i(t \in \tau_m, f) = \frac{u_i(t \in \tau_m, f)}{\sum_{i=1}^N |u_i(t
+        \in \tau_m, f)|}
+
+    The "window" option normalizes the spectra :math:`u_i(t \in \tau_m, f)` by
+    the absolute value of the spectra within the same time window :math:`\tau_m`
+    so that
+
+    .. math::
+
+        u_i(t \in \tau_m, f) = \frac{u_i(t \in \tau_m, f)}{|u_i(t \in \tau_m,
+        f)|}
+
+    These additional whitening methods can be used in addition to the
+    :meth:`~covseisnet.stream.NetworkStream.whiten` method to further whiten
+    the covariance matrix.
+
     Arguments
     ---------
     stream: :class:`~covseisnet.stream.NetworkStream`
@@ -413,7 +471,7 @@ def calculate_covariance_matrix(
         to further whiten the covariance matrix.
     **kwargs: dict, optional
         Additional keyword arguments passed to the
-        :func:`~covseisnet.stream.calculate_short_time_spectra` function.
+        :class:`~covseisnet.signal.ShortTimeFourierTransform` class.
 
     Returns
     -------
@@ -421,7 +479,7 @@ def calculate_covariance_matrix(
         The time vector of the beginning of each covariance window.
     :class:`numpy.ndarray`
         The frequency vector.
-    :class:`covseisnet.covariance.CovarianceMatrix`
+    :class:`~covseisnet.covariance.CovarianceMatrix`
         The complex covariance matrix, with a shape depending on the number of
         time windows and frequencies, maximum shape ``(n_times, n_frequencies,
         n_traces, n_traces)``.
@@ -434,10 +492,9 @@ def calculate_covariance_matrix(
 
     >>> import covseisnet as csn
     >>> stream = csn.read()
-    >>> t, f, c = csn.covariance.calculate_covariance_matrix(stream, 1., 5)
+    >>> t, f, c = csn.calculate_covariance_matrix(stream, window_duration_sec=1., average=5)
     >>> print(c.shape)
-        (28, 199, 3, 3)
-
+        (27, 51, 3, 3)
 
     References
     ----------
