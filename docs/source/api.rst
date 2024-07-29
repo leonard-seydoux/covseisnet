@@ -9,6 +9,7 @@ API Reference
     stream
     signal
     covariance
+    correlation
     plot
     data
 
