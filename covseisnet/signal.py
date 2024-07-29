@@ -1,4 +1,12 @@
-"""Spectral tools."""
+"""
+The package provides tools for spectral analysis of seismic data. The main
+class is the :class:`~ShortTimeFourierTransform` class, which extends the
+:class:`~scipy.signal.ShortTimeFFT` class to provide a more user-friendly
+interface for the Short-Time Fourier Transform with streams. 
+
+Other functions are provided to normalize seismic traces in the spectral
+domain, such as the :func:`~modulus_division` and :func:`~smooth_modulus_division` functions. Also, we provide the :func:`~smooth_envelope_division` function to normalize seismic traces by a smooth version of its envelope.
+"""
 
 import matplotlib.dates as mdates
 import numpy as np
@@ -21,6 +29,61 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         This class extends the :class:`scipy.signal.ShortTimeFFT` class to
         provide a more user-friendly interface for the Short-Time Fourier
         Transform with ObsPy and Covseisnet Streams.
+
+        Arguments
+        ---------
+        window_duration_sec: float, optional
+            The duration of the window in seconds. Default is 2.0 seconds.
+        window_step_sec: float, optional
+            The step between windows in seconds. Default is half the window
+            duration.
+        window_function: str, optional
+            The window function to use. Default is the Hann window.
+        sampling_rate: float, optional
+            The sampling rate of the data. Default is 1.0 Hz. In most methods
+            the sampling rate is set automatically from the data.
+        **kwargs: dict, optional
+            Additional keyword arguments are passed to the
+            :meth:`scipy.signal.ShortTimeFFT.stft` method.
+
+        Notes
+        -----
+
+        By default, the :class:`scipy.signal.ShortTimeFFT` class pads the data
+        with zeros on both sides to avoid edge effects, and enable the
+        analysis of edge samples (see the `tutorial on the Short-Time Fourier
+        Transform <https://docs.scipy.org/doc/scipy/tutorial/signal.html#tutorial-stft>`_
+        in the SciPy documentation). Because the main purpose of this class
+        is to analyse the spatial coherence of seismic data, this default
+        behaviour is disabled. Indeed, the edges appear wrongly coherent
+        because of the zero-padding. This is why the representation of the
+        Short-Time Fourier Transform indicates the number of samples and
+        windows that are out-of-bounds. These samples are discarded from the
+        analysis. Note that this is not a real issue since the covariance
+        matrix analysis is performed on sliding windows.
+
+        Examples
+        --------
+        >>> from covseisnet.signal import ShortTimeFourierTransform
+        >>> stft = ShortTimeFourierTransform(
+        ...     window_duration_sec=2.0,
+        ...     window_step_sec=1.0,
+        ...     window_function="hann",
+        ...     sampling_rate=100.0,
+        ... )
+        >>> print(stft)
+        Short-Time Fourier Transform instance
+            Sampling rate: 100.0 Hz
+            Frequency range: 0.50 to 50.00 Hz
+            Frequency resolution: 0.5 Hz
+            Frequency bins: 101
+            Window length: 200 samples
+            Window step: 100 samples
+            Out-of-bounds: 101 sample(s), 1 window(s)
+
+        See also
+        --------
+        :class:`scipy.signal.ShortTimeFFT`
         """
         # Define apodization window
         window_size = int(window_duration_sec * sampling_rate)
@@ -50,25 +113,58 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         out += f"\tOut-of-bounds: {k0} sample(s), {p0} window(s)"
         return out
 
-    def transform(self, trace: obspy.core.trace.Trace) -> tuple:
+    def transform(
+        self, trace: obspy.core.trace.Trace, detrend="linear", **kwargs
+    ) -> tuple:
         """Short-time Fourier Transform of a trace.
+
+        This method calculates the Short-Time Fourier Transform of a trace
+        using the :meth:`scipy.signal.ShortTimeFFT.stft_detrend` method. The
+        method returns the times of the window centers in matplotlib datenum
+        format, the frequencies of the spectrogram, and the short-time spectra
+        of the trace.
+
+        Prior to the Short-Time Fourier Transform, the method removes the
+        linear trend from the trace to avoid edge effects. The method also
+        discards the out-of-bounds samples and windows that are padded with
+        zeros by the :class:`scipy.signal.ShortTimeFFT`.
 
         Arguments
         ---------
         trace : :class:`~obspy.core.trace.Trace`
             The trace to transform.
+        detrend : str, optional
+            The detrending method. Default is "linear".
         **kwargs: dict, optional
             Additional keyword arguments are passed to the
-            :meth:`scipy.signal.ShortTimeFFT.stft` method.
+            :meth:`scipy.signal.ShortTimeFFT.stft_detrend` method. The same
+            arguments are passed to the :meth:`scipy.signal.ShortTimeFFT.t`
+            method to get the times of the window centers.
 
         Returns
         -------
-        times : list
+        times : numpy.ndarray
             The times of the window centers in matplotlib datenum format.
         frequencies : numpy.ndarray
             The frequencies of the spectrogram.
-        spectrogram : numpy.ndarray
-            The spectrogram of the trace.
+        short_time_spectra : numpy.ndarray
+            The short-time spectra of the trace with shape ``(n_frequencies,
+            n_times)``.
+
+        Examples
+        --------
+        >>> import covseisnet as csn
+        >>> stft = csn.ShortTimeFourierTransform(
+        ...     window_duration_sec=2.0,
+        ...     window_step_sec=1.0,
+        ...     window_function="hann",
+        ...     sampling_rate=100.0,
+        ... )
+        >>> stream = csn.read()
+        >>> trace = stream[0]
+        >>> times, frequencies, short_time_spectra = stft.transform(trace)
+        >>> print(times.shape, frequencies.shape, short_time_spectra.shape)
+        (28,) (101,) (101, 28)
         """
         # Get trace data
         data = trace.data
@@ -77,16 +173,18 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         # Extract the lower and upper border
         _, p0 = self.lower_border_end
         _, p1 = self.upper_border_begin(npts)
+        kwargs.setdefault("p0", p0)
+        kwargs.setdefault("p1", p1)
 
         # Calculate the Short-Time Fourier Transform
-        short_time_spectra = self.stft_detrend(data, "linear", p0=p0, p1=p1)
+        short_time_spectra = self.stft_detrend(data, detrend, **kwargs)
 
         # Get frequencies
         frequencies = self.f
 
-        # Get times
+        # Get times in matplotlib datenum format
         starttime_matplotlib = mdates.date2num(trace.stats.starttime.datetime)
-        times = self.t(npts, p0=p0, p1=p1).copy()
+        times = self.t(npts, **kwargs).copy()
         times /= 86400
         times += starttime_matplotlib
 
@@ -95,8 +193,22 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
     def map_transform(
         self,
         stream: obspy.core.stream.Stream,
+        **kwargs: dict,
     ) -> tuple:
         """Transform a stream into the spectral domain.
+
+        This method transforms a stream into the spectral domain by applying
+        the Short-Time Fourier Transform to each trace of the stream. The
+        method returns the times of the spectrogram in matplotlib datenum
+        format, the frequencies of the spectrogram, and the spectrogram of the
+        stream.
+
+        This method is basically a wrapper around the :meth:`transform` method
+        that applies the Short-Time Fourier Transform to each trace of the
+        stream.
+
+        Note that the stream must be ready for processing, i.e., it must pass
+        the quality control from the property :attr:`~covseisnet.stream.Stream.is_ready_to_process`.
 
         Arguments
         ---------
@@ -105,24 +217,42 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
 
         Returns
         -------
-        times : list
-            The times of the spectrogram in class:`~obspy.UTCDateTime` format.
+        times : numpy.ndarray
+            The times of the spectrogram in matplotlib datenum format.
         frequencies : numpy.ndarray
             The frequencies of the spectrogram.
-        spectrogram : numpy.ndarray
-            The spectrogram of the stream.
+        short_time_spectra : numpy.ndarray
+            The spectrogram of the stream with shape ``(n_trace, n_frequencies,
+            n_times)``.
+        **kwargs: dict, optional
+            Additional keyword arguments are passed to the :meth:`transform`
+            method.
+
+        Examples
+        --------
+        >>> import covseisnet as csn
+        >>> stft = csn.ShortTimeFourierTransform(
+        ...     window_duration_sec=2.0,
+        ...     window_step_sec=1.0,
+        ...     window_function="hann",
+        ...     sampling_rate=100.0,
+        ... )
+        >>> stream = csn.read()
+        >>> times, frequencies, short_time_spectra = stft.map_transform(stream)
+        >>> print(times.shape, frequencies.shape, short_time_spectra.shape)
+        (28,) (101,) (3, 101, 28)
         """
         # Calculate the Short-Time Fourier Transform
         short_time_spectra = []
         for trace in stream:
-            times, frequencies, short_time_spectrum = self.transform(trace)
-            short_time_spectra.append(short_time_spectrum)
+            times, frequencies, spectra = self.transform(trace, **kwargs)
+            short_time_spectra.append(spectra)
 
         return times, frequencies, np.array(short_time_spectra)
 
 
 def modulus_division(x: np.ndarray, epsilon=1e-10) -> np.ndarray:
-    r"""Modulus division of a complex number.
+    r"""Division of a number by the absolute value or its modulus.
 
     Given a complex number (or array) :math:`x = a e^{i\phi}`,
     where :math:`a` is the modulus and :math:`\phi` the phase, the function
@@ -175,12 +305,12 @@ def smooth_modulus_division(
 
     .. math::
 
-        \tilde{x}[n] = \frac{x[n]}{s(a)[n] + \epsilon}
+        \tilde{x}[n] = \frac{x[n]}{\mathcal S a[n] + \epsilon}
 
-    where :math:`s(a)[n]` is a smoothed version of the modulus array
+    where :math:`\mathcal S a[n]` is a smoothed version of the modulus array
     :math:`a[n]`. The smoothing function is performed with the Savitzky-Golay
     filter, and the order and length of the filter are set by the ``smooth``
-    and ``order`` parameters.].
+    and ``order`` parameters.
 
     Arguments
     ---------
@@ -214,6 +344,16 @@ def smooth_envelope_division(
     envelope. The envelope is calculated with the Hilbert transform, and then
     smoothed with the Savitzky-Golay filter. The order and length of the
     filter are set by the ``smooth`` and ``order`` parameters.
+
+    Considering the seismic trace :math:`x(t)`, the normalized trace
+    :math:`\hat x(t)` is obtained with
+
+    .. math::
+
+        \hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}
+
+    where :math:`A` is an smoothing operator applied to Hilbert envelope of
+    the trace :math:`x(t)`.
 
     Arguments
     ---------
