@@ -291,6 +291,7 @@ def calculate_covariance_matrix(
     stream: NetworkStream,
     average: int,
     average_step: int | None = None,
+    whiten: str = "none",
     **kwargs: dict,
 ) -> tuple[np.ndarray, np.ndarray, CovarianceMatrix]:
     r"""Calculate covariance matrix.
@@ -327,6 +328,11 @@ def calculate_covariance_matrix(
     average_step: int, optional
         The sliding window step for covariance matrix calculation (in number
         of windows).
+    whiten: str, optional
+        The type of whitening applied to the covariance matrix. Can be
+        "none" (default), "slice", or "window". This parameter can be used in
+        addition to the :meth:`~covseisnet.stream.NetworkStream.whiten` method
+        to further whiten the covariance matrix.
     **kwargs: dict, optional
         Additional keyword arguments passed to the
         :func:`~covseisnet.stream.calculate_short_time_spectra` function.
@@ -367,8 +373,14 @@ def calculate_covariance_matrix(
     # Extract spectra
     spectra_times, frequencies, spectra = stft.map_transform(stream)
 
+    # Check whiten parameter
+    if whiten not in ["none", "slice", "window"]:
+        message = "{} is not an available option for whiten."
+        raise ValueError(message.format(whiten))
+
     # Remove modulus
-    # spectra /= np.abs(spectra) + 1e-5
+    if whiten == "window":
+        spectra /= np.abs(spectra) + 1e-5
 
     # Parametrization
     step = average // 2 if average_step is None else average * average_step
@@ -388,15 +400,22 @@ def calculate_covariance_matrix(
         # Slice
         selection = slice(index, index + average)
         spectra_slice = spectra[..., selection]
-        spectra_slice /= np.mean(np.abs(spectra_slice), axis=-1, keepdims=True)
+
+        # Whiten
+        if whiten == "slice":
+            spectra_slice /= np.mean(
+                np.abs(spectra_slice),
+                axis=-1,
+                keepdims=True,
+            )
+
+        # Covariance
         covariances[i] = np.einsum(
             "ift,jft -> fij", spectra_slice, np.conj(spectra_slice)
         )
 
         # Center time
         duration = spectra_times[selection][-1] - spectra_times[selection][0]
-        # print(spectra_times[selection][0])
-        # print(spectra_times[selection][-1])
         covariance_times.append(spectra_times[selection][0] + duration / 2)
 
     # Add stations
