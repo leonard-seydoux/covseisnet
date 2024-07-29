@@ -114,6 +114,7 @@ fig, ax = plt.subplots(
 # Plot a trace
 ax[0].plot(stream[0].times("matplotlib"), stream[0].data, color="black")
 ax[0].set_title(f"Trace from {stream[0].id}")
+ax[0].set_ylabel("Amplitude")
 
 # Plot coherences
 for i, (case, coherence) in enumerate(zip(cases, coherences)):
@@ -121,4 +122,5 @@ for i, (case, coherence) in enumerate(zip(cases, coherences)):
         times, frequencies, coherence, ax=ax[i + 1], vmax=vmax, f_min=0.5
     )
     ax[i + 1].set_title(case)
+    ax[i + 1].set_ylabel("Frequency (Hz)")
 csn.plot.dateticks(ax[-1])
