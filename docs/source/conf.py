@@ -69,8 +69,15 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
+    "matplotlib.sphinxext.plot_directive",
 ]
 
+
+# Plot directive
+plot_include_source = True
+plot_html_show_source_link = False
+plot_html_show_formats = False
+plot_formats = [("svg", 150)]
 
 # Napoleon settings
 napoleon_google_docstring = False
