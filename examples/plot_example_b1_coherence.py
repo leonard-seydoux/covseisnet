@@ -11,11 +11,10 @@ The following example use a Fourier estimation window of 1 second and is
 estimated over 5 consecutive windows.
 """
 
-import time
-
-import numpy as np
+import os
 
 import covseisnet as csn
+
 
 # %%
 # Read and pre-process stream
@@ -28,23 +27,19 @@ import covseisnet as csn
 # requires a window duration in seconds and a smooth length to smooth the
 # spectral whitening.
 
+# Path to the example stream
+filepath_waveforms = "../data/undervolc_example.mseed"
+
+# Download stream if not available
+if not os.path.exists(filepath_waveforms):
+    csn.data.download_undervolc_data()
+
 # Read example stream
-stream = csn.read("/Users/seydoux/Desktop/undervolc_20.mseed")
-# stream = stream[::2]
-# stream = stream.select(station="UV1*")
-# stream.cut("2010-10-14 15:00", "2010-10-14 16:00")
-
-
-# Get channels
-channels = [trace.stats.channel for trace in stream]
-
-# Pre-process stream
-# stream.decimate(5)
-stream.detrend("linear")
+stream = csn.read(filepath_waveforms)
 stream.filter("highpass", freq=0.5)
-# stream.taper(max_percentage=0.05)
-# stream.whiten(window_duration_sec=500, smooth_length=11)
-# stream.normalize(smooth_length=101)
+stream.normalize(method="smooth", smooth_length=1001)
+stream.taper(max_percentage=0.01)
+
 
 # %%
 # Covariance matrix
@@ -52,17 +47,13 @@ stream.filter("highpass", freq=0.5)
 #
 # The covariance matrix is calculated using the method :func:`~covseisnet.covariance.calculate_covariance_matrix`. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix. We can then visualize the covariance matrix at a given time and frequency, and its corresponding eigenvalues.
 
+# Calculate covariance matrix
 times, frequencies, covariances = csn.calculate_covariance_matrix(
-    stream, window_duration_sec=40, average=20
+    stream, window_duration_sec=20, average=20, whiten="slice"
 )
 
-
-# Show covariance from first window and first frequency
-tic = time.time()
-t_index = 1
-f_index = np.abs(frequencies - 1).argmin()
-csn.plot.covariance_matrix_modulus_and_spectrum(covariances[t_index, f_index])
-print(f"Elapsed time cov: {time.time() - tic:.2f} s")
+# Show covariance from sample window and frequency
+csn.plot.covariance_matrix_modulus_and_spectrum(covariances[42, 42])
 
 # %%
 # Spectral width
@@ -75,9 +66,7 @@ print(f"Elapsed time cov: {time.time() - tic:.2f} s")
 # or with applying the formula of the Neumann entropy.
 
 # Calculate coherence
-tic = time.time()
-coherence = covariances.coherence()
-print(f"Elapsed time coherence: {time.time() - tic:.2f} s")
+coherence = covariances.coherence(kind="spectral_width")
 
 # Show
 # sphinx_gallery_thumbnail_number = 2
