@@ -79,7 +79,7 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         _, p1 = self.upper_border_begin(npts)
 
         # Calculate the Short-Time Fourier Transform
-        short_time_spectra = self.stft(data, p0=p0, p1=p1)
+        short_time_spectra = self.stft_detrend(data, "linear", p0=p0, p1=p1)
 
         # Get frequencies
         frequencies = self.f
