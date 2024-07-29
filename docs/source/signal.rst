@@ -1,5 +1,5 @@
-Signal
-======
+Signal processing
+=================
 
 .. automodule:: covseisnet.signal
     :members:
