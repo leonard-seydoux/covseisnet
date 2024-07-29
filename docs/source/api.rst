@@ -10,4 +10,5 @@ API Reference
     signal
     covariance
     plot
+    data
 
