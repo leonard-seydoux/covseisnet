@@ -1,5 +1,5 @@
-Covariance
-==========
+Covariance Matrix
+=================
 
 .. automodule:: covseisnet.covariance
     :members:
