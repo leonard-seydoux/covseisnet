@@ -1,5 +1,5 @@
-Plot
-====
+Plotting tools
+==============
 
 .. automodule:: covseisnet.plot
     :members:
