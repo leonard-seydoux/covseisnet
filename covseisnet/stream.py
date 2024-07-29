@@ -419,21 +419,21 @@ class NetworkStream(obspy.Stream):
 
         .. math::
 
-            \hat u(t) = \frac{u(t)}{\mathcal{A}u(t) + \epsilon}
+            \hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}
 
-        where :math:`A` is an operator applied to the trace :math:`u(t)`, and
+        where :math:`A` is an operator applied to the trace :math:`x(t)`, and
         :math:`\epsilon > 0` is a regularization value to avoid division by 0.
         The operator :math:`\mathcal{A}` is defined by the ``method``
         parameter. We distinguish two cases:
 
         - If the ``method`` parameter is set to ``"onebit"``, the operator
-          :math:`\mathcal{A}` is defined as :math:`\mathcal{A}u(t) = |u(t)|`,
+          :math:`\mathcal{A}` is defined as :math:`\mathcal{A}x(t) = |x(t)|`,
           and therefore
 
           .. math::
 
-            \hat u(t) = \frac{u(t)}{|u(t)| + \epsilon} \approx
-            \text{sign}(u(t)).
+            \hat x(t) = \frac{x(t)}{|x(t)| + \epsilon} \approx
+            \text{sign}(x(t)).
 
           In this case, the method calls the
           :func:`~covseisnet.signal.modulus_division`.
