@@ -553,8 +553,13 @@ def calculate_covariance_matrix(
         duration = spectra_times[selection][-1] - spectra_times[selection][0]
         covariance_times.append(spectra_times[selection][0] + duration / 2)
 
-    # Add stations
+    # Set covariance matrix
     covariances = covariances.view(CovarianceMatrix)
+
+    # Turn times into array
+    covariance_times = np.array(covariance_times)
+
+    # Add stations
     covariances.set_stations(stream.stations)
 
     return covariance_times, frequencies, covariances
