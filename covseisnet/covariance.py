@@ -96,6 +96,16 @@ class CovarianceMatrix(np.ndarray):
         """
         self.stations = stations
 
+    def set_stft_instance(self, stft):
+        """Set the ShortTimeFourierTransform instance for further processing.
+
+        Arguments
+        ---------
+        stft: :class:`~covseisnet.signal.ShortTimeFourierTransform`
+            The ShortTimeFourierTransform instance.
+        """
+        self.stft = stft
+
     def coherence(self, kind="spectral_width", epsilon=1e-10):
         r"""Covariance-based coherence estimation.
 
@@ -559,8 +569,9 @@ def calculate_covariance_matrix(
     # Turn times into array
     covariance_times = np.array(covariance_times)
 
-    # Add stations
+    # Add metadata
     covariances.set_stations(stream.stations)
+    covariances.set_stft_instance(stft)
 
     return covariance_times, frequencies, covariances
 
@@ -641,3 +652,54 @@ def width(x: np.ndarray, **kwargs) -> np.ndarray:
     kwargs.setdefault("axis", -1)
     indices = np.arange(x.shape[kwargs["axis"]])
     return np.multiply(x, indices).sum(**kwargs)
+
+
+def get_twosided_covariance(
+    covariance_matrix: CovarianceMatrix, axis: int = 1
+) -> np.ndarray:
+    """Get the full covariance spectrum.
+
+    Given that the covariance matrix is Hermitian, the full covariance matrix
+    can be obtained by filling the negative frequencies with the complex
+    conjugate of the positive frequencies. The function
+    :func:`~covseisnet.covariance.get_twosided_covariance` performs this
+    operation.
+
+    The frequency axis is assumed to be the second axis of the covariance
+    matrix. The function returns a new covariance matrix with the negative
+    frequencies filled with the complex conjugate of the positive frequencies.
+
+    Arguments
+    ---------
+    covariance_matrix: :class:`~covseisnet.covariance.CovarianceMatrix`
+        The covariance matrix.
+    axis: int, optional
+        The frequency axis of the covariance matrix. Default is 1.
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+        The full covariance matrix.
+    """
+    # Get number of samples that were used to calculate the covariance matrix
+    stft = covariance_matrix.stft
+    n_samples_in = len(stft.win)
+
+    # Find out output shape
+    input_shape = covariance_matrix.shape
+    output_shape = list(input_shape)
+    output_shape[axis] = n_samples_in
+
+    # Initialize full covariance matrix with negative frequencies
+    covariance_matrix_full = np.zeros(output_shape, dtype=np.complex128)
+
+    # Fill negative frequencies
+    covariance_matrix_full[:, : n_samples_in // 2 + 1] = covariance_matrix
+    covariance_matrix_full[:, n_samples_in // 2 + 1 :] = np.conj(
+        covariance_matrix[:, -2:0:-1]
+    )
+
+    # Return full covariance matrix
+    covariance_matrix_full = covariance_matrix_full.view(CovarianceMatrix)
+    covariance_matrix_full.__dict__.update(covariance_matrix.__dict__)
+    return covariance_matrix_full
