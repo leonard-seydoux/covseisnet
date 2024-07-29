@@ -99,95 +99,173 @@ class CovarianceMatrix(np.ndarray):
     def coherence(self, kind="spectral_width", epsilon=1e-10):
         r"""Covariance-based coherence estimation.
 
-        The measured is performed onto all the covariance matrices from
-        the eigenvalues obtained with the method
-        :meth:`~covseisnet.covariancematrix.CovarianceMatrix.eigenvalues`.
-        For a given matrix :math:`N \times N` matrix :math:`M` with
-        eigenvalues :math:`\mathbf{\lambda} = \lambda_i` where
-        :math:`i=1\ldots n`. The coherence is obtained as :math:`F(\lambda)`,
-        with :math:`F` being defined by the `kind` parameter.
+        The measured is performed onto all the covariance matrices from the
+        eigenvalues obtained with the method
+        :meth:`~covseisnet.covariancematrix.CovarianceMatrix.eigenvalues`. For
+        a given matrix :math:`N \times N` matrix :math:`M` with eigenvalues
+        :math:`\mathbf{\lambda} = \lambda_i` where :math:`i=1\ldots n`. The
+        coherence is obtained as :math:`F(\lambda)`, with :math:`F` being
+        defined by the `kind` parameter.
 
-        - The spectral width is obtained with setting ``kind='spectral_width'``
-          , and returns the width :math:`\sigma` of the
-          eigenvalue distribution such as
+        - The spectral width is obtained with setting
+          ``kind="spectral_width"`` , and returns the width :math:`\sigma` of
+          the eigenvalue distribution (obtained at each time and frequency)
+          such as
 
           .. math::
 
               \sigma = \frac{\sum_{i=0}^n i \lambda_i}{\sum_{i=0}^n \lambda_i}
 
 
-        - The entropy is obtained with setting ``kind='entropy'``, and returns
-          the entropy :math:`h` of the eigenvalue distribution such as
+        - The entropy is obtained with setting ``kind="entropy"``, and returns
+          the entropy :math:`h` of the eigenvalue distribution (obtained at
+          each time and frequency) such as
 
           .. math::
 
               h = - \sum_{i=0}^n i \lambda_i \log(\lambda_i + \epsilon)
 
+        - The Shanon diversity index is obtained with setting
+          ``kind="diversity"``, and returns the diversity index :math:`D` of
+          the eigenvalue distribution (obtained at each time and frequency)
+          such as the exponential of the entropy:
+
+          .. math::
+
+              D = \exp(h + \epsilon)
+
 
         Keyword arguments
         -----------------
         kind: str, optional
-            The type of coherence, may be "spectral_width" (default) or
-            "entropy".
-
+            The type of coherence, may be "spectral_width" (default),
+            "entropy", or "diversity".
         epsilon: float, optional
-            The regularization parameter for log-entropy calculation. Default
-            to ``1e-10``.
+            The regularization parameter for the logarithm.
 
         Returns
         -------
-
         :class:`numpy.ndarray`
-            The spectral width of maximal shape ``(n_times, n_frequencies)``.
+            The coherence of maximal shape ``(n_times, n_frequencies)``,
+            depending on the input covariance matrix shape.
 
         """
+        if kind in ["spectral_width", "entropy", "diversity"]:
+            eigenvalues = self.eigenvalues(norm=np.sum)
+        else:
+            message = "{} is not an available option for kind."
+            raise ValueError(message.format(kind))
         if kind == "spectral_width":
-            eigenvalues = self.eigenvalues(norm=np.sum)
-            indices = np.arange(self.shape[-1])
-            return np.multiply(eigenvalues, indices).sum(axis=-1)
+            return width(eigenvalues, axis=-1)
         elif kind == "entropy":
-            eigenvalues = self.eigenvalues(norm=np.sum)
-            log_eigenvalues = np.log(eigenvalues + epsilon)
-            return -np.sum(eigenvalues * log_eigenvalues, axis=-1)
+            return entropy(self.eigenvalues(norm=np.sum), axis=-1)
+        elif kind == "diversity":
+            return diversity(self.eigenvalues(norm=np.sum), axis=-1)
         else:
             message = "{} is not an available option for kind."
             raise ValueError(message.format(kind))
 
     def eigenvalues(self, norm=np.max):
-        """Eigenvalue decomposition.
+        r"""Eigenvalue decomposition.
+
+        Given and Hermitian matrix :math:`C` of shape :math:`N \times N`, the
+        eigenvalue decomposition is defined as
+
+        .. math::
+
+            C = U D U^\dagger
+
+        where :math:`U` is the unitary matrix of eigenvectors (which are not
+        calculated here, see
+        :meth:`~covseisnet.covariance.CovarianceMatrix.eigenvectors` for this
+        purpose), and :math:`D` is the diagonal matrix of eigenvalues, as
+
+        .. math::
+
+            D = \pmatrix{\lambda_1 & 0 & \cdots & 0 \\
+                            0 & \lambda_2 & \cdots & 0 \\ \vdots & \vdots &
+                            \ddots & \vdots \\ 0 & 0 & \cdots & \lambda_N}
+
+        with :math:`\lambda_i` the eigenvalues. For obvious reasons, the
+        eigenvalues are returned as a vector such as 
+
+        .. math::
+
+            \lambda = \pmatrix{\lambda_1 \\ \lambda_2 \\ \vdots \\ \lambda_N}
+        
+        The eigenvalues are sorted in decreasing order. The eigenvalues are
+        normalized by the maximum eigenvalue by default, but can be normalized
+        by any function provided by numpy. Since the matrix :math:`C` is
+        Hermitian by definition, the eigenvalues are real- and
+        positive-valued. Also, the eigenvectors are orthogonal and normalized.
 
         The eigenvalue decomposition is performed onto the two last dimensions
-        of the :class:`~covseisnet.covariancematrix.CovarianceMatrix` object.
-        The function used for eigenvalue decomposition is
-        :func:`scipy.linalg.eigvalsh`. It assumes that the input matrix is 2D
-        and hermitian. The decomposition is performed onto the lower triangular
-        part in order to save time.
+        of the :class:`~covseisnet.covariance.CovarianceMatrix` object. The
+        function used for eigenvalue decomposition is
+        :func:`numpy.linalg.eigvalsh`. It assumes that the input matrix is 2D
+        and hermitian, so the decomposition is performed onto the lower
+        triangular part in order to save time.
 
-        Keyword arguments
-        -----------------
+        Arguments
+        ---------
         norm : function, optional
-            The function used to normalize the eigenvalues. Can be :func:`max`,
-            (default), any other functions.
+            The function used to normalize the eigenvalues. Can be
+            :func:`numpy.max`, (default), any other functions provided by
+            numpy, or a custom function. Note that the function must accept
+            the ``axis`` keyword argument.
 
         Returns
         -------
         :class:`numpy.ndarray`
-            The eigenvalues of maximal shape ``(n_times, n_freq, n_sta)``.
+            The eigenvalues of maximal shape ``(n_times, n_frequencies,
+            n_stations)``.
 
+        Notes
+        -----
+
+        The eigenvalue decomposition is performed onto the two last dimensions
+        of the :class:`~covseisnet.covariance.CovarianceMatrix` object. The
+        matrices are first flattened with the
+        :meth:`~covseisnet.covariance.CovarianceMatrix.flat` method, so the
+        eigenvalues are calculated for each time and frequency sample. The
+        eigenvalues are sorted in decreasing order, and normalized by the
+        maximum eigenvalue by default, before being reshaped to the original
+        shape of the covariance matrix. This maximizes the performance of the
+        eigenvalue decomposition.
+
+
+        See also
+        --------
+        :meth:`~covseisnet.covariance.CovarianceMatrix.eigenvectors`
+        :func:`numpy.linalg.eigvalsh`
+
+        Examples
+        --------
+        Calculate the eigenvalues of the example covariance matrix:
+
+        >>> import covseisnet as cn
+        >>> import numpy as np
+        >>> c = np.arange(8).reshape((2, 2, 2)).view(cn.CovarianceMatrix)
+        >>> c
+            CovarianceMatrix([[[0, 1],
+                               [2, 3]],
+                             [[4, 5],
+                              [6, 7]]])  
+        >>> c.eigenvalues()
+            array([[1.        , 0.25      ],
+                   [1.        , 0.05859465]])
         """
         # Flatten the array
         matrices = self.flat()
 
         # Parallel computation of eigenvalues
-        eigs = eigvalsh(matrices)
+        eigenvalues = eigvalsh(matrices)
 
         # Sort and normalize
-        eigs = np.sort(np.abs(eigs), axis=-1)[:, ::-1]
-        eigs /= norm(eigs, axis=-1, keepdims=True)
+        eigenvalues = np.sort(np.abs(eigenvalues), axis=-1)[:, ::-1]
+        eigenvalues /= norm(eigenvalues, axis=-1, keepdims=True)
 
-        # Original shape
-        eigevalue_shape = self.shape[:-1]
-        return eigs.reshape(eigevalue_shape)
+        return eigenvalues.reshape(self.shape[:-1])
 
     def eigenvectors(self, rank=0, covariance=False):
         """Extract eigenvectors of given rank.
@@ -423,3 +501,81 @@ def calculate_covariance_matrix(
     covariances.set_stations(stream.stations)
 
     return covariance_times, frequencies, covariances
+
+
+def entropy(x: np.ndarray, epsilon: float = 1e-10, **kwargs) -> np.ndarray:
+    r"""Entropy calculation.
+
+    Entropy calculated from a given distribution of values. The entropy is
+    defined as
+
+    .. math::
+
+        h = - \sum_{n=0}^N n x_n \log(x_n + \epsilon)
+
+    where :math:`x_n` is the distribution of values. This function assumes the
+    distribution is normalized by its sum.
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The distribution of values.
+    epsilon: float, optional
+        The regularization parameter for the logarithm.
+    **kwargs: dict, optional
+        Additional keyword arguments passed to the :func:`numpy.sum` function.
+        Typically, the axis along which the sum is performed.
+    """
+    return -np.sum(x * np.log(x + epsilon), **kwargs)
+
+
+def diversity(x: np.ndarray, epsilon: float = 1e-10, **kwargs) -> np.ndarray:
+    r"""Shanon diversity index calculation.
+
+    Shanon diversity index calculated from a given distribution of values. The
+    diversity index is defined as
+
+    .. math::
+
+        D = \exp(h + \epsilon)
+
+    where :math:`h` is the entropy of the distribution of values. This function
+    assumes the distribution is normalized by its sum.
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The distribution of values.
+    epsilon: float, optional
+        The regularization parameter for the logarithm.
+    **kwargs: dict, optional
+        Additional keyword arguments passed to the :func:`numpy.sum` function.
+        Typically, the axis along which the sum is performed.
+    """
+    return np.exp(entropy(x, epsilon, **kwargs))
+
+
+def width(x: np.ndarray, **kwargs) -> np.ndarray:
+    r"""Width calculation.
+
+    Width calculated from a given distribution of values. The width is defined
+    as
+
+    .. math::
+
+        \sigma = \sum_{n=0}^N n x_n
+
+    where :math:`x_n` is the distribution of values. This function assumes the
+    distribution is normalized by its sum.
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The distribution of values.
+    **kwargs: dict, optional
+        Additional keyword arguments passed to the :func:`numpy.sum` function.
+        Typically, the axis along which the sum is performed.
+    """
+    kwargs.setdefault("axis", -1)
+    indices = np.arange(x.shape[kwargs["axis"]])
+    return np.multiply(x, indices).sum(**kwargs)
