@@ -6,7 +6,6 @@ __all__ = [
     "NetworkStream",
     "read",
     "plot",
-    "calculate_spectrogram",
     "ShortTimeFourierTransform",
     "signal",
     "data",
@@ -14,6 +13,7 @@ __all__ = [
 
 from .covariance import CovarianceMatrix, calculate_covariance_matrix
 from .stream import NetworkStream, read
+from .signal import ShortTimeFourierTransform
 from . import signal
 from . import plot
 from . import data
