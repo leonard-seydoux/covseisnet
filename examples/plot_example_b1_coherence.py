@@ -1,20 +1,23 @@
 """
-Spatial coherence
-=================
+Spectral width
+==============
 
 Spatial coherence on the Piton de la Fournaise volcano.
 
-We here reproduce a part of the result published in :footcite:`seydoux_detecting_2016`.
-
-
-The following example use a Fourier estimation window of 1 second and is
-estimated over 5 consecutive windows.
+We here reproduce a part of the result published in
+:cite:t:`seydoux_detecting_2016`, and revisited over this particular time
+period in :cite:t:`journeau_seismic_2022`. In this example, the processing
+is made in two domains: first in the time domain with a smoothing of the
+envelope of the signal, and then in the frequency domain with the estimation
+of the covariance matrix.
 """
 
 import os
 
 import covseisnet as csn
 
+
+# sphinx_gallery_thumbnail_number = 2
 
 # %%
 # Read and pre-process stream
@@ -45,7 +48,16 @@ stream.taper(max_percentage=0.01)
 # Covariance matrix
 # -----------------
 #
-# The covariance matrix is calculated using the method :func:`~covseisnet.covariance.calculate_covariance_matrix`. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix. We can then visualize the covariance matrix at a given time and frequency, and its corresponding eigenvalues.
+# The covariance matrix is calculated using the method
+# :func:`~covseisnet.covariance.calculate_covariance_matrix`. The method
+# returns the times, frequencies, and covariances of the covariance matrix.
+# Among the parameters of the method, the window duration and the number of
+# windows are important to consider. The window duration is the length of the
+# Fourier estimation window in seconds, and the number of windows is the
+# number of windows to average to estimate the covariance matrix.
+#
+# We can then visualize the covariance matrix at a given time and frequency,
+# and its corresponding eigenvalues.
 
 # Calculate covariance matrix
 times, frequencies, covariances = csn.calculate_covariance_matrix(
@@ -53,7 +65,9 @@ times, frequencies, covariances = csn.calculate_covariance_matrix(
 )
 
 # Show covariance from sample window and frequency
-csn.plot.covariance_matrix_modulus_and_spectrum(covariances[42, 42])
+t_index = 65
+f_index = 100
+csn.plot.covariance_matrix_modulus_and_spectrum(covariances[t_index, f_index])
 
 # %%
 # Spectral width
@@ -69,12 +83,8 @@ csn.plot.covariance_matrix_modulus_and_spectrum(covariances[42, 42])
 coherence = covariances.coherence(kind="spectral_width")
 
 # Show
-# sphinx_gallery_thumbnail_number = 2
-csn.plot.stream_and_coherence(stream, times, frequencies, coherence, f_min=0.5)
-
-
-# %%
-# More about this result in the papers associated with the package, presented
-# in the home of this documentation.
-#
-# .. footbibliography::
+ax = csn.plot.stream_and_coherence(
+    stream, times, frequencies, coherence, f_min=0.5
+)
+ax[1].axvline(times[t_index], color="k", linestyle="--", lw=0.7)
+ax[1].axhline(frequencies[f_index], color="k", linestyle="--", lw=0.7)
