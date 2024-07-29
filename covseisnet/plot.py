@@ -190,6 +190,7 @@ def stream_and_coherence(
     frequencies: np.ndarray,
     coherence: np.ndarray,
     f_min: float = None,
+    trace_factor: float = 0.1,
     **kwargs: dict,
 ) -> None:
     """Plot a stream of traces and the coherence matrix.
@@ -216,11 +217,15 @@ def stream_and_coherence(
 
     # Show traces
     trace_times = stream.times(type="matplotlib")
-    global_max = np.max([np.max(np.abs(trace.data)) for trace in stream])
+    # global_max = np.max([np.max(np.abs(trace.data)) for trace in stream])
+    global_mad = np.median(
+        [median_abs_deviation(trace.data) for trace in stream]
+    )
     for index, trace in enumerate(stream):
         waveform = trace.data
-        waveform /= global_max
-        ax[0].plot(trace_times, waveform + index, color="k", lw=0.5)
+        # waveform /= global_mad * 10
+        waveform *= trace_factor
+        ax[0].plot(trace_times, waveform + index, color="k", lw=0.3)
 
     # Labels
     stations = stream.stations
@@ -228,6 +233,7 @@ def stream_and_coherence(
     ax[0].grid()
     ax[0].set_yticks(range(len(stations)), labels=stations, fontsize="small")
     ax[0].set_ylabel("Normalized amplitude")
+    ax[0].set_ylim(-1, len(stations))
     xlim = ax[0].get_xlim()
 
     # Remove low frequencies
@@ -259,7 +265,7 @@ def stream_and_coherence(
     dateticks(ax[1])
     ax[1].set_xlim(xlim)
 
-    fig.savefig("coherence.png", dpi=300)
+    return ax
 
 
 def covariance_matrix_modulus_and_spectrum(
