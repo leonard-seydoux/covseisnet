@@ -15,54 +15,12 @@ import covseisnet as csn
 from .signal import ShortTimeFourierTransform
 
 
-def dateticks(
-    ax: plt.Axes,
-    locator: mdates.DateLocator = mdates.AutoDateLocator,
-    formatter: mdates.DateFormatter = mdates.ConciseDateFormatter,
-) -> None:
-    """Set date ticks on the x-axis of a plot.
-
-    Arguments
-    ---------
-    ax : :class:`~matplotlib.axes.Axes`
-        The axis to modify.
-    locator : :class:`~matplotlib.dates.DateLocator`
-        The locator to use for the date ticks. This can be an instance of
-        :class:`~matplotlib.dates.AutoDateLocator`,
-        :class:`~matplotlib.dates.DayLocator`, etc. Check the documentation
-        for more information.
-    formatter : :class:`~matplotlib.dates.DateFormatter`
-        The formatter to use for the date ticks. This can be an instance of
-        :class:`~matplotlib.dates.ConciseDateFormatter` for example. Check the
-        documentation for more information.
-
-    """
-    xticks = locator()
-    xticklabels = formatter(xticks)
-    ax.xaxis.set_major_locator(xticks)
-    ax.xaxis.set_major_formatter(xticklabels)
-
-
-def utc2datetime(utc_array: np.ndarray) -> np.ndarray:
-    """Convert an array of UTC times to datetime objects.
-
-    Arguments
-    ---------
-    utc_array : :class:`~numpy.ndarray`
-        The array of UTC times.
-
-    Returns
-    -------
-    :class:`~numpy.ndarray`
-        The array of datetime objects.
-    """
-    return list(map(lambda t: t.datetime, utc_array))
-
-    # return np.array([t.datetime for t in utc_array])
-
-
 def make_axis_symmetric(ax: plt.Axes, axis: str = "both") -> None:
     """Make the axis of a plot symmetric.
+
+    Given an axis, this function will set the limits of the axis to be symmetric
+    around zero. This is useful to have a better visual representation of data
+    that is symmetric around zero.
 
     Arguments
     ---------
@@ -70,6 +28,30 @@ def make_axis_symmetric(ax: plt.Axes, axis: str = "both") -> None:
         The axis to modify.
     axis : str
         The axis to modify. Can be "both", "x", or "y".
+
+    Examples
+    --------
+
+    Create a simple plot and make the x-axis symmetric:
+
+    .. plot::
+
+        import covseisnet as csn
+        import numpy as np
+        import matplotlib.pyplot as plt
+
+        x = np.linspace(-10, 10, 100)
+        y = np.random.randn(100)
+
+        fig, ax = plt.subplots(ncols=2, figsize=(6, 3))
+        ax[0].plot(x, y)
+        ax[1].plot(x, y)
+        ax[0].grid()
+        ax[1].grid()
+        csn.plot.make_axis_symmetric(ax[1], axis="both")
+        ax[0].set_title("Original axis")
+        ax[1].set_title("Symmetric axis")
+
     """
     if axis in ["both", "x"]:
         xlim = ax.get_xlim()
@@ -82,7 +64,7 @@ def make_axis_symmetric(ax: plt.Axes, axis: str = "both") -> None:
         ax.set_ylim(-max(yabs), max(yabs))
 
 
-def trace_and_spectrum(trace: obspy.core.trace.Trace) -> None:
+def trace_and_spectrum(trace: obspy.core.trace.Trace) -> list:
     """Plot a trace and its spectrum side by side.
 
     The spectrum is calculated with the :func:`scipy.fft.rfft` function, which
@@ -93,6 +75,23 @@ def trace_and_spectrum(trace: obspy.core.trace.Trace) -> None:
     ---------
     trace : :class:`~obspy.core.trace.Trace`
         The trace to plot.
+
+    Returns
+    -------
+    ax : :class:`~matplotlib.axes.Axes`
+
+    Examples
+    --------
+
+    Read a stream and plot the first trace and its spectrum:
+
+    .. plot::
+
+        import covseisnet as csn
+        stream = csn.read()
+        trace = stream[0]
+        csn.plot.trace_and_spectrum(trace)
+
     """
     # Create figure
     _, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
@@ -117,12 +116,14 @@ def trace_and_spectrum(trace: obspy.core.trace.Trace) -> None:
     ax[1].set_ylabel("Spectrum")
     ax[1].grid()
 
+    return ax
+
 
 def trace_and_spectrogram(
     trace: obspy.core.trace.Trace,
     f_min: None | float = None,
     **kwargs: dict,
-) -> None:
+) -> list:
     """Plot a trace and its spectrogram.
 
     This function is deliberately simple and does not allow to customize the
@@ -133,8 +134,24 @@ def trace_and_spectrogram(
     ---------
     trace : :class:`~obspy.core.trace.Trace`
         The trace to plot.
+    f_min : None or float
+        The minimum frequency to display. Frequencies below this value will be
+        removed from the spectrogram.
     **kwargs
         Additional arguments to pass to :func:`~covseisnet.stream.calculate_spectrogram`.
+
+    Examples
+    --------
+
+    Read a stream and plot the first trace and its spectrogram:
+
+    .. plot::
+
+        import covseisnet as csn
+        stream = csn.read()
+        trace = stream[0]
+        csn.plot.trace_and_spectrogram(trace, window_duration_sec=1)
+
     """
     # Create figure
     _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
@@ -168,7 +185,11 @@ def trace_and_spectrogram(
 
     # Plot spectrogram
     mappable = ax[1].pcolormesh(
-        spectra_times, frequencies, spectrogram, shading="nearest", vmin=4
+        spectra_times,
+        frequencies,
+        spectrogram,
+        shading="nearest",
+        rasterized=True,
     )
     ax[1].grid()
     ax[1].set_yscale("log")
@@ -180,6 +201,63 @@ def trace_and_spectrogram(
     # Colorbar
     colorbar = plt.colorbar(mappable, ax=ax[1])
     colorbar.set_label("Spectral energy (dBA)")
+
+    return ax
+
+
+def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
+    """Plot a coherence matrix.
+
+    This function is deliberately simple and does not allow to customize the
+    coherence plot. For more advanced plotting, you should consider creating
+    a derived function.
+
+    Arguments
+    ---------
+    times : :class:`~numpy.ndarray`
+        The time axis of the coherence matrix.
+    frequencies : :class:`~numpy.ndarray`
+        The frequency axis of the coherence matrix.
+    coherence : :class:`~numpy.ndarray`
+        The coherence matrix.
+    f_min : float, optional
+        The minimum frequency to display. Frequencies below this value will be
+        removed from the coherence matrix.
+    ax : :class:`~matplotlib.axes.Axes`, optional
+        The axis to plot on. If not provided, a new figure will be created.
+    **kwargs
+        Additional arguments passed to the pcolormesh method.
+
+    Returns
+    -------
+    ax : :class:`~matplotlib.axes.Axes`
+    """
+    # Create figure
+    if ax is None:
+        ax = plt.gca()
+
+    # Remove low frequencies
+    if f_min is not None:
+        n = np.abs(frequencies - f_min).argmin()
+        frequencies = frequencies[n:]
+        coherence = coherence[:, n:]
+
+    # Show coherence
+    mappable = ax.pcolormesh(
+        times,
+        frequencies,
+        coherence.T,
+        shading="nearest",
+        cmap="magma_r",
+        **kwargs,
+    )
+
+    # Frequency axis
+    ax.set_yscale("log")
+    ax.set_ylim(frequencies[1], frequencies[-1])
+
+    # Colorbar
+    plt.colorbar(mappable, ax=ax).set_label("Spectral width")
 
     return ax
 
@@ -209,22 +287,21 @@ def stream_and_coherence(
         The frequency axis of the coherence matrix.
     coherence : :class:`~numpy.ndarray`
         The coherence matrix.
+    f_min : float, optional
+        The minimum frequency to display. Frequencies below this value will be
+        removed from the coherence matrix.
+    trace_factor : float, optional
+        The factor to multiply the traces by for display.
     **kwargs
         Additional arguments passed to the pcolormesh method.
     """
     # Create figure
-    fig, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
+    _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Show traces
     trace_times = stream.times(type="matplotlib")
-    # global_max = np.max([np.max(np.abs(trace.data)) for trace in stream])
-    global_mad = np.median(
-        [median_abs_deviation(trace.data) for trace in stream]
-    )
     for index, trace in enumerate(stream):
-        waveform = trace.data
-        # waveform /= global_mad * 10
-        waveform *= trace_factor
+        waveform = trace.data * trace_factor
         ax[0].plot(trace_times, waveform + index, color="k", lw=0.3)
 
     # Labels
@@ -236,30 +313,12 @@ def stream_and_coherence(
     ax[0].set_ylim(-1, len(stations))
     xlim = ax[0].get_xlim()
 
-    # Remove low frequencies
-    if f_min is not None:
-        n = np.abs(frequencies - f_min).argmin()
-        frequencies = frequencies[n:]
-        coherence = coherence[:, n:]
-
-    # Show coherence
-    mappable = ax[1].pcolormesh(
-        times,
-        frequencies,
-        coherence.T,
-        shading="nearest",
-        cmap="magma_r",
-        **kwargs,
+    # Plot coherence
+    csn.plot.coherence(
+        times, frequencies, coherence, f_min=f_min, ax=ax[1], **kwargs
     )
-
-    # Frequency axis
-    ax[1].set_yscale("log")
-    ax[1].set_ylim(frequencies[1], frequencies[-1])
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].set_title("Spatial coherence")
-
-    # Colorbar
-    plt.colorbar(mappable, ax=ax[1]).set_label("Spectral width")
 
     # Date formatter
     dateticks(ax[1])
@@ -270,13 +329,38 @@ def stream_and_coherence(
 
 def covariance_matrix_modulus_and_spectrum(
     covariance: csn.covariance.CovarianceMatrix,
-) -> None:
+) -> plt.Axes:
     """Plot the modulus of a covariance matrix and its spectrum.
+
+    This function plots the modulus of the covariance matrix and its
+    eigenvalues in a single figure. The eigenvalues are normalized to sum to
+    1.
+
 
     Arguments
     ---------
     covariance : :class:`~covseisnet.covariance.CovarianceMatrix`
         The covariance matrix to plot.
+
+    Returns
+    -------
+    ax : :class:`~matplotlib.axes.Axes`
+
+    Examples
+    --------
+
+    Create a covariance matrix and plot its modulus and spectrum:
+
+    .. plot::
+
+        import covseisnet as csn
+        import numpy as np
+        np.random.seed(0)
+        c = np.random.randn(3, 3)
+        c = (c @ c.T) / 0.5
+        c = csn.covariance.CovarianceMatrix(c)
+        c.set_stations(["A", "B", "C"])
+        csn.plot.covariance_matrix_modulus_and_spectrum(c)
     """
     # Normalize covariance
     covariance = covariance / np.max(np.abs(covariance))
@@ -285,13 +369,15 @@ def covariance_matrix_modulus_and_spectrum(
     eigenvalues = covariance.eigenvalues(norm=np.sum)
 
     # Create figure
-    _, ax = plt.subplots(ncols=2, figsize=(6, 2.7), constrained_layout=True)
+    _, ax = plt.subplots(ncols=2, figsize=(8, 2.7), constrained_layout=True)
 
     # Plot covariance matrix
     mappable = ax[0].matshow(np.abs(covariance), cmap="cividis", vmin=0)
 
     # Coherence
-    coherence = covariance.coherence()
+    spectral_width = covariance.coherence(kind="spectral_width")
+    entropy = covariance.coherence(kind="entropy")
+    diversity = covariance.coherence(kind="diversity")
 
     # Labels
     xticks = range(covariance.shape[0])
@@ -305,13 +391,71 @@ def covariance_matrix_modulus_and_spectrum(
     plt.colorbar(mappable).set_label(r"Covariance modulus $|\mathbf{C}|$")
 
     # Plot eigenvalues
-    eigenindex = np.arange(covariance.shape[0]) + 1
+    eigenindex = np.arange(covariance.shape[0])
     ax[1].plot(eigenindex, eigenvalues, marker="o")
-    ax[1].axvline(coherence, c="C1", label=f"Width: {coherence:.1f}")
-    ax[1].legend(loc="upper right", frameon=False)
     ax[1].set_ylim(bottom=0, top=1)
     ax[1].set_xticks(eigenindex)
     ax[1].set_xlabel(r"Eigenvalue index ($n$)")
     ax[1].set_ylabel(r"Eigenvalue ($\lambda_n$)")
     ax[1].set_title("Eigenspectrum")
     ax[1].grid()
+
+    # Annotations
+    ax[1].axvline(spectral_width, color="C1", label="Spectral width")
+    ax[1].axvline(entropy, color="C2", label="Entropy")
+    ax[1].axvline(diversity, color="C3", label="Diversity")
+    ax[1].legend(loc="upper left", frameon=False, bbox_to_anchor=(1, 1))
+
+    return ax
+
+
+def dateticks(
+    ax: plt.Axes,
+    locator: mdates.DateLocator = mdates.AutoDateLocator,
+    formatter: mdates.DateFormatter = mdates.ConciseDateFormatter,
+) -> None:
+    """Set date ticks on the x-axis of a plot.
+
+    Arguments
+    ---------
+    ax : :class:`~matplotlib.axes.Axes`
+        The axis to modify.
+    locator : :class:`~matplotlib.dates.DateLocator`
+        The locator to use for the date ticks. This can be an instance of
+        :class:`~matplotlib.dates.AutoDateLocator`,
+        :class:`~matplotlib.dates.DayLocator`, etc. Check the documentation
+        for more information.
+    formatter : :class:`~matplotlib.dates.DateFormatter`
+        The formatter to use for the date ticks. This can be an instance of
+        :class:`~matplotlib.dates.ConciseDateFormatter` for example. Check the
+        documentation for more information.
+
+    Examples
+    --------
+    Create a simple plot with date ticks:
+
+    .. plot::
+
+        import covseisnet as csn
+        import numpy as np
+        import matplotlib.pyplot as plt
+
+        stream = csn.read()
+        trace = stream[0]
+
+        fig, ax = plt.subplots(nrows=2, figsize=(6, 3), constrained_layout=True)
+
+        ax[0].plot(trace.times(), trace.data)
+        ax[0].set_title("Time series with times in seconds")
+        ax[0].grid()
+        ax[0].set_xlabel("Time (seconds)")
+
+        ax[1].plot(trace.times("matplotlib"), trace.data)
+        ax[1].set_title("Time series with times in datetime")
+        ax[1].grid()
+        csn.plot.dateticks(ax[1])
+    """
+    xticks = locator()
+    xticklabels = formatter(xticks)
+    ax.xaxis.set_major_locator(xticks)
+    ax.xaxis.set_major_formatter(xticklabels)
