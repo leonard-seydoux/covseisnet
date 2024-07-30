@@ -86,6 +86,14 @@ class CovarianceMatrix(np.ndarray):
             result.stations = self.stations
         return result
 
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        # Include any other necessary state
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+
     def set_ids(self, ids):
         """Set the trace IDs.
 
