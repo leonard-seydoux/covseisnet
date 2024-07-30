@@ -86,6 +86,16 @@ class CovarianceMatrix(np.ndarray):
             result.stations = self.stations
         return result
 
+    def set_ids(self, ids):
+        """Set the trace IDs.
+
+        Arguments
+        ---------
+        ids: list
+            The list of trace IDs.
+        """
+        self.ids = ids
+
     def set_stations(self, stations):
         """Set the station names.
 
@@ -571,6 +581,7 @@ def calculate_covariance_matrix(
 
     # Add metadata
     covariances.set_stations(stream.stations)
+    covariances.set_ids([trace.id for trace in stream])
     covariances.set_stft_instance(stft)
 
     return covariance_times, frequencies, covariances
