@@ -536,10 +536,12 @@ class NetworkStream(obspy.Stream):
             If the traces have different sampling rates or number of samples.
         """
         # Assert sampling rate
-        assert self.are_sampling_rates_equal, "Traces have different rates."
+        if not self.are_sampling_rates_equal:
+            return False
 
         # Assert number of samples
-        assert self.are_npts_equal, "Traces have different number of samples."
+        if not self.are_npts_equal:
+            return False
 
         # Collect time vectors. We use the matplotlib format for comparison of
         # the absolute values of the time vectors.
