@@ -36,7 +36,7 @@ if not os.path.exists(filepath_waveforms):
 stream = csn.read(filepath_waveforms)
 stream = stream.select(station="UV1*")
 stream.filter("highpass", freq=0.1)
-# stream.normalize(method="smooth", smooth_length=1001)
+stream.normalize(method="smooth", smooth_length=1001)
 stream.taper(max_percentage=0.01)
 
 
@@ -57,7 +57,7 @@ stream.taper(max_percentage=0.01)
 
 # Calculate covariance matrix
 times, frequencies, covariances = csn.calculate_covariance_matrix(
-    stream, window_duration_sec=20, average=20, whiten="none"
+    stream, window_duration_sec=20, average=20, whiten="slice"
 )
 
 # Show covariance from sample window and frequency
@@ -92,17 +92,24 @@ ax[1].figure.savefig("coherence")
 # Pairwise cross-correlation
 # --------------------------
 
+# Calculate cross-correlation
 lags, pairs, cross_correlation = csn.calculate_cross_correlation(covariances)
-cross_correlation = cross_correlation.bandpass(frequency_band)
-cross_correlation = cross_correlation.mean(axis=1)
-print(cross_correlation.shape)
-i_pair = 3
+
+# Bandpass filter
+cross_correlation.bandpass(frequency_band)
+
+# Stack
+cross_correlation = cross_correlation.stack(axis=1)
+
+# Get a given pair
+i_pair = 5
 pair = pairs[i_pair]
 cross_correlation = cross_correlation[i_pair]
 
 # Plot
 fig, ax = plt.subplots()
 ax.plot(lags, cross_correlation)
+ax.grid()
 ax.set_title(f"Cross-correlation between {pair}")
 ax.set_xlabel("Lag time (s)")
 fig.savefig("cross_correlation")

@@ -80,9 +80,7 @@ class PairwiseCrossCorrelation(np.ndarray):
         """
         return self.reshape(-1, self.shape[-1])
 
-    def bandpass(
-        self, frequency_band: tuple | list, filter_order: int = 4, **kwargs
-    ):
+    def bandpass(self, frequency_band: tuple | list, filter_order: int = 4):
         """Bandpass filter the correlation functions.
 
         Apply a Butterworth bandpass filter to the correlation functions. Uses
@@ -93,28 +91,44 @@ class PairwiseCrossCorrelation(np.ndarray):
         ----------
         frequency_band: tuple
             The frequency band to filter in Hz.
+        filter_order: int, optional
+            The order of the Butterworth filter.
+        """
+        # Flatten the correlation functions
+        correlation_flat = self.flat()
+
+        # Apply bandpass filter
+        correlation_filtered = bandpass_filter(
+            correlation_flat,
+            self.sampling_rate,
+            frequency_band,
+            filter_order,
+        )
+
+        # Reshape the correlation functions
+        correlation_filtered = correlation_filtered.reshape(self.shape)
+
+        # Update self array
+        self[:] = correlation_filtered
+
+    def stack(self, **kwargs):
+        """Stack the correlation functions.
+
+        Stack the correlation functions along the given axis. The correlation
+        functions are averaged along the axis. By default, the axis is 1, which
+        means that the correlation functions are averaged along the windows.
+
+        Parameters
+        ----------
         **kwargs: dict, optional
             Additional keyword arguments to pass to :func:`~
-            scipy.signal.filtfilt`.
+            numpy.ndarray.mean`.
         """
-        # Turn frequencies into normalized frequencies
-        nyquist = 0.5 * self.sampling_rate
-        normalized_frequency_band = [f / nyquist for f in frequency_band]
-
-        # Extract filter
-        butter_coefficients = butter(
-            filter_order,
-            normalized_frequency_band,
-            btype="band",
-        )
-
-        # Apply filter
-        correlation_flat = self.flat()
-        correlation_flat = filtfilt(
-            *butter_coefficients, correlation_flat, **kwargs
-        )
-        correlation_filtered = correlation_flat.reshape(self.shape)
-        return correlation_filtered.view(PairwiseCrossCorrelation)
+        # Set up default keyword arguments
+        kwargs.setdefault("axis", 1)
+        correlation = self.mean(**kwargs).view(PairwiseCrossCorrelation)
+        correlation.__dict__.update(self.__dict__)
+        return correlation
 
 
 def calculate_cross_correlation(
@@ -138,7 +152,7 @@ def calculate_cross_correlation(
     :class:`~numpy.ndarray`
         The lag time between stations.
     :class:`~covseisnet.correlation.PairwiseCrossCorrelation`
-        The correlation matrix with shape ``(n_pairs, n_windows, n_lags)``.
+        The correlations with shape ``(n_pairs, n_windows, n_lags)``.
 
     """
     # Two-sided covariance matrix
@@ -178,3 +192,42 @@ def calculate_cross_correlation(
     correlation.set_sampling_rate(sampling_rate)
 
     return lags, pairs, correlation
+
+
+def bandpass_filter(x, sampling_rate, frequency_band, filter_order=4):
+    """Bandpass filter the signal.
+
+    Apply a Butterworth bandpass filter to the signal. Uses
+    :func:`~scipy.signal.butter` and :func:`~scipy.signal.filtfilt` to
+    avoid phase shift.
+
+    Parameters
+    ----------
+    x: :class:`~numpy.ndarray`
+        The signal to filter.
+    sampling_rate: float
+        The sampling rate in Hz.
+    frequency_band: tuple
+        The frequency band to filter in Hz.
+    filter_order: int, optional
+        The order of the Butterworth filter.
+
+    Returns
+    -------
+    :class:`~numpy.ndarray`
+        The filtered signal.
+
+    """
+    # Turn frequencies into normalized frequencies
+    nyquist = 0.5 * sampling_rate
+    normalized_frequency_band = [f / nyquist for f in frequency_band]
+
+    # Extract filter
+    butter_coefficients = butter(
+        filter_order,
+        normalized_frequency_band,
+        btype="band",
+    )
+
+    # Apply filter
+    return filtfilt(*butter_coefficients, x, axis=-1)
