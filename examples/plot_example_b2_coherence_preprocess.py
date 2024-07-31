@@ -34,7 +34,6 @@ if not os.path.exists(filepath_waveforms):
 # Read example stream
 stream = csn.read(filepath_waveforms)
 stream.filter("highpass", freq=0.5)
-# stream.cut(starttime=stream[0].stats.starttime, duration_sec=1000)
 
 # %%
 # Covariance matrix
