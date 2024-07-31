@@ -2,9 +2,9 @@
 
 __all__ = [
     "calculate_covariance_matrix",
-    "calculate_cross_correlation_matrix",
+    "calculate_cross_correlation",
     "CovarianceMatrix",
-    "CorrelationMatrix",
+    "PairwiseCrossCorrelation",
     "NetworkStream",
     "read",
     "plot",
@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 from .covariance import CovarianceMatrix, calculate_covariance_matrix
-from .correlation import CorrelationMatrix, calculate_cross_correlation_matrix
+from .correlation import PairwiseCrossCorrelation, calculate_cross_correlation
 from .stream import NetworkStream, read
 from .signal import ShortTimeFourierTransform
 from . import signal

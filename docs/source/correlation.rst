@@ -1,5 +1,5 @@
-Correlation Matrix
-==================
+Pairwise Cross-correlation
+==========================
 
 .. automodule:: covseisnet.correlation
     :members:
