@@ -102,7 +102,7 @@ cross_correlation.bandpass(frequency_band)
 cross_correlation = cross_correlation.stack(axis=1)
 
 # Get a given pair
-i_pair = 5
+i_pair = 3
 pair = pairs[i_pair]
 cross_correlation = cross_correlation[i_pair]
 
