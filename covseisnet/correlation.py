@@ -1,4 +1,4 @@
-"""Pairwise cross-correlation in time domain."""
+"""Cross-correlation matrix in time domain."""
 
 import numpy as np
 
@@ -8,10 +8,31 @@ from scipy.ndimage import gaussian_filter1d
 from .covariance import CovarianceMatrix, get_twosided_covariance
 
 
-class PairwiseCrossCorrelation(np.ndarray):
+class CrossCorrelationMatrix(np.ndarray):
     r"""Correlation Matrix.
 
-    This class is a subclass of :class:`numpy.ndarray`.
+    This class is a subclass of :class:`numpy.ndarray`. It is used to store
+    the correlation matrix in the time domain.
+
+    The cross-correlation is defined as the inverse Fourier transform of the
+    covariance. Given a covariance matrix :math:`C_{ij}(\omega)`, the
+    correlation matrix :math:`R_{ij}(\tau)` is defined as:
+
+    .. math::
+
+        R_{ij}(\tau) = \mathcal{F}^{-1} \{ C_{ij}(\omega) \}
+
+    where :math:`\mathcal{F}^{-1}` is the inverse Fourier transform,
+    :math:`\tau` is the lag time, and :math:`i` and :math:`j` are the station
+    indices. Note that the correlation matrix is a symmetric matrix, with the
+    diagonal elements being the auto-correlation. Therefore, we do not store
+    the lower triangular part of the matrix.
+
+    The correlation matrix is stored as a 3D array with the first dimension
+    being the number of pairs, the second dimension the number of windows, and
+    the third dimension the number of lags. The correlation matrix can be
+    visualized as a 2D array with the pairs and windows in the first dimension
+    and the lags in the second dimension with the method :meth:`~flat`.
     """
 
     def __new__(cls, input_array):
@@ -45,7 +66,7 @@ class PairwiseCrossCorrelation(np.ndarray):
 
         """
         return np.abs(hilbert(self, axis=0, **kwargs)).view(
-            PairwiseCrossCorrelation
+            CrossCorrelationMatrix
         )
 
     def smooth(self, sigma, **kwargs):
@@ -60,7 +81,7 @@ class PairwiseCrossCorrelation(np.ndarray):
 
         """
         return gaussian_filter1d(self, sigma, axis=0, **kwargs).view(
-            PairwiseCrossCorrelation
+            CrossCorrelationMatrix
         )
 
     def flat(self):
@@ -126,14 +147,14 @@ class PairwiseCrossCorrelation(np.ndarray):
         """
         # Set up default keyword arguments
         kwargs.setdefault("axis", 1)
-        correlation = self.mean(**kwargs).view(PairwiseCrossCorrelation)
+        correlation = self.mean(**kwargs).view(CrossCorrelationMatrix)
         correlation.__dict__.update(self.__dict__)
         return correlation
 
 
-def calculate_cross_correlation(
+def calculate_cross_correlation_matrix(
     covariance_matrix: CovarianceMatrix,
-) -> tuple[np.ndarray, PairwiseCrossCorrelation]:
+) -> tuple[np.ndarray, CrossCorrelationMatrix]:
     """Extract correlation in time domain from the given covariance matrix.
 
     This method calculates the correlation in the time domain from the given
@@ -151,7 +172,7 @@ def calculate_cross_correlation(
     -------
     :class:`~numpy.ndarray`
         The lag time between stations.
-    :class:`~covseisnet.correlation.PairwiseCrossCorrelation`
+    :class:`~covseisnet.correlation.CrossCorrelationMatrix`
         The correlations with shape ``(n_pairs, n_windows, n_lags)``.
 
     """
@@ -187,8 +208,8 @@ def calculate_cross_correlation(
     lag_max = (n_lags - 1) // 2 / sampling_rate
     lags = np.linspace(-lag_max, lag_max, n_lags)
 
-    # Turn into PairwiseCrossCorrelation
-    correlation = correlation.view(PairwiseCrossCorrelation)
+    # Turn into CrossCorrelationMatrix
+    correlation = correlation.view(CrossCorrelationMatrix)
     correlation.set_sampling_rate(sampling_rate)
 
     return lags, pairs, correlation
