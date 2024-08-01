@@ -9,14 +9,12 @@ from .covariance import CovarianceMatrix, get_twosided_covariance
 
 
 class CrossCorrelationMatrix(np.ndarray):
-    r"""Correlation Matrix.
-
+    r"""
     This class is a subclass of :class:`numpy.ndarray`. It is used to store
-    the correlation matrix in the time domain.
-
-    The cross-correlation is defined as the inverse Fourier transform of the
-    covariance. Given a covariance matrix :math:`C_{ij}(\omega)`, the
-    correlation matrix :math:`R_{ij}(\tau)` is defined as:
+    the correlation matrix in the time domain. The cross-correlation is
+    defined as the inverse Fourier transform of the covariance. Given a
+    covariance matrix :math:`C_{ij}(\omega)`, the correlation matrix
+    :math:`R_{ij}(\tau)` is defined as:
 
     .. math::
 
@@ -39,6 +37,11 @@ class CrossCorrelationMatrix(np.ndarray):
         obj = np.asarray(input_array).view(cls)
         return obj
 
+    def __array_finalize__(self, obj):
+        if obj is None:
+            return
+        self.sampling_rate = getattr(obj, "sampling_rate", None)
+
     def set_sampling_rate(self, sampling_rate):
         """Set the sampling rate of the correlation.
 
@@ -49,25 +52,43 @@ class CrossCorrelationMatrix(np.ndarray):
         """
         self.sampling_rate = sampling_rate
 
-    def nwin(self):
-        """Returns the number of windows in the correlation matrix.
+    def envelope(self, **kwargs):
+        r"""Hilbert envelope of the correlation matrix.
+
+        The Hilbert envelope is calculated using the Hilbert transform of the
+        pairwise cross-correlation:
+
+        .. math::
+
+            E_{ij}(\tau) = | \mathcal{H} R_{ij}(\tau) | = | R_{ij}(\tau) + i \mathcal{H} R_{ij}(\tau)  |
+
+        where :math:`\mathcal{H}` is the Hilbert transform, and :math:`i` is
+        the imaginary unit. The Hilbert envelope is the absolute value of the
+        Hilbert transform of the correlation matrix.
+
+
+        Arguments
+        ---------
+        **kwargs: dict
+            Additional arguments to pass to :func:`~scipy.signal.hilbert`. By
+            default, the axis is set to the last axis (lags).
 
         Returns
         -------
-        int
-            The number of windows in the correlation matrix.
-
+        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
+            The Hilbert envelope of the correlation matrix.
         """
-        return self.shape[0]
+        # Default axis is the last axis
+        kwargs.setdefault("axis", -1)
 
-    def hilbert_envelope(self, **kwargs):
-        """Apply the Hilbert transform to the correlation matrix. Uses
-        :func:`~scipy.signal.hilbert`
-
-        """
-        return np.abs(hilbert(self, axis=0, **kwargs)).view(
+        # Return a view of the Hilbert envelope
+        correlation_envelopes = np.abs(hilbert(self, **kwargs)).view(
             CrossCorrelationMatrix
         )
+
+        # Copy attributes
+        correlation_envelopes.__dict__.update(self.__dict__)
+        return correlation_envelopes
 
     def smooth(self, sigma, **kwargs):
         """Apply a 1-D Gaussian filter to the correlation matrix. Uses
@@ -102,7 +123,7 @@ class CrossCorrelationMatrix(np.ndarray):
         return self.reshape(-1, self.shape[-1])
 
     def bandpass(self, frequency_band: tuple | list, filter_order: int = 4):
-        """Bandpass filter the correlation functions.
+        r"""Bandpass filter the correlation functions.
 
         Apply a Butterworth bandpass filter to the correlation functions. Uses
         :func:`~scipy.signal.butter` and :func:`~scipy.signal.filtfilt` to
@@ -132,30 +153,11 @@ class CrossCorrelationMatrix(np.ndarray):
         # Update self array
         self[:] = correlation_filtered
 
-    def stack(self, **kwargs):
-        """Stack the correlation functions.
-
-        Stack the correlation functions along the given axis. The correlation
-        functions are averaged along the axis. By default, the axis is 1, which
-        means that the correlation functions are averaged along the windows.
-
-        Parameters
-        ----------
-        **kwargs: dict, optional
-            Additional keyword arguments to pass to :func:`~
-            numpy.ndarray.mean`.
-        """
-        # Set up default keyword arguments
-        kwargs.setdefault("axis", 1)
-        correlation = self.mean(**kwargs).view(CrossCorrelationMatrix)
-        correlation.__dict__.update(self.__dict__)
-        return correlation
-
 
 def calculate_cross_correlation_matrix(
     covariance_matrix: CovarianceMatrix,
 ) -> tuple[np.ndarray, CrossCorrelationMatrix]:
-    """Extract correlation in time domain from the given covariance matrix.
+    r"""Extract correlation in time domain from the given covariance matrix.
 
     This method calculates the correlation in the time domain from the given
     covariance matrix. The covariance matrix is expected to be obtained from

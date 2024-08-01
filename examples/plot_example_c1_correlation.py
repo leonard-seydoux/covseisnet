@@ -81,11 +81,12 @@ frequency_band = 0.3, 1
 coherence = covariances.coherence(kind="spectral_width")
 
 # Show
-ax = csn.plot.stream_and_coherence(
-    stream, times, frequencies, coherence, f_min=0.1, trace_factor=0.00001
-)
-for frequency in frequency_band:
-    ax[1].axhline(frequency, color="k", linestyle="--", lw=0.7)
+ax = csn.plot.stream_and_coherence(stream, times, frequencies, coherence)
+
+# Indicate frequency band
+ax[1].axhspan(*frequency_band, facecolor="none", edgecolor="k", clip_on=False)
+
+# Save
 ax[1].figure.savefig("coherence")
 
 # %%
@@ -93,22 +94,29 @@ ax[1].figure.savefig("coherence")
 # --------------------------
 
 # Calculate cross-correlation
-lags, pairs, cross_correlation = csn.calculate_cross_correlation(covariances)
+lags, pairs, cross_correlation = csn.calculate_cross_correlation_matrix(
+    covariances
+)
+
+# Stack
+cross_correlation = cross_correlation.mean(axis=1)
 
 # Bandpass filter
 cross_correlation.bandpass(frequency_band)
+cross_correlation_env = cross_correlation.envelope()
 
-# Stack
-cross_correlation = cross_correlation.stack(axis=1)
 
 # Get a given pair
 i_pair = 3
 pair = pairs[i_pair]
 cross_correlation = cross_correlation[i_pair]
+cross_correlation_env = cross_correlation_env[i_pair]
+print(type(cross_correlation_env))
 
 # Plot
 fig, ax = plt.subplots()
 ax.plot(lags, cross_correlation)
+ax.plot(lags, cross_correlation_env)
 ax.grid()
 ax.set_title(f"Cross-correlation between {pair}")
 ax.set_xlabel("Lag time (s)")
