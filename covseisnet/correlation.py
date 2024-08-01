@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from scipy.signal import butter, filtfilt, hilbert
+from scipy.signal import butter, filtfilt, hilbert, windows
 from scipy.ndimage import gaussian_filter1d
 
 from .covariance import CovarianceMatrix, get_twosided_covariance
@@ -52,7 +52,7 @@ class CrossCorrelationMatrix(np.ndarray):
         """
         self.sampling_rate = sampling_rate
 
-    def envelope(self, **kwargs):
+    def envelope(self, **kwargs) -> "CrossCorrelationMatrix":
         r"""Hilbert envelope of the correlation matrix.
 
         The Hilbert envelope is calculated using the Hilbert transform of the
@@ -90,20 +90,83 @@ class CrossCorrelationMatrix(np.ndarray):
         correlation_envelopes.__dict__.update(self.__dict__)
         return correlation_envelopes
 
-    def smooth(self, sigma, **kwargs):
-        """Apply a 1-D Gaussian filter to the correlation matrix. Uses
-        :func:`~scipy.ndimage.gaussian_filter1d`.
+    def taper(self, max_percentage: float = 0.1) -> "CrossCorrelationMatrix":
+        r"""Taper the correlation matrix.
 
-        Parameters
-        ----------
+        Taper the correlation matrix with the given taper. The taper is
+        applied to the last axis (lags) of the correlation matrix. The tapered
+        correlation matrix is defined as:
 
-        sigma: float
-            Standard deviation for Gaussian kernel
+        .. math::
 
+            R'_{ij}(\tau) = w_T{\tau} R_{ij}(\tau)
+
+        where :math:`w_T` is the taper of maximum duration :math:`T`.
+
+        Arguments
+        ---------
+        max_percentage: float
+            The maximum percentage of the taper. The taper is a Tukey window
+            with the given percentage of the window duration. Default is 0.1.
+
+        Returns
+        -------
+        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
+            The tapered correlation matrix.
         """
-        return gaussian_filter1d(self, sigma, axis=0, **kwargs).view(
+        # Apply taper
+        correlation_tapered = self * windows.tukey(
+            self.shape[-1], max_percentage
+        )
+
+        # Return a view of the tapered correlation matrix
+        correlation_tapered = correlation_tapered.view(CrossCorrelationMatrix)
+
+        # Copy attributes
+        correlation_tapered.__dict__.update(self.__dict__)
+        return correlation_tapered
+
+    def smooth(self, sigma: float = 1, **kwargs) -> "CrossCorrelationMatrix":
+        r"""Use a Gaussian kernel to smooth the correlation matrix.
+
+        This function is usually applied to the envelope of the correlation
+        matrix to smooth the envelope. The smoothing is done using a Gaussian
+        kernel with a standard deviation :math:`\sigma`. The smoothing is done
+        along the last axis (lags). The smoothed correlation matrix is
+        :math:`R'` is defined as:
+
+        .. math::
+
+            R'_{ij}(\tau) = G_{\sigma} * R_{ij}(\tau)
+
+        where :math:`G_{\sigma}` is the Gaussian kernel with standard
+        deviation :math:`\sigma`.
+
+        Arguments
+        ---------
+        sigma: float
+            Standard deviation of the Gaussian kernel. The larger the value,
+            the smoother the correlation matrix. Default is 1.
+        **kwargs: dict
+            Additional arguments passed to
+            :func:`~scipy.ndimage.gaussian_filter1d`.
+
+        Returns
+        -------
+        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
+            The smoothed cross-correlation matrix.
+        """
+        # Smooth the correlation matrix
+        correlation_smoothed = gaussian_filter1d(self, sigma=sigma, **kwargs)
+
+        # Return a view of the smoothed correlation matrix
+        correlation_smoothed = correlation_smoothed.view(
             CrossCorrelationMatrix
         )
+
+        # Copy attributes
+        correlation_smoothed.__dict__.update(self.__dict__)
+        return correlation_smoothed
 
     def flat(self):
         r"""Flatten the first dimensions.

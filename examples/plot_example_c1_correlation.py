@@ -75,7 +75,7 @@ csn.plot.covariance_matrix_modulus_and_spectrum(covariances[t_index, f_index])
 # measure the spectral width of the eigenvalue distribution at each frequency,
 # or with applying the formula of the Neumann entropy.
 
-frequency_band = 0.3, 1
+frequency_band = 0.3, 0.7
 
 # Calculate coherence
 coherence = covariances.coherence(kind="spectral_width")
@@ -100,23 +100,25 @@ lags, pairs, cross_correlation = csn.calculate_cross_correlation_matrix(
 
 # Stack
 cross_correlation = cross_correlation.mean(axis=1)
-
 # Bandpass filter
 cross_correlation.bandpass(frequency_band)
-cross_correlation_env = cross_correlation.envelope()
+cross_correlation = cross_correlation.taper()
+envelope = cross_correlation.envelope()
+envelope_smooth = envelope.smooth(51)
 
 
 # Get a given pair
 i_pair = 3
 pair = pairs[i_pair]
 cross_correlation = cross_correlation[i_pair]
-cross_correlation_env = cross_correlation_env[i_pair]
-print(type(cross_correlation_env))
+envelope = envelope[i_pair]
+envelope_smooth = envelope_smooth[i_pair]
 
 # Plot
 fig, ax = plt.subplots()
 ax.plot(lags, cross_correlation)
-ax.plot(lags, cross_correlation_env)
+ax.plot(lags, envelope)
+ax.plot(lags, envelope_smooth)
 ax.grid()
 ax.set_title(f"Cross-correlation between {pair}")
 ax.set_xlabel("Lag time (s)")
