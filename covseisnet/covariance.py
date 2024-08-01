@@ -86,13 +86,23 @@ class CovarianceMatrix(np.ndarray):
             result.stations = self.stations
         return result
 
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        # Include any other necessary state
-        return state
+    def __reduce__(self):
+        # Get the reduction tuple from the base ndarray
+        pickled_state = super().__reduce__()
+        # Combine the ndarray state with the additional attributes
+        return (
+            pickled_state[0],
+            pickled_state[1],
+            (pickled_state[2], self.__dict__),
+        )
 
     def __setstate__(self, state):
-        self.__dict__.update(state)
+        # Extract the ndarray part of the state and the additional attributes
+        ndarray_state, attributes = state
+        # Set the ndarray part of the state
+        super().__setstate__(ndarray_state)
+        # Set the additional attributes
+        self.__dict__.update(attributes)
 
     def set_ids(self, ids):
         """Set the trace IDs.
