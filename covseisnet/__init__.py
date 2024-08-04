@@ -14,6 +14,7 @@ __all__ = [
     "CovarianceMatrix",
     "CrossCorrelationMatrix",
     "NetworkStream",
+    "NetworkStats",
     "ShortTimeFourierTransform",
     "calculate_covariance_matrix",
     "calculate_cross_correlation_matrix",
@@ -26,7 +27,7 @@ __all__ = [
 # High-level objects
 from .covariance import CovarianceMatrix
 from .correlation import CrossCorrelationMatrix
-from .stream import NetworkStream
+from .stream import NetworkStream, NetworkStats
 from .signal import ShortTimeFourierTransform
 
 # High-level methods

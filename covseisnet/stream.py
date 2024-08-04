@@ -20,9 +20,244 @@ import numpy as np
 import obspy
 from obspy import UTCDateTime
 from obspy.core.stream import Stream
-from obspy.core.trace import Stats, Trace
+from obspy.core.trace import AttribDict, Stats, Trace
 
 from . import signal
+
+
+class NetworkStats(AttribDict):
+    r"""Header information of a :class:`~NetworkStream` object.
+
+    A ``NetworkStats`` object may contain selected header information (also
+    known as meta data) of the :class:`~obspy.core.trace.Trace` objects of a
+    :class:`~NetworkStream` object. Those headers may be accessed or modified
+    either in the dictionary style or directly via a corresponding attribute.
+    There are various default attributes which are required by every waveform
+    import and export modules within ObsPy such as :mod:`obspy.io.mseed`.
+
+    Arguments
+    ---------
+    header: dict or :class:`~obspy.core.trace.Stats`, optional
+        Dictionary containing meta information of the
+        :class:`~obspy.core.trace.Trace` objects.
+
+    Example
+    -------
+
+    >>> from covseisnet import NetworkStats
+    >>> stats = NetworkStats()
+    >>> print(stats)
+                starttime: 1970-01-01T00:00:00.000000Z
+                  endtime: 1970-01-01T00:00:00.000000Z
+            sampling_rate: 1.0
+                    delta: 1.0
+                     npts: 0
+                 channels: ['']
+                      ids: ['']
+                 networks: ['']
+                 stations: ['']
+    >>> stats.networks = ["BW", "II"]
+    >>> print(stats)
+                starttime: 1970-01-01T00:00:00.000000Z
+                  endtime: 1970-01-01T00:00:00.000000Z
+            sampling_rate: 1.0
+                    delta: 1.0
+                     npts: 0
+                 channels: ['']
+                      ids: ['']
+                 networks: ['II', 'BW']
+                 stations: ['']
+
+    .. rubric:: _`Default Attributes`
+
+    ``sampling_rate`` : float, optional
+        Sampling rate in Hertz (default to 1.0).
+    ``delta`` : float, optional
+        Sample distance in seconds (default to 1.0).
+    ``npts`` : int, optional
+        Number of sample points per trace (default to 0).
+    ``networks`` : list[str], optional
+        Network codes (default is a list with an empty string).
+    ``stations`` : list[str], optional
+        Station codes (default is a list with an empty string).
+    ``ids`` : list[str], optional
+        Trace IDs (default is a list with an empty string).
+    ``channels`` : list[str], optional
+        Channel codes (default is a list with an empty string).
+    ``starttime`` : :class:`~obspy.core.utcdatetime.UTCDateTime`, optional
+        Date and time of the first data sample given in UTC (default value
+        is "1970-01-01T00:00:00.0Z").
+    ``endtime`` : :class:`~obspy.core.utcdatetime.UTCDateTime`, optional
+        Date and time of the last data sample given in UTC (default value is
+        "1970-01-01T00:00:00.0Z").
+
+    .. rubric:: Notes
+
+    (1) The attributes ``sampling_rate`` and ``delta`` are linked to each
+        other. If one of the attributes is modified the other will be
+        recalculated.
+
+        >>> stats = Stats()
+        >>> stats.sampling_rate
+        1.0
+        >>> stats.delta = 0.005
+        >>> stats.sampling_rate
+        200.0
+
+    (2) The attributes ``starttime``, ``npts``, ``sampling_rate`` and
+        ``delta`` are monitored and used to automatically calculate the
+        ``endtime``.
+
+        >>> stats = Stats()
+        >>> stats.npts = 60
+        >>> stats.delta = 1.0
+        >>> stats.starttime = UTCDateTime(2009, 1, 1, 12, 0, 0)
+        >>> stats.endtime
+        UTCDateTime(2009, 1, 1, 12, 0, 59)
+        >>> stats.delta = 0.5
+        >>> stats.endtime
+        UTCDateTime(2009, 1, 1, 12, 0, 29, 500000)
+
+    (3) The attribute ``endtime`` is read only and can not be modified.
+
+        >>> stats = Stats()
+        >>> stats.endtime = UTCDateTime(2009, 1, 1, 12, 0, 0)
+        Traceback (most recent call last):
+        ...
+        AttributeError: Attribute "endtime" in Stats object is read only!
+        >>> stats['endtime'] = UTCDateTime(2009, 1, 1, 12, 0, 0)
+        Traceback (most recent call last):
+        ...
+        AttributeError: Attribute "endtime" in Stats object is read only!
+
+    (4)
+        The attribute ``npts`` will be automatically updated from the
+        :class:`~obspy.core.trace.Trace` object.
+
+        >>> trace = Trace()
+        >>> trace.stats.npts
+        0
+        >>> trace.data = np.array([1, 2, 3, 4])
+        >>> trace.stats.npts
+        4
+
+    (5)
+        The attribute ``component`` can be used to get or set the component,
+        i.e. the last character of the ``channel`` attribute.
+
+        >>> stats = Stats()
+        >>> stats.channel = 'HHZ'
+        >>> stats.component  # doctest: +SKIP
+        'Z'
+        >>> stats.component = 'L'
+        >>> stats.channel  # doctest: +SKIP
+        'HHL'
+
+    """
+
+    # Immutable keys
+    readonly = ["endtime"]
+
+    # Default values
+    defaults = {
+        "sampling_rate": 1.0,
+        "delta": 1.0,
+        "starttime": UTCDateTime(0),
+        "endtime": UTCDateTime(0),
+        "npts": 0,
+        "networks": [""],
+        "ids": [""],
+        "stations": [""],
+        "channels": [""],
+    }
+
+    # Keys which need to refresh derived values
+    _refresh_keys = {
+        "delta",
+        "sampling_rate",
+        "starttime",
+        "npts",
+    }
+
+    def __init__(self, header: dict = {}):
+        super(NetworkStats, self).__init__(header)
+
+    def __setitem__(self, key, value):
+        if key in self._refresh_keys:
+            # Ensure correct data type
+            if key == "delta":
+                key = "sampling_rate"
+                try:
+                    value = 1.0 / float(value)
+                except ZeroDivisionError:
+                    value = 0.0
+            elif key == "sampling_rate":
+                value = float(value)
+            elif key == "starttime":
+                value = UTCDateTime(value)
+            elif key == "npts":
+                if not isinstance(value, int):
+                    value = int(value)
+            # Set current key
+            super(NetworkStats, self).__setitem__(key, value)
+
+            # Set derived value: delta
+            try:
+                delta = 1.0 / float(self.sampling_rate)
+            except ZeroDivisionError:
+                delta = 0
+            self.__dict__["delta"] = delta
+
+            # Set derived value: endtime
+            if self.npts == 0:
+                timediff = 0
+            else:
+                timediff = float(self.npts - 1) * delta
+            self.__dict__["endtime"] = self.starttime + timediff
+            return
+
+        if key in ["networks", "ids", "stations", "channels"]:
+            if key == "stations":
+                value = list(set(value))
+            elif key == "ids":
+                value = list(set(value))
+            elif key == "channels":
+                value = list(set(value))
+            elif key == "networks":
+                value = list(set(value))
+            super(NetworkStats, self).__setitem__(key, value)
+
+    # Set the __setattr__ method to the __setitem__ method
+    __setattr__ = __setitem__
+
+    def __getitem__(self, key, default=None):
+        return super(NetworkStats, self).__getitem__(key, default)
+
+    def __str__(self):
+        """Return better readable string representation of Stats object."""
+        priorized_keys = [
+            "starttime",
+            "endtime",
+            "sampling_rate",
+            "delta",
+            "npts",
+        ]
+        return self._pretty_str(priorized_keys)
+
+    def _repr_pretty_(self, p, cycle):
+        p.text(str(self))
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        # Remove the unneeded entries
+        state.pop("delta", None)
+        state.pop("endtime", None)
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        # trigger refreshing
+        self.__setitem__("sampling_rate", state["sampling_rate"])
 
 
 class NetworkStream(Stream):
@@ -131,7 +366,7 @@ class NetworkStream(Stream):
         return super().__getitem__(index)
 
     @property
-    def stats(self) -> Stats:
+    def stats(self) -> NetworkStats:
         """Stats dictionary of the first trace.
 
         This property is also available directly from looping over the traces
@@ -143,10 +378,16 @@ class NetworkStream(Stream):
         >>> stream.stats.sampling_rate
         100.0
         """
-        stats = getattr(self[0], "stats")
-        if not stats:
+        # Extract stats from the first trace
+        if not (stats := getattr(self[0], "stats")):
             raise ValueError("Stats dictionary is not defined.")
-        return stats
+
+        # Meta
+        stats["networks"] = [trace.stats.network for trace in self]
+        stats["stations"] = [trace.stats.station for trace in self]
+        stats["ids"] = [trace.id for trace in self]
+        stats["channels"] = [trace.stats.channel for trace in self]
+        return NetworkStats(stats)
 
     @property
     def all_stats(self) -> list[Stats]:
@@ -832,4 +1073,4 @@ def read(pathname_or_url=None, **kwargs) -> NetworkStream:
     --------
     :func:`~obspy.core.stream.read`
     """
-    return NetworkStream(obspy.read(pathname_or_url, **kwargs))
+    return NetworkStream.read(pathname_or_url, **kwargs)
