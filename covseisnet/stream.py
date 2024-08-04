@@ -28,8 +28,8 @@ from . import signal
 class NetworkStats(AttribDict):
     r"""Header information of a :class:`~NetworkStream` object.
 
-    A ``NetworkStats`` object may contain selected header information (also
-    known as meta data) of the :class:`~obspy.core.trace.Trace` objects of a
+    A ``NetworkStats`` object contains a subset of header information (also
+    known as metadata) of the :class:`~obspy.core.trace.Trace` objects of a
     :class:`~NetworkStream` object. Those headers may be accessed or modified
     either in the dictionary style or directly via a corresponding attribute.
     There are various default attributes which are required by every waveform
@@ -52,21 +52,6 @@ class NetworkStats(AttribDict):
             sampling_rate: 1.0
                     delta: 1.0
                      npts: 0
-                 channels: ['']
-                      ids: ['']
-                 networks: ['']
-                 stations: ['']
-    >>> stats.networks = ["BW", "II"]
-    >>> print(stats)
-                starttime: 1970-01-01T00:00:00.000000Z
-                  endtime: 1970-01-01T00:00:00.000000Z
-            sampling_rate: 1.0
-                    delta: 1.0
-                     npts: 0
-                 channels: ['']
-                      ids: ['']
-                 networks: ['II', 'BW']
-                 stations: ['']
 
     .. rubric:: _`Default Attributes`
 
@@ -76,17 +61,9 @@ class NetworkStats(AttribDict):
         Sample distance in seconds (default to 1.0).
     ``npts`` : int, optional
         Number of sample points per trace (default to 0).
-    ``networks`` : list[str], optional
-        Network codes (default is a list with an empty string).
-    ``stations`` : list[str], optional
-        Station codes (default is a list with an empty string).
-    ``ids`` : list[str], optional
-        Trace IDs (default is a list with an empty string).
-    ``channels`` : list[str], optional
-        Channel codes (default is a list with an empty string).
     ``starttime`` : :class:`~obspy.core.utcdatetime.UTCDateTime`, optional
-        Date and time of the first data sample given in UTC (default value
-        is "1970-01-01T00:00:00.0Z").
+        Date and time of the first data sample given in UTC (default value is
+        "1970-01-01T00:00:00.0Z").
     ``endtime`` : :class:`~obspy.core.utcdatetime.UTCDateTime`, optional
         Date and time of the last data sample given in UTC (default value is
         "1970-01-01T00:00:00.0Z").
@@ -97,7 +74,8 @@ class NetworkStats(AttribDict):
         other. If one of the attributes is modified the other will be
         recalculated.
 
-        >>> stats = Stats()
+        >>> from covseisnet import NetworkStats
+        >>> stats = NetworkStats()
         >>> stats.sampling_rate
         1.0
         >>> stats.delta = 0.005
@@ -108,15 +86,16 @@ class NetworkStats(AttribDict):
         ``delta`` are monitored and used to automatically calculate the
         ``endtime``.
 
+        >>> from covseisnet import NetworkStats
         >>> stats = Stats()
         >>> stats.npts = 60
         >>> stats.delta = 1.0
         >>> stats.starttime = UTCDateTime(2009, 1, 1, 12, 0, 0)
         >>> stats.endtime
-        UTCDateTime(2009, 1, 1, 12, 0, 59)
+        2009-01-01T12:00:59.000000Z
         >>> stats.delta = 0.5
         >>> stats.endtime
-        UTCDateTime(2009, 1, 1, 12, 0, 29, 500000)
+        2009-01-01T12:00:29.500000Z
 
     (3) The attribute ``endtime`` is read only and can not be modified.
 
@@ -165,10 +144,6 @@ class NetworkStats(AttribDict):
         "starttime": UTCDateTime(0),
         "endtime": UTCDateTime(0),
         "npts": 0,
-        "networks": [""],
-        "ids": [""],
-        "stations": [""],
-        "channels": [""],
     }
 
     # Keys which need to refresh derived values
@@ -180,7 +155,7 @@ class NetworkStats(AttribDict):
     }
 
     def __init__(self, header: dict = {}):
-        super(NetworkStats, self).__init__(header)
+        super().__init__(header)
 
     def __setitem__(self, key, value):
         if key in self._refresh_keys:
@@ -215,17 +190,6 @@ class NetworkStats(AttribDict):
                 timediff = float(self.npts - 1) * delta
             self.__dict__["endtime"] = self.starttime + timediff
             return
-
-        if key in ["networks", "ids", "stations", "channels"]:
-            if key == "stations":
-                value = list(set(value))
-            elif key == "ids":
-                value = list(set(value))
-            elif key == "channels":
-                value = list(set(value))
-            elif key == "networks":
-                value = list(set(value))
-            super(NetworkStats, self).__setitem__(key, value)
 
     # Set the __setattr__ method to the __setitem__ method
     __setattr__ = __setitem__
@@ -328,7 +292,7 @@ class NetworkStream(Stream):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self, **kwargs):
         """Print the NetworkStream object.
 
         This method prints the NetworkStream object in a human-readable
