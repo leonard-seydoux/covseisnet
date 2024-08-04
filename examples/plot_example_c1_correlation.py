@@ -75,6 +75,7 @@ csn.plot.covariance_matrix_modulus_and_spectrum(covariances[t_index, f_index])
 # measure the spectral width of the eigenvalue distribution at each frequency,
 # or with applying the formula of the Neumann entropy.
 
+
 frequency_band = 0.3, 0.9
 
 # Calculate coherence
