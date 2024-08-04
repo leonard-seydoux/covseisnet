@@ -14,14 +14,16 @@ synchronization of traces.
 """
 
 from functools import partial
+from typing import Any
 
 import numpy as np
 import obspy
+from obspy import Stream, UTCDateTime
 
 from . import signal
 
 
-class NetworkStream(obspy.Stream):
+class NetworkStream(Stream):
     """
     Subclass of the ObsPy :class:`~obspy.core.stream.Stream` tailored for
     managing continuous data from seismic networks. The class is designed to
@@ -110,7 +112,7 @@ class NetworkStream(obspy.Stream):
 
         # Get number of traces and stations
         n_traces = len(self.traces)
-        n_stations = len(self.stations)
+        n_stations = len(self.ids)
 
         # Synced flag
         synced_flag = "synced" if self.are_time_vectors_equal else "not synced"
@@ -174,10 +176,10 @@ class NetworkStream(obspy.Stream):
 
     def cut(
         self,
-        starttime: str | obspy.UTCDateTime,
-        endtime: str | obspy.UTCDateTime | None = None,
-        duration_sec: float = None,
-        **kwargs: dict,
+        starttime: str | UTCDateTime,
+        endtime: str | UTCDateTime | None = None,
+        duration: float | None = None,
+        **kwargs: Any,
     ):
         """Trim traces between start and end date times.
 
@@ -194,9 +196,9 @@ class NetworkStream(obspy.Stream):
             The start date time.
         endtime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
             The end date time.
-        duration_sec : float, optional
+        duration : float, optional
             The duration of the trace in seconds. If set, the end time is
-            calculated as ``starttime + duration_sec``. This parameter is
+            calculated as ``starttime + duration``. This parameter is
             ignored if the ``endtime`` parameter is set.
         **kwargs: dict, optional
             Arguments passed to the :meth:`~obspy.core.stream.Stream.trim` method.
@@ -222,13 +224,8 @@ class NetworkStream(obspy.Stream):
         :meth:`~obspy.core.stream.Stream.trim`
         """
         # Convert start and end times to UTCDateTime
-        starttime = obspy.UTCDateTime(starttime)
-        if endtime:
-            endtime = obspy.UTCDateTime(endtime)
-        elif duration_sec:
-            endtime = starttime + duration_sec
-        else:
-            raise ValueError("One of endtime or duration_sec must be set.")
+        starttime = UTCDateTime(starttime)
+        endtime = UTCDateTime(endtime or starttime + duration)
 
         # Trim stream
         self.trim(starttime, endtime, **kwargs)
@@ -294,7 +291,7 @@ class NetworkStream(obspy.Stream):
     def synchronize(
         self,
         interpolation_method: str = "linear",
-        **kwargs: dict,
+        **kwargs: Any,
     ) -> None:
         """Synchronize seismic traces with interpolation.
 
@@ -324,7 +321,14 @@ class NetworkStream(obspy.Stream):
         # Find out the largest start time and the smallest end time
         time_extent = get_minimal_time_extent(self)
         duration = time_extent[-1] - time_extent[0]
-        npts = int(duration * self[0].stats.sampling_rate) + 1
+
+        # Extract the number of samples from the first trace
+        trace = self[0]
+        stats = getattr(trace, "stats", None)
+        sampling_rate = getattr(stats, "sampling_rate", None)
+        if not sampling_rate:
+            raise ValueError("Sampling rate is not defined.")
+        npts = int(duration * sampling_rate) + 1
 
         # Update kwargs
         kwargs.setdefault("method", interpolation_method)
@@ -646,37 +650,6 @@ class NetworkStream(obspy.Stream):
         return True
 
     @property
-    def stations(self) -> list[str]:
-        """List of unique station names.
-
-        This property is also available directly from looping over the traces
-        and accessing the :attr:`stats.station` attribute.
-
-        Example
-        -------
-        >>> stream = csn.read()
-        >>> stream.stations
-        ['RJOB']
-
-        """
-        return [trace.stats.station for trace in self.traces]
-
-    @property
-    def channels(self) -> list[str]:
-        """List of unique channel names.
-
-        This property is also available directly from looping over the traces
-        and accessing the :attr:`stats.channel` attribute.
-
-        Example
-        -------
-        >>> stream = csn.read()
-        >>> stream.channels
-        ['EHZ', 'EHN', 'EHE']
-        """
-        return [trace.stats.channel for trace in self.traces]
-
-    @property
     def ids(self) -> list[str]:
         """List of unique trace ids.
 
@@ -732,7 +705,7 @@ class NetworkStream(obspy.Stream):
         return self[0].stats.npts
 
 
-def get_minimal_time_extent(stream: NetworkStream) -> tuple[obspy.UTCDateTime]:
+def get_minimal_time_extent(stream: NetworkStream) -> tuple[UTCDateTime]:
     """Get the minimal time extent of traces in a stream.
 
     This function returns the minimal start and end times of the traces in the
