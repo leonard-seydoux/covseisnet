@@ -18,7 +18,9 @@ from typing import Any
 
 import numpy as np
 import obspy
-from obspy import Stream, UTCDateTime
+from obspy import UTCDateTime
+from obspy.core.stream import Stream
+from obspy.core.trace import Stats, Trace
 
 from . import signal
 
@@ -124,6 +126,45 @@ class NetworkStream(Stream):
         out = out + "\n".join([trace.__str__(longest_id) for trace in self])
 
         return out
+
+    def __getitem__(self, index) -> Trace | Stream:
+        return super().__getitem__(index)
+
+    @property
+    def stats(self) -> Stats:
+        """Stats dictionary of the first trace.
+
+        This property is also available directly from looping over the traces
+        and accessing the :attr:`stats` attribute.
+
+        Example
+        -------
+        >>> stream = csn.read()
+        >>> stream.stats.sampling_rate
+        100.0
+        """
+        stats = getattr(self[0], "stats")
+        if not stats:
+            raise ValueError("Stats dictionary is not defined.")
+        return stats
+
+    @property
+    def all_stats(self) -> list[Stats]:
+        """Stats dictionary of the first trace.
+
+        This property is also available directly from looping over the traces
+        and accessing the :attr:`stats` attribute.
+
+        Example
+        -------
+        >>> stream = csn.read()
+        >>> stream.stats.sampling_rate
+        100.0
+        """
+        stats = [getattr(trace, "stats") for trace in self]
+        if any(not stat for stat in stats):
+            raise ValueError("Stats dictionary is not defined.")
+        return stats
 
     @classmethod
     def read(cls, pathname_or_url=None, **kwargs) -> "NetworkStream":
@@ -285,8 +326,12 @@ class NetworkStream(Stream):
             self.are_time_vectors_equal
         ), "Traces are not synced, check the `synchronize` method."
 
+        # Get the first trace
+        trace = self[0]
+        assert isinstance(trace, Trace), "Trace is not of type Trace."
+
         # Return the times of the first trace
-        return self[0].times(*args, **kwargs)
+        return trace.times(*args, **kwargs)
 
     def synchronize(
         self,
@@ -346,7 +391,7 @@ class NetworkStream(Stream):
         smooth_length: int = 0,
         smooth_order: int = 1,
         epsilon: float = 1e-10,
-        **kwargs: dict,
+        **kwargs: Any,
     ) -> None:
         r"""Whiten traces in the spectral domain.
 
@@ -421,7 +466,7 @@ class NetworkStream(Stream):
 
         """
         # Automatically set the sampling rate from self
-        kwargs.setdefault("sampling_rate", self.sampling_rate)
+        kwargs.setdefault("sampling_rate", self.stats.sampling_rate)
 
         # Short-Time Fourier Transform instance
         stft_instance = signal.ShortTimeFourierTransform(**kwargs)
@@ -683,7 +728,7 @@ class NetworkStream(Stream):
         ), "Traces have different sampling rates."
 
         # Return the sampling rate of the first trace
-        return self[0].stats.sampling_rate
+        return self.stats["sampling_rate"]
 
     @property
     def npts(self) -> int:
@@ -702,10 +747,12 @@ class NetworkStream(Stream):
         assert self.are_npts_equal, "Traces have different number of samples."
 
         # Return the number of samples of the first trace
-        return self[0].stats.npts
+        return self.stats.npts
 
 
-def get_minimal_time_extent(stream: NetworkStream) -> tuple[UTCDateTime]:
+def get_minimal_time_extent(
+    stream: NetworkStream | Stream,
+) -> tuple[UTCDateTime, UTCDateTime]:
     """Get the minimal time extent of traces in a stream.
 
     This function returns the minimal start and end times of the traces in the
@@ -730,11 +777,10 @@ def get_minimal_time_extent(stream: NetworkStream) -> tuple[UTCDateTime]:
     >>> get_minimal_time_extent(stream)
     (2009-08-24T00:20:03.000000Z, 2009-08-24T00:20:32.990000Z)
     """
-    # Get the minimal start and end times
-    starttime = max([trace.stats.starttime for trace in stream])
-    endtime = min([trace.stats.endtime for trace in stream])
-
-    return starttime, endtime
+    return (
+        max(trace.stats.starttime for trace in stream),
+        min(trace.stats.endtime for trace in stream),
+    )
 
 
 def read(pathname_or_url=None, **kwargs) -> NetworkStream:

@@ -1,8 +1,9 @@
 """Test of the ArrayStream class."""
 
-import pytest
+import obspy
 
 from covseisnet import NetworkStream
+from covseisnet.stream import get_minimal_time_extent
 
 
 def test_stream_instance():
@@ -21,20 +22,25 @@ def test_cut_with_endtime():
     """Test trimming the stream with an endtime."""
     stream = NetworkStream.read()
     stream.cut("2009-08-24 00:20:05", "2009-08-24 00:20:12")
-    assert stream[0].stats.npts == 701
+    assert stream.stats.npts == 701
 
 
 def test_cut_with_duration():
     """Test trimming the stream with an endtime."""
     stream = NetworkStream.read()
-    stream.cut("2009-08-24 00:20:05", duration_sec=7)
-    assert stream[0].stats.npts == 701
+    stream.cut("2009-08-24 00:20:05", duration=7)
+    assert stream.stats.npts == 701
 
 
-# # Check that there is only one station in the stream
-# stations = stream.stations
-# assert len(stations) == 1
+def test_sampling_rate():
+    """Test the sample rate of the stream."""
+    stream = NetworkStream.read()
+    assert stream.stats.sampling_rate == 100.0
 
-# # Check that there are three channels in the stream
-# channels = stream.channels
-# assert len(channels) == 3
+
+def test_minimimal_extent():
+    """Test the minimal extent of the stream."""
+    stream = obspy.read()
+    start, end = get_minimal_time_extent(stream)
+    assert start == stream[0].stats.starttime
+    assert end == stream[0].stats.endtime
