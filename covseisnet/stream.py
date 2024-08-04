@@ -89,7 +89,7 @@ class NetworkStream(obspy.Stream):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __str__(self, **kwargs):
+    def __str__(self):
         """Print the NetworkStream object.
 
         This method prints the NetworkStream object in a human-readable
@@ -122,6 +122,55 @@ class NetworkStream(obspy.Stream):
         out = out + "\n".join([trace.__str__(longest_id) for trace in self])
 
         return out
+
+    @classmethod
+    def read(cls, pathname_or_url=None, **kwargs) -> "NetworkStream":
+        """Read seismic waveforms files into an NetworkStream object.
+
+        This function uses the :func:`obspy.core.stream.read` function to read
+        the streams. A detailed list of arguments and options are available in
+        the documentation. This function opens either one or multiple waveform
+        files given via file name or URL using the ``pathname_or_url``
+        attribute. The format of the waveform file will be automatically
+        detected if not given. See the `Supported Formats` section in the
+        :func:`obspy.core.stream.read` function.
+
+        This function returns an :class:`~covseisnet.stream.NetworkStream`
+        object which directly inherits from the :class:`obspy.core
+        .stream.Stream` object.
+
+        Arguments
+        ---------
+        pathname_or_url: str or io.BytesIO or None
+            String containing a file name or a URL or a open file-like object.
+            Wildcards are allowed for a file name. If this attribute is
+            omitted, an example :class:`~covseisnet.stream.NetworkStream`
+            object will be returned.
+        **kwargs: dict, optional
+            Other parameters are passed to the :func:`obspy.core.stream.read`
+            directly.
+
+        Returns
+        -------
+        :class:`~covseisnet.stream.NetworkStream`
+            The seismic waveforms.
+
+
+        Example
+        -------
+        >>> import covseisnet as csn
+        >>> stream = csn.NetworkStream.read()
+        >>> print(stream)
+        Network Stream of 3 traces from 1 stations (synced):
+        BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples
+        BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples
+        BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples
+
+        See Also
+        --------
+        :func:`~obspy.core.stream.read`
+        """
+        return cls(obspy.read(pathname_or_url, **kwargs))
 
     def cut(
         self,
