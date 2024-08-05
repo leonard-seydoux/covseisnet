@@ -435,3 +435,83 @@ def smooth_envelope_division(
     envelope = np.abs(np.array(signal.hilbert(x)))
     smooth_envelope = signal.savgol_filter(envelope, smooth, order)
     return x / (smooth_envelope + epsilon)
+
+
+def entropy(
+    x: np.ndarray, epsilon: float = 1e-10, axis: int = -1
+) -> np.ndarray:
+    r"""Entropy calculation.
+
+    Entropy calculated from a given distribution of values. The entropy is
+    defined as
+
+    .. math::
+
+        h = - \sum_{n=0}^N n x_n \log(x_n + \epsilon)
+
+    where :math:`x_n` is the distribution of values. This function assumes the
+    distribution is normalized by its sum.
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The distribution of values.
+    epsilon: float, optional
+        The regularization parameter for the logarithm.
+    **kwargs: dict, optional
+        Additional keyword arguments passed to the :func:`numpy.sum` function.
+        Typically, the axis along which the sum is performed.
+    """
+    return np.sum(-x * np.log(x + epsilon), axis=axis)
+
+
+def diversity(x: np.ndarray, epsilon: float = 1e-10, **kwargs) -> np.ndarray:
+    r"""Shanon diversity index calculation.
+
+    Shanon diversity index calculated from a given distribution of values. The
+    diversity index is defined as
+
+    .. math::
+
+        D = \exp(h + \epsilon)
+
+    where :math:`h` is the entropy of the distribution of values. This function
+    assumes the distribution is normalized by its sum.
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The distribution of values.
+    epsilon: float, optional
+        The regularization parameter for the logarithm.
+    **kwargs: dict, optional
+        Additional keyword arguments passed to the :func:`numpy.sum` function.
+        Typically, the axis along which the sum is performed.
+    """
+    return np.exp(entropy(x, epsilon, **kwargs))
+
+
+def width(x: np.ndarray, **kwargs) -> np.ndarray:
+    r"""Width calculation.
+
+    Width calculated from a given distribution of values. The width is defined
+    as
+
+    .. math::
+
+        \sigma = \sum_{n=0}^N n x_n
+
+    where :math:`x_n` is the distribution of values. This function assumes the
+    distribution is normalized by its sum.
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The distribution of values.
+    **kwargs: dict, optional
+        Additional keyword arguments passed to the :func:`numpy.sum` function.
+        Typically, the axis along which the sum is performed.
+    """
+    kwargs.setdefault("axis", -1)
+    indices = np.arange(x.shape[kwargs["axis"]])
+    return np.multiply(x, indices).sum(**kwargs)
