@@ -722,6 +722,53 @@ class NetworkStream(Stream):
             case _:
                 raise ValueError(f"Unknown method {method}")
 
+    def get_coordinates(self, datacenter: str = "IRIS") -> None:
+        """Get the geographical coordinates of each trace in the stream.
+
+        This method uses the ObsPy
+        :meth:`~obspy.core.stream.Stream.get_coordinates` method to extract
+        the coordinates of each trace in the stream. The method adds a
+        coordinate dictionary to each trace in the stream. The coordinate
+        dictionary contains the keys ``latitude``, ``longitude``, and
+        ``elevation``.
+
+        Arguments
+        ---------
+        datacenter: str, optional
+            The datacenter to use for retrieving the station coordinates. The
+            default is ``"IRIS"``.
+
+        Example
+        -------
+        >>> import covseisnet as csn
+        >>> stream = csn.read()
+        >>> stream.get_stations_coordinates()
+        {'BW.RJOB': {'latitude': 47.37, 'longitude': 7.76, 'elevation': 0.0}}
+        """
+        from obspy.clients.fdsn import Client
+
+        # Initialize the client
+        client = Client(datacenter)
+
+        # Loop over traces
+        for trace in self:
+            # Get the coordinates
+            inventory = client.get_stations(
+                network=trace.stats.network,
+                station=trace.stats.station,
+                location=trace.stats.location,
+                channel=trace.stats.channel,
+            )
+
+            # Add the coordinates to the trace
+            if inventory:
+                if inventory[0]:
+                    trace.stats.coordinates = {
+                        "latitude": inventory[0][0].latitude,
+                        "longitude": inventory[0][0].longitude,
+                        "elevation": inventory[0][0].elevation,
+                    }
+
     @property
     def synced(self) -> bool:
         """Check if traces are sampled on the same time vector.
