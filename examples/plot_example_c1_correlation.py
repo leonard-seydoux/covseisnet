@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import covseisnet as csn
 
 
-# sphinx_gallery_thumbnail_number = 2
+# sphinx_gallery_thumbnail_number = 3
 
 # %%
 # Read and pre-process stream
@@ -36,7 +36,7 @@ if not os.path.exists(filepath_waveforms):
 stream = csn.read(filepath_waveforms)
 stream = stream.select(station="UV1*")
 stream.filter("highpass", freq=0.1)
-stream.normalize(method="smooth", smooth_length=1001)
+stream.time_normalize(method="smooth", smooth_length=1001)
 stream.taper(max_percentage=0.01)
 
 
@@ -57,7 +57,7 @@ stream.taper(max_percentage=0.01)
 
 # Calculate covariance matrix
 times, frequencies, covariances = csn.calculate_covariance_matrix(
-    stream, window_duration_sec=20, average=20, whiten="slice"
+    stream, window_duration=20, average=20, whiten="slice"
 )
 
 # Show covariance from sample window and frequency
@@ -86,9 +86,6 @@ ax = csn.plot.stream_and_coherence(stream, times, frequencies, coherence)
 
 # Indicate frequency band
 ax[1].axhspan(*frequency_band, facecolor="none", edgecolor="k", clip_on=False)
-
-# Save
-ax[1].figure.savefig("coherence")
 
 # %%
 # Pairwise cross-correlation
@@ -123,4 +120,3 @@ ax.plot(lags, envelope_smooth)
 ax.grid()
 ax.set_title(f"Cross-correlation between {pair}")
 ax.set_xlabel("Lag time (s)")
-fig.savefig("cross_correlation")
