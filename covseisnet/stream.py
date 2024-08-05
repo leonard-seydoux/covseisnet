@@ -146,12 +146,9 @@ class NetworkStream(Stream):
 
     """
 
-    def __init__(
-        self,
-        traces_or_stream: list[Trace] | Trace | Stream | None = None,
-    ):
+    def __init__(self, *args, **kwargs):
         # Initialize the Stream object
-        super(NetworkStream, self).__init__(traces=traces_or_stream)
+        super(NetworkStream, self).__init__(*args, **kwargs)
 
     def __str__(self, **kwargs: dict) -> str:
         """Print the NetworkStream object.
@@ -600,7 +597,7 @@ class NetworkStream(Stream):
 
         """
         # Automatically set the sampling rate from self
-        kwargs.setdefault("sampling_rate", self.stats.sampling_rate)
+        kwargs.setdefault("sampling_rate", self.sampling_rate)
 
         # Short-Time Fourier Transform instance
         stft_instance = signal.ShortTimeFourierTransform(**kwargs)
