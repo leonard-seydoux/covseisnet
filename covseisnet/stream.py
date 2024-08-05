@@ -1,5 +1,5 @@
 """
-The package **covseisnet** provides a comprehensive toolkit for analyzing
+The package `Covseisnet <index.html>`_ is a Python package for the analysis of
 seismic data recorded on seismic networks. To achieve this, we offer a set of
 classes and methods designed for reading, pre-processing, and analyzing
 seismic data from these networks.
@@ -36,30 +36,41 @@ class NetworkStream(Stream):
     provide network-wide methods such as the calculation of the common time
     vector of the traces.
 
-    .. rubric:: _`Attributes`
+    .. rubric:: Boolean attributes
 
-    - :attr:`~covseisnet.stream.NetworkStream.sampling_rate` — sampling rate
-      of the traces.
+    - :attr:`~covseisnet.stream.NetworkStream.synced` — traces share the same
+      time vector.
 
-    - :attr:`~covseisnet.stream.NetworkStream.is_ready_to_process` — check if
-      stream is ready to be processed.
+    - :attr:`~covseisnet.stream.NetworkStream.equal_rates` — traces have the
+      same sampling rate.
 
-    - :attr:`~covseisnet.stream.NetworkStream.are_time_vectors_equal` — check
-      if traces are sampled on the same time vector.
+    - :attr:`~covseisnet.stream.NetworkStream.equal_length` — traces have the
+      same number of points.
 
-    - :attr:`~covseisnet.stream.NetworkStream.are_sampling_rates_equal` —
-      check if all traces have the same sampling rate.
+    .. rubric:: Numeric attributes
 
-    - :attr:`~covseisnet.stream.NetworkStream.are_npts_equal` — check if all
-      traces have the same number
+    - :attr:`~covseisnet.stream.NetworkStream.sampling_rate` — common traces
+      sampling rate.
 
-    .. rubric:: _`Methods`
+    - :attr:`~covseisnet.stream.NetworkStream.npts` — common traces number of
+      samples.
+
+    .. rubric:: Methods
+
+    - :meth:`~covseisnet.stream.NetworkStream.stats()` — stats dictionaries of
+      traces.
+
+    - :meth:`~covseisnet.stream.NetworkStream.read()` — read seismic waveforms
+      files into a :class:`~covseisnet.stream.NetworkStream` object.
+
+    - :meth:`~covseisnet.stream.NetworkStream.times()` — common traces time
+      vector.
+
+    - :meth:`~covseisnet.stream.NetworkStream.time_extent()` — minimal time
+      extent of traces in a stream.
 
     - :meth:`~covseisnet.stream.NetworkStream.cut()` — trim stream between
-      given start and end times.
-
-    - :meth:`~covseisnet.stream.NetworkStream.times()` — common time vector of
-      the NetworkStream.
+      given start and end times with string format.
 
     - :meth:`~covseisnet.stream.NetworkStream.synchronize()` — synchronize the
       traces into the same times with interpolation.
@@ -70,15 +81,9 @@ class NetworkStream(Stream):
     - :meth:`~covseisnet.stream.NetworkStream.time_normalize()` — normalize
       the traces in the temporal domain.
 
-    - :meth:`~covseisnet.stream.NetworkStream.stats()` — stats dictionary of
-      trace.
-
-    - :meth:`~covseisnet.stream.NetworkStream.time_extent()` — minimal time
-      extent of traces in a stream.
-
     .. tip::
 
-        There are three ways to create a NetworkStream object:
+        There are three main ways to create a NetworkStream object:
 
         #. Use the :meth:`~covseisnet.stream.NetworkStream.read` method to
            read seismic waveforms files into a
@@ -94,6 +99,10 @@ class NetworkStream(Stream):
         #. Pass an ObsPy :class:`~obspy.core.stream.Stream` object to the
            :class:`~covseisnet.stream.NetworkStream` constructor. This is the
            case if you have a special ObsPy reader for your data.
+
+        Other standard ObsPy methods are available for instanciating a
+        :class:`~covseisnet.stream.NetworkStream` object, directly documented
+        in the ObsPy documentation.
 
 
     Examples
@@ -137,9 +146,12 @@ class NetworkStream(Stream):
 
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(
+        self,
+        traces_or_stream: list[Trace] | Trace | Stream | None = None,
+    ):
         # Initialize the Stream object
-        super(NetworkStream, self).__init__(*args, **kwargs)
+        super(NetworkStream, self).__init__(traces=traces_or_stream)
 
     def __str__(self, **kwargs: dict) -> str:
         """Print the NetworkStream object.
@@ -165,7 +177,7 @@ class NetworkStream(Stream):
         n_stations = len(set(tr.stats.station for tr in self.traces))
 
         # Synced flag
-        synced_flag = "synced" if self.are_time_vectors_equal else "not synced"
+        synced_flag = "synced" if self.synced else "not synced"
 
         # Initialize output string
         out = f"NetworkStream of {n_traces} traces from {n_stations} station(s) ({synced_flag}):\n"
@@ -206,8 +218,28 @@ class NetworkStream(Stream):
         Example
         -------
         >>> stream = csn.read()
-        >>> stream.stats.sampling_rate
-        100.0
+        >>> # By default, stream.stats() returns the stats of the first trace
+        >>> stream.stats()
+                 network: BW
+                 station: RJOB
+                location:
+                 channel: EHZ
+               starttime: 2009-08-24T00:20:03.000000Z
+                 endtime: 2009-08-24T00:20:32.990000Z
+           sampling_rate: 100.0
+                   delta: 0.01
+                    npts: 3000
+                   calib: 1.0
+            back_azimuth: 100.0
+             inclination: 30.0
+                response: Channel Response
+                From M/S (Velocity in Meters Per Second) to COUNTS (Digital Counts)
+                Overall Sensitivity: 2.5168e+09 defined at 0.020 Hz
+                4 stages:
+                        Stage 1: PolesZerosResponseStage from M/S to V, gain: 1500
+                        Stage 2: CoefficientsTypeResponseStage from V to COUNTS, gain: 1.67785e+06
+                        Stage 3: FIRResponseStage from COUNTS to COUNTS, gain: 1
+                        Stage 4: FIRResponseStage from COUNTS to COUNTS, gain: 1
         """
         stats = getattr(self[index], "stats")
         if not stats:
@@ -222,7 +254,8 @@ class NetworkStream(Stream):
         pathname_or_url: str | BytesIO | None = None,
         **kwargs: dict,
     ) -> Self:
-        """Read seismic waveforms files into an NetworkStream object.
+        """Read seismic waveforms files into a
+        :class:`~covseisnet.stream.NetworkStream` object.
 
         This function uses the :func:`obspy.core.stream.read` function to read
         the streams. A detailed list of arguments and options are available in
@@ -233,8 +266,8 @@ class NetworkStream(Stream):
         :func:`obspy.core.stream.read` function.
 
         This function returns an :class:`~covseisnet.stream.NetworkStream`
-        object which directly inherits from the :class:`obspy.core
-        .stream.Stream` object.
+        object which directly inherits from the
+        :class:`obspy.core.stream.Stream` object.
 
         Arguments
         ---------
@@ -269,59 +302,6 @@ class NetworkStream(Stream):
         """
         return cls(obspy.read(pathname_or_url, **kwargs))
 
-    def cut(
-        self,
-        starttime: str | UTCDateTime,
-        endtime: str | UTCDateTime | None = None,
-        duration: float | None = None,
-        **kwargs: Any,
-    ):
-        """Trim traces between start and end date times.
-
-        This function is a wrapper to the ObsPy
-        :meth:`~obspy.core.stream.Stream.trim` method, but supports string
-        format for the start and end times. The function uses the ObsPy
-        :class:`~obspy.core.utcdatetime.UTCDateTime` function in order to
-        parse the start and end times.
-
-        Arguments
-        ---------
-
-        starttime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
-            The start date time.
-        endtime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
-            The end date time.
-        duration : float, optional
-            The duration of the trace in seconds. If set, the end time is
-            calculated as ``starttime + duration``. This parameter is
-            ignored if the ``endtime`` parameter is set.
-        **kwargs: dict, optional
-            Arguments passed to the :meth:`~obspy.core.stream.Stream.trim` method.
-
-        Example
-        -------
-
-        This example shows how to cut a stream between two given times. The
-        stream is first read from the example data, and then cut between two
-        given times.
-
-        >>> import covseisnet as csn
-        >>> stream = csn.read()
-        >>> stream.cut("2009-08-24 00:20:05", "2009-08-24 00:20:12")
-        >>> print(stream)
-        Network Stream of 3 traces from 1 stations (synced):
-        BW.RJOB..EHZ | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
-        W.RJOB..EHN  | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
-        BW.RJOB..EHE | 2009-08-24T00:20:05.000000Z... | 100.0 Hz, 701 samples
-
-        See Also
-        --------
-        :meth:`~obspy.core.stream.Stream.trim`
-        """
-        starttime = UTCDateTime(starttime)
-        endtime = UTCDateTime(endtime or starttime + duration)
-        self.trim(starttime, endtime, **kwargs)
-
     def times(self, *args, **kwargs: dict) -> np.ndarray:
         """Common time vector.
 
@@ -333,7 +313,7 @@ class NetworkStream(Stream):
         Arguments
         ---------
         *args: tuple
-            Arguments passed to the method
+            Arguments passed to the Trace method
             :meth:`~obspy.core.trace.Trace.times`. For instance, passing
             ``"matplotlib"`` allows to recover matplotlib timestamps instead
             of seconds from the start of the trace (default).
@@ -370,19 +350,99 @@ class NetworkStream(Stream):
 
         See Also
         --------
-        :meth:`~obspy.core.trace.Trace.times`
+        :meth:`obspy.core.trace.Trace.times`
         """
         # Check if the traces are synchronized
-        assert (
-            self.are_time_vectors_equal
-        ), "Traces are not synced, check the `synchronize` method."
-
-        # Get the first trace
-        trace = self[0]
-        assert isinstance(trace, Trace), "Trace is not of type Trace."
+        assert self.synced, "Traces not synced, check the synchronize method."
 
         # Return the times of the first trace
-        return trace.times(*args, **kwargs)
+        return self[0].times(*args, **kwargs)
+
+    def time_extent(self) -> tuple[UTCDateTime, UTCDateTime]:
+        """Get the minimal time extent of traces in a stream.
+
+        This function returns the minimal start and end times of the traces in
+        the stream. This is useful when synchronizing the traces to the same
+        time vector. The start time is defined as the maximum start time of
+        the traces, and the end time is defined as the minimum end time of the
+        traces.
+
+        Arguments
+        ---------
+        stream: :class:`~covseisnet.stream.NetworkStream` or
+        :class:`~obspy.core.stream.Stream`
+            The stream object.
+
+        Returns
+        -------
+        tuple of :class:`~obspy.core.utcdatetime.UTCDateTime`
+            The minimal start and end times of the traces.
+
+        Example
+        -------
+        >>> import covseisnet as csn
+        >>> stream = csn.read()
+        >>> stream.time_extent()
+        (UTCDateTime(2009, 8, 24, 0, 20, 3), UTCDateTime(2009, 8, 24, 0, 20, 32, 990000))
+        """
+        latest_starttime = max(trace.stats.starttime for trace in self)
+        earliest_endtime = min(trace.stats.endtime for trace in self)
+        return latest_starttime, earliest_endtime
+
+    def cut(
+        self,
+        starttime: str | UTCDateTime,
+        endtime: str | UTCDateTime | None = None,
+        duration: float | None = None,
+        **kwargs: Any,
+    ):
+        """Trim traces between start and end date times.
+
+        This function is a wrapper to the ObsPy
+        :meth:`~obspy.core.stream.Stream.trim` method, but supports string
+        format for the start and end times, enabling a more user-friendly
+        interface. The function uses the ObsPy
+        :class:`~obspy.core.utcdatetime.UTCDateTime` function in order to
+        parse the start and end times.
+
+        Arguments
+        ---------
+
+        starttime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
+            The start date time.
+        endtime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`
+            The end date time.
+        duration : float, optional
+            The duration of the trace in seconds. If set, the end time is
+            calculated as ``starttime + duration``. This parameter is ignored
+            if the ``endtime`` parameter is set.
+        **kwargs: dict, optional
+            Arguments passed to the :meth:`~obspy.core.stream.Stream.trim`
+            method.
+
+        Example
+        -------
+
+        This example shows how to cut a stream between two given times. The
+        stream is first read from the example data, and then cut between two
+        given times.
+
+        >>> import covseisnet as csn
+        >>> stream = csn.read()
+        >>> stream.cut("2009-08-24 00:20:05", "2009-08-24 00:20:12")
+        >>> print(stream)
+        NetworkStream of 3 traces from 1 station(s) (synced):
+        BW.RJOB..EHZ | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples
+        BW.RJOB..EHN | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples
+        BW.RJOB..EHE | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples
+
+        See Also
+        --------
+        :meth:`obspy.core.stream.Stream.trim`
+        """
+        starttime = UTCDateTime(starttime)
+        endtime = UTCDateTime(endtime or starttime + duration)
+        self.trim(starttime, endtime, **kwargs)
 
     def synchronize(
         self,
@@ -420,14 +480,14 @@ class NetworkStream(Stream):
 
         See Also
         --------
-        :meth:`~obspy.core.trace.Trace.interpolate`
+        :meth:`obspy.core.trace.Trace.interpolate`
         """
         # Return if the traces are already synchronized
-        if self.are_time_vectors_equal:
+        if self.synced:
             return
 
         # Check if traces have the same sampling rate
-        if not self.are_sampling_rates_equal:
+        if not self.equal_rates:
             raise ValueError(
                 "Traces have different sampling rates. Use the `resample` method to resample the traces, or specify the `sampling_rate` parameter to interpolate the traces with `synchronize`."
             )
@@ -459,35 +519,6 @@ class NetworkStream(Stream):
         # Interpolate all traces
         for trace in self:
             trace.interpolate(**kwargs)
-
-    def time_extent(self) -> tuple[UTCDateTime, UTCDateTime]:
-        """Get the minimal time extent of traces in a stream.
-
-        This function returns the minimal start and end times of the traces in the
-        stream. This is useful when synchronizing the traces to the same time
-        vector. The start time is defined as the maximum start time of the traces,
-        and the end time is defined as the minimum end time of the traces.
-
-        Arguments
-        ---------
-        stream: :class:`~covseisnet.stream.NetworkStream` or :class:`~obspy.core.stream.Stream`
-            The stream object.
-
-        Returns
-        -------
-        tuple of :class:`~obspy.core.utcdatetime.UTCDateTime`
-            The minimal start and end times of the traces.
-
-        Example
-        -------
-        >>> import covseisnet as csn
-        >>> stream = csn.read()
-        >>> stream.time_extent()
-        (UTCDateTime(2009, 8, 24, 0, 20, 3), UTCDateTime(2009, 8, 24, 0, 20, 32, 990000))
-        """
-        latest_starttime = max(trace.stats.starttime for trace in self)
-        earliest_endtime = min(trace.stats.endtime for trace in self)
-        return latest_starttime, earliest_endtime
 
     def whiten(
         self,
@@ -696,35 +727,7 @@ class NetworkStream(Stream):
                 raise ValueError(f"Unknown method {method}")
 
     @property
-    def is_ready_to_process(self) -> bool:
-        """Check if traces are ready to be processed.
-
-        This method checks if the traces are ready to be processed. This is
-        useful to ensure that the traces are synchronized before performing any
-        operation that requires the traces to be sampled on the same time vector.
-
-        This property performs the following checks in order:
-
-        - :attr:`~covseisnet.stream.NetworkStream.are_sampling_rates_equal`
-
-        - :attr:`~covseisnet.stream.NetworkStream.are_npts_equal`
-
-        - :attr:`~covseisnet.stream.NetworkStream.are_time_vectors_equal`
-
-        Returns
-        -------
-        bool
-            True if all the checks are passed, False otherwise.
-        """
-        checks = (
-            self.are_sampling_rates_equal,
-            self.are_npts_equal,
-            self.are_time_vectors_equal,
-        )
-        return all(checks)
-
-    @property
-    def are_time_vectors_equal(self) -> bool:
+    def synced(self) -> bool:
         """Check if traces are sampled on the same time vector.
 
         This method checks if all traces are sampled on the same time vector.
@@ -737,18 +740,13 @@ class NetworkStream(Stream):
         bool
             True if all traces are sampled on the same time vector, False
             otherwise.
-
-        Raises
-        ------
-        AssertionError
-            If the traces have different sampling rates or number of samples.
         """
         # Assert sampling rate
-        if not self.are_sampling_rates_equal:
+        if not self.equal_rates:
             return False
 
         # Assert number of samples
-        if not self.are_npts_equal:
+        if not self.equal_length:
             return False
 
         # Collect time vectors. We use the matplotlib format for comparison of
@@ -762,7 +760,7 @@ class NetworkStream(Stream):
         return True
 
     @property
-    def are_sampling_rates_equal(self) -> bool:
+    def equal_rates(self) -> bool:
         """Check if all traces have the same sampling rate.
 
         This method checks if all traces have the same sampling rate. This is
@@ -783,7 +781,7 @@ class NetworkStream(Stream):
         return True
 
     @property
-    def are_npts_equal(self) -> bool:
+    def equal_length(self) -> bool:
         """Check if all traces have the same number of samples.
 
         This method checks if all traces have the same number of samples. This
@@ -818,9 +816,7 @@ class NetworkStream(Stream):
         100.0
         """
         # Assert sampling rate
-        assert (
-            self.are_sampling_rates_equal
-        ), "Traces have different sampling rates."
+        assert self.equal_rates, "Found different sampling rates."
 
         # Return the sampling rate of the first trace
         return self.stats(index=0).sampling_rate
@@ -839,7 +835,7 @@ class NetworkStream(Stream):
         3000
         """
         # Assert number of samples
-        assert self.are_npts_equal, "Traces have different number of samples."
+        assert self.equal_length, "Traces have different number of samples."
 
         # Return the number of samples of the first trace
         return self.stats(index=0).npts
