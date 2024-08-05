@@ -124,7 +124,7 @@ class CovarianceMatrix(np.ndarray):
         # Set the additional attributes
         self.__dict__.update(attributes)
 
-    def set_stats(self, stats: list[Stats]):
+    def set_stats(self, stats: list[Stats] | list):
         """Set the stats.
 
         Arguments
@@ -132,6 +132,10 @@ class CovarianceMatrix(np.ndarray):
         stats: list of :class:`~obspy.core.trace.Stats`
             The list of stats for each trace.
         """
+        if not isinstance(stats, list):
+            stats = list(stats)
+        if not isinstance(stats[0], Stats):
+            stats = [Stats(stat) for stat in stats]
         self._stats = stats
 
     @property
@@ -450,7 +454,7 @@ class CovarianceMatrix(np.ndarray):
         trii, trij = np.triu_indices(self.shape[-1], **kwargs)
         return self[..., trii, trij]
 
-    def twosided(self, axis: int = 1) -> np.ndarray:
+    def twosided(self, axis: int = 1) -> "CovarianceMatrix":
         """Get the full covariance spectrum.
 
         Given that the covariance matrix is Hermitian, the full covariance
