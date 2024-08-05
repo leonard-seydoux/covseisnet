@@ -152,7 +152,7 @@ def trace_and_spectrogram(
         import covseisnet as csn
         stream = csn.read()
         trace = stream[0]
-        csn.plot.trace_and_spectrogram(trace, window_duration_sec=1)
+        csn.plot.trace_and_spectrogram(trace, window_duration=1)
 
     """
     # Create figure
@@ -361,7 +361,7 @@ def covariance_matrix_modulus_and_spectrum(
         c = np.random.randn(3, 3)
         c = (c @ c.T) / 0.5
         c = csn.covariance.CovarianceMatrix(c)
-        c.set_stations(["A", "B", "C"])
+        c.set_stats([{"station": station} for station in "ABC"])
         csn.plot.covariance_matrix_modulus_and_spectrum(c)
     """
     # Normalize covariance
