@@ -18,8 +18,8 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
 
     def __init__(
         self,
-        window_duration_sec: float = 2.0,
-        window_step_sec: None | float = None,
+        window_duration: float = 2.0,
+        window_step: None | float = None,
         window_function: str = "hann",
         sampling_rate: None | float = 1.0,
         **kwargs,
@@ -32,9 +32,9 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
 
         Arguments
         ---------
-        window_duration_sec: float, optional
+        window_duration: float, optional
             The duration of the window in seconds. Default is 2.0 seconds.
-        window_step_sec: float, optional
+        window_step: float, optional
             The step between windows in seconds. Default is half the window
             duration.
         window_function: str, optional
@@ -66,8 +66,8 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         --------
         >>> from covseisnet.signal import ShortTimeFourierTransform
         >>> stft = ShortTimeFourierTransform(
-        ...     window_duration_sec=2.0,
-        ...     window_step_sec=1.0,
+        ...     window_duration=2.0,
+        ...     window_step=1.0,
         ...     window_function="hann",
         ...     sampling_rate=100.0,
         ... )
@@ -86,12 +86,12 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         :class:`scipy.signal.ShortTimeFFT`
         """
         # Define apodization window
-        window_size = int(window_duration_sec * sampling_rate)
+        window_size = int(window_duration * sampling_rate)
         window_array = signal.windows.get_window(window_function, window_size)
 
         # Define step between windows
-        if window_step_sec is not None:
-            window_step = int(window_step_sec * sampling_rate)
+        if window_step is not None:
+            window_step = int(window_step * sampling_rate)
         else:
             window_step = window_size // 2
 
@@ -155,8 +155,8 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         --------
         >>> import covseisnet as csn
         >>> stft = csn.ShortTimeFourierTransform(
-        ...     window_duration_sec=2.0,
-        ...     window_step_sec=1.0,
+        ...     window_duration=2.0,
+        ...     window_step=1.0,
         ...     window_function="hann",
         ...     sampling_rate=100.0,
         ... )
@@ -232,8 +232,8 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         --------
         >>> import covseisnet as csn
         >>> stft = csn.ShortTimeFourierTransform(
-        ...     window_duration_sec=2.0,
-        ...     window_step_sec=1.0,
+        ...     window_duration=2.0,
+        ...     window_step=1.0,
         ...     window_function="hann",
         ...     sampling_rate=100.0,
         ... )

@@ -1,5 +1,7 @@
 """Spectral analysis and covariance matrix calculation."""
 
+from typing import Any
+
 import numpy as np
 from numpy.linalg import eigvalsh, eigh
 
@@ -104,27 +106,17 @@ class CovarianceMatrix(np.ndarray):
         # Set the additional attributes
         self.__dict__.update(attributes)
 
-    def set_ids(self, ids):
-        """Set the trace IDs.
+    def set_stats(self, stats):
+        """Set the stats.
 
         Arguments
         ---------
-        ids: list
-            The list of trace IDs.
+        stats: list
+            The list of stats.
         """
-        self.ids = ids
+        self.stats = stats
 
-    def set_stations(self, stations):
-        """Set the station names.
-
-        Arguments
-        ---------
-        stations: list
-            The list of station names.
-        """
-        self.stations = stations
-
-    def set_stft_instance(self, stft):
+    def set_stft(self, stft):
         """Set the ShortTimeFourierTransform instance for further processing.
 
         Arguments
@@ -438,10 +430,11 @@ class CovarianceMatrix(np.ndarray):
 
 def calculate_covariance_matrix(
     stream: NetworkStream,
+    window_duration: float,
     average: int,
     average_step: int | None = None,
     whiten: str = "none",
-    **kwargs: dict,
+    **kwargs: Any,
 ) -> tuple[np.ndarray, np.ndarray, CovarianceMatrix]:
     r"""Calculate covariance matrix.
 
@@ -540,19 +533,24 @@ def calculate_covariance_matrix(
 
     """
     # Calculate spectrogram
-    kwargs["sampling_rate"] = stream.sampling_rate
-    stft = ShortTimeFourierTransform(**kwargs)
+    short_time_fourier_transform = ShortTimeFourierTransform(
+        window_duration=window_duration,
+        sampling_rate=stream.sampling_rate,
+        **kwargs,
+    )
 
     # Extract spectra
-    spectra_times, frequencies, spectra = stft.map_transform(stream)
+    spectra_times, frequencies, spectra = (
+        short_time_fourier_transform.map_transform(stream)
+    )
 
     # Check whiten parameter
-    if whiten not in ["none", "slice", "window"]:
+    if whiten.lower() not in ["none", "slice", "window"]:
         message = "{} is not an available option for whiten."
         raise ValueError(message.format(whiten))
 
     # Remove modulus
-    if whiten == "window":
+    if whiten.lower() == "window":
         spectra /= np.abs(spectra) + 1e-5
 
     # Parametrization
@@ -575,7 +573,7 @@ def calculate_covariance_matrix(
         spectra_slice = spectra[..., selection]
 
         # Whiten
-        if whiten == "slice":
+        if whiten.lower() == "slice":
             spectra_slice /= np.mean(
                 np.abs(spectra_slice),
                 axis=-1,
@@ -598,14 +596,15 @@ def calculate_covariance_matrix(
     covariance_times = np.array(covariance_times)
 
     # Add metadata
-    covariances.set_stations(stream.stations)
-    covariances.set_ids([trace.id for trace in stream])
-    covariances.set_stft_instance(stft)
+    covariances.set_stats([trace.stats for trace in stream])
+    covariances.set_stft(short_time_fourier_transform)
 
     return covariance_times, frequencies, covariances
 
 
-def entropy(x: np.ndarray, epsilon: float = 1e-10, **kwargs) -> np.ndarray:
+def entropy(
+    x: np.ndarray, epsilon: float = 1e-10, axis: int = -1
+) -> np.ndarray:
     r"""Entropy calculation.
 
     Entropy calculated from a given distribution of values. The entropy is
@@ -628,7 +627,7 @@ def entropy(x: np.ndarray, epsilon: float = 1e-10, **kwargs) -> np.ndarray:
         Additional keyword arguments passed to the :func:`numpy.sum` function.
         Typically, the axis along which the sum is performed.
     """
-    return -np.sum(x * np.log(x + epsilon), **kwargs)
+    return np.sum(-x * np.log(x + epsilon), axis=axis)
 
 
 def diversity(x: np.ndarray, epsilon: float = 1e-10, **kwargs) -> np.ndarray:
