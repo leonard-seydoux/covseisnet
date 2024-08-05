@@ -132,8 +132,6 @@ class CovarianceMatrix(np.ndarray):
         stats: list of :class:`~obspy.core.trace.Stats`
             The list of stats for each trace.
         """
-        if not isinstance(stats, list):
-            stats = list(stats)
         if not isinstance(stats[0], Stats):
             stats = [Stats(stat) for stat in stats]
         self._stats = stats
@@ -606,6 +604,9 @@ def calculate_covariance_matrix(
     .. footbibliography::
 
     """
+    # Assert stream is synchronized
+    assert stream.synced, "Stream is not synchronized."
+
     # Calculate spectrogram
     short_time_fourier_transform = signal.ShortTimeFourierTransform(
         window_duration=window_duration,
