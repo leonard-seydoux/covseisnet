@@ -518,6 +518,7 @@ class NetworkStream(Stream):
 
     def whiten(
         self,
+        window_duration: float,
         smooth_length: int = 0,
         smooth_order: int = 1,
         epsilon: float = 1e-10,
@@ -578,6 +579,8 @@ class NetworkStream(Stream):
 
         Arguments
         ---------
+        window_duration: float
+            The duration of the window for the short-time Fourier transform.
         smooth_length: int, optional
             The length of the Savitzky-Golay filter for smoothing the
             spectrum. If set to 0, the spectrum is not smoothed (default).
@@ -590,13 +593,14 @@ class NetworkStream(Stream):
         **kwargs: dict, optional
             Additional keyword arguments passed to the covseisnet
             :func:`~covseisnet.signal.ShortTimeFourierTransform` class
-            constructor. The main parameter is the ``window_duration_sec``
-            parameter, which defines the window duration of the short-time
-            Fourier transform.
+            constructor.
 
         """
         # Automatically set the sampling rate from self
         kwargs.setdefault("sampling_rate", self.sampling_rate)
+
+        # Add window duration to kwargs
+        kwargs["window_duration"] = window_duration
 
         # Short-Time Fourier Transform instance
         stft_instance = signal.ShortTimeFourierTransform(**kwargs)
