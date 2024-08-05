@@ -13,215 +13,18 @@ the Stream object while adding specialized methods for the pre-processing and
 synchronization of traces.
 """
 
+from io import BytesIO
+
 from functools import partial
-from typing import Any
+from typing import Any, Self
 
 import numpy as np
 import obspy
 from obspy import UTCDateTime
 from obspy.core.stream import Stream
-from obspy.core.trace import AttribDict, Stats, Trace
+from obspy.core.trace import Stats, Trace
 
 from . import signal
-
-
-class NetworkStats(AttribDict):
-    r"""Header information of a :class:`~NetworkStream` object.
-
-    A ``NetworkStats`` object contains a subset of header information (also
-    known as metadata) of the :class:`~obspy.core.trace.Trace` objects of a
-    :class:`~NetworkStream` object. Those headers may be accessed or modified
-    either in the dictionary style or directly via a corresponding attribute.
-    There are various default attributes which are required by every waveform
-    import and export modules within ObsPy such as :mod:`obspy.io.mseed`.
-
-    Arguments
-    ---------
-    header: dict or :class:`~obspy.core.trace.Stats`, optional
-        Dictionary containing meta information of the
-        :class:`~obspy.core.trace.Trace` objects.
-
-    Example
-    -------
-
-    >>> from covseisnet import NetworkStats
-    >>> stats = NetworkStats()
-    >>> print(stats)
-                starttime: 1970-01-01T00:00:00.000000Z
-                  endtime: 1970-01-01T00:00:00.000000Z
-            sampling_rate: 1.0
-                    delta: 1.0
-                     npts: 0
-
-    .. rubric:: _`Default Attributes`
-
-    ``sampling_rate`` : float, optional
-        Sampling rate in Hertz (default to 1.0).
-    ``delta`` : float, optional
-        Sample distance in seconds (default to 1.0).
-    ``npts`` : int, optional
-        Number of sample points per trace (default to 0).
-    ``starttime`` : :class:`~obspy.core.utcdatetime.UTCDateTime`, optional
-        Date and time of the first data sample given in UTC (default value is
-        "1970-01-01T00:00:00.0Z").
-    ``endtime`` : :class:`~obspy.core.utcdatetime.UTCDateTime`, optional
-        Date and time of the last data sample given in UTC (default value is
-        "1970-01-01T00:00:00.0Z").
-
-    .. rubric:: Notes
-
-    (1) The attributes ``sampling_rate`` and ``delta`` are linked to each
-        other. If one of the attributes is modified the other will be
-        recalculated.
-
-        >>> from covseisnet import NetworkStats
-        >>> stats = NetworkStats()
-        >>> stats.sampling_rate
-        1.0
-        >>> stats.delta = 0.005
-        >>> stats.sampling_rate
-        200.0
-
-    (2) The attributes ``starttime``, ``npts``, ``sampling_rate`` and
-        ``delta`` are monitored and used to automatically calculate the
-        ``endtime``.
-
-        >>> from covseisnet import NetworkStats
-        >>> stats = Stats()
-        >>> stats.npts = 60
-        >>> stats.delta = 1.0
-        >>> stats.starttime = UTCDateTime(2009, 1, 1, 12, 0, 0)
-        >>> stats.endtime
-        2009-01-01T12:00:59.000000Z
-        >>> stats.delta = 0.5
-        >>> stats.endtime
-        2009-01-01T12:00:29.500000Z
-
-    (3) The attribute ``endtime`` is read only and can not be modified.
-
-        >>> stats = Stats()
-        >>> stats.endtime = UTCDateTime(2009, 1, 1, 12, 0, 0)
-        Traceback (most recent call last):
-        ...
-        AttributeError: Attribute "endtime" in Stats object is read only!
-        >>> stats['endtime'] = UTCDateTime(2009, 1, 1, 12, 0, 0)
-        Traceback (most recent call last):
-        ...
-        AttributeError: Attribute "endtime" in Stats object is read only!
-
-    (4)
-        The attribute ``npts`` will be automatically updated from the
-        :class:`~obspy.core.trace.Trace` object.
-
-        >>> trace = Trace()
-        >>> trace.stats.npts
-        0
-        >>> trace.data = np.array([1, 2, 3, 4])
-        >>> trace.stats.npts
-        4
-
-    (5)
-        The attribute ``component`` can be used to get or set the component,
-        i.e. the last character of the ``channel`` attribute.
-
-        >>> stats = Stats()
-        >>> stats.channel = 'HHZ'
-        >>> stats.component  # doctest: +SKIP
-        'Z'
-        >>> stats.component = 'L'
-        >>> stats.channel  # doctest: +SKIP
-        'HHL'
-
-    """
-
-    # Immutable keys
-    readonly = ["endtime"]
-
-    # Default values
-    defaults = {
-        "sampling_rate": 1.0,
-        "delta": 1.0,
-        "starttime": UTCDateTime(0),
-        "endtime": UTCDateTime(0),
-        "npts": 0,
-    }
-
-    # Keys which need to refresh derived values
-    _refresh_keys = {
-        "delta",
-        "sampling_rate",
-        "starttime",
-        "npts",
-    }
-
-    def __init__(self, header: dict = {}):
-        super().__init__(header)
-
-    def __setitem__(self, key, value):
-        if key in self._refresh_keys:
-            # Ensure correct data type
-            if key == "delta":
-                key = "sampling_rate"
-                try:
-                    value = 1.0 / float(value)
-                except ZeroDivisionError:
-                    value = 0.0
-            elif key == "sampling_rate":
-                value = float(value)
-            elif key == "starttime":
-                value = UTCDateTime(value)
-            elif key == "npts":
-                if not isinstance(value, int):
-                    value = int(value)
-            # Set current key
-            super(NetworkStats, self).__setitem__(key, value)
-
-            # Set derived value: delta
-            try:
-                delta = 1.0 / float(self.sampling_rate)
-            except ZeroDivisionError:
-                delta = 0
-            self.__dict__["delta"] = delta
-
-            # Set derived value: endtime
-            if self.npts == 0:
-                timediff = 0
-            else:
-                timediff = float(self.npts - 1) * delta
-            self.__dict__["endtime"] = self.starttime + timediff
-            return
-
-    # Set the __setattr__ method to the __setitem__ method
-    __setattr__ = __setitem__
-
-    def __getitem__(self, key, default=None):
-        return super(NetworkStats, self).__getitem__(key, default)
-
-    def __str__(self):
-        """Return better readable string representation of Stats object."""
-        priorized_keys = [
-            "starttime",
-            "endtime",
-            "sampling_rate",
-            "delta",
-            "npts",
-        ]
-        return self._pretty_str(priorized_keys)
-
-    def _repr_pretty_(self, p, cycle):
-        p.text(str(self))
-
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        # Remove the unneeded entries
-        state.pop("delta", None)
-        state.pop("endtime", None)
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)
-        # trigger refreshing
-        self.__setitem__("sampling_rate", state["sampling_rate"])
 
 
 class NetworkStream(Stream):
@@ -235,6 +38,9 @@ class NetworkStream(Stream):
 
     .. rubric:: _`Attributes`
 
+    - :attr:`~covseisnet.stream.NetworkStream.sampling_rate` — sampling rate
+      of the traces.
+
     - :attr:`~covseisnet.stream.NetworkStream.is_ready_to_process` — check if
       stream is ready to be processed.
 
@@ -246,15 +52,6 @@ class NetworkStream(Stream):
 
     - :attr:`~covseisnet.stream.NetworkStream.are_npts_equal` — check if all
       traces have the same number
-
-    - :attr:`~covseisnet.stream.NetworkStream.stations` — list of unique
-      station
-
-    - :attr:`~covseisnet.stream.NetworkStream.channels` — list of unique
-      channel
-
-    - :attr:`~covseisnet.stream.NetworkStream.sampling_rate` — sampling rate
-      of the traces.
 
     .. rubric:: _`Methods`
 
@@ -270,29 +67,81 @@ class NetworkStream(Stream):
     - :meth:`~covseisnet.stream.NetworkStream.whiten()` — whiten traces in the
       spectral domain.
 
-    - :meth:`~covseisnet.stream.NetworkStream.normalize()` — normalize the
-      traces in the temporal domain.
+    - :meth:`~covseisnet.stream.NetworkStream.time_normalize()` — normalize
+      the traces in the temporal domain.
+
+    - :meth:`~covseisnet.stream.NetworkStream.stats()` — stats dictionary of
+      trace.
+
+    - :meth:`~covseisnet.stream.NetworkStream.time_extent()` — minimal time
+      extent of traces in a stream.
+
+    .. tip::
+
+        There are three ways to create a NetworkStream object:
+
+        #. Use the :meth:`~covseisnet.stream.NetworkStream.read` method to
+           read seismic waveforms files into a
+           :class:`~covseisnet.stream.NetworkStream` object. This method is
+           the core method to read seismic data into the package.
+
+        #. Use the :func:`covseisnet.stream.read` function, which is a wrapper
+           to the :meth:`~covseisnet.stream.NetworkStream.read` method. Note
+           that the :func:`covseisnet.stream.read` function is directly
+           available from the package. This function is a wrapper to the
+           :meth:`~covseisnet.stream.NetworkStream.read` method.
+
+        #. Pass an ObsPy :class:`~obspy.core.stream.Stream` object to the
+           :class:`~covseisnet.stream.NetworkStream` constructor. This is the
+           case if you have a special ObsPy reader for your data.
 
 
+    Examples
+    --------
 
-    .. note::
+    1. Read seismic waveforms with the :meth:`NetworkStream.read` method.
 
-        This class is not meant to be instantiated directly. Instead, it is
-        returned by the :func:`~covseisnet.stream.read` function when reading
-        seismic data, as shown in the example below.
+    .. doctest::
 
-        .. doctest::
+        >>> import covseisnet as csn
+        >>> stream = csn.NetworkStream.read()
+        >>> print(type(stream))
+        <class 'covseisnet.stream.NetworkStream'>
+        >>> print(stream)
+        NetworkStream of 3 traces from 1 station(s) (synced):
+        BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples
+        BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples
+        BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples
 
-            >>> import covseisnet as csn
-            >>> stream = csn.read()
-            >>> print(type(stream))
-            <class 'covseisnet.stream.NetworkStream'>
+    2. Read seismic waveforms with the :func:`~covseisnet.stream.read`
+       function.
+
+    .. doctest::
+
+        >>> import covseisnet as csn
+        >>> stream = csn.read()
+        >>> print(type(stream))
+        <class 'covseisnet.stream.NetworkStream'>
+
+    3. Create a :class:`~covseisnet.stream.NetworkStream` object from an ObsPy
+       :class:`~obspy.core.stream.Stream` object.
+
+    .. doctest::
+
+        >>> import obspy
+        >>> import covseisnet as csn
+        >>> stream = obspy.read()
+        >>> network_stream = csn.NetworkStream(stream)
+        >>> print(type(network_stream))
+        <class 'covseisnet.stream.NetworkStream'>
+
     """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        # Initialize the Stream object
+        super(NetworkStream, self).__init__(*args, **kwargs)
 
-    def __str__(self, **kwargs):
+    def __str__(self, **kwargs: dict) -> str:
         """Print the NetworkStream object.
 
         This method prints the NetworkStream object in a human-readable
@@ -303,7 +152,7 @@ class NetworkStream(Stream):
         Arguments
         ---------
         **kwargs: dict, optional
-            A way to handle legacy arguments. No argument is used in this method.
+            A way to handle legacy arguments. No argument is used in this method. In particular, the ``extended`` argument is not used.
         """
         # Get longest trace id index among traces
         if self.traces:
@@ -313,28 +162,46 @@ class NetworkStream(Stream):
 
         # Get number of traces and stations
         n_traces = len(self.traces)
-        n_stations = len(self.ids)
+        n_stations = len(set(tr.stats.station for tr in self.traces))
 
         # Synced flag
         synced_flag = "synced" if self.are_time_vectors_equal else "not synced"
 
         # Initialize output string
-        out = f"NetworkStream of {n_traces} traces from {n_stations} stations ({synced_flag}):\n"
+        out = f"NetworkStream of {n_traces} traces from {n_stations} station(s) ({synced_flag}):\n"
 
         # Print all traces
         out = out + "\n".join([trace.__str__(longest_id) for trace in self])
 
         return out
 
-    def __getitem__(self, index) -> Trace | Stream:
+    def __getitem__(self, index: int) -> Trace | Self:
         return super().__getitem__(index)
 
-    @property
-    def stats(self) -> NetworkStats:
-        """Stats dictionary of the first trace.
+    def stats(self, index: int = 0, key: str | None = None) -> Any | Stats:
+        """Stats dictionary of the a trace.
 
         This property is also available directly from looping over the traces
-        and accessing the :attr:`stats` attribute.
+        and accessing the :attr:`stats` attribute. The purpose of this method
+        is to extract the stats dictionary of one of the traces (by default
+        the first trace) in the stream when the traces are synchronized. It
+        also enable storing the pre-processing chain and the geographical
+        information of the traces.
+
+        Arguments
+        ---------
+        index: int, optional
+            The index of the trace in the stream. Default to 0.
+        key: str, optional
+            The key of the stats dictionary. If set, the method returns the
+            value of the key in the stats dictionary. If not set, the method
+            returns the stats dictionary.
+
+        Returns
+        -------
+        Any or :class:`~obspy.core.trace.Stats`
+            The stats dictionary of the trace. If the key is set, the method
+            returns the value of the key in the stats dictionary.
 
         Example
         -------
@@ -342,37 +209,19 @@ class NetworkStream(Stream):
         >>> stream.stats.sampling_rate
         100.0
         """
-        # Extract stats from the first trace
-        if not (stats := getattr(self[0], "stats")):
+        stats = getattr(self[index], "stats")
+        if not stats:
             raise ValueError("Stats dictionary is not defined.")
-
-        # Meta
-        stats["networks"] = [trace.stats.network for trace in self]
-        stats["stations"] = [trace.stats.station for trace in self]
-        stats["ids"] = [trace.id for trace in self]
-        stats["channels"] = [trace.stats.channel for trace in self]
-        return NetworkStats(stats)
-
-    @property
-    def all_stats(self) -> list[Stats]:
-        """Stats dictionary of the first trace.
-
-        This property is also available directly from looping over the traces
-        and accessing the :attr:`stats` attribute.
-
-        Example
-        -------
-        >>> stream = csn.read()
-        >>> stream.stats.sampling_rate
-        100.0
-        """
-        stats = [getattr(trace, "stats") for trace in self]
-        if any(not stat for stat in stats):
-            raise ValueError("Stats dictionary is not defined.")
+        if key:
+            return stats[key]
         return stats
 
     @classmethod
-    def read(cls, pathname_or_url=None, **kwargs) -> "NetworkStream":
+    def read(
+        cls,
+        pathname_or_url: str | BytesIO | None = None,
+        **kwargs: dict,
+    ) -> Self:
         """Read seismic waveforms files into an NetworkStream object.
 
         This function uses the :func:`obspy.core.stream.read` function to read
@@ -469,11 +318,8 @@ class NetworkStream(Stream):
         --------
         :meth:`~obspy.core.stream.Stream.trim`
         """
-        # Convert start and end times to UTCDateTime
         starttime = UTCDateTime(starttime)
         endtime = UTCDateTime(endtime or starttime + duration)
-
-        # Trim stream
         self.trim(starttime, endtime, **kwargs)
 
     def times(self, *args, **kwargs: dict) -> np.ndarray:
@@ -541,6 +387,7 @@ class NetworkStream(Stream):
     def synchronize(
         self,
         interpolation_method: str = "linear",
+        sampling_rate: float | None = None,
         **kwargs: Any,
     ) -> None:
         """Synchronize seismic traces with interpolation.
@@ -555,10 +402,21 @@ class NetworkStream(Stream):
         ---------
         method: str, default
             Interpolation method. Default to ``"linear"``.
+        sampling_rate: float, optional
+            The sampling rate of the traces. If not set and if the traces have
+            all the same sampling rate, the method uses the sampling rate of
+            the first trace. If not set and if the traces have different
+            sampling rates, the method raises a ValueError.
         **kwargs: dict, optional
             Additional keyword arguments passed to the
             :meth:`~obspy.core.trace.Trace.interpolate` method. Check the
             ObsPy documentation for more details on the available options.
+
+        Raises
+        ------
+        ValueError
+            If the traces have different sampling rates and the
+            ``sampling_rate`` parameter is not set.
 
         See Also
         --------
@@ -568,16 +426,27 @@ class NetworkStream(Stream):
         if self.are_time_vectors_equal:
             return
 
-        # Find out the largest start time and the smallest end time
-        time_extent = get_minimal_time_extent(self)
-        duration = time_extent[-1] - time_extent[0]
+        # Check if traces have the same sampling rate
+        if not self.are_sampling_rates_equal:
+            raise ValueError(
+                "Traces have different sampling rates. Use the `resample` method to resample the traces, or specify the `sampling_rate` parameter to interpolate the traces with `synchronize`."
+            )
 
-        # Extract the number of samples from the first trace
-        trace = self[0]
-        stats = getattr(trace, "stats", None)
-        sampling_rate = getattr(stats, "sampling_rate", None)
+        # Find out the largest start time and the smallest end time
+        time_extent = self.time_extent()
+        duration = float(time_extent[-1] - time_extent[0])
+
+        # The following information is extracted from the first trace, since
+        # at this point, the traces should either have the same sampling rate
+        # or the user should have specified the sampling rate.
+        stats = getattr(self[0], "stats", None)
+
+        # Get the sampling rate
+        sampling_rate = getattr(stats, "sampling_rate", sampling_rate)
         if not sampling_rate:
             raise ValueError("Sampling rate is not defined.")
+
+        # Calculate the number of samples
         npts = int(duration * sampling_rate) + 1
 
         # Update kwargs
@@ -590,6 +459,35 @@ class NetworkStream(Stream):
         # Interpolate all traces
         for trace in self:
             trace.interpolate(**kwargs)
+
+    def time_extent(self) -> tuple[UTCDateTime, UTCDateTime]:
+        """Get the minimal time extent of traces in a stream.
+
+        This function returns the minimal start and end times of the traces in the
+        stream. This is useful when synchronizing the traces to the same time
+        vector. The start time is defined as the maximum start time of the traces,
+        and the end time is defined as the minimum end time of the traces.
+
+        Arguments
+        ---------
+        stream: :class:`~covseisnet.stream.NetworkStream` or :class:`~obspy.core.stream.Stream`
+            The stream object.
+
+        Returns
+        -------
+        tuple of :class:`~obspy.core.utcdatetime.UTCDateTime`
+            The minimal start and end times of the traces.
+
+        Example
+        -------
+        >>> import covseisnet as csn
+        >>> stream = csn.read()
+        >>> stream.time_extent()
+        (UTCDateTime(2009, 8, 24, 0, 20, 3), UTCDateTime(2009, 8, 24, 0, 20, 32, 990000))
+        """
+        latest_starttime = max(trace.stats.starttime for trace in self)
+        earliest_endtime = min(trace.stats.endtime for trace in self)
+        return latest_starttime, earliest_endtime
 
     def whiten(
         self,
@@ -712,8 +610,12 @@ class NetworkStream(Stream):
             waveform = waveform[: trace.stats.npts]
             trace.data = waveform
 
-    def normalize(
-        self, method="onebit", smooth_length=11, smooth_order=1, epsilon=1e-10
+    def time_normalize(
+        self,
+        method: str = "onebit",
+        smooth_length: int = 11,
+        smooth_order: int = 1,
+        epsilon: float = 1e-10,
     ) -> None:
         r"""Normalize the seismic traces in temporal domain.
 
@@ -773,22 +675,25 @@ class NetworkStream(Stream):
             Regularization parameter in division, set to 1e-10 by default.
 
         """
-        if method == "onebit":
-            for trace in self:
-                trace.data = signal.modulus_division(
-                    trace.data,
-                    epsilon=epsilon,
-                )
-        elif method == "smooth":
-            for trace in self:
-                trace.data = signal.smooth_envelope_division(
-                    trace.data,
-                    smooth_length,
-                    smooth_order,
-                    epsilon,
-                )
-        else:
-            raise ValueError(f"Unknown method {method}")
+        match method:
+
+            case "onebit":
+                for trace in self:
+                    trace.data = signal.modulus_division(
+                        trace.data, epsilon=epsilon
+                    )
+
+            case "smooth":
+                for trace in self:
+                    trace.data = signal.smooth_envelope_division(
+                        trace.data,
+                        smooth_length,
+                        smooth_order,
+                        epsilon,
+                    )
+
+            case _:
+                raise ValueError(f"Unknown method {method}")
 
     @property
     def is_ready_to_process(self) -> bool:
@@ -900,21 +805,6 @@ class NetworkStream(Stream):
         return True
 
     @property
-    def ids(self) -> list[str]:
-        """List of unique trace ids.
-
-        This property is also available directly from looping over the traces
-        and accessing the :attr:`id` attribute.
-
-        Example
-        -------
-        >>> stream = csn.read()
-        >>> stream.ids
-        ['BW.RJOB..EHE', 'BW.RJOB..EHN', 'BW.RJOB..EHZ']
-        """
-        return [trace.id for trace in self.traces]
-
-    @property
     def sampling_rate(self) -> float:
         """Sampling rate of the traces in Hz.
 
@@ -933,7 +823,7 @@ class NetworkStream(Stream):
         ), "Traces have different sampling rates."
 
         # Return the sampling rate of the first trace
-        return self.stats["sampling_rate"]
+        return self.stats(index=0).sampling_rate
 
     @property
     def npts(self) -> int:
@@ -952,43 +842,12 @@ class NetworkStream(Stream):
         assert self.are_npts_equal, "Traces have different number of samples."
 
         # Return the number of samples of the first trace
-        return self.stats.npts
+        return self.stats(index=0).npts
 
 
-def get_minimal_time_extent(
-    stream: NetworkStream | Stream,
-) -> tuple[UTCDateTime, UTCDateTime]:
-    """Get the minimal time extent of traces in a stream.
-
-    This function returns the minimal start and end times of the traces in the
-    stream. This is useful when synchronizing the traces to the same time
-    vector. The start time is defined as the maximum start time of the traces,
-    and the end time is defined as the minimum end time of the traces.
-
-    Arguments
-    ---------
-    stream: :class:`~covseisnet.stream.NetworkStream` or :class:`~obspy.core.stream.Stream`
-        The stream object.
-
-    Returns
-    -------
-    tuple of :class:`~obspy.core.utcdatetime.UTCDateTime`
-        The minimal start and end times of the traces.
-
-    Example
-    -------
-    >>> import covseisnet as csn
-    >>> stream = csn.read()
-    >>> get_minimal_time_extent(stream)
-    (2009-08-24T00:20:03.000000Z, 2009-08-24T00:20:32.990000Z)
-    """
-    return (
-        max(trace.stats.starttime for trace in stream),
-        min(trace.stats.endtime for trace in stream),
-    )
-
-
-def read(pathname_or_url=None, **kwargs) -> NetworkStream:
+def read(
+    pathname_or_url: str | BytesIO | None = None, **kwargs: dict
+) -> NetworkStream:
     """Read seismic waveforms files into an NetworkStream object.
 
     This function uses the :func:`obspy.core.stream.read` function to read the
