@@ -49,7 +49,7 @@ whiten_1 = "none"
 # Pre-process stream with temporal normalization
 case_2 = "Temporal normalization"
 stream_2 = stream.copy()
-stream_2.normalize(method="smooth", smooth_length=1001)
+stream_2.time_normalize(method="smooth", smooth_length=1001)
 stream_2.taper(max_percentage=0.01)
 whiten_2 = "none"
 
@@ -66,7 +66,7 @@ whiten_4 = "slice"
 # Pre-process stream with whitening and temporal normalization
 case_5 = "Temporal normalization and whitening on slice"
 stream_5 = stream.copy()
-stream_5.normalize(method="smooth", smooth_length=1001)
+stream_5.time_normalize(method="smooth", smooth_length=1001)
 stream_5.taper(max_percentage=0.01)
 whiten_5 = "slice"
 
@@ -81,10 +81,7 @@ for stream, case, whiten in zip(streams, cases, whitens):
 
     # Calculate covariance matrix
     times, frequencies, covariances = csn.calculate_covariance_matrix(
-        stream,
-        window_duration_sec=20,
-        average=20,
-        whiten=whiten,
+        stream, window_duration=20, average=20, whiten=whiten
     )
 
     # Calculate coherence
@@ -111,8 +108,8 @@ fig, ax = plt.subplots(
 )
 
 # Plot a trace
-ax[0].plot(stream[0].times("matplotlib"), stream[0].data, color="black")
-ax[0].set_title(f"Trace from {stream[0].id}")
+ax[0].plot(stream.times("matplotlib"), stream.traces[0].data, color="black")
+ax[0].set_title(f"Trace from {stream.traces[0].id}")
 ax[0].set_ylabel("Amplitude")
 
 # Plot coherences

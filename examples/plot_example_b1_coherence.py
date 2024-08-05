@@ -40,7 +40,7 @@ if not os.path.exists(filepath_waveforms):
 # Read example stream
 stream = csn.read(filepath_waveforms)
 stream.filter("highpass", freq=0.5)
-stream.normalize(method="smooth", smooth_length=1001)
+stream.time_normalize(method="smooth", smooth_length=1001)
 stream.taper(max_percentage=0.01)
 
 
@@ -61,7 +61,7 @@ stream.taper(max_percentage=0.01)
 
 # Calculate covariance matrix
 times, frequencies, covariances = csn.calculate_covariance_matrix(
-    stream, window_duration_sec=20, average=20, whiten="slice"
+    stream, window_duration=20, average=20, whiten="slice"
 )
 
 # Show covariance from sample window and frequency
