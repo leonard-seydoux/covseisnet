@@ -4,17 +4,22 @@ mostly plotting functions, but also to provide basic tools to quickly visualize
 data and results from this package.
 """
 
+from typing import Any
+
+from matplotlib.axes import Axes
+from matplotlib.ticker import Formatter
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import obspy
+from obspy.core.trace import Trace
 from scipy.fft import rfft, rfftfreq
 
 import covseisnet as csn
 from .signal import ShortTimeFourierTransform
 
 
-def make_axis_symmetric(ax: plt.Axes, axis: str = "both") -> None:
+def make_axis_symmetric(ax: Axes, axis: str = "both") -> None:
     """Make the axis of a plot symmetric.
 
     Given an axis, this function will set the limits of the axis to be symmetric
@@ -63,7 +68,7 @@ def make_axis_symmetric(ax: plt.Axes, axis: str = "both") -> None:
         ax.set_ylim(-max(yabs), max(yabs))
 
 
-def trace_and_spectrum(trace: obspy.core.trace.Trace) -> list:
+def trace_and_spectrum(trace: Trace) -> list:
     """Plot a trace and its spectrum side by side.
 
     The spectrum is calculated with the :func:`scipy.fft.rfft` function, which
@@ -100,7 +105,7 @@ def trace_and_spectrum(trace: obspy.core.trace.Trace) -> list:
     waveform = trace.data
 
     # Calculate spectrum
-    spectrum = rfft(waveform)
+    spectrum = np.array(rfft(waveform))
     frequencies = rfftfreq(len(waveform), trace.stats.delta)
 
     # Plot trace
@@ -119,9 +124,7 @@ def trace_and_spectrum(trace: obspy.core.trace.Trace) -> list:
 
 
 def trace_and_spectrogram(
-    trace: obspy.core.trace.Trace,
-    f_min: None | float = None,
-    **kwargs: dict,
+    trace: Trace, f_min: None | float = None, **kwargs: Any
 ) -> list:
     """Plot a trace and its spectrogram.
 
@@ -266,7 +269,7 @@ def stream_and_coherence(
     times: np.ndarray,
     frequencies: np.ndarray,
     coherence: np.ndarray,
-    f_min: float = None,
+    f_min: float | None = None,
     trace_factor: float = 0.1,
     **kwargs: dict,
 ) -> None:
@@ -304,7 +307,7 @@ def stream_and_coherence(
         ax[0].plot(trace_times, waveform + index, color="k", lw=0.3)
 
     # Labels
-    stations = stream.stations
+    stations = [trace.stats.station for trace in stream]
     ax[0].set_title("Normalized seismograms")
     ax[0].grid()
     ax[0].set_yticks(range(len(stations)), labels=stations, fontsize="small")
@@ -328,7 +331,7 @@ def stream_and_coherence(
 
 def covariance_matrix_modulus_and_spectrum(
     covariance: csn.covariance.CovarianceMatrix,
-) -> plt.Axes:
+) -> Axes:
     """Plot the modulus of a covariance matrix and its spectrum.
 
     This function plots the modulus of the covariance matrix and its
@@ -408,11 +411,7 @@ def covariance_matrix_modulus_and_spectrum(
     return ax
 
 
-def dateticks(
-    ax: plt.Axes,
-    locator: mdates.DateLocator = mdates.AutoDateLocator,
-    formatter: mdates.DateFormatter = mdates.ConciseDateFormatter,
-) -> None:
+def dateticks(ax: Axes, locator: mdates.DateLocator | None = None) -> None:
     """Set date ticks on the x-axis of a plot.
 
     Arguments
@@ -454,7 +453,8 @@ def dateticks(
         ax[1].grid()
         csn.plot.dateticks(ax[1])
     """
-    xticks = locator()
+    xticks = locator or mdates.AutoDateLocator()
+    formatter = mdates.ConciseDateFormatter
     xticklabels = formatter(xticks)
     ax.xaxis.set_major_locator(xticks)
     ax.xaxis.set_major_formatter(xticklabels)

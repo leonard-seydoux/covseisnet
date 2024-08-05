@@ -40,7 +40,7 @@ normalized_streams = []
 # Normalize the stream with the different methods
 for method in normalization_methods:
     normalized_stream = stream.copy()
-    normalized_stream.normalize(method=method)
+    normalized_stream.time_normalize(method=method)
     normalized_streams.append(normalized_stream)
 
 # %%
@@ -60,7 +60,7 @@ fig, axes = plt.subplots(len(streams), sharex=True, constrained_layout=True)
 
 # Plot each case
 for ax, stream, label in zip(axes, streams, labels):
-    ax.plot(stream[0].times("matplotlib"), stream[0].data)
+    ax.plot(stream.times("matplotlib"), stream.traces[0].data)
     ax.set_title(label.title())
     ax.set_ylabel("Amplitude")
     ax.grid()

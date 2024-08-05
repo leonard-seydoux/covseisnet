@@ -30,7 +30,7 @@ trace = stream[0]
 trace.filter("highpass", freq=0.4)
 
 # Plot trace and corresponding spectrum
-ax = csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=2)
+ax = csn.plot.trace_and_spectrogram(stream.traces[0], window_duration=2)
 
 
 # %%
@@ -45,10 +45,12 @@ ax = csn.plot.trace_and_spectrogram(stream[0], window_duration_sec=2)
 
 
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=10, smooth_length=0)
+whitened_stream.whiten(window_duration=10, smooth_length=0)
 
 # Plot whitened trace and corresponding spectrum
-ax = csn.plot.trace_and_spectrogram(whitened_stream[0], window_duration_sec=2)
+ax = csn.plot.trace_and_spectrogram(
+    whitened_stream.traces[0], window_duration=2
+)
 ax[0].set_title("Whitened trace")
 ax[1].set_title("Whitened spectrogram")
 
@@ -65,9 +67,11 @@ ax[1].set_title("Whitened spectrogram")
 # window length of 31 frequency bins.
 
 whitened_stream = stream.copy()
-whitened_stream.whiten(window_duration_sec=10, smooth_length=31)
+whitened_stream.whiten(window_duration=10, smooth_length=31)
 
 # Plot whitened trace and corresponding spectrum
-ax = csn.plot.trace_and_spectrogram(whitened_stream[0], window_duration_sec=2)
+ax = csn.plot.trace_and_spectrogram(
+    whitened_stream.traces[0], window_duration=2
+)
 ax[0].set_title("Whitened trace (smooth)")
 ax[1].set_title("Whitened spectrogram (smooth)")

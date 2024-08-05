@@ -29,7 +29,7 @@ stream = csn.read()
 stream.filter("highpass", freq=1)
 
 # Cut the stream out of the tapering
-stream.cut("2009-08-24T00:20:20", duration_sec=0.3)
+stream.cut("2009-08-24T00:20:20", duration=0.3)
 
 
 # Print the original stream

@@ -299,7 +299,7 @@ class NetworkStream(Stream):
         """
         return cls(obspy.read(pathname_or_url, **kwargs))
 
-    def times(self, *args, **kwargs: dict) -> np.ndarray:
+    def times(self, *args, **kwargs) -> np.ndarray:
         """Common time vector.
 
         Because the :class:`~covseisnet.stream.NetworkStream` handles traces
