@@ -2,10 +2,11 @@
 
 import numpy as np
 
-from scipy.signal import butter, filtfilt, hilbert, windows
+from scipy.signal import hilbert, windows
 from scipy.ndimage import gaussian_filter1d
 
 from .covariance import CovarianceMatrix
+from .signal import bandpass_filter, hilbert_envelope
 
 
 class CrossCorrelationMatrix(np.ndarray):
@@ -82,7 +83,8 @@ class CrossCorrelationMatrix(np.ndarray):
         kwargs.setdefault("axis", -1)
 
         # Return a view of the Hilbert envelope
-        correlation_envelopes = np.abs(hilbert(self, **kwargs)).view(
+        correlation_envelopes = hilbert_envelope(self, **kwargs)
+        correlation_envelopes = correlation_envelopes.view(
             CrossCorrelationMatrix
         )
 
@@ -219,7 +221,7 @@ class CrossCorrelationMatrix(np.ndarray):
 
 def calculate_cross_correlation_matrix(
     covariance_matrix: CovarianceMatrix,
-) -> tuple[np.ndarray, CrossCorrelationMatrix]:
+) -> tuple[np.ndarray, list, CrossCorrelationMatrix]:
     r"""Extract correlation in time domain from the given covariance matrix.
 
     This method calculates the correlation in the time domain from the given
@@ -248,7 +250,7 @@ def calculate_cross_correlation_matrix(
     covariance_triu = covariance_matrix_twosided.triu(k=1)
 
     # Extract pairs names from the combination of stations
-    stations = covariance_matrix.stations
+    stations = [stat.station for stat in covariance_matrix.stats]
     n_stations = len(stations)
     pairs = []
     for i in range(n_stations):
@@ -278,42 +280,3 @@ def calculate_cross_correlation_matrix(
     correlation.set_sampling_rate(sampling_rate)
 
     return lags, pairs, correlation
-
-
-def bandpass_filter(x, sampling_rate, frequency_band, filter_order=4):
-    """Bandpass filter the signal.
-
-    Apply a Butterworth bandpass filter to the signal. Uses
-    :func:`~scipy.signal.butter` and :func:`~scipy.signal.filtfilt` to
-    avoid phase shift.
-
-    Parameters
-    ----------
-    x: :class:`~numpy.ndarray`
-        The signal to filter.
-    sampling_rate: float
-        The sampling rate in Hz.
-    frequency_band: tuple
-        The frequency band to filter in Hz.
-    filter_order: int, optional
-        The order of the Butterworth filter.
-
-    Returns
-    -------
-    :class:`~numpy.ndarray`
-        The filtered signal.
-
-    """
-    # Turn frequencies into normalized frequencies
-    nyquist = 0.5 * sampling_rate
-    normalized_frequency_band = [f / nyquist for f in frequency_band]
-
-    # Extract filter
-    butter_coefficients = butter(
-        filter_order,
-        normalized_frequency_band,
-        btype="band",
-    )
-
-    # Apply filter
-    return filtfilt(*butter_coefficients, x, axis=-1)

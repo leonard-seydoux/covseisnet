@@ -93,7 +93,7 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         window_array = signal.windows.get_window(window_function, window_size)
 
         # Define step between windows
-        window_step = window_step or window_duration // 2
+        window_step = window_step or window_duration / 2
         window_step_size = int(window_step * sampling_rate)
 
         # Initialize the Short-Time Fourier Transform class
@@ -515,3 +515,65 @@ def width(x: np.ndarray, **kwargs) -> np.ndarray:
     kwargs.setdefault("axis", -1)
     indices = np.arange(x.shape[kwargs["axis"]])
     return np.multiply(x, indices).sum(**kwargs)
+
+
+def bandpass_filter(x, sampling_rate, frequency_band, filter_order=4):
+    """Bandpass filter the signal.
+
+    Apply a Butterworth bandpass filter to the signal. Uses
+    :func:`~scipy.signal.butter` and :func:`~scipy.signal.filtfilt` to
+    avoid phase shift.
+
+    Parameters
+    ----------
+    x: :class:`~numpy.ndarray`
+        The signal to filter.
+    sampling_rate: float
+        The sampling rate in Hz.
+    frequency_band: tuple
+        The frequency band to filter in Hz.
+    filter_order: int, optional
+        The order of the Butterworth filter.
+
+    Returns
+    -------
+    :class:`~numpy.ndarray`
+        The filtered signal.
+
+    """
+    # Turn frequencies into normalized frequencies
+    nyquist = 0.5 * sampling_rate
+    normalized_frequency_band = [f / nyquist for f in frequency_band]
+
+    # Extract filter
+    b, a = signal.butter(
+        filter_order,
+        normalized_frequency_band,
+        btype="band",
+    )
+
+    # Apply filter
+    return signal.filtfilt(b, a, x, axis=-1)
+
+
+def hilbert_envelope(x: np.ndarray, **kwargs) -> np.ndarray:
+    r"""Hilbert envelope calculation.
+
+    Calculate the envelope of a signal using the Hilbert transform. The
+    envelope is defined as
+
+    .. math::
+
+        \text{envelope}(x) = \sqrt{x^2 + \text{hilbert}(x)^2}
+
+    Arguments
+    ---------
+    x: :class:`numpy.ndarray`
+        The signal to calculate the envelope from.
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+        The envelope of the signal.
+    """
+    return np.abs(np.array(signal.hilbert(x, **kwargs)))
