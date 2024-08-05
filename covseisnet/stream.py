@@ -14,7 +14,6 @@ synchronization of traces.
 """
 
 from io import BytesIO
-
 from functools import partial
 from typing import Any, Self
 

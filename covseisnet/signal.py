@@ -8,9 +8,12 @@ Other functions are provided to normalize seismic traces in the spectral
 domain, such as the :func:`~modulus_division` and :func:`~smooth_modulus_division` functions. Also, we provide the :func:`~smooth_envelope_division` function to normalize seismic traces by a smooth version of its envelope.
 """
 
+from typing import Literal
+
 import matplotlib.dates as mdates
 import numpy as np
-import obspy
+from obspy.core.stream import Stream
+from obspy.core.trace import Trace, Stats
 from scipy import signal
 
 
@@ -21,7 +24,7 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         window_duration: float = 2.0,
         window_step: None | float = None,
         window_function: str = "hann",
-        sampling_rate: None | float = 1.0,
+        sampling_rate: float = 1.0,
         **kwargs,
     ) -> None:
         """Short-Time Fourier Transform instance.
@@ -90,22 +93,18 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         window_array = signal.windows.get_window(window_function, window_size)
 
         # Define step between windows
-        if window_step is not None:
-            window_step = int(window_step * sampling_rate)
-        else:
-            window_step = window_size // 2
+        window_step = window_step or window_duration // 2
+        window_step_size = int(window_step * sampling_rate)
 
-        # Set sampling rate
+        # Initialize the Short-Time Fourier Transform class
         kwargs.setdefault("fs", sampling_rate)
-
-        # Initialize the Short-Time Fourier Transform
-        super().__init__(window_array, window_step, **kwargs)
+        super().__init__(window_array, window_step_size, **kwargs)
 
     def __str__(self):
         k0, p0 = self.lower_border_end
         out = "Short-Time Fourier Transform instance\n"
         out += f"\tSampling rate: {self.fs} Hz\n"
-        out += f"\tFrequency range: {self.f[1] :.2f} to {self.f[-1] :.2f} Hz\n"
+        out += f"\tFrequency range: {self.f[0] :.2f} to {self.f[-1] :.2f} Hz\n"
         out += f"\tFrequency resolution: {self.delta_f} Hz\n"
         out += f"\tFrequency bins: {self.f_pts}\n"
         out += f"\tWindow length: {len(self.win)} samples\n"
@@ -113,8 +112,82 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         out += f"\tOut-of-bounds: {k0} sample(s), {p0} window(s)"
         return out
 
+    @property
+    def sampling_rate(self) -> float:
+        """The sampling rate of the Short-Time Fourier Transform.
+
+        This property returns the sampling rate of the Short-Time Fourier
+        Transform in Hertz.
+
+        Returns
+        -------
+        float
+            The sampling rate of the Short-Time Fourier Transform in Hertz.
+        """
+        return self.fs
+
+    @property
+    def frequencies(self) -> np.ndarray:
+        """The frequencies of the Short-Time Fourier Transform.
+
+        This property returns the frequencies of the Short-Time Fourier
+        Transform in Hertz. The frequencies are calculated from the sampling
+        rate and the number of frequency bins.
+
+        Returns
+        -------
+        numpy.ndarray
+            The frequencies of the Short-Time Fourier Transform in Hertz.
+        """
+        return self.f
+
+    def times(self, stats: Stats, **kwargs) -> np.ndarray:
+        """The times of the window centers in seconds.
+
+        This method returns the times of the window centers in seconds. The
+        times are calculated from the start time of the trace and the window
+        step.
+
+        Arguments
+        ---------
+        stats : :class:`~obspy.core.trace.Stats`
+            The stats object of the trace.
+
+        Returns
+        -------
+        numpy.ndarray
+            The times of the window centers in matplotlib datenum format.
+        """
+        times = self.t(stats.npts, **kwargs).copy()
+        return times / 86400 + mdates.date2num(stats.starttime.datetime)
+
+    def valid_window_bounds(self, stats: Stats, **kwargs) -> dict:
+        """The bounds of the Short-Time Fourier Transform.
+
+        This method calculate the valid window bounds of the Short-Time
+        Fourier Transform in seconds. The bounds are calculated from the
+        start time of the trace, the window duration, and the window step.
+
+        Arguments
+        ---------
+        stats : :class:`~obspy.core.trace.Stats`
+            The stats object of the trace.
+
+        Returns
+        -------
+        tuple
+            The lower and upper bounds of the Short-Time Fourier Transform in
+            seconds.
+        """
+        _, p0 = self.lower_border_end
+        _, p1 = self.upper_border_begin(stats.npts)
+        return {"p0": p0, "p1": p1}
+
     def transform(
-        self, trace: obspy.core.trace.Trace, detrend="linear", **kwargs
+        self,
+        trace: Trace,
+        detrend: Literal["linear", "constant"] = "linear",
+        **kwargs,
     ) -> tuple:
         """Short-time Fourier Transform of a trace.
 
@@ -166,35 +239,21 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         >>> print(times.shape, frequencies.shape, short_time_spectra.shape)
         (28,) (101,) (101, 28)
         """
-        # Get trace data
-        data = trace.data
-        npts = trace.stats.npts
-
         # Extract the lower and upper border
-        _, p0 = self.lower_border_end
-        _, p1 = self.upper_border_begin(npts)
-        kwargs.setdefault("p0", p0)
-        kwargs.setdefault("p1", p1)
+        kwargs.update(self.valid_window_bounds(trace.stats))
 
         # Calculate the Short-Time Fourier Transform
-        short_time_spectra = self.stft_detrend(data, detrend, **kwargs)
+        short_time_spectra = self.stft_detrend(trace.data, detrend, **kwargs)
 
         # Get frequencies
-        frequencies = self.f
+        frequencies = self.frequencies
 
         # Get times in matplotlib datenum format
-        starttime_matplotlib = mdates.date2num(trace.stats.starttime.datetime)
-        times = self.t(npts, **kwargs).copy()
-        times /= 86400
-        times += starttime_matplotlib
+        times = self.times(trace.stats, **kwargs)
 
         return times, frequencies, short_time_spectra
 
-    def map_transform(
-        self,
-        stream: obspy.core.stream.Stream,
-        **kwargs: dict,
-    ) -> tuple:
+    def map_transform(self, stream: Stream, **kwargs) -> tuple:
         """Transform a stream into the spectral domain.
 
         This method transforms a stream into the spectral domain by applying
@@ -251,7 +310,9 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
         return times, frequencies, np.array(short_time_spectra)
 
 
-def modulus_division(x: np.ndarray, epsilon=1e-10) -> np.ndarray:
+def modulus_division(
+    x: int | float | complex | np.ndarray, epsilon=1e-10
+) -> np.ndarray:
     r"""Division of a number by the absolute value or its modulus.
 
     Given a complex number (or array) :math:`x = a e^{i\phi}`,
@@ -336,7 +397,7 @@ def smooth_modulus_division(
 
 
 def smooth_envelope_division(
-    x: np.ndarray, smooth: int, order: int, epsilon: float = 1e-10
+    x: np.ndarray, smooth: int, order: int = 1, epsilon: float = 1e-10
 ) -> np.ndarray:
     r"""Normalize seismic traces by a smooth version of its envelope.
 
@@ -371,6 +432,6 @@ def smooth_envelope_division(
     numpy.ndarray
         The normalized seismic trace.
     """
-    envelope = np.abs(signal.hilbert(x))
+    envelope = np.abs(np.array(signal.hilbert(x)))
     smooth_envelope = signal.savgol_filter(envelope, smooth, order)
     return x / (smooth_envelope + epsilon)
