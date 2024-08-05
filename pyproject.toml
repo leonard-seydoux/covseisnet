@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "covseisnet"
+version = "0.1.0"
+description = "Covariance matrix analysis of network seismic data"
+readme = "README.md"
+license = ""
+requires-python = ">=3.7, <4"
+authors = [
+    { name = "Leonard Seydoux" },
+]
+keywords = [
+    "covariance",
+    "data",
+    "seismic",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Build Tools",
+]
+dependencies = [
+    "numpy",
+    "obspy",
+    "scipy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "check-manifest",
+]
+test = [
+    "coverage",
+]
+
+[tool.hatch.version]
+path = "covseisnet/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/covseisnet",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+xfail_strict = true
+filterwarnings = ["ignore::DeprecationWarning"]
+log_cli_level = "info"
+testpaths = [
+  "tests",
+]
