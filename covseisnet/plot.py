@@ -272,7 +272,7 @@ def stream_and_coherence(
     f_min: float | None = None,
     trace_factor: float = 0.1,
     **kwargs: dict,
-) -> None:
+) -> list[Axes]:
     """Plot a stream of traces and the coherence matrix.
 
     This function is deliberately simple and does not allow to customize the
@@ -382,10 +382,11 @@ def covariance_matrix_modulus_and_spectrum(
     diversity = covariance.coherence(kind="diversity")
 
     # Labels
+    stations = [stat.station for stat in covariance.stats]
     xticks = range(covariance.shape[0])
     ax[0].set_xticks(xticks)
-    ax[0].set_xticklabels(covariance.stations, rotation=90, fontsize="small")
-    ax[0].set_yticks(xticks, labels=covariance.stations, fontsize="small")
+    ax[0].set_xticklabels(stations, rotation=90, fontsize="small")
+    ax[0].set_yticks(xticks, labels=stations, fontsize="small")
     ax[0].xaxis.set_ticks_position("bottom")
     ax[0].set_xlabel(r"Channel $i$")
     ax[0].set_ylabel(r"Channel $j$")
