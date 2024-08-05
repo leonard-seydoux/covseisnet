@@ -5,7 +5,7 @@ import numpy as np
 from scipy.signal import butter, filtfilt, hilbert, windows
 from scipy.ndimage import gaussian_filter1d
 
-from .covariance import CovarianceMatrix, get_twosided_covariance
+from .covariance import CovarianceMatrix
 
 
 class CrossCorrelationMatrix(np.ndarray):
@@ -242,7 +242,7 @@ def calculate_cross_correlation_matrix(
 
     """
     # Two-sided covariance matrix
-    covariance_matrix_twosided = get_twosided_covariance(covariance_matrix)
+    covariance_matrix_twosided = covariance_matrix.twosided()
 
     # Extract upper triangular
     covariance_triu = covariance_matrix_twosided.triu(k=1)
