@@ -4,9 +4,10 @@ from typing import Any
 
 import numpy as np
 from numpy.linalg import eigvalsh, eigh
+from obspy.core.trace import Stats
 
 from .stream import NetworkStream
-from .signal import ShortTimeFourierTransform
+from . import signal
 
 
 class CovarianceMatrix(np.ndarray):
@@ -71,21 +72,38 @@ class CovarianceMatrix(np.ndarray):
                         [ 0.,  0.,  0.,  0.]])
     """
 
-    def __new__(cls, input_array):
+    def __new__(cls, input_array: np.ndarray):
+        # Input array is an already formed ndarray instance
+        # We first cast to be our class type
         obj = np.asarray(input_array, dtype=complex).view(cls)
-        obj.stations = None
+
+        # Add the new attribute to the created instance. Here, only the stats
+        # attribute is added. Let's try to keep it that way.
+        if obj.shape:
+            default_stats = list([Stats() for _ in range(obj.shape[-1])])
+        else:
+            default_stats = list([Stats()])
+        obj._stats = default_stats
+        # Finally, we must return the newly created object:
         return obj
 
     def __array_finalize__(self, obj):
+        # Check if the object is None
         if obj is None:
             return
-        self.stations = getattr(obj, "stations", None)
+        # Copy the attributes from the input object
+        if obj.shape:
+            default_stats = list([Stats() for _ in range(obj.shape[-1])])
+        else:
+            default_stats = list([Stats()])
+        stats = getattr(obj, "_stats", default_stats)
+        self._stats = getattr(obj, "_stats", stats)
 
     def __getitem__(self, index):
-        result = super(CovarianceMatrix, self).__getitem__(index)
+        result = super().__getitem__(index)
         if isinstance(result, np.ndarray):
             result = result.view(CovarianceMatrix)
-            result.stations = self.stations
+            result._stats = self._stats
         return result
 
     def __reduce__(self):
@@ -106,15 +124,20 @@ class CovarianceMatrix(np.ndarray):
         # Set the additional attributes
         self.__dict__.update(attributes)
 
-    def set_stats(self, stats):
+    def set_stats(self, stats: list[Stats]):
         """Set the stats.
 
         Arguments
         ---------
-        stats: list
-            The list of stats.
+        stats: list of :class:`~obspy.core.trace.Stats`
+            The list of stats for each trace.
         """
-        self.stats = stats
+        self._stats = stats
+
+    @property
+    def stats(self) -> list[Stats]:
+        """Return the stats."""
+        return self._stats
 
     def set_stft(self, stft):
         """Set the ShortTimeFourierTransform instance for further processing.
@@ -186,11 +209,11 @@ class CovarianceMatrix(np.ndarray):
             message = "{} is not an available option for kind."
             raise ValueError(message.format(kind))
         if kind == "spectral_width":
-            return width(eigenvalues, axis=-1)
+            return signal.width(eigenvalues, axis=-1)
         elif kind == "entropy":
-            return entropy(self.eigenvalues(norm=np.sum), axis=-1)
+            return signal.entropy(self.eigenvalues(norm=np.sum), axis=-1)
         elif kind == "diversity":
-            return diversity(self.eigenvalues(norm=np.sum), axis=-1)
+            return signal.diversity(self.eigenvalues(norm=np.sum), axis=-1)
         else:
             message = "{} is not an available option for kind."
             raise ValueError(message.format(kind))
@@ -427,6 +450,53 @@ class CovarianceMatrix(np.ndarray):
         trii, trij = np.triu_indices(self.shape[-1], **kwargs)
         return self[..., trii, trij]
 
+    def twosided(self, axis: int = 1) -> np.ndarray:
+        """Get the full covariance spectrum.
+
+        Given that the covariance matrix is Hermitian, the full covariance
+        matrix can be obtained by filling the negative frequencies with the
+        complex conjugate of the positive frequencies. The function
+        :func:`~covseisnet.covariance.get_twosided_covariance` performs this
+        operation.
+
+        The frequency axis is assumed to be the second axis of the covariance
+        matrix. The function returns a new covariance matrix with the negative
+        frequencies filled with the complex conjugate of the positive
+        frequencies.
+
+        Arguments
+        ---------
+        axis: int, optional
+            The frequency axis of the covariance matrix. Default is 1.
+
+        Returns
+        -------
+        :class:`~covseisnet.covariance.CovarianceMatrix`
+            The full covariance matrix.
+        """
+        # Get number of samples that were used to calculate the covariance matrix
+        stft = self.stft
+        n_samples_in = len(stft.win)
+
+        # Find out output shape
+        input_shape = self.shape
+        output_shape = list(input_shape)
+        output_shape[axis] = n_samples_in
+
+        # Initialize full covariance matrix with negative frequencies
+        covariance_matrix_full = np.zeros(output_shape, dtype=np.complex128)
+
+        # Fill negative frequencies
+        covariance_matrix_full[:, : n_samples_in // 2 + 1] = self
+        covariance_matrix_full[:, n_samples_in // 2 + 1 :] = np.conj(
+            self[:, -2:0:-1]
+        )
+
+        # Return full covariance matrix
+        covariance_matrix_full = covariance_matrix_full.view(CovarianceMatrix)
+        covariance_matrix_full.__dict__.update(self.__dict__)
+        return covariance_matrix_full
+
 
 def calculate_covariance_matrix(
     stream: NetworkStream,
@@ -533,7 +603,7 @@ def calculate_covariance_matrix(
 
     """
     # Calculate spectrogram
-    short_time_fourier_transform = ShortTimeFourierTransform(
+    short_time_fourier_transform = signal.ShortTimeFourierTransform(
         window_duration=window_duration,
         sampling_rate=stream.sampling_rate,
         **kwargs,
@@ -600,134 +670,3 @@ def calculate_covariance_matrix(
     covariances.set_stft(short_time_fourier_transform)
 
     return covariance_times, frequencies, covariances
-
-
-def entropy(
-    x: np.ndarray, epsilon: float = 1e-10, axis: int = -1
-) -> np.ndarray:
-    r"""Entropy calculation.
-
-    Entropy calculated from a given distribution of values. The entropy is
-    defined as
-
-    .. math::
-
-        h = - \sum_{n=0}^N n x_n \log(x_n + \epsilon)
-
-    where :math:`x_n` is the distribution of values. This function assumes the
-    distribution is normalized by its sum.
-
-    Arguments
-    ---------
-    x: :class:`numpy.ndarray`
-        The distribution of values.
-    epsilon: float, optional
-        The regularization parameter for the logarithm.
-    **kwargs: dict, optional
-        Additional keyword arguments passed to the :func:`numpy.sum` function.
-        Typically, the axis along which the sum is performed.
-    """
-    return np.sum(-x * np.log(x + epsilon), axis=axis)
-
-
-def diversity(x: np.ndarray, epsilon: float = 1e-10, **kwargs) -> np.ndarray:
-    r"""Shanon diversity index calculation.
-
-    Shanon diversity index calculated from a given distribution of values. The
-    diversity index is defined as
-
-    .. math::
-
-        D = \exp(h + \epsilon)
-
-    where :math:`h` is the entropy of the distribution of values. This function
-    assumes the distribution is normalized by its sum.
-
-    Arguments
-    ---------
-    x: :class:`numpy.ndarray`
-        The distribution of values.
-    epsilon: float, optional
-        The regularization parameter for the logarithm.
-    **kwargs: dict, optional
-        Additional keyword arguments passed to the :func:`numpy.sum` function.
-        Typically, the axis along which the sum is performed.
-    """
-    return np.exp(entropy(x, epsilon, **kwargs))
-
-
-def width(x: np.ndarray, **kwargs) -> np.ndarray:
-    r"""Width calculation.
-
-    Width calculated from a given distribution of values. The width is defined
-    as
-
-    .. math::
-
-        \sigma = \sum_{n=0}^N n x_n
-
-    where :math:`x_n` is the distribution of values. This function assumes the
-    distribution is normalized by its sum.
-
-    Arguments
-    ---------
-    x: :class:`numpy.ndarray`
-        The distribution of values.
-    **kwargs: dict, optional
-        Additional keyword arguments passed to the :func:`numpy.sum` function.
-        Typically, the axis along which the sum is performed.
-    """
-    kwargs.setdefault("axis", -1)
-    indices = np.arange(x.shape[kwargs["axis"]])
-    return np.multiply(x, indices).sum(**kwargs)
-
-
-def get_twosided_covariance(
-    covariance_matrix: CovarianceMatrix, axis: int = 1
-) -> np.ndarray:
-    """Get the full covariance spectrum.
-
-    Given that the covariance matrix is Hermitian, the full covariance matrix
-    can be obtained by filling the negative frequencies with the complex
-    conjugate of the positive frequencies. The function
-    :func:`~covseisnet.covariance.get_twosided_covariance` performs this
-    operation.
-
-    The frequency axis is assumed to be the second axis of the covariance
-    matrix. The function returns a new covariance matrix with the negative
-    frequencies filled with the complex conjugate of the positive frequencies.
-
-    Arguments
-    ---------
-    covariance_matrix: :class:`~covseisnet.covariance.CovarianceMatrix`
-        The covariance matrix.
-    axis: int, optional
-        The frequency axis of the covariance matrix. Default is 1.
-
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        The full covariance matrix.
-    """
-    # Get number of samples that were used to calculate the covariance matrix
-    stft = covariance_matrix.stft
-    n_samples_in = len(stft.win)
-
-    # Find out output shape
-    input_shape = covariance_matrix.shape
-    output_shape = list(input_shape)
-    output_shape[axis] = n_samples_in
-
-    # Initialize full covariance matrix with negative frequencies
-    covariance_matrix_full = np.zeros(output_shape, dtype=np.complex128)
-
-    # Fill negative frequencies
-    covariance_matrix_full[:, : n_samples_in // 2 + 1] = covariance_matrix
-    covariance_matrix_full[:, n_samples_in // 2 + 1 :] = np.conj(
-        covariance_matrix[:, -2:0:-1]
-    )
-
-    # Return full covariance matrix
-    covariance_matrix_full = covariance_matrix_full.view(CovarianceMatrix)
-    covariance_matrix_full.__dict__.update(covariance_matrix.__dict__)
-    return covariance_matrix_full
