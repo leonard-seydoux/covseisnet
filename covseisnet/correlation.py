@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from obspy.core.trace import Stats
 from scipy.signal import hilbert, windows
 from scipy.ndimage import gaussian_filter1d
 
@@ -34,24 +35,49 @@ class CrossCorrelationMatrix(np.ndarray):
     and the lags in the second dimension with the method :meth:`~flat`.
     """
 
-    def __new__(cls, input_array):
-        obj = np.asarray(input_array).view(cls)
+    def __new__(cls, input_array: np.ndarray):
+        # Input array is an already formed ndarray instance
+        # We first cast to be our class type
+        obj = np.asarray(input_array, dtype=complex).view(cls)
+
+        # Add the new attribute to the created instance. Here, only the stats
+        # attribute is added. Let's try to keep it that way.
+        if obj.shape:
+            default_stats = list([Stats() for _ in range(obj.shape[-1])])
+        else:
+            default_stats = list([Stats()])
+        obj._stats = default_stats
+        # Finally, we must return the newly created object:
         return obj
 
     def __array_finalize__(self, obj):
+        # Check if the object is None
         if obj is None:
             return
-        self.sampling_rate = getattr(obj, "sampling_rate", None)
+        # Copy the attributes from the input object
+        if obj.shape:
+            default_stats = list([Stats() for _ in range(obj.shape[-1])])
+        else:
+            default_stats = list([Stats()])
+        stats = getattr(obj, "_stats", default_stats)
+        self._stats = getattr(obj, "_stats", stats)
 
-    def set_sampling_rate(self, sampling_rate):
-        """Set the sampling rate of the correlation.
+    @property
+    def stats(self) -> list[Stats]:
+        """Return the stats."""
+        return self._stats
+
+    def set_stats(self, stats: list[Stats] | list):
+        """Set the stats.
 
         Arguments
         ---------
-        sampling_rate: float
-            The sampling rate in Hz.
+        stats: list of :class:`~obspy.core.trace.Stats`
+            The list of stats for each trace.
         """
-        self.sampling_rate = sampling_rate
+        if not isinstance(stats[0], Stats):
+            stats = [Stats(stat) for stat in stats]
+        self._stats = stats
 
     def envelope(self, **kwargs) -> "CrossCorrelationMatrix":
         r"""Hilbert envelope of the correlation matrix.
@@ -207,7 +233,7 @@ class CrossCorrelationMatrix(np.ndarray):
         # Apply bandpass filter
         correlation_filtered = bandpass_filter(
             correlation_flat,
-            self.sampling_rate,
+            self.stats[0].sampling_rate,
             frequency_band,
             filter_order,
         )
@@ -277,6 +303,6 @@ def calculate_cross_correlation_matrix(
 
     # Turn into CrossCorrelationMatrix
     correlation = correlation.view(CrossCorrelationMatrix)
-    correlation.set_sampling_rate(sampling_rate)
+    correlation.set_stats(covariance_matrix.stats)
 
     return lags, pairs, correlation
