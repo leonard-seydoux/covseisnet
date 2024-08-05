@@ -17,6 +17,7 @@ __all__ = [
     "ShortTimeFourierTransform",
     "calculate_covariance_matrix",
     "calculate_cross_correlation_matrix",
+    "pairwise_distances",
     "read",
     "plot",
     "signal",
@@ -33,6 +34,7 @@ from .signal import ShortTimeFourierTransform
 from .covariance import calculate_covariance_matrix
 from .correlation import calculate_cross_correlation_matrix
 from .stream import read
+from .spatial import pairwise_distances
 
 # Modules
 from . import signal
