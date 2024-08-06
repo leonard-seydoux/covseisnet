@@ -149,39 +149,40 @@ class NetworkStream(Stream):
         # Initialize the Stream object
         super(NetworkStream, self).__init__(*args, **kwargs)
 
-    def __str__(self, **kwargs: dict) -> str:
+    def __str__(self, *args, **kwargs) -> str:
         """Print the NetworkStream object.
 
-        This method prints the NetworkStream object in a human-readable
-        format. The methods ressembles the ObsPy Stream object, but with
-        additional information about the number of traces and stations in the
-        stream. By default, the method prints all traces in the stream.
+        This method wraps the original method of Obspy Stream with two changes:
+        (1) the Stream is named NetworkStream to allow for differentiating
+        both objects, and (2) it contains the flag "synced" or "not synced"
+        at the first line to indicate if a synchronization is required to
+        further process the traces.
 
         Arguments
         ---------
-        **kwargs: dict, optional
-            A way to handle legacy arguments. No argument is used in this method. In particular, the ``extended`` argument is not used.
+        *args, *kwargs: optional
+            Positional and keyword arguments directly passed to the original
+            function for legacy, future legacy, and interoperability.
+
+        Returns
+        -------
+        str:
+            The string formatted representation of the object.
         """
-        # Get longest trace id index among traces
-        if self.traces:
-            longest_id = self and max(len(tr.id) for tr in self) or 0
-        else:
-            longest_id = 0
+        # Catch orinal representation
+        original_string = super(NetworkStream, self).__str__(*args, **kwargs)
 
-        # Get number of traces and stations
-        n_traces = len(self.traces)
-        n_stations = len(set(tr.stats.station for tr in self.traces))
+        # Turn Stream to NetworkStream
+        string_original = original_string.split("\n")
+        first_line = string_original[0].replace("Stream", "NetworkStream")
 
-        # Synced flag
+        # Add synced flag
         synced_flag = "synced" if self.synced else "not synced"
+        string_original[0] = first_line.replace(":", f" ({synced_flag}):")
 
-        # Initialize output string
-        out = f"NetworkStream of {n_traces} traces from {n_stations} station(s) ({synced_flag}):\n"
-
-        # Print all traces
-        out = out + "\n".join([trace.__str__(longest_id) for trace in self])
-
-        return out
+        # Return
+        string = "\n".join(string_original)
+        return string
 
     def __getitem__(self, index: int) -> Trace | Self:
         return super().__getitem__(index)
