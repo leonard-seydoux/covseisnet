@@ -290,16 +290,17 @@ def calculate_cross_correlation_matrix(
     stft = covariance_matrix.stft
     n_samples_in = len(stft.win)
     sampling_rate = stft.fs
-    n_lags = 2 * n_samples_in - 1
+    # n_lags = 2 * n_samples_in - 1
 
     # Inverse Fourier transform
-    correlation = np.fft.fftshift(
-        np.fft.ifft(covariance_triu, n=n_lags), axes=-1
-    ).real
+    correlation = np.fft.fftshift(np.fft.ifft(covariance_triu), axes=-1).real
 
     # Calculate lags
-    lag_max = (n_lags - 1) // 2 / sampling_rate
+    # lag_max = (n_lags - 1) // 2 / sampling_rate
+    n_lags = n_samples_in
+    lag_max = n_samples_in / sampling_rate / 2
     lags = np.linspace(-lag_max, lag_max, n_lags)
+    print(n_lags)
 
     # Turn into CrossCorrelationMatrix
     correlation = correlation.view(CrossCorrelationMatrix)
