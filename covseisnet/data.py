@@ -1,12 +1,63 @@
-"""Data management.
+"""
+The data shown in this documentation is for demonstration purposes only. In
+order to deal with seismic data download and management, this module provides
+functions to download seismic data from different datacenters. 
 
-This module provides functions to download and manage seismic data. This is
-useful to download example datasets for instance.
+Most of the data management is made with the ObsPy library, in particular with
+the Obspy client interface for dealing with FDSN webservices. For more
+information about the usage of this interface, please visit the user guide
+about `FDSN web service client for ObsPy
+<https://docs.obspy.org/packages/obspy.clients.fdsn.html>`_. In the present
+module, the data is downloaded using the
+:meth:`~obspy.clients.fdsn.client.Client.get_waveforms` method.
+
+By default, the client downloads the data into the ``/data`` repository
+located at the root of this project. If you would like to write the data to
+another location, we recommend you to use the ``filepath_destination``
+argument of the methods presented in this module, and run them in your own
+script.
+
+.. code::
+
+    covseisnet/
+        |- covseisnet/
+        |- docs/
+        |- examples/ 
+        |- data/
+
+
+There are three presets to download data in the module:
+
+- :func:`~covseisnet.data.download_undervolc_data` to download data from the
+  UnderVolc network between 2010-10-14T09:00:00 and 2010-10-14T16:00:00.
+  During these times, we observe an elevation of the seismic activity prior to
+  an eruption of the Piton de la Fournaise accompanied by a co-eruptive
+  tremor. 
+
+- :func:`~covseisnet.data.download_usarray_data` to download data from the US
+  Transportable Array experiment between 2010-01-01 and 2010-03-01. In this
+  case, we download only the channels LHZ from the stations BGNE, J28A, sL27A,
+  N23A, O28A, P33A, R27A, S32A, U29A, W31A, allowing to show interesting
+  results of ambient-noise cross-correlation. 
+
+- :func:`~covseisnet.data.download_geoscope_data` to download data from the
+  GEOSCOPE network between 2020-05-01 and 2020-08-01. This data is used to
+  show the results of ambient-noise cross-correlation at larger scale.
+
+These functions all call the :func:`~covseisnet.data.download_dataset` with
+specific arguments. You can also directly use these function to download
+datasets that you would like to try the package on. 
+
 """
 
-from obspy import UTCDateTime
+from os import path
+
 import obspy
+from obspy import UTCDateTime
 from obspy.clients.fdsn import Client
+
+DIRECTORY_PACKAGE = path.dirname(__file__)
+DIRECTORY_DATA = path.join(path.dirname(DIRECTORY_PACKAGE), "data")
 
 
 def download_dataset(
@@ -16,6 +67,29 @@ def download_dataset(
     **kwargs,
 ) -> obspy.Stream | None:
     """Download seismic data from a datacenter.
+
+    This function is a simple wwrapper to the
+    :meth:`~obspy.clients.fdsn.client.Client.get_waveforms` method. It connect
+    to the FDSN client using the specified ``datacenter`` (which by default is
+    set to IRIS), and run the download with the
+    :meth:`~obspy.clients.fdsn.client.Client.get_waveforms` method between the
+    ``starttime`` and ``endtime``. Using the other arguments allow to specify
+    the query to the datacenter. For more information, please check the
+    Obspy documentation.
+
+    Example
+    -------
+
+        >>> import covseisnet as csn
+        >>> from obspy import UTCDateTime
+        >>> stream = csn.download_dataset(
+                starttime=UTCDateTime("2010-01-01 00:00"),
+                endtime=UTCDateTime("2010-01-01 00:01"),
+                datacenter="IRIS",
+                channel="LHZ",
+                station="ANMO",
+                network=
+            )
 
     Arguments
     ---------
@@ -45,7 +119,7 @@ def download_dataset(
 
 
 def download_undervolc_data(
-    filepath_destination: str = "../data/undervolc_example.mseed",
+    filepath_destination: str | None = None,
     starttime: UTCDateTime = UTCDateTime("2010-10-14T09:00:00"),
     endtime: UTCDateTime = UTCDateTime("2010-10-14T16:00:00"),
     datacenter: str = "RESIF",
@@ -60,6 +134,11 @@ def download_undervolc_data(
     endtime : :class:`~obspy.UTCDateTime`
         The end time of the data to download.
     """
+    # Infer location
+    if filepath_destination is None:
+        filename = "example_undervolc.mseed"
+        filepath_destination = path.join(DIRECTORY_DATA, filename)
+
     # Print message
     print(f"Downloading data from the {datacenter} datacenter.")
 
@@ -78,11 +157,7 @@ def download_undervolc_data(
 
     # Resample data to 20 Hz
     stream.resample(20)
-
-    # Merge
     stream.merge(method=-1)
-
-    # Sort
     stream.sort(keys=["station"])
 
     # Write stream
@@ -93,7 +168,7 @@ def download_undervolc_data(
 
 
 def download_usarray_data(
-    filepath_destination: str = "../data/usarray_example.mseed",
+    filepath_destination: str | None = None,
     starttime: UTCDateTime = UTCDateTime("2010-01-01"),
     endtime: UTCDateTime = UTCDateTime("2010-03-01"),
     datacenter: str = "IRIS",
@@ -108,6 +183,11 @@ def download_usarray_data(
     endtime : :class:`~obspy.UTCDateTime`
         The end time of the data to download.
     """
+    # Infer location
+    if filepath_destination is None:
+        filename = "example_usarray.mseed"
+        filepath_destination = path.join(DIRECTORY_DATA, filename)
+
     # Print message
     print(f"Downloading data from the {datacenter} datacenter.")
 
@@ -129,8 +209,6 @@ def download_usarray_data(
 
     # Merge
     stream.merge(method=-1)
-
-    # Sort
     stream.sort(keys=["station"])
 
     # Write stream
@@ -141,7 +219,7 @@ def download_usarray_data(
 
 
 def download_geoscope_data(
-    filepath_destination: str = "../data/geoscope_example.mseed",
+    filepath_destination: str | None = None,
     starttime: UTCDateTime = UTCDateTime("2020-05-01"),
     endtime: UTCDateTime = UTCDateTime("2020-08-01"),
     datacenter: str = "RESIF",
@@ -156,6 +234,11 @@ def download_geoscope_data(
     endtime : :class:`~obspy.UTCDateTime`
         The end time of the data to download.
     """
+    # Infer location
+    if filepath_destination is None:
+        filename = "example_geoscope.mseed"
+        filepath_destination = path.join(DIRECTORY_DATA, filename)
+
     # Print message
     print(f"Downloading data from the {datacenter} datacenter.")
 
@@ -172,13 +255,8 @@ def download_geoscope_data(
     if stream is None:
         raise ValueError("No data found.")
 
-    # Resample data to 20 Hz
-    # stream.resample(20)
-
-    # Merge
+    # Preprocess
     stream.merge(method=-1)
-
-    # Sort
     stream.sort(keys=["station"])
 
     # Write stream
