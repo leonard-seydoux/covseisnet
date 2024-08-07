@@ -7,9 +7,7 @@ Most of the data management is made with the ObsPy library, in particular with
 the Obspy client interface for dealing with FDSN webservices. For more
 information about the usage of this interface, please visit the user guide
 about `FDSN web service client for ObsPy
-<https://docs.obspy.org/packages/obspy.clients.fdsn.html>`_. In the present
-module, the data is downloaded using the
-:meth:`~obspy.clients.fdsn.client.Client.get_waveforms` method.
+<https://docs.obspy.org/packages/obspy.clients.fdsn.html>`_. 
 
 By default, the client downloads the data into the ``/data`` repository
 located at the root of this project. If you would like to write the data to
