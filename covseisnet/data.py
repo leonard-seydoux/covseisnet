@@ -10,19 +10,22 @@ about `FDSN web service client for ObsPy
 <https://docs.obspy.org/packages/obspy.clients.fdsn.html>`_. 
 
 By default, the client downloads the data into the ``/data`` repository
-located at the root of this project. If you would like to write the data to
-another location, we recommend you to use the ``filepath_destination``
-argument of the methods presented in this module, and run them in your own
-script.
+located at the root of this project, as shown in the following file structure
+of the project. If you would like to write the data to another location, we
+recommend you to use the ``filepath_destination`` argument of the methods
+presented in this module, and run them in your own script. 
 
-.. code::
+::
 
-    covseisnet/
-        |- covseisnet/
-        |- docs/
-        |- examples/ 
-        |- data/
-
+    /
+    ├── covseisnet/
+    ├── data/
+    ├── docs/
+    ├── examples
+    ├── tests/
+    ├── README.md
+    ├── LICENSE
+    └── pyproject.toml
 
 There are three presets to download data in the module:
 
