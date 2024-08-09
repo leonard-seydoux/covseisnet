@@ -961,3 +961,28 @@ def read(
     :func:`~obspy.core.stream.read`
     """
     return NetworkStream.read(pathname_or_url, **kwargs)
+
+
+def map_processing_chain(
+    stream: NetworkStream | Stream,
+    processing_chain: dict,
+) -> None:
+    """Apply a processing chain to a stream.
+
+    Arguments
+    ---------
+    stream : :class:`~covseisnet.stream.NetworkStream` or :class:`~obspy.core.stream.Stream`
+        The stream to apply the processing chain to.
+    processing_chain : dict
+        The processing chain to apply to the stream. The processing chain is a
+        dictionary where the keys are the processing methods and the values are
+        the arguments to pass to the methods. The methods are applied in the
+        order of the keys.
+    """
+    for method, args in processing_chain.items():
+        if isinstance(args, dict):
+            getattr(stream, method)(**args)
+        elif isinstance(args, tuple):
+            getattr(stream, method)(*args)
+        else:
+            getattr(stream, method)(args)
