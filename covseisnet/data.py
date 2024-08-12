@@ -61,7 +61,7 @@ import obspy
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.clients.fdsn import Client
 
-from .stream import map_processing_chain
+from .stream import map_processing_chain, NetworkStream
 
 DIRECTORY_PACKAGE = path.dirname(__file__)
 DIRECTORY_DATA = path.join(path.dirname(DIRECTORY_PACKAGE), "data")
@@ -285,6 +285,12 @@ def download_usarray_data(
 
     # Write stream
     stream.write(filepath_destination, format="MSEED", encoding="FLOAT64")
+
+    # Get coordinates
+    filepath_inventory = path.join(DIRECTORY_DATA, "usarray_example.xml")
+    stream = NetworkStream(stream)
+    inventory = stream.download_coordinates(datacenter=datacenter)
+    inventory.write(filepath_inventory, format="STATIONXML")
 
     # Print message
     print(f"Data saved to {filepath_destination}")
