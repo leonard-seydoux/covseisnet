@@ -1,11 +1,11 @@
 """
-Cross-correlation
-=================
+Cross-correlation at USArray
+============================
 
 Pairwise cross-correlation in time domain.
 """
 
-import os
+from os import path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,22 +20,25 @@ import covseisnet as csn
 # ---------------------------
 
 # Path to the example stream
-filepath_waveforms = (
-    "/Users/seydoux/Github/covseisnet/data/usarray_example.mseed"
-)
+filepath_waveforms = "../data/usarray_example.mseed"
+filepath_inventory = "../data/usarray_example.xml"
+
+# Download the data if does not exist
+if not path.exists(filepath_waveforms) or not path.exists(filepath_inventory):
+    csn.data.download_usarray_data()
 
 # Read example stream
 stream = csn.read(filepath_waveforms)
-stream.detrend("linear")
 
+# Pre-process stream
+stream.detrend("linear")
 stream.filter("highpass", freq=0.001)
 stream.synchronize()
 stream.time_normalize(method="smooth", smooth_length=61)
 stream.plot()
 
-stream.assign_coordinates(
-    "/Users/seydoux/Documents/Work/testing_covseisnet/inv"
-)
+# Assign coordinates to the stream
+stream.assign_coordinates(filepath_inventory)
 
 # %%
 # Covariance matrix

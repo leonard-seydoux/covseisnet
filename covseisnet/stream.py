@@ -22,6 +22,7 @@ import obspy
 from obspy import UTCDateTime
 from obspy.core.stream import Stream
 from obspy.core.trace import Stats, Trace
+from obspy.core.inventory import Inventory
 
 from . import signal
 
@@ -747,7 +748,7 @@ class NetworkStream(Stream):
                                     "elevation": station.elevation,
                                 }
 
-    def download_coordinates(self, datacenter: str = "IRIS") -> None:
+    def download_coordinates(self, datacenter: str = "IRIS") -> Inventory:
         """Get the geographical coordinates of each trace in the stream.
 
         This method uses the ObsPy
@@ -772,27 +773,20 @@ class NetworkStream(Stream):
         """
         from obspy.clients.fdsn import Client
 
-        # Initialize the client
+        # Initialize the client and the inventory
+        inventory = Inventory()
         client = Client(datacenter)
 
-        # Loop over traces
+        # Loop over traces and get the stations
         for trace in self:
-            # Get the coordinates
-            inventory = client.get_stations(
+            inventory += client.get_stations(
                 network=trace.stats.network,
                 station=trace.stats.station,
                 location=trace.stats.location,
                 channel=trace.stats.channel,
             )
 
-            # Add the coordinates to the trace
-            if inventory:
-                if inventory[0]:
-                    trace.stats.coordinates = {
-                        "latitude": inventory[0][0].latitude,
-                        "longitude": inventory[0][0].longitude,
-                        "elevation": inventory[0][0].elevation,
-                    }
+        return inventory
 
     @property
     def synced(self) -> bool:
