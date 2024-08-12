@@ -300,7 +300,6 @@ def calculate_cross_correlation_matrix(
     n_lags = n_samples_in
     lag_max = n_samples_in / sampling_rate / 2
     lags = np.linspace(-lag_max, lag_max, n_lags)
-    print(n_lags)
 
     # Turn into CrossCorrelationMatrix
     correlation = correlation.view(CrossCorrelationMatrix)
