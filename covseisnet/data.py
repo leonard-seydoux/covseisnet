@@ -3,10 +3,13 @@ The data shown in this documentation is for demonstration purposes only. In
 order to deal with seismic data download and management, this module provides
 functions to download seismic data from different datacenters. 
 
-Most of the data management is made with the ObsPy library, in particular with
-the Obspy client interface for dealing with FDSN webservices. For more
-information about the usage of this interface, please visit the user guide
-about `FDSN web service client for ObsPy
+File structure
+--------------
+
+We download the data with the ObsPy library, in particular with the Obspy
+client interface for dealing with FDSN web services. For more information about
+the usage of this interface, please visit the user guide about `FDSN web
+service client for ObsPy
 <https://docs.obspy.org/packages/obspy.clients.fdsn.html>`_. 
 
 By default, the client downloads the data into the ``/data`` repository
@@ -18,8 +21,8 @@ presented in this module, and run them in your own script.
 ::
 
     /
+    ├── data/datasets.mseed 
     ├── covseisnet/
-    ├── data/
     ├── docs/
     ├── examples/
     ├── tests/
@@ -27,7 +30,13 @@ presented in this module, and run them in your own script.
     ├── LICENSE
     └── pyproject.toml
 
-There are three presets to download data in the module:
+Presets
+-------
+
+Note that these functions are presets to download data from specific networks
+and time periods. These thwo datasets are used in the examples of the
+documentation. If you modify the data download, you may need to adapt the
+examples accordingly.
 
 - :func:`~covseisnet.data.download_undervolc_data` to download data from the
   UnderVolc network between 2010-10-14T09:00:00 and 2010-10-14T16:00:00.
@@ -44,7 +53,6 @@ There are three presets to download data in the module:
 These functions all call the :func:`~covseisnet.data.download_seismic_dataset`
 with specific arguments. You can also directly use these function to download
 datasets that you would like to try the package on. 
-
 """
 
 from os import path
