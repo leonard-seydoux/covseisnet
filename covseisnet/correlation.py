@@ -247,6 +247,7 @@ class CrossCorrelationMatrix(np.ndarray):
 
 def calculate_cross_correlation_matrix(
     covariance_matrix: CovarianceMatrix,
+    include_autocorrelation: bool = True,
 ) -> tuple[np.ndarray, list, CrossCorrelationMatrix]:
     r"""Extract correlation in time domain from the given covariance matrix.
 
@@ -260,6 +261,10 @@ def calculate_cross_correlation_matrix(
     ----------
     covariance_matrix: :class:`~covseisnet.covariance.CovarianceMatrix`
         The covariance matrix.
+    include_autocorrelation: bool, optional
+        Include the auto-correlation in the correlation matrix. Default is
+        True.
+
 
     Returns
     -------
@@ -273,7 +278,8 @@ def calculate_cross_correlation_matrix(
     covariance_matrix_twosided = covariance_matrix.twosided()
 
     # Extract upper triangular
-    covariance_triu = covariance_matrix_twosided.triu(k=1)
+    distante_to_diagonal = 0 if include_autocorrelation else 1
+    covariance_triu = covariance_matrix_twosided.triu(k=distante_to_diagonal)
 
     # Extract pairs names from the combination of stations
     stations = [stat.station for stat in covariance_matrix.stats]
