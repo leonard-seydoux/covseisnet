@@ -108,8 +108,9 @@ def download_seismic_dataset(
         The datacenter to download the data from. Default is "IRIS".
     process: dict, optional
         A dictionary with the processing chain to apply to the downloaded
-        data. The keys of the dictionary are the processing functions to apply,
-        and the values are the arguments to pass to the processing function.
+        data. The keys of the dictionary are the processing functions to
+        apply, and the values are the arguments to pass to the processing
+        function.
     **kwargs: dict
         Additional parameters to pass to the download method. These arguments
         may vary depending on the datacenter.
@@ -133,7 +134,8 @@ def download_seismic_dataset(
             )
         >>> print(stream)
         1 Trace(s) in Stream:
-        G.TAM.00.BHZ | 2020-01-01T00:00:03.350000Z - 2020-01-01T00:01:00.000000Z | 20.0 Hz, 1134 samples
+        G.TAM.00.BHZ | 2020-01-01T00:00:03.350000Z - \
+            2020-01-01T00:01:00.000000Z | 20.0 Hz, 1134 samples
     """
     # Client
     client = Client(datacenter)
@@ -186,7 +188,9 @@ def download_undervolc_data(
 ) -> None:
     """Download data from the UnderVolc network.
 
-    The argument are the same as the :func:`~covseisnet.data.download_seismic_dataset` with the following default values:
+    The argument are the same as the
+    :func:`~covseisnet.data.download_seismic_dataset` with the following
+    default values:
 
     - ``starttime``: "2010-10-14T09:00:00"
     - ``endtime``: "2010-10-14T16:00:00"
@@ -197,8 +201,8 @@ def download_undervolc_data(
     - ``datacenter``: "RESIF"
     - ``process``: resample to 20 Hz, merge the traces, and sort by station.
 
-    And a default value for the ``filepath_destination`` argument, which is set
-    to the ``/data`` repository located at the root of this project.
+    And a default value for the ``filepath_destination`` argument, which is
+    set to the ``/data`` repository located at the root of this project.
 
     """
     # Infer location
@@ -248,7 +252,9 @@ def download_usarray_data(
 ) -> None:
     """Download data from the USArray network.
 
-    The argument are the same as the :func:`~covseisnet.data.download_seismic_dataset` with the following default values:
+    The argument are the same as the
+    :func:`~covseisnet.data.download_seismic_dataset` with the following
+    default values:
 
     - ``starttime``: "2006-01-01"
     - ``endtime``: "2006-03-01"
@@ -259,8 +265,8 @@ def download_usarray_data(
     - ``datacenter``: "IRIS"
     - ``process``: merge the traces, resample to 0.2 Hz, and sort by station.
 
-    And a default value for the ``filepath_destination`` argument, which is set
-    to the ``/data`` repository located at the root of this project.
+    And a default value for the ``filepath_destination`` argument, which is
+    set to the ``/data`` repository located at the root of this project.
     """
     # Infer location
     if filepath_destination is None:
