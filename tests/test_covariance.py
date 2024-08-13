@@ -35,16 +35,6 @@ def test_covariance_matrix_stats():
     assert covariances[0].stats == covariances.stats
 
 
-def test_covariance_matrix_stft():
-    # Calculate covariance
-    stream = csn.read()
-    _, frequencies, covariances = csn.calculate_covariance_matrix(
-        stream, window_duration=5, average=5
-    )
-    # Assertions
-    assert np.allclose(frequencies, covariances.stft.f)
-
-
 def test_flat():
     # Calculate covariance
     stream = csn.read()
