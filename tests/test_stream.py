@@ -51,13 +51,13 @@ def test_read_with_function():
 def test_whiten_method():
     """Test the whiten method."""
     stream = NetworkStream.read()
-    stream.whiten()
+    stream.whiten(window_duration=2)
 
 
 def test_whiten_method_smooth():
     """Test the whiten method with smoothing."""
     stream = NetworkStream.read()
-    stream.whiten(smooth_length=5, smooth_order=3, epsilon=1e-5)
+    stream.whiten(2, smooth_length=5, smooth_order=3, epsilon=1e-5)
 
 
 def test_time_normalize_method():
