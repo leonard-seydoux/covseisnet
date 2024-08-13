@@ -98,6 +98,7 @@ class CovarianceMatrix(np.ndarray):
             default_stats = list([Stats()])
         stats = getattr(obj, "_stats", default_stats)
         self._stats = getattr(obj, "_stats", stats)
+        self.stft = getattr(obj, "stft", None)
 
     def __getitem__(self, index):
         result = super().__getitem__(index)
@@ -478,6 +479,10 @@ class CovarianceMatrix(np.ndarray):
         """
         # Get number of samples that were used to calculate the covariance matrix
         stft = self.stft
+        if stft is None:
+            raise ValueError("ShortTimeFourierTransform instance not found.")
+
+        # Get number of samples in the window
         n_samples_in = len(stft.win)
 
         # Find out output shape
