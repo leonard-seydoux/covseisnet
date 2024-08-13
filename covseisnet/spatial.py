@@ -5,7 +5,9 @@ from obspy.geodetics.base import locations2degrees
 
 
 def pairwise_distances(
-    stats: list[Stats], output_units: str = "km"
+    stats: list[Stats],
+    output_units: str = "km",
+    include_diagonal: bool = True,
 ) -> list[float]:
     r"""Get the pairwise distances between the stations.
 
@@ -22,10 +24,11 @@ def pairwise_distances(
     coordinates = [stat.coordinates for stat in stats]
 
     # Calculate the pairwise distances of the upper triangular part
+    distance_to_diagonal = 0 if include_diagonal else 1
     n_stations = len(coordinates)
     pairwise_distances = []
     for i in range(n_stations):
-        for j in range(i + 1, n_stations):
+        for j in range(i + distance_to_diagonal, n_stations):
             degrees = locations2degrees(
                 coordinates[i].latitude,
                 coordinates[i].longitude,
