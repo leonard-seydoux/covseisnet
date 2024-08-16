@@ -169,3 +169,6 @@ docs/source/sg_execution_times.rst
 # Mac-specific
 .DS_Store
 **/.DS_Store
+
+# VS Code
+.vscode/
