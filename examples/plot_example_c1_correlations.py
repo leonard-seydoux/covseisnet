@@ -1,8 +1,17 @@
 """
-Cross-correlation at USArray
-============================
+Cross-correlation
+=================
 
-Pairwise cross-correlation in time domain.
+This example shows how to calculate the cross-correlation functions from five
+sensors of the USArray network stacked over two months from January 1, 2006 to
+March 1, 2006. 
+
+At first, we made sure to download and provide an example of the USArray data
+and inventory. If for any reason, the data is not available under the ``data``
+folder under the root of the repository, or if you would like to run this 
+script outside of the repository, the data will be automatically downloaded 
+with the ``~csn.data.download_usarray_data()`` function (see in the second cell
+of this notebook).
 """
 
 from os import path
@@ -12,33 +21,43 @@ import numpy as np
 
 import covseisnet as csn
 
+# Path to the example stream
+FILEPATH_WAVEFORMS = "../data/usarray_example.mseed"
+FILEPATH_INVENTORY = "../data/usarray_example.xml"
 
 # sphinx_gallery_thumbnail_number = 2
 
-# %%
-# Read and pre-process stream
+# %% Read and pre-process stream
 # ---------------------------
-
-# Path to the example stream
-filepath_waveforms = "../data/usarray_example.mseed"
-filepath_inventory = "../data/usarray_example.xml"
+#
+# We first read the example stream and pre-process it. At first, we simply
+# detrend and high-pass filter the data. Because the USArray data is not
+# synchronized at these stations, especially in 2006, we synchronize the
+# stream using the method
+# :meth:`~covseisnet.stream.NetworkStream.synchronize`. This method is
+# automatic and can be used in a custom way. We then normalize the traces for
+# cross-correlation in the time domain.
+#
+# Note that we finally assign the coordinates to the stream using the method
+# :func:`~covseisnet.stream.Stream.assign_coordinates`. This method requires
+# the path to the inventory file of the network. If you do not have
 
 # Download the data if does not exist
-if not path.exists(filepath_waveforms) or not path.exists(filepath_inventory):
+if not path.exists(FILEPATH_WAVEFORMS) or not path.exists(FILEPATH_INVENTORY):
     csn.data.download_usarray_data()
 
+
 # Read example stream
-stream = csn.read(filepath_waveforms)
+stream = csn.read(FILEPATH_WAVEFORMS)
 
 # Pre-process stream
 stream.detrend("linear")
 stream.filter("highpass", freq=0.001)
 stream.synchronize()
 stream.time_normalize(method="smooth", smooth_length=61)
-stream.plot()
 
 # Assign coordinates to the stream
-stream.assign_coordinates(filepath_inventory)
+stream.assign_coordinates(FILEPATH_INVENTORY)
 
 # %%
 # Covariance matrix
