@@ -729,24 +729,52 @@ class NetworkStream(Stream):
                 raise ValueError(f"Unknown method {method}")
 
     def assign_coordinates(self, xml_filepath: str) -> None:
+        """Assign the geographical coordinates to the traces.
+
+        This method assigns the geographical coordinates of the stations to the
+        traces in the stream from the XML file containing the inventory. The
+        method uses the ObsPy :meth:`~obspy.core.inventory.read_inventory`
+        method to extract the coordinates of each trace in the stream. The
+        method adds a coordinate dictionary to each trace in the stream. The
+        coordinate dictionary contains the keys ``latitude``, ``longitude``, and
+        ``elevation``.
+
+        Arguments
+        ---------
+        xml_filepath: str
+            The path to the XML file containing the inventory.
+
+        Example
+        -------
+        >>> import covseisnet as csn
+        >>> stream = csn.read()
+        >>> stream.assign_coordinates("inventory.xml")
+
+        See Also
+        --------
+        :meth:`~obspy.core.inventory.read_inventory`
+        """
         from obspy.core.inventory import read_inventory
+
+        # Get the coordinates
+        inventory = read_inventory(xml_filepath)
+
+        # Add entire inventory to the stream
+        self.inventory = inventory
 
         # Loop over traces
         for trace in self:
-            # Get the coordinates
-            inventory = read_inventory(xml_filepath)
 
             # Add the coordinates to the trace
-            if inventory:
-                for network in inventory.networks:
-                    if trace.stats.network == network.code:
-                        for station in network.stations:
-                            if trace.stats.station == station.code:
-                                trace.stats.coordinates = {
-                                    "latitude": station.latitude,
-                                    "longitude": station.longitude,
-                                    "elevation": station.elevation,
-                                }
+            for network in inventory.networks:
+                if trace.stats.network == network.code:
+                    for station in network.stations:
+                        if trace.stats.station == station.code:
+                            trace.stats.coordinates = {
+                                "latitude": station.latitude,
+                                "longitude": station.longitude,
+                                "elevation": station.elevation,
+                            }
 
     def download_coordinates(self, datacenter: str = "IRIS") -> Inventory:
         """Get the geographical coordinates of each trace in the stream.
