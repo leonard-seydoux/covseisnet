@@ -7,11 +7,10 @@ data and results from this package.
 from typing import Any
 
 from matplotlib.axes import Axes
-from matplotlib.ticker import Formatter
+from matplotlib.ticker import MaxNLocator
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
-import obspy
 from obspy.core.trace import Trace
 from scipy.fft import rfft, rfftfreq
 
@@ -459,3 +458,90 @@ def dateticks(ax: Axes, locator: mdates.DateLocator | None = None) -> None:
     xticklabels = formatter(xticks)
     ax.xaxis.set_major_locator(xticks)
     ax.xaxis.set_major_formatter(xticklabels)
+
+
+def grid3d(
+    grid, profile_coordinates=None, receiver_coordinates=None, **kwargs
+):
+
+    # Create mosaic plot
+    _, ax = plt.subplot_mosaic(
+        figsize=(5, 5),
+        mosaic=[["xy", "zy"], ["xz", "."], ["xz", "cb"], ["xz", "."]],
+        gridspec_kw={
+            "hspace": 0.6,
+            "wspace": 0.2,
+            "width_ratios": [1, 0.5],
+            "height_ratios": [1, 0, 0.05, 0.1],
+        },
+    )
+
+    # Default values for profile coordinates
+    profile_coordinates = profile_coordinates or (
+        np.mean(grid.lon),
+        np.mean(grid.lat),
+        np.mean(grid.depth),
+    )
+
+    # Find out profile index
+    profile_index = (
+        np.argmin(np.abs(grid.lon - profile_coordinates[0])),
+        np.argmin(np.abs(grid.lat - profile_coordinates[1])),
+        np.argmin(np.abs(grid.depth - profile_coordinates[2])),
+    )
+
+    # Default values for contour
+    vmin, vmax = grid.min(), grid.max()
+    contour_levels = np.linspace(vmin, vmax, 20)
+    kwargs.setdefault("vmin", vmin)
+    kwargs.setdefault("vmax", vmax)
+    kwargs.setdefault("cmap", "cividis_r")
+    kwargs.setdefault("levels", contour_levels)
+
+    # Plotting xy
+    mappable = ax["xy"].contourf(
+        grid.lon, grid.lat, grid[:, :, profile_index[2]].T, **kwargs
+    )
+    ax["xz"].contourf(
+        grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs
+    )
+    ax["zy"].contourf(
+        grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs
+    )
+    ax["xy"].axvline(profile_coordinates[0], dashes=[8, 3], color="k", lw=0.5)
+    ax["xy"].axhline(profile_coordinates[1], dashes=[8, 3], color="k", lw=0.5)
+    ax["zy"].axvline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
+    ax["xz"].axhline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
+    ax["xz"].invert_yaxis()
+    ax["xy"].set_ylabel("Latitude (º)")
+    ax["xz"].set_xlabel("Longitude (º)")
+    ax["xz"].set_ylabel("Depth (km)")
+    ax["zy"].set_xlabel("Depth (km)")
+    ax["zy"].yaxis.tick_right()
+    ax["zy"].yaxis.set_label_position("right")
+    ax["zy"].set_yticks(ax["xy"].get_yticks())
+    ax["zy"].set_yticklabels(ax["xy"].get_yticklabels())
+    cb = plt.colorbar(
+        mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5
+    )
+    cb.ax.xaxis.set_major_locator(MaxNLocator(4))
+    cb.set_label("Travel time (s)")
+
+    # If receiver coordinates are provided, plot them
+    if receiver_coordinates is not None:
+
+        ax["xy"].plot(*receiver_coordinates[:2], "ks", clip_on=False)
+        ax["xz"].plot(
+            receiver_coordinates[0],
+            receiver_coordinates[2],
+            "kv",
+            clip_on=False,
+        )
+        ax["zy"].plot(
+            receiver_coordinates[2],
+            receiver_coordinates[1],
+            "k>",
+            clip_on=False,
+        )
+
+    return ax
