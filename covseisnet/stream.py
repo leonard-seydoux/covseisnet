@@ -928,6 +928,22 @@ class NetworkStream(Stream):
         # Return the number of samples of the first trace
         return self.stats(index=0).npts
 
+    @property
+    def coordinates(self) -> list[tuple[float, float, float]]:
+        """Geographical coordinates of the traces.
+
+        This property is also available directly from looping over the traces
+        and accessing the :attr:`stats.coordinates` attribute.
+        """
+        return [
+            (
+                trace.stats.coordinates.longitude,
+                trace.stats.coordinates.latitude,
+                -1e-3 * trace.stats.coordinates.elevation,
+            )
+            for trace in self
+        ]
+
 
 def read(
     pathname_or_url: str | BytesIO | None = None, **kwargs: dict
