@@ -63,6 +63,11 @@ class CrossCorrelationMatrix(np.ndarray):
         self._stats = getattr(obj, "_stats", stats)
 
     @property
+    def sampling_rate(self) -> float:
+        """Return the sampling rate."""
+        return self.stats[0].sampling_rate
+
+    @property
     def stats(self) -> list[Stats]:
         """Return the stats."""
         return self._stats
@@ -286,7 +291,7 @@ def calculate_cross_correlation_matrix(
     n_stations = len(stations)
     pairs = []
     for i in range(n_stations):
-        for j in range(i + 1, n_stations):
+        for j in range(i + distante_to_diagonal, n_stations):
             pairs.append(f"{stations[i]} - {stations[j]}")
 
     # Change axes position to have the pairs first
@@ -294,6 +299,10 @@ def calculate_cross_correlation_matrix(
 
     # Get transform parameters
     stft = covariance_matrix.stft
+    if stft is None:
+        raise ValueError(
+            "STFT parameters are needed to calculate correlation."
+        )
     n_samples_in = len(stft.win)
     sampling_rate = stft.fs
     # n_lags = 2 * n_samples_in - 1
