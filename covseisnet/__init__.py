@@ -22,6 +22,7 @@ __all__ = [
     "plot",
     "signal",
     "data",
+    "spatial",
 ]
 
 # High-level objects
@@ -29,6 +30,7 @@ from .covariance import CovarianceMatrix
 from .correlation import CrossCorrelationMatrix
 from .stream import NetworkStream
 from .signal import ShortTimeFourierTransform
+from . import spatial
 
 # High-level methods
 from .covariance import calculate_covariance_matrix
