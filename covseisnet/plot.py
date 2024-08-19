@@ -461,7 +461,11 @@ def dateticks(ax: Axes, locator: mdates.DateLocator | None = None) -> None:
 
 
 def grid3d(
-    grid, profile_coordinates=None, receiver_coordinates=None, **kwargs
+    grid,
+    profile_coordinates=None,
+    receiver_coordinates=None,
+    label=None,
+    **kwargs,
 ):
 
     # Create mosaic plot
@@ -477,11 +481,19 @@ def grid3d(
     )
 
     # Default values for profile coordinates
-    profile_coordinates = profile_coordinates or (
-        np.mean(grid.lon),
-        np.mean(grid.lat),
-        np.mean(grid.depth),
-    )
+    if profile_coordinates is None:
+        if hasattr(grid, "receiver_coordinates"):
+            if isinstance(grid.receiver_coordinates[0], (list, tuple)):
+                profile_coordinates = grid.receiver_coordinates[0]
+            else:
+                profile_coordinates = grid.receiver_coordinates
+        else:
+            i, j, k = np.unravel_index(grid.argmax(), grid.shape)
+            profile_coordinates = profile_coordinates or (
+                grid.lon[i],
+                grid.lat[j],
+                grid.depth[k],
+            )
 
     # Find out profile index
     profile_index = (
@@ -491,8 +503,14 @@ def grid3d(
     )
 
     # Default values for contour
-    vmin, vmax = grid.min(), grid.max()
-    contour_levels = np.linspace(vmin, vmax, 20)
+    if isinstance(grid, csn.spatial.DifferentialTravelTimes):
+        vmax = max(np.abs(grid.min()), np.abs(grid.max()))
+        vmin = -vmax
+        kwargs.setdefault("cmap", "RdBu")
+    else:
+        vmax = np.max(grid)
+        vmin = np.min(grid)
+    contour_levels = np.linspace(vmin, vmax, kwargs.pop("levels", 20))
     kwargs.setdefault("vmin", vmin)
     kwargs.setdefault("vmax", vmax)
     kwargs.setdefault("cmap", "cividis_r")
@@ -525,23 +543,31 @@ def grid3d(
         mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5
     )
     cb.ax.xaxis.set_major_locator(MaxNLocator(4))
-    cb.set_label("Travel time (s)")
+    if label is not None:
+        cb.set_label(label)
 
     # If receiver coordinates are provided, plot them
-    if receiver_coordinates is not None:
+    if receiver_coordinates is None:
+        if hasattr(grid, "receiver_coordinates"):
+            if grid.receiver_coordinates is None:
+                return ax
+            if not isinstance(grid.receiver_coordinates[0], (list, tuple)):
+                receiver_coordinates = (grid.receiver_coordinates,)
+            else:
+                receiver_coordinates = grid.receiver_coordinates
+        else:
+            return ax
+    else:
+        if not isinstance(receiver_coordinates[0], (list, tuple)):
+            receiver_coordinates = (receiver_coordinates,)
 
-        ax["xy"].plot(*receiver_coordinates[:2], "ks", clip_on=False)
-        ax["xz"].plot(
-            receiver_coordinates[0],
-            receiver_coordinates[2],
-            "kv",
-            clip_on=False,
-        )
-        ax["zy"].plot(
-            receiver_coordinates[2],
-            receiver_coordinates[1],
-            "k>",
-            clip_on=False,
-        )
+    for receiver in receiver_coordinates:
+        if not len(receiver) == 3:
+            raise ValueError(
+                "Receiver coordinates must be a list or tuple of length 3."
+            )
+        ax["xy"].plot(*receiver[:2], "ks", clip_on=False)
+        ax["xz"].plot(receiver[0], receiver[2], "kv", clip_on=False)
+        ax["zy"].plot(receiver[2], receiver[1], "k>", clip_on=False)
 
     return ax
