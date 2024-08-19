@@ -764,8 +764,6 @@ class NetworkStream(Stream):
 
         # Loop over traces
         for trace in self:
-
-            # Add the coordinates to the trace
             for network in inventory.networks:
                 if trace.stats.network == network.code:
                     for station in network.stations:
