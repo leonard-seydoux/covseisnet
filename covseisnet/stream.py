@@ -1,21 +1,18 @@
 """
-The package `Covseisnet <index.html>`_ is a Python package for the analysis of
-seismic data recorded on seismic networks. To achieve this, we offer a set of
+In order to ease the analysis of network seismic data, we offer a set of
 classes and methods designed for reading, pre-processing, and analyzing
-seismic data from these networks.
-
-The workflow involves working on traces that have been synchronized and
-pre-processed using consistent methods. To facilitate this, we introduce the
-concept of a :class:`~covseisnet.stream.NetworkStream`, a subclass of the
-ObsPy :class:`~obspy.core.stream.Stream` object. The
-:class:`~covseisnet.stream.NetworkStream` object retains all the methods of
+seismic data from these networks. The workflow involves working on traces that
+have been synchronized and pre-processed using consistent methods. To
+facilitate this, we introduce the concept of a
+:class:`~covseisnet.stream.NetworkStream`, a subclass of the ObsPy
+:class:`~obspy.core.stream.Stream` object, which retains all the methods of
 the Stream object while adding specialized methods for the pre-processing and
 synchronization of traces.
 """
 
 from io import BytesIO
 from functools import partial
-from typing import Any, Self
+from typing import Any
 
 import numpy as np
 import obspy
@@ -36,6 +33,14 @@ class NetworkStream(Stream):
     provide network-wide methods such as the calculation of the common time
     vector of the traces.
 
+    .. note::
+
+        The following list of methods and attributes are the ones that are
+        specific to the :class:`~covseisnet.stream.NetworkStream` object. The
+        full list of methods and attributes of the ObsPy
+        :class:`~obspy.core.stream.Stream` object are available in the ObsPy
+        documentation.
+
     .. rubric:: Boolean attributes
 
     - :attr:`~covseisnet.stream.NetworkStream.synced` — traces share the same
@@ -54,6 +59,9 @@ class NetworkStream(Stream):
 
     - :attr:`~covseisnet.stream.NetworkStream.npts` — common traces number of
       samples.
+
+    - :attr:`~covseisnet.stream.NetworkStream.coordinates` — geographical
+      coordinates of the stations.
 
     .. rubric:: Methods
 
@@ -75,30 +83,36 @@ class NetworkStream(Stream):
     - :meth:`~covseisnet.stream.NetworkStream.synchronize()` — synchronize the
       traces into the same times with interpolation.
 
+    - :meth:`~covseisnet.stream.NetworkStream.process()` — process the traces
+      with a dictionary of processing steps.
+
     - :meth:`~covseisnet.stream.NetworkStream.whiten()` — whiten traces in the
       spectral domain.
 
     - :meth:`~covseisnet.stream.NetworkStream.time_normalize()` — normalize
       the traces in the temporal domain.
 
+    - :meth:`~covseisnet.stream.NetworkStream.assign_coordinates()` — assign
+      the geographical coordinates to the traces.
+
+    - :meth:`~covseisnet.stream.NetworkStream.download_inventory()` — get the
+      inventory of each trace.
+
     .. tip::
 
         There are three main ways to create a NetworkStream object:
 
-        #. Use the :meth:`~covseisnet.stream.NetworkStream.read` method to
-           read seismic waveforms files into a
-           :class:`~covseisnet.stream.NetworkStream` object. This method is
-           the core method to read seismic data into the package.
+        #. Use the :meth:`NetworkStream.read` method to read seismic waveforms
+           files into a NetworkStream object. This method is the core method
+           to read seismic data into the package.
 
         #. Use the :func:`covseisnet.stream.read` function, which is a wrapper
-           to the :meth:`~covseisnet.stream.NetworkStream.read` method. Note
-           that the :func:`covseisnet.stream.read` function is directly
-           available from the package. This function is a wrapper to the
-           :meth:`~covseisnet.stream.NetworkStream.read` method.
+           to the first method. Note that this function is directly available
+           from the package root.
 
-        #. Pass an ObsPy :class:`~obspy.core.stream.Stream` object to the
+        #. Pass any ObsPy :class:`~obspy.core.stream.Stream` object to the
            :class:`~covseisnet.stream.NetworkStream` constructor. This is the
-           case if you have a special ObsPy reader for your data.
+           case if you have a special reader for your data.
 
         Other standard ObsPy methods are available for instanciating a
         :class:`~covseisnet.stream.NetworkStream` object, directly documented
@@ -147,7 +161,6 @@ class NetworkStream(Stream):
     """
 
     def __init__(self, *args, **kwargs):
-        # Initialize the Stream object
         super(NetworkStream, self).__init__(*args, **kwargs)
 
     def __str__(self, *args, **kwargs) -> str:
@@ -185,18 +198,17 @@ class NetworkStream(Stream):
         string = "\n".join(string_original)
         return string
 
-    def __getitem__(self, index: int) -> Trace | Self:
+    def __getitem__(self, index: int) -> "Trace | NetworkStream":
         return super().__getitem__(index)
 
     def stats(self, index: int = 0, key: str | None = None) -> Any | Stats:
-        """Stats dictionary of the a trace.
+        """Stats dictionary of one of the traces in the stream.
 
-        This property is also available directly from looping over the traces
-        and accessing the :attr:`stats` attribute. The purpose of this method
-        is to extract the stats dictionary of one of the traces (by default
-        the first trace) in the stream when the traces are synchronized. It
-        also enable storing the pre-processing chain and the geographical
-        information of the traces.
+        The purpose of this method is to extract the stats dictionary of one
+        of the traces (by default the first trace) in the stream when the
+        traces are synchronized. This is not to be confused with the
+        :meth:`~obspy.core.stream.Trace.stats` attribute available at the
+        trace level.
 
         Arguments
         ---------
@@ -205,7 +217,7 @@ class NetworkStream(Stream):
         key: str, optional
             The key of the stats dictionary. If set, the method returns the
             value of the key in the stats dictionary. If not set, the method
-            returns the stats dictionary.
+            returns the stats dictionary itself.
 
         Returns
         -------
@@ -216,7 +228,6 @@ class NetworkStream(Stream):
         Example
         -------
         >>> stream = csn.read()
-        >>> # By default, stream.stats() returns the stats of the first trace
         >>> stream.stats()
                  network: BW
                  station: RJOB
@@ -239,19 +250,22 @@ class NetworkStream(Stream):
                         Stage 3: FIRResponseStage from COUNTS to COUNTS, gain: 1
                         Stage 4: FIRResponseStage from COUNTS to COUNTS, gain: 1
         """
+        # Extract the stats dictionary
         stats = getattr(self[index], "stats")
+
+        # Raise an error if the stats dictionary is not defined
         if not stats:
             raise ValueError("Stats dictionary is not defined.")
+
+        # Return an item if key is set, otherwise the entire dictionary
         if key:
             return stats[key]
         return stats
 
     @classmethod
     def read(
-        cls,
-        pathname_or_url: str | BytesIO | None = None,
-        **kwargs: dict,
-    ) -> Self:
+        cls, pathname_or_url: str | BytesIO | None = None, **kwargs
+    ) -> "NetworkStream":
         """Read seismic waveforms files into a
         :class:`~covseisnet.stream.NetworkStream` object.
 
@@ -392,8 +406,8 @@ class NetworkStream(Stream):
         starttime: str | UTCDateTime,
         endtime: str | UTCDateTime | None = None,
         duration: float | None = None,
-        **kwargs: Any,
-    ):
+        **kwargs,
+    ) -> None:
         """Trim traces between start and end date times.
 
         This function is a wrapper to the ObsPy
@@ -446,7 +460,7 @@ class NetworkStream(Stream):
         self,
         interpolation_method: str = "linear",
         sampling_rate: float | None = None,
-        **kwargs: Any,
+        **kwargs,
     ) -> None:
         """Synchronize seismic traces with interpolation.
 
@@ -487,7 +501,10 @@ class NetworkStream(Stream):
         # Check if traces have the same sampling rate
         if not self.equal_rates:
             raise ValueError(
-                "Traces have different sampling rates. Use the `resample` method to resample the traces, or specify the `sampling_rate` parameter to interpolate the traces with `synchronize`."
+                "Traces have different sampling rates."
+                "Use the `resample` method to resample the traces,"
+                "or specify the `sampling_rate` parameter to interpolate"
+                "the traces with `synchronize`."
             )
 
         # Find out the largest start time and the smallest end time
@@ -517,6 +534,39 @@ class NetworkStream(Stream):
         # Interpolate all traces
         for trace in self:
             trace.interpolate(**kwargs)
+
+    def process(self, processing: dict[str, Any]) -> None:
+        """Process the seismic traces in the stream.
+
+        This method processes the seismic traces in the stream with a
+        dictionary of processing steps. The dictionary must contain the
+        processing steps as keys and the parameters as values. The method
+        applies the processing steps to each trace in the stream.
+
+        Arguments
+        ---------
+        processing: dict
+            The dictionary of processing steps.
+
+        Example
+        -------
+        >>> stream = csn.NetworkStream.read()
+        >>> processing = {
+        ...     "detrend": "linear",
+        ...     "taper": 0.05,
+        ...     "filter": {"type": "bandpass", "freqmin": 1, "freqmax": 10},
+        ...     "time_normalize": {"method": "onebit"}
+        }
+        >>> stream.process(processing)
+
+        """
+        for method, args in processing.items():
+            if isinstance(args, dict):
+                getattr(self, method)(**args)
+            elif isinstance(args, tuple):
+                getattr(self, method)(*args)
+            else:
+                getattr(self, method)(args)
 
     def whiten(
         self,
@@ -728,21 +778,26 @@ class NetworkStream(Stream):
             case _:
                 raise ValueError(f"Unknown method {method}")
 
-    def assign_coordinates(self, xml_filepath: str) -> None:
+    def assign_coordinates(self, inventory: str | Inventory) -> None:
         """Assign the geographical coordinates to the traces.
 
-        This method assigns the geographical coordinates of the stations to the
-        traces in the stream from the XML file containing the inventory. The
-        method uses the ObsPy :meth:`~obspy.core.inventory.read_inventory`
-        method to extract the coordinates of each trace in the stream. The
-        method adds a coordinate dictionary to each trace in the stream. The
-        coordinate dictionary contains the keys ``latitude``, ``longitude``, and
-        ``elevation``.
+        This method assigns the geographical coordinates of the stations to
+        the traces in the stream from
+        :class:`~obspy.core.inventory.inventory.Inventory` or the inventory
+        file containing the inventory. The method uses the ObsPy
+        :func:`~obspy.core.inventory.inventory.read_inventory` method to
+        extract the coordinates of each trace in the stream if a filepath is
+        provided.
+
+        The method adds a coordinate dictionary to each trace in the stream.
+        The coordinate dictionary contains the keys ``latitude``,
+        ``longitude``, and ``elevation``.
 
         Arguments
         ---------
-        xml_filepath: str
-            The path to the XML file containing the inventory.
+        inventory: str or :class:`~obspy.core.inventory.inventory.Inventory`
+            The inventory file or the inventory object containing the station
+            coordinates.
 
         Example
         -------
@@ -752,12 +807,15 @@ class NetworkStream(Stream):
 
         See Also
         --------
-        :meth:`~obspy.core.inventory.read_inventory`
+        :func:`~obspy.core.inventory.inventory.read_inventory`
         """
         from obspy.core.inventory import read_inventory
 
         # Get the coordinates
-        inventory = read_inventory(xml_filepath)
+        if isinstance(inventory, str):
+            inventory = read_inventory(inventory)
+        if not isinstance(inventory, Inventory):
+            raise ValueError("Inventory is not an ObsPy Inventory object.")
 
         # Add entire inventory to the stream
         self.inventory = inventory
@@ -774,15 +832,12 @@ class NetworkStream(Stream):
                                 "elevation": station.elevation,
                             }
 
-    def download_coordinates(self, datacenter: str = "IRIS") -> Inventory:
-        """Get the geographical coordinates of each trace in the stream.
+    def download_inventory(self, datacenter: str = "IRIS") -> Inventory:
+        """Get the inventory of each trace in the stream.
 
         This method uses the ObsPy
-        :meth:`~obspy.core.stream.Stream.get_coordinates` method to extract
-        the coordinates of each trace in the stream. The method adds a
-        coordinate dictionary to each trace in the stream. The coordinate
-        dictionary contains the keys ``latitude``, ``longitude``, and
-        ``elevation``.
+        :meth:`~obspy.clients.fdsn.client.Client.get_stations` method to
+        extract the inventory of each trace in the stream.
 
         Arguments
         ---------
@@ -794,8 +849,17 @@ class NetworkStream(Stream):
         -------
         >>> import covseisnet as csn
         >>> stream = csn.read()
-        >>> stream.get_stations_coordinates()
-        {'BW.RJOB': {'latitude': 47.37, 'longitude': 7.76, 'elevation': 0.0}}
+        >>> stream.download_inventory(datacenter="LMU")
+            Inventory created at 2024-08-20T09:10:33.403152Z
+                Created by: ObsPy 1.4.1
+                            https://www.obspy.org
+                Sending institution: ObsPy 1.4.1,SeisComP (LMU)
+                Contains:
+                        Networks (3):
+                                BW (3x)
+                        Stations (3):
+                                BW.RJOB (Jochberg, Bavaria, BW-Net) (3x)
+                        Channels (0):
         """
         from obspy.clients.fdsn import Client
 
@@ -810,6 +874,8 @@ class NetworkStream(Stream):
                 station=trace.stats.station,
                 location=trace.stats.location,
                 channel=trace.stats.channel,
+                starttime=trace.stats.starttime,
+                endtime=trace.stats.endtime,
             )
 
         return inventory
@@ -892,10 +958,12 @@ class NetworkStream(Stream):
 
     @property
     def sampling_rate(self) -> float:
-        """Sampling rate of the traces in Hz.
+        """Common sampling rate in Hertz.
 
-        This property is also available directly from looping over the traces
-        and accessing the :attr:`stats.sampling_rate` attribute.
+        This property asserts that all traces have the same sampling rate and
+        returns the sampling rate of the first trace via the NetworkStream
+        :meth:`stats` custom method. This is equivalent to getting
+        ``stream[0].stats.sampling_rate`` directly, minus the assertion.
 
         Example
         -------
@@ -911,10 +979,12 @@ class NetworkStream(Stream):
 
     @property
     def npts(self) -> int:
-        """Number of samples of the traces.
+        """Common number of samples.
 
-        This property is also available directly from looping over the traces
-        and accessing the :attr:`stats.npts` attribute.
+        This property asserts that all traces have the same number of samples
+        and returns the number of samples of the first trace via the
+        NetworkStream :meth:`stats` custom method. This is equivalent to
+        getting ``stream[0].stats.npts`` directly, minus the assertion.
 
         Example
         -------
@@ -933,16 +1003,28 @@ class NetworkStream(Stream):
         """Geographical coordinates of the traces.
 
         This property is also available directly from looping over the traces
-        and accessing the :attr:`stats.coordinates` attribute.
+        and accessing the :attr:`stats.coordinates` attribute of each trace.
         """
-        return [
-            (
-                trace.stats.coordinates.longitude,
-                trace.stats.coordinates.latitude,
-                -1e-3 * trace.stats.coordinates.elevation,
+        # Initialize the coordinates
+        coordinates = []
+        for trace in self:
+
+            # Check if the coordinates are defined
+            if (
+                not hasattr(trace.stats, "coordinates")
+                or trace.stats.coordinates is None
+            ):
+                raise ValueError(f"Undefined coordinates for {trace.id}.")
+
+            # Append the coordinates
+            coordinates.append(
+                (
+                    trace.stats.coordinates.longitude,
+                    trace.stats.coordinates.latitude,
+                    trace.stats.coordinates.elevation,
+                )
             )
-            for trace in self
-        ]
+        return coordinates
 
 
 def read(
@@ -997,28 +1079,3 @@ def read(
     :func:`~obspy.core.stream.read`
     """
     return NetworkStream.read(pathname_or_url, **kwargs)
-
-
-def map_processing_chain(
-    stream: NetworkStream | Stream,
-    processing_chain: dict,
-) -> None:
-    """Apply a processing chain to a stream.
-
-    Arguments
-    ---------
-    stream : :class:`~covseisnet.stream.NetworkStream` or :class:`~obspy.core.stream.Stream`
-        The stream to apply the processing chain to.
-    processing_chain : dict
-        The processing chain to apply to the stream. The processing chain is a
-        dictionary where the keys are the processing methods and the values are
-        the arguments to pass to the methods. The methods are applied in the
-        order of the keys.
-    """
-    for method, args in processing_chain.items():
-        if isinstance(args, dict):
-            getattr(stream, method)(**args)
-        elif isinstance(args, tuple):
-            getattr(stream, method)(*args)
-        else:
-            getattr(stream, method)(args)
