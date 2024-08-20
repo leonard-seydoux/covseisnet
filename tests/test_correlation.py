@@ -1,7 +1,5 @@
 """Test of the ArrayStream class."""
 
-import numpy as np
-
 import covseisnet as csn
 
 

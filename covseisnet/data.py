@@ -61,7 +61,7 @@ import obspy
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.clients.fdsn import Client
 
-from .stream import map_processing_chain, NetworkStream
+from .stream import NetworkStream
 
 DIRECTORY_PACKAGE = path.dirname(__file__)
 DIRECTORY_DATA = path.join(path.dirname(DIRECTORY_PACKAGE), "data")
@@ -161,7 +161,7 @@ def download_seismic_dataset(
 
     # Preprocess
     if process is not None:
-        map_processing_chain(stream, process)
+        stream.process(process)
 
     # Raise error if no data
     if stream is None:
@@ -295,7 +295,7 @@ def download_usarray_data(
     # Get coordinates
     filepath_inventory = path.join(DIRECTORY_DATA, "usarray_example.xml")
     stream = NetworkStream(stream)
-    inventory = stream.download_coordinates(datacenter=datacenter)
+    inventory = stream.download_inventory(datacenter=datacenter)
     inventory.write(filepath_inventory, format="STATIONXML")
 
     # Print message

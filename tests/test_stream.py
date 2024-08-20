@@ -1,7 +1,14 @@
 """Test of the ArrayStream class."""
 
+import os
+import pytest
+
 from covseisnet import read
 from covseisnet import NetworkStream
+
+
+PACKAGE_DIRECTORY_PATH = os.path.dirname(os.path.abspath(__file__))
+DATA_DIRECTORY_PATH = os.path.join(PACKAGE_DIRECTORY_PATH, "..", "data")
 
 
 def test_network_stream_instance():
@@ -121,3 +128,37 @@ def test_stats():
     stream = NetworkStream.read()
     assert stream.stats() == stream[0].stats
     assert stream.stats(key="sampling_rate") == stream[0].stats.sampling_rate
+
+
+def test_coordinates_undefined():
+    stream = NetworkStream.read()
+    with pytest.raises(ValueError):
+        stream.coordinates
+
+
+def test_coordinates():
+    filepath_mseed = os.path.join(DATA_DIRECTORY_PATH, "usarray_example.mseed")
+    filepath_xml = os.path.join(DATA_DIRECTORY_PATH, "usarray_example.xml")
+    stream = NetworkStream.read(filepath_mseed)
+    stream.assign_coordinates(filepath_xml)
+    assert len(stream.coordinates) == 5
+
+
+def test_process():
+    stream = NetworkStream.read()
+    processing = {
+        "detrend": "demean",
+        "taper": 0.05,
+        "time_normalize": {
+            "method": "smooth",
+            "smooth_length": 5,
+            "smooth_order": 3,
+        },
+        "whiten": {
+            "window_duration": 2,
+            "smooth_length": 5,
+            "smooth_order": 3,
+            "epsilon": 1e-5,
+        },
+    }
+    stream.process(processing)
