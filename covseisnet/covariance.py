@@ -73,36 +73,46 @@ class CovarianceMatrix(np.ndarray):
     """
 
     def __new__(cls, input_array: np.ndarray):
-        # Input array is an already formed ndarray instance
-        # We first cast to be our class type
-        obj = np.asarray(input_array, dtype=complex).view(cls)
+        """Create a new instance of CovarianceMatrix."""
+        # Force input array to be an array
+        input_array = np.asarray(input_array, dtype=complex)
 
-        # Add the new attribute to the created instance. Here, only the stats
-        # attribute is added. Let's try to keep it that way.
-        if obj.shape:
-            default_stats = list([Stats() for _ in range(obj.shape[-1])])
-        else:
-            default_stats = list([Stats()])
-        obj._stats = default_stats
-        # Finally, we must return the newly created object:
+        # Check that the input array had at least two dimensions
+        if input_array.ndim < 2:
+            raise ValueError(
+                "Input array must have at least 2 dimensions, "
+                f"got {input_array.ndim}."
+            )
+
+        # Check that the two last dimensions are Hermitian
+        if not are_two_last_dimensions_hermitian(input_array):
+            raise ValueError(
+                "The two last dimensions of the input array must be Hermitian."
+            )
+
+        # Cast the input array to the CovarianceMatrix class
+        obj = input_array.view(cls)
+
+        # Add the default attributes (empty stats and no STFT)
+        obj._stats = list([Stats() for _ in range(obj.shape[-1])])
+
         return obj
 
     def __array_finalize__(self, obj):
-        # Check if the object is None
+        # Return if the object is None
         if obj is None:
             return
-        # Copy the attributes from the input object
-        if obj.shape:
-            default_stats = list([Stats() for _ in range(obj.shape[-1])])
-        else:
-            default_stats = list([Stats()])
-        stats = getattr(obj, "_stats", default_stats)
-        self._stats = getattr(obj, "_stats", stats)
+        default_stats = list([Stats() for _ in range(obj.shape[-1])])
+        self._stats = getattr(obj, "_stats", default_stats)
         self.stft = getattr(obj, "stft", None)
 
     def __getitem__(self, index):
         result = super().__getitem__(index)
-        if isinstance(result, np.ndarray):
+        if (
+            isinstance(result, np.ndarray)
+            and result.ndim >= 2
+            and are_two_last_dimensions_hermitian(result)
+        ):
             result = result.view(CovarianceMatrix)
             result._stats = self._stats
         return result
@@ -504,6 +514,22 @@ class CovarianceMatrix(np.ndarray):
         covariance_matrix_full.__dict__.update(self.__dict__)
         return covariance_matrix_full
 
+    @property
+    def is_hermitian(self, tol: float = 1e-10) -> bool:
+        """Check if the covariance matrix is Hermitian.
+
+        Arguments
+        ---------
+        tol: float, optional
+            The tolerance for the comparison.
+
+        Returns
+        -------
+        bool
+            True if the covariance matrix is Hermitian, False otherwise.
+        """
+        return np.allclose(self, np.conj(self).swapaxes(-2, -1), atol=tol)
+
 
 def calculate_covariance_matrix(
     stream: NetworkStream,
@@ -680,3 +706,21 @@ def calculate_covariance_matrix(
     covariances.set_stft(short_time_fourier_transform)
 
     return covariance_times, frequencies, covariances
+
+
+def are_two_last_dimensions_hermitian(matrix: np.ndarray) -> bool:
+    """Check if the two last dimensions of a matrix are Hermitian.
+
+    Arguments
+    ---------
+    matrix: :class:`numpy.ndarray`
+        The input matrix.
+
+    Returns
+    -------
+    bool
+        True if the two last dimensions are Hermitian, False otherwise.
+    """
+    if matrix.shape[-1] != matrix.shape[-2]:
+        return False
+    return np.allclose(matrix, np.conj(matrix).swapaxes(-2, -1))

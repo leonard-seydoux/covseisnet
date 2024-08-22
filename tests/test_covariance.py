@@ -1,8 +1,16 @@
 """Test of the ArrayStream class."""
 
+import pytest
+
 import numpy as np
 
 import covseisnet as csn
+
+
+def test_fuzzy_covariance_matrix():
+    """Check if the fuzzy covariance matrix is calculated correctly."""
+    with pytest.raises(ValueError):
+        csn.CovarianceMatrix(np.array(1))
 
 
 def test_covariance_matrix_instance():
