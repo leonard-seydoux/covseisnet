@@ -80,7 +80,7 @@ class CovarianceMatrix(np.ndarray):
         # Check that the input array had at least two dimensions
         if input_array.ndim < 2:
             raise ValueError(
-                "Input array must have at least 2 dimensions, "
+                "Input array must have at least two dimensions, "
                 f"got {input_array.ndim}."
             )
 
