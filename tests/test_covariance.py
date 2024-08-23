@@ -24,7 +24,9 @@ def test_covariance_matrix_instance():
 
 
 def test_covariance_matrix_operations():
-    x = np.eye(3) + 1j * np.eye(3).T
+    # Build a complex Hermitian matrix
+    x = np.random.rand(3, 3) + 1j * np.random.rand(3, 3)
+    x = x @ x.T.conj()
     covariance = csn.CovarianceMatrix(x)
     assert isinstance(covariance.sum(axis=1), csn.CovarianceMatrix)
     assert isinstance(covariance.mean(axis=0), csn.CovarianceMatrix)

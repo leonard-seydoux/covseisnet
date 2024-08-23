@@ -35,7 +35,9 @@ class CovarianceMatrix(np.ndarray):
     shape :math:`N \times N`. Depending on the averaging size and frequency
     content, the covariance matrix can have a different shape:
 
-    - ``(n_traces, n_traces)`` if a single frequency and time sample is given.
+    - ``(n_traces, n_traces)`` if a single frequency and time window is given.
+      This configuration is also obtained when slicing or reducing a
+      covariance matrix object.
 
     - ``(n_frequencies, n_traces, n_traces)`` if only one time frame is given,
       for ``n_frequencies`` frequencies, which depends on the window size and
@@ -51,116 +53,142 @@ class CovarianceMatrix(np.ndarray):
     to obtain as many :math:`N \times N` covariance matrices as time and
     frequency samples.
 
-    Note
-    ----
+    Tip
+    ---
 
     The :class:`~covseisnet.covariance.CovarianceMatrix` class is not meant to
     be instantiated directly. It should be obtained from the output of the
     :func:`~covseisnet.covariance.calculate_covariance_matrix` function.
-
-    If you want to create a :class:`~covseisnet.covariance.CovarianceMatrix`
-    object from a numpy array, you can use the :meth:`~numpy.ndarray.view`
-    method:
-
-    >>> import covseisnet as cn
-    >>> import numpy as np
-    >>> c = np.zeros((4, 4)).view(cn.CovarianceMatrix)
-    >>> c
-    CovarianceMatrix([[ 0.,  0.,  0.,  0.],
-                        [ 0.,  0.,  0.,  0.],
-                        [ 0.,  0.,  0.,  0.],
-                        [ 0.,  0.,  0.,  0.]])
     """
 
-    def __new__(cls, input_array: np.ndarray):
-        """Create a new instance of CovarianceMatrix."""
-        # Force input array to be an array
+    def __new__(
+        cls,
+        input_array: "np.ndarray | CovarianceMatrix | list",
+        stats: list[Stats] | None = None,
+        stft: signal.ShortTimeFourierTransform | None = None,
+    ) -> "CovarianceMatrix":
+        r"""
+
+        Note
+        ----
+
+        If for some reason you need to create a
+        :class:`~covseisnet.covariance.CovarianceMatrix` object from a numpy
+        array, you have the several solutions provided by the `numpy
+        subclassing mechanism
+        <https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray>`_.
+        We recommend using the contructor of the class, which allows to pass
+        the stats and stft attributes, as in the following example:
+
+        >>> import covseisnet as cn
+        >>> import numpy as np
+        >>> c = CovarianceMatrix(np.zeros((4, 4)), stats=None, stft=None)
+        >>> c
+        CovarianceMatrix([[ 0.,  0.,  0.,  0.],
+                            [ 0.,  0.,  0.,  0.],
+                            [ 0.,  0.,  0.,  0.],
+                            [ 0.,  0.,  0.,  0.]])
+
+        In that case, the covariance matrix object passes through several
+        tests such as the Hermitian property of the two last dimensions, and
+        the number of dimensions of the input array. If the input array does
+        not pass the tests, a ValueError is raised. The input array can be an
+        "array-like" object, as it is passed to the :func:`numpy.asarray`
+        function, which also allow to turn the input array into a
+        complex-valued numpy array. The input array is then cast into a
+        :class:`~covseisnet.covariance.CovarianceMatrix` object with the
+        :meth:`~numpy.ndarray.view` method, and the attributes stats and stft
+        are added to the object. You can also directly employ the view method
+        of the numpy array, but you will have to set the stats and stft
+        attributes manually.
+        """
+        # Enforce the input array to be a complex-valued numpy array.
+        # Raises errors if not possible.
         input_array = np.asarray(input_array, dtype=complex)
 
-        # Check that the input array had at least two dimensions
+        # Check that the input array had at least two dimensions. This is
+        # not necessarily the case after slicing a covariance matrix for
+        # convenience, so this case is only checked when creating the object.
         if input_array.ndim < 2:
             raise ValueError(
-                "Input array must have at least two dimensions, "
-                f"got {input_array.ndim}."
+                "Input array must have at least two dimensions. "
+                f"Got {input_array.ndim} dimensions instead."
             )
 
-        # Check that the two last dimensions are Hermitian
+        # Check that the two last dimensions are Hermitian. Again, this does
+        # not need to be checked after slicing the array, but at the creation
+        # of the object.
         if not are_two_last_dimensions_hermitian(input_array):
             raise ValueError(
                 "The two last dimensions of the input array must be Hermitian."
             )
 
-        # Cast the input array to the CovarianceMatrix class
+        # Cast the input array into CovarianceMatrix and add the stats and
+        # stft attributes.
         obj = input_array.view(cls)
-
-        # Add the default attributes (empty stats and no STFT)
-        obj._stats = list([Stats() for _ in range(obj.shape[-1])])
+        obj.stats = stats
+        obj.stft = stft
 
         return obj
 
     def __array_finalize__(self, obj):
-        # Return if the object is None
+        r"""Finalize the array.
+
+        This method is essential to the subclassing mechanism of numpy. It
+        guarantees that the attributes of the object are correctly set when
+        slicing or reducing the array. The method is called after the
+        creation of the object, and is used to set the attributes of the
+        object to the attributes of the input array.
+        """
         if obj is None:
             return
-        default_stats = list([Stats() for _ in range(obj.shape[-1])])
-        self._stats = getattr(obj, "_stats", default_stats)
+        self.stats = getattr(obj, "stats", None)
         self.stft = getattr(obj, "stft", None)
 
-    def __getitem__(self, index):
-        result = super().__getitem__(index)
-        if (
-            isinstance(result, np.ndarray)
-            and result.ndim >= 2
-            and are_two_last_dimensions_hermitian(result)
-        ):
-            result = result.view(CovarianceMatrix)
-            result._stats = self._stats
-        return result
+    # def __reduce__(self):
+    #     # Get the reduction tuple from the base ndarray
+    #     pickled_state = super().__reduce__()
+    #     # Combine the ndarray state with the additional attributes
+    #     return (
+    #         pickled_state[0],
+    #         pickled_state[1],
+    #         (pickled_state[2], self.__dict__),
+    #     )
 
-    def __reduce__(self):
-        # Get the reduction tuple from the base ndarray
-        pickled_state = super().__reduce__()
-        # Combine the ndarray state with the additional attributes
-        return (
-            pickled_state[0],
-            pickled_state[1],
-            (pickled_state[2], self.__dict__),
-        )
+    # def __setstate__(self, state):
+    #     # Extract the ndarray part of the state and the additional attributes
+    #     ndarray_state, attributes = state
+    #     # Set the ndarray part of the state
+    #     super().__setstate__(ndarray_state)
+    #     # Set the additional attributes
+    #     self.__dict__.update(attributes)
 
-    def __setstate__(self, state):
-        # Extract the ndarray part of the state and the additional attributes
-        ndarray_state, attributes = state
-        # Set the ndarray part of the state
-        super().__setstate__(ndarray_state)
-        # Set the additional attributes
-        self.__dict__.update(attributes)
+    # def set_stats(self, stats: list[Stats] | list):
+    #     """Set the stats.
 
-    def set_stats(self, stats: list[Stats] | list):
-        """Set the stats.
+    #     Arguments
+    #     ---------
+    #     stats: list of :class:`~obspy.core.trace.Stats`
+    #         The list of stats for each trace.
+    #     """
+    #     if not isinstance(stats[0], Stats):
+    #         stats = [Stats(stat) for stat in stats]
+    #     self._stats = stats
 
-        Arguments
-        ---------
-        stats: list of :class:`~obspy.core.trace.Stats`
-            The list of stats for each trace.
-        """
-        if not isinstance(stats[0], Stats):
-            stats = [Stats(stat) for stat in stats]
-        self._stats = stats
+    # @property
+    # def stats(self) -> list[Stats]:
+    #     """Return the stats."""
+    #     return self._stats
 
-    @property
-    def stats(self) -> list[Stats]:
-        """Return the stats."""
-        return self._stats
+    # def set_stft(self, stft):
+    #     """Set the ShortTimeFourierTransform instance for further processing.
 
-    def set_stft(self, stft):
-        """Set the ShortTimeFourierTransform instance for further processing.
-
-        Arguments
-        ---------
-        stft: :class:`~covseisnet.signal.ShortTimeFourierTransform`
-            The ShortTimeFourierTransform instance.
-        """
-        self.stft = stft
+    #     Arguments
+    #     ---------
+    #     stft: :class:`~covseisnet.signal.ShortTimeFourierTransform`
+    #         The ShortTimeFourierTransform instance.
+    #     """
+    #     self.stft = stft
 
     def coherence(self, kind="spectral_width", epsilon=1e-10):
         r"""Covariance-based coherence estimation.
@@ -665,8 +693,7 @@ def calculate_covariance_matrix(
 
     # Times of the covariance matrix
     indices = range(0, n_times - average + 1, step)
-    covariance_n_times = len(indices)
-    covariance_shape = (covariance_n_times, n_frequencies, n_traces, n_traces)
+    covariance_shape = (len(indices), n_frequencies, n_traces, n_traces)
 
     # Initialization
     covariance_times = []
@@ -696,14 +723,14 @@ def calculate_covariance_matrix(
         covariance_times.append(spectra_times[selection][0] + duration / 2)
 
     # Set covariance matrix
-    covariances = covariances.view(CovarianceMatrix)
+    covariances = CovarianceMatrix(
+        input_array=covariances,
+        stft=short_time_fourier_transform,
+        stats=[trace.stats for trace in stream],
+    )
 
     # Turn times into array
     covariance_times = np.array(covariance_times)
-
-    # Add metadata
-    covariances.set_stats([trace.stats for trace in stream])
-    covariances.set_stft(short_time_fourier_transform)
 
     return covariance_times, frequencies, covariances
 

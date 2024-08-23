@@ -360,7 +360,7 @@ def covariance_matrix_modulus_and_spectrum(
         c = np.random.randn(3, 3)
         c = (c @ c.T) / 0.5
         c = csn.covariance.CovarianceMatrix(c)
-        c.set_stats([{"station": station} for station in "ABC"])
+        c.stats = [{"station": station} for station in "ABC"]
         csn.plot.covariance_matrix_modulus_and_spectrum(c)
     """
     # Normalize covariance
@@ -381,7 +381,7 @@ def covariance_matrix_modulus_and_spectrum(
     diversity = covariance.coherence(kind="diversity")
 
     # Labels
-    stations = [stat.station for stat in covariance.stats]
+    stations = [stat["station"] for stat in covariance.stats]
     xticks = range(covariance.shape[0])
     ax[0].set_xticks(xticks)
     ax[0].set_xticklabels(stations, rotation=90, fontsize="small")
