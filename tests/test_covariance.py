@@ -1,5 +1,6 @@
 """Test of the ArrayStream class."""
 
+import pickle
 import pytest
 
 import numpy as np
@@ -98,3 +99,27 @@ def test_eigenvectors():
     )
     assert isinstance(cov_r, csn.CovarianceMatrix)
     assert np.allclose(cov_r, cov)
+
+
+def test_pickle_persistance():
+    cov = np.zeros((3, 5, 10, 10), dtype=np.complex128)
+    for i in range(3):
+        for j in range(5):
+            cov[i, j] = np.random.randn(10, 10) + 1j * np.random.randn(10, 10)
+            cov[i, j] = cov[i, j] @ cov[i, j].T.conj()
+    cov = csn.CovarianceMatrix(
+        cov, stats=[{"station": station} for station in "ABCDE"]
+    )
+
+    # Save
+    # with open("cov.pkl", "wb") as f:
+    #     pickle.dump(cov, f)
+    cov = pickle.loads(pickle.dumps(cov))
+    cov.coherence()
+
+    # Load
+    # with open("cov.pkl", "rb") as f:
+    #     cov = pickle.load(f)
+
+    # Print
+    print(cov.stats)
