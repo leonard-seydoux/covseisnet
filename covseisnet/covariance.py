@@ -140,50 +140,37 @@ class CovarianceMatrix(np.ndarray):
         self.stats = getattr(obj, "stats", None)
         self.stft = getattr(obj, "stft", None)
 
-    # def __reduce__(self):
-    #     # Get the reduction tuple from the base ndarray
-    #     pickled_state = super().__reduce__()
-    #     # Combine the ndarray state with the additional attributes
-    #     return (
-    #         pickled_state[0],
-    #         pickled_state[1],
-    #         (pickled_state[2], self.__dict__),
-    #     )
+    def __reduce__(self):
+        r"""Reduce the object.
 
-    # def __setstate__(self, state):
-    #     # Extract the ndarray part of the state and the additional attributes
-    #     ndarray_state, attributes = state
-    #     # Set the ndarray part of the state
-    #     super().__setstate__(ndarray_state)
-    #     # Set the additional attributes
-    #     self.__dict__.update(attributes)
+        This method is used to preserve the attributes and methods of the object
+        over pickling and unpickling.
+        """
+        # Get the reduction tuple from the base ndarray
+        pickled_state = super().__reduce__()
 
-    # def set_stats(self, stats: list[Stats] | list):
-    #     """Set the stats.
+        # Combine the ndarray state with the additional attributes saved in
+        # the __dict__ attribute.
+        return (
+            pickled_state[0],
+            pickled_state[1],
+            (pickled_state[2], self.__dict__),
+        )
 
-    #     Arguments
-    #     ---------
-    #     stats: list of :class:`~obspy.core.trace.Stats`
-    #         The list of stats for each trace.
-    #     """
-    #     if not isinstance(stats[0], Stats):
-    #         stats = [Stats(stat) for stat in stats]
-    #     self._stats = stats
+    def __setstate__(self, state):
+        r"""Set the state of the object.
 
-    # @property
-    # def stats(self) -> list[Stats]:
-    #     """Return the stats."""
-    #     return self._stats
+        This method is used to set the state of the object after pickling and
+        unpickling.
+        """
+        # Extract the ndarray part of the state and the additional attributes
+        ndarray_state, attributes = state
 
-    # def set_stft(self, stft):
-    #     """Set the ShortTimeFourierTransform instance for further processing.
+        # Set the ndarray part of the state
+        super().__setstate__(ndarray_state)
 
-    #     Arguments
-    #     ---------
-    #     stft: :class:`~covseisnet.signal.ShortTimeFourierTransform`
-    #         The ShortTimeFourierTransform instance.
-    #     """
-    #     self.stft = stft
+        # Set the additional attributes
+        self.__dict__.update(attributes)
 
     def coherence(self, kind="spectral_width", epsilon=1e-10):
         r"""Covariance-based coherence estimation.
@@ -635,7 +622,7 @@ class CovarianceMatrix(np.ndarray):
 
     @property
     def is_hermitian(self, tol: float = 1e-10) -> bool:
-        """Check if the covariance matrix is Hermitian.
+        r"""Check if the covariance matrix is Hermitian.
 
         Arguments
         ---------
