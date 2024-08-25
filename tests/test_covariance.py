@@ -36,11 +36,15 @@ def test_covariance_matrix_stats():
     # Calculate covariance
     stream = csn.read()
     times, frequencies, covariances = csn.calculate_covariance_matrix(
-        stream, window_duration=5, average=5
+        stream,
+        window_duration=5,
+        average=5,
     )
+
     # Assertions
     assert covariances.shape == (len(times), len(frequencies), 3, 3)
     assert covariances.stats == [trace.stats for trace in stream]
+
     # Look if sliced covariances have also stats
     assert covariances[0].stats == covariances.stats
 
@@ -51,8 +55,9 @@ def test_flat():
     *_, covariances = csn.calculate_covariance_matrix(
         stream, window_duration=5, average=5
     )
+
     # Assertions
-    assert covariances.flat().shape == (
+    assert covariances.flat.shape == (
         covariances.shape[0] * covariances.shape[1],
         len(stream),
         len(stream),
@@ -72,3 +77,24 @@ def test_triu():
         covariances.shape[1],
         6,
     )
+
+
+def test_eigenvalues():
+    cov = np.random.randn(3, 3, 3) + 1j * np.random.randn(3, 3, 3)
+    cov = np.array([cov @ cov.T.conj() for cov in cov])
+    cov = csn.CovarianceMatrix(cov)
+    cov.eigenvalues()
+
+
+def test_eigenvectors():
+    cov = np.zeros((3, 5, 10, 10), dtype=np.complex128)
+    for i in range(3):
+        for j in range(5):
+            cov[i, j] = np.random.randn(10, 10) + 1j * np.random.randn(10, 10)
+            cov[i, j] = cov[i, j] @ cov[i, j].T.conj()
+    cov = csn.CovarianceMatrix(cov)
+    cov_r = cov.eigenvectors(
+        rank=slice(0, cov.shape[-1] + 1), return_covariance=True
+    )
+    assert isinstance(cov_r, csn.CovarianceMatrix)
+    assert np.allclose(cov_r, cov)

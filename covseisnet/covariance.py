@@ -1,9 +1,10 @@
 """Spectral analysis and covariance matrix calculation."""
 
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
 from numpy.linalg import eigvalsh, eigh
+from scipy.linalg import ishermitian
 from obspy.core.trace import Stats
 
 from .stream import NetworkStream
@@ -103,32 +104,26 @@ class CovarianceMatrix(np.ndarray):
         attributes manually.
         """
         # Enforce the input array to be a complex-valued numpy array.
-        # Raises errors if not possible.
         input_array = np.asarray(input_array, dtype=complex)
 
         # Check that the input array had at least two dimensions. This is
         # not necessarily the case after slicing a covariance matrix for
         # convenience, so this case is only checked when creating the object.
-        if input_array.ndim < 2:
-            raise ValueError(
-                "Input array must have at least two dimensions. "
-                f"Got {input_array.ndim} dimensions instead."
-            )
+        if (ndim := input_array.ndim) < 2:
+            raise ValueError(f"Input array must be at least 2D, got {ndim}D.")
 
         # Check that the two last dimensions are Hermitian. Again, this does
         # not need to be checked after slicing the array, but at the creation
         # of the object.
-        if not are_two_last_dimensions_hermitian(input_array):
-            raise ValueError(
-                "The two last dimensions of the input array must be Hermitian."
-            )
+        for index in np.ndindex(input_array.shape[:-2]):
+            if not ishermitian(input_array[index], rtol=1e-4):
+                raise ValueError("Input last dimensions must be Hermitian.")
 
         # Cast the input array into CovarianceMatrix and add the stats and
         # stft attributes.
         obj = input_array.view(cls)
         obj.stats = stats
         obj.stft = stft
-
         return obj
 
     def __array_finalize__(self, obj):
@@ -193,13 +188,15 @@ class CovarianceMatrix(np.ndarray):
     def coherence(self, kind="spectral_width", epsilon=1e-10):
         r"""Covariance-based coherence estimation.
 
-        The measured is performed onto all the covariance matrices from the
-        eigenvalues obtained with the method
-        :meth:`~covseisnet.covariancematrix.CovarianceMatrix.eigenvalues`. For
-        a given matrix :math:`N \times N` matrix :math:`M` with eigenvalues
-        :math:`\mathbf{\lambda} = \lambda_i` where :math:`i=1\ldots n`. The
-        coherence is obtained as :math:`F(\lambda)`, with :math:`F` being
-        defined by the `kind` parameter.
+        The coherence is obtained from each covariance matrix eigenvalue
+        distribution, calculated with the
+        :meth:`~covseisnet.covariance.CovarianceMatrix.eigenvalues` method.
+        For a given matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times N}`, we
+        obtain the eigenvalues :math:`\boldsymbol{\lambda} =
+        \{\lambda_i\}_{i=1\ldots N}`, with :math:`\lambda_i \in [0, 1]`
+        normalized by the sum of the eigenvalues. The coherence is obtained
+        from :math:`c = f(\boldsymbol{\lambda})`, with :math:`f` being defined
+        by the ``kind`` parameter:
 
         - The spectral width is obtained with setting
           ``kind="spectral_width"`` , and returns the width :math:`\sigma` of
@@ -208,7 +205,7 @@ class CovarianceMatrix(np.ndarray):
 
           .. math::
 
-              \sigma = \frac{\sum_{i=0}^n i \lambda_i}{\sum_{i=0}^n \lambda_i}
+              \sigma = \sum_{i=0}^n i \lambda_i
 
 
         - The entropy is obtained with setting ``kind="entropy"``, and returns
@@ -228,9 +225,15 @@ class CovarianceMatrix(np.ndarray):
 
               D = \exp(h + \epsilon)
 
+        In each case, :math:`\epsilon` is a regularization parameter to avoid
+        the logarithm of zero. The coherence is calculated for each time and
+        frequency sample (if any), and the result is a coherence matrix of
+        maximal shape ``(n_times, n_frequencies)``. The :math:`\log` and
+        :math:`\exp` functions are the natural logarithm and exponential.
 
-        Keyword arguments
-        -----------------
+
+        Arguments
+        ---------
         kind: str, optional
             The type of coherence, may be "spectral_width" (default),
             "entropy", or "diversity".
@@ -243,62 +246,78 @@ class CovarianceMatrix(np.ndarray):
             The coherence of maximal shape ``(n_times, n_frequencies)``,
             depending on the input covariance matrix shape.
 
-        """
-        if kind in ["spectral_width", "entropy", "diversity"]:
-            eigenvalues = self.eigenvalues(norm=np.sum)
-        else:
-            message = "{} is not an available option for kind."
-            raise ValueError(message.format(kind))
-        if kind == "spectral_width":
-            return signal.width(eigenvalues, axis=-1)
-        elif kind == "entropy":
-            return signal.entropy(self.eigenvalues(norm=np.sum), axis=-1)
-        elif kind == "diversity":
-            return signal.diversity(self.eigenvalues(norm=np.sum), axis=-1)
-        else:
-            message = "{} is not an available option for kind."
-            raise ValueError(message.format(kind))
+        Raises
+        ------
+        ValueError
+            If the covariance matrix is not Hermitian.
 
-    def eigenvalues(self, norm=np.max):
+        See also
+        --------
+        :meth:`~covseisnet.covariance.CovarianceMatrix.eigenvalues`
+        """
+        # Check that self is still Hermitian
+        if not self.is_hermitian:
+            raise ValueError("Covariance matrix is not Hermitian.")
+        # Calculate coherence
+        match kind:
+            case "spectral_width":
+                eigenvalues = self.eigenvalues(norm=np.sum)
+                return signal.width(eigenvalues, axis=-1)
+
+            case "entropy":
+                eigenvalues = self.eigenvalues(norm=np.sum)
+                return signal.entropy(eigenvalues, axis=-1)
+
+            case "diversity":
+                eigenvalues = self.eigenvalues(norm=np.sum)
+                return signal.diversity(eigenvalues, axis=-1)
+
+            case _:
+                raise NotImplementedError(f"{kind} coherence not implemented.")
+
+    def eigenvalues(self, norm: Callable = np.max) -> np.ndarray:
         r"""Eigenvalue decomposition.
 
-        Given and Hermitian matrix :math:`C` of shape :math:`N \times N`, the
-        eigenvalue decomposition is defined as
+        Given and Hermitian matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times
+        N}`, the eigenvalue decomposition is defined as
 
         .. math::
 
-            C = U D U^\dagger
+            \mathbf{C} = \mathbf{U D U}^\dagger
 
-        where :math:`U` is the unitary matrix of eigenvectors (which are not
-        calculated here, see
+        where :math:`\mathbf{U} \in \mathbb{C}^{N \times N}` is the unitary
+        matrix of eigenvectors (which are not calculated here, see
         :meth:`~covseisnet.covariance.CovarianceMatrix.eigenvectors` for this
-        purpose), and :math:`D` is the diagonal matrix of eigenvalues, as
+        purpose), :math:`\mathbf{U}^\dagger` is the conjugate transpose of
+        :math:`\mathbf{U}`, and :math:`\mathbf{D} \in \mathbb{R}^{N \times N}`
+        is a diagonal matrix of eigenvalues, as
 
         .. math::
 
-            D = \pmatrix{\lambda_1 & 0 & \cdots & 0 \\
+            \mathbf{D} = \pmatrix{\lambda_1 & 0 & \cdots & 0 \\
                             0 & \lambda_2 & \cdots & 0 \\ \vdots & \vdots &
                             \ddots & \vdots \\ 0 & 0 & \cdots & \lambda_N}
 
-        with :math:`\lambda_i` the eigenvalues. For obvious reasons, the
+        with :math:`\lambda_i` the eigenvalues. For convenience, the
         eigenvalues are returned as a vector such as 
 
         .. math::
 
-            \lambda = \pmatrix{\lambda_1 \\ \lambda_2 \\ \vdots \\ \lambda_N}
+            \boldsymbol\lambda = \pmatrix{\lambda_1, \lambda_2, \ldots,
+            \lambda_N}
         
-        The eigenvalues are sorted in decreasing order. The eigenvalues are
-        normalized by the maximum eigenvalue by default, but can be normalized
-        by any function provided by numpy. Since the matrix :math:`C` is
-        Hermitian by definition, the eigenvalues are real- and
-        positive-valued. Also, the eigenvectors are orthogonal and normalized.
+        The eigenvalues are sorted in decreasing order and normalized by the
+        maximum eigenvalue by default, but can be normalized by any function
+        provided by numpy. Since the matrix :math:`\mathbf{C}` is Hermitian by
+        definition, the eigenvalues are real- and positive-valued. Also, the
+        eigenvectors are orthogonal and normalized.
 
         The eigenvalue decomposition is performed onto the two last dimensions
         of the :class:`~covseisnet.covariance.CovarianceMatrix` object. The
         function used for eigenvalue decomposition is
-        :func:`numpy.linalg.eigvalsh`. It assumes that the input matrix is 2D
+        :func:`numpy.linalg.eigvalsh`. It sassumes that the input matrix is 2D
         and hermitian, so the decomposition is performed onto the lower
-        triangular part in order to save time.
+        triangular part to save time.
 
         Arguments
         ---------
@@ -339,114 +358,191 @@ class CovarianceMatrix(np.ndarray):
 
         >>> import covseisnet as cn
         >>> import numpy as np
-        >>> c = np.arange(8).reshape((2, 2, 2)).view(cn.CovarianceMatrix)
-        >>> c
-            CovarianceMatrix([[[0, 1],
-                               [2, 3]],
-                             [[4, 5],
-                              [6, 7]]])  
-        >>> c.eigenvalues()
-            array([[1.        , 0.25      ],
-                   [1.        , 0.05859465]])
+        >>> cov = np.random.randn(3, 3, 3) + 1j * np.random.randn(3, 3, 3)
+        >>> cov = np.array([cov @ cov.T.conj() for cov in cov])
+        >>> cov = csn.CovarianceMatrix(cov)
+        >>> cov.eigenvalues()
+            array([[1.        , 0.14577012, 0.02521345],
+                   [1.        , 0.13510247, 0.00369051],
+                   [1.        , 0.22129766, 0.0148769 ]])
         """
-        # Flatten the array
-        matrices = self.flat()
+        # Check that self is still Hermitian
+        if not self.is_hermitian:
+            raise ValueError("Covariance matrix is not Hermitian.")
 
-        # Parallel computation of eigenvalues
-        eigenvalues = eigvalsh(matrices)
+        # Parallel computation of eigenvalues.
+        eigenvalues = eigvalsh(self.flat)
 
-        # Sort and normalize
+        # Sort and normalize. Note that the eigenvalues are supposed to be
+        # real-valued, so the absolute value is taken (Hermitian matrix).
         eigenvalues = np.sort(np.abs(eigenvalues), axis=-1)[:, ::-1]
         eigenvalues /= norm(eigenvalues, axis=-1, keepdims=True)
 
         return eigenvalues.reshape(self.shape[:-1])
 
-    def eigenvectors(self, rank=0, covariance=False):
-        """Extract eigenvectors of given rank.
+    def eigenvectors(
+        self,
+        rank: int | tuple | slice | None = None,
+        return_covariance: bool = False,
+        weights: np.ndarray | None = None,
+    ) -> "np.ndarray | CovarianceMatrix":
+        r"""Extract eigenvectors of given rank.
 
-        The function used for extracting eigenvectors is
-        :func:`scipy.linalg.eigh`. It assumes that the input matrix is 2D
-        and hermitian. The decomposition is performed onto the lower triangular
+        Given a Hermitian matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times
+        N}`, the eigenvector decomposition is defined as
+
+        .. math::
+
+            \mathbf{C} = \mathbf{U D U}^\dagger
+
+        where :math:`\mathbf{U} \in \mathbb{C}^{N \times N}` is the unitary
+        matrix of eigenvectors, :math:`\mathbf{U}^\dagger` is the conjugate
+        transpose of :math:`\mathbf{U}`, and :math:`\mathbf{D} \in
+        \mathbb{R}^{N \times N}` is a diagonal matrix of eigenvalues. The
+        eigenvectors are normalized and orthogonal, and the eigenvalues are
+        real- and positive-valued. The eigenvectors are returned as a matrix
+
+        .. math::
+
+            \mathbf{U} = \pmatrix{\mathbf{u}_1, \mathbf{u}_2, \ldots,
+            \mathbf{u}_R}
+
+        with :math:`\mathbf{v}_i` the eigenvectors, and :math:`R` the maximum
+        rank of the eigenvectors. The eigenvectors are sorted in decreasing
+        order of the eigenvalues, and the eigenvectors are normalized. The
+        function used for extracting eigenvectors is
+        :func:`scipy.linalg.eigh`. It assumes that the input matrix is 2D and
+        hermitian, so the decomposition is performed onto the lower triangular
         part.
 
-        Keyword arguments
-        -----------------
-        rank : int, optional
-            Eigenvector rank, 0 by default (first eigenvector).
+        If the ``covariance`` parameter is set to False (default), the
+        eigenvectors are returned as a matrix of shape ``(n_times,
+        n_frequencies, n_stations, rank)`` if the parameter ``covariance`` is
+        ``False``, else ``(n_times, n_frequencies, n_stations, n_stations)``,
+        resulting from the outer product of the eigenvectors.
 
-        covariance: int, optional
-            Outer-product of eigenvectors of rank ``rank``.
+        If the ``covariance`` parameter is set to True, the return value is a
+        covariance matrix object with the outer product of the eigenvectors
+        multiplied by the given weights :math:`\mathbf{w} \in \mathbb{R}^{R}`:
+
+        .. math::
+
+            \tilde{\mathbf{C}} = \sum_{i=1}^R w_i \mathbf{u}_i
+            \mathbf{u}_i^\dagger
+
+        The weights are the eigenvalues of the covariance matrix if
+        ``weights`` is None (default), else the weights are the input weights.
+        The weights are used to scale the eigenvectors before the outer
+        product. In particular, if the weights are zeros and ones, this
+        function can be used to apply spatial whitening to the covariance
+        matrix.
+
+        Arguments
+        ---------
+        rank : int, tuple, slice, or None, optional
+            The rank of the eigenvectors. If None, all eigenvectors are
+            returned. If a tuple or slice, the eigenvectors are sliced
+            according to the tuple or slice. If an integer is given, the
+            eigenvectors are sliced according to the integer. Default is None.
+        return_covariance: bool, optional
+            If True, the outer product of the eigenvectors is returned as a
+            covariance matrix object. Default is False.
+        weights: :class:`numpy.ndarray`, optional
+            The weights used to scale the eigenvectors before the outer
+            product. If None, the eigenvalues are used as weights. Default is
+            None.
 
         Returns
         -------
-        :class:`numpy.ndarray`
-            The complex-valued eigenvector array of shape
-            ``(n_times, n_freq, n_sta)`` if the parameter ``covariance`` is
-            ``False``, else ``(n_times, n_freq, n_sta, n_sta)``.
+        :class:`covseisnet.covariance.CovarianceMatrix`
+            The complex-valued eigenvector array of shape ``(n_times,
+            n_frequencies, n_stations, rank)`` if ``covariance`` is ``False``,
+            else ``(n_times, n_frequencies, n_stations, n_stations)``.
 
+        Raises
+        ------
+        ValueError
+            If the covariance matrix is not Hermitian.
 
-        Todo
-        ----
-        Implement a new option on the ``rank`` in order to accept a list, so
-        the filtered covariance can be obtained from multiple eigenvector
-        ranks. This should be defined together with a ``normalize`` boolean
-        keyword argument in order to take into account the eigenvalues or not,
-        and therefore the isotropization of the covariance matrix would be
-        here defined fully (so far, the user has to define a loop in the
-        main script).
+        See also
+        --------
+        :meth:`~covseisnet.covariance.CovarianceMatrix.eigenvalues`
+        :func:`scipy.linalg.eigh`
 
         """
-        # Initialization
-        matrices = self.flat()
-        eigenvectors = np.zeros(
-            (matrices.shape[0], matrices.shape[-1]), dtype=complex
+        # Check that self is still Hermitian.
+        if not self.is_hermitian:
+            raise ValueError("Covariance matrix is not Hermitian.")
+
+        # Calculate eigenvectors.
+        eigenvalues, eigenvectors = eigh(self.flat)
+
+        # Sort according to eigenvalues.
+        isort = np.argsort(np.abs(eigenvalues)[:, ::-1])[:, ::-1]
+        eigenvalues = np.take_along_axis(np.abs(eigenvalues), isort, axis=1)
+        eigenvectors = np.take_along_axis(
+            eigenvectors, isort[:, :, np.newaxis], axis=1
         )
 
-        # Calculation over submatrices
-        for i, m in enumerate(matrices):
-            l, v = eigh(m)
-            isort = np.argsort(np.abs(l))[::-1]
-            eigenvectors[i] = v[isort][rank]
+        # Select according to rank.
+        if rank is not None:
+            if isinstance(rank, int):
+                rank = (rank,)
+            eigenvectors = eigenvectors[..., rank]
+            eigenvalues = eigenvalues[..., rank]
 
-        if covariance:
-            ec = np.zeros(self.shape, dtype=complex)
-            ec = ec.view(CovarianceMatrix)
-            ec = ec.flat()
-            for i in range(eigenvectors.shape[0]):
-                ec[i] = eigenvectors[i, :, None] * np.conj(eigenvectors[i])
-            ec = ec.reshape(self.shape)
-            return ec.view(CovarianceMatrix)
+        # Perform outer product if covariance is True
+        if return_covariance is True:
+            if weights is None:
+                weights = eigenvalues
+            reconstructed = np.zeros_like(self.flat)
+            for i, vectors in enumerate(eigenvectors):
+                weight = np.diag(weights[i])
+                reconstructed[i] += vectors @ weight @ np.conj(vectors.T)
+
+            # Reshape to original shape
+            return CovarianceMatrix(
+                reconstructed.reshape(self.shape),
+                stats=self.stats,
+                stft=self.stft,
+            )
+
         else:
-            return eigenvectors.reshape(self.shape[:-1])
+            return eigenvectors.reshape(
+                (*self.shape[:-1], eigenvectors.shape[-1])
+            )
 
+    @property
     def flat(self):
         r"""Covariance matrices with flatten first dimensions.
 
         The shape of the covariance matrix depend on the number of time
-        windows and frequencies. The method
-        :meth:`~covseisnet.covariance.CovarianceMatrix.flat` allows to obtain
+        windows and frequencies. The property
+        :attr:`~covseisnet.covariance.CovarianceMatrix.flat` allows to obtain
         as many :math:`N \times N` covariance matrices as time and frequency
         samples.
 
         Returns
         -------
         :class:`np.ndarray`
-            The covariance matrices in a shape ``(a * b, n, n)``.
+            The covariance matrices in a shape ``(n_times * n_frequencies,
+            n_traces, n_traces)``.
 
         Example
         -------
-        >>> import covseisnet as cn
+        >>> import covseisnet as csn
         >>> import numpy as np
-        >>> c = np.arange(16).reshape((2, 2, 2, 2)).view(cn.CovarianceMatrix)
-        >>> c.shape
-            (2, 2, 2, 2)
-        >>> c.flat().shape
-            (4, 2, 2)
+        >>> cov = np.zeros((5, 4, 2, 2))
+        >>> cov = csn.CovarianceMatrix(cov)
+        >>> cov.shape
+            (5, 4, 2, 2)
+        >>> c.flat.shape
+            (20, 2, 2)
         """
         return self.reshape(-1, *self.shape[-2:])
 
     def triu(self, **kwargs):
-        """Extract upper triangular on flatten array.
+        r"""Extract upper triangular matrices.
 
         This method is useful when calculating the cross-correlation matrix
         associated with the covariance matrix. Indeed, since the covariance
@@ -475,24 +571,19 @@ class CovarianceMatrix(np.ndarray):
         Example
         -------
 
-        >>> import covseisnet as cn
+        >>> import covseisnet as csn
         >>> import numpy as np
-        >>> c = np.arange(8).reshape((2, 2, 2)).view(cn.CovarianceMatrix)
-        >>> c
-            CovarianceMatrix([[[0, 1],
-                              [2, 3]],
-                             [[4, 5],
-                              [6, 7]]])
-        >>> c.triu()
-            CovarianceMatrix([[0, 1, 3],
-                              [4, 5, 7]])
+        >>> cov = np.zeros((5, 4, 2, 2))
+        >>> cov = csn.CovarianceMatrix(cov)
+        >>> cov.triu().shape
+            (5, 4, 3)
 
         """
         trii, trij = np.triu_indices(self.shape[-1], **kwargs)
         return self[..., trii, trij]
 
     def twosided(self, axis: int = 1) -> "CovarianceMatrix":
-        """Get the full covariance spectrum.
+        r"""Get the full covariance spectrum.
 
         Given that the covariance matrix is Hermitian, the full covariance
         matrix can be obtained by filling the negative frequencies with the
@@ -654,7 +745,9 @@ def calculate_covariance_matrix(
 
     >>> import covseisnet as csn
     >>> stream = csn.read()
-    >>> t, f, c = csn.calculate_covariance_matrix(stream, window_duration_sec=1., average=5)
+    >>> t, f, c = csn.calculate_covariance_matrix(
+    ...     stream, window_duration_sec=1., average=5
+    ... )
     >>> print(c.shape)
         (27, 51, 3, 3)
 
@@ -708,9 +801,7 @@ def calculate_covariance_matrix(
         # Whiten
         if whiten.lower() == "slice":
             spectra_slice /= np.mean(
-                np.abs(spectra_slice),
-                axis=-1,
-                keepdims=True,
+                np.abs(spectra_slice), axis=-1, keepdims=True
             )
 
         # Covariance
@@ -733,21 +824,3 @@ def calculate_covariance_matrix(
     covariance_times = np.array(covariance_times)
 
     return covariance_times, frequencies, covariances
-
-
-def are_two_last_dimensions_hermitian(matrix: np.ndarray) -> bool:
-    """Check if the two last dimensions of a matrix are Hermitian.
-
-    Arguments
-    ---------
-    matrix: :class:`numpy.ndarray`
-        The input matrix.
-
-    Returns
-    -------
-    bool
-        True if the two last dimensions are Hermitian, False otherwise.
-    """
-    if matrix.shape[-1] != matrix.shape[-2]:
-        return False
-    return np.allclose(matrix, np.conj(matrix).swapaxes(-2, -1))
