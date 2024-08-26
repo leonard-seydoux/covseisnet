@@ -131,7 +131,24 @@ class CrossCorrelationMatrix(np.ndarray):
 
     @property
     def sampling_rate(self) -> float:
-        """Return the sampling rate."""
+        r"""Return the sampling rate in Hz.
+
+        The sampling rate is extracted from the first stats in the list of
+        stats extracted from the covariance matrix. Note that if the
+        covariance matrix was calculated with the
+        :func:`~covseisnet.covariance.calculate_covariance_matrix`, all streams
+        must be synchronized and have the same sampling rate.
+
+        Returns
+        -------
+        float
+            The sampling rate in Hz.
+
+        Raises
+        ------
+        ValueError
+            If the stats attribute is not set.
+        """
         if self.stats is None:
             raise ValueError("Stats are needed to get the sampling rate.")
         return self.stats[0].sampling_rate
@@ -144,7 +161,7 @@ class CrossCorrelationMatrix(np.ndarray):
 
         .. math::
 
-            E_{ij}(\tau) = | \mathcal{H} R_{ij}(\tau) | = | R_{ij}(\tau) + i \mathcal{H} R_{ij}(\tau)  |
+            E_{ij}(\tau) = | R_{ij}(\tau) + i \mathcal{H} R_{ij}(\tau)  |
 
         where :math:`\mathcal{H}` is the Hilbert transform, and :math:`i` is
         the imaginary unit. The Hilbert envelope is the absolute value of the
@@ -164,7 +181,9 @@ class CrossCorrelationMatrix(np.ndarray):
         """
         kwargs.setdefault("axis", -1)
         return CrossCorrelationMatrix(
-            hilbert_envelope(self, **kwargs), stats=self.stats, stft=self.stft
+            hilbert_envelope(self, **kwargs),
+            stats=self.stats,
+            stft=self.stft,
         )
 
     def taper(self, max_percentage: float = 0.1) -> "CrossCorrelationMatrix":
@@ -176,9 +195,9 @@ class CrossCorrelationMatrix(np.ndarray):
 
         .. math::
 
-            R'_{ij}(\tau) = w_T{\tau} R_{ij}(\tau)
+            R'_{ij}(\tau) = w_T(\tau) R_{ij}(\tau)
 
-        where :math:`w_T` is the taper of maximum duration :math:`T`.
+        where :math:`w_T(\tau)` is the taper of maximum duration :math:`T`.
 
         Arguments
         ---------
@@ -250,7 +269,9 @@ class CrossCorrelationMatrix(np.ndarray):
         """
         return self.reshape(-1, self.shape[-1])
 
-    def bandpass(self, frequency_band: tuple | list, filter_order: int = 4):
+    def bandpass(
+        self, frequency_band: tuple | list, filter_order: int = 4
+    ) -> "CrossCorrelationMatrix":
         r"""Bandpass filter the correlation functions.
 
         Apply a Butterworth bandpass filter to the correlation functions. Uses
@@ -263,6 +284,11 @@ class CrossCorrelationMatrix(np.ndarray):
             The frequency band to filter in Hz.
         filter_order: int, optional
             The order of the Butterworth filter.
+
+        Returns
+        -------
+        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
+            The bandpass filtered correlation functions.
         """
         # Flatten the correlation functions
         correlation_flat = self.flat()
