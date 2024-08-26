@@ -12,6 +12,8 @@ travel times using the class
 differential travel times on a map.
 """
 
+# sphinx_gallery_thumbnail_number = 2
+
 import covseisnet as csn
 
 # %%
@@ -72,8 +74,4 @@ differential_traveltime = csn.travel_times.DifferentialTravelTimes(
 )
 
 # Plot the differential traveltime grid
-ax = csn.plot.grid3d(
-    differential_traveltime,
-    label="Travel time (s)",
-    vmin=0,
-)
+ax = csn.plot.grid3d(differential_traveltime, label="Travel time (s)")

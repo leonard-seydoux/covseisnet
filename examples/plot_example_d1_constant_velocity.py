@@ -1,6 +1,6 @@
 """
-Constant velocity model travel times
-====================================
+Constant velocity travel times
+==============================
 
 This example shows how to calculate the travel times of seismic waves in a
 constant velocity model. We first define the model and the source and receiver
