@@ -12,4 +12,8 @@ API Reference
     correlation
     plot
     data
+    spatial
+    velocity
+    travel_times
+    backprojection
 

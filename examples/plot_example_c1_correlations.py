@@ -144,7 +144,9 @@ lags, pairs, cross_correlation = csn.calculate_cross_correlation_matrix(
 )
 
 # Get inter-station distance
-distances = csn.pairwise_distances_from_stats(cross_correlation.stats)
+distances = csn.pairwise_great_circle_distances_from_stats(
+    cross_correlation.stats
+)
 
 # Bandpass filter
 cross_correlation = cross_correlation.mean(axis=1)
