@@ -155,6 +155,9 @@ def download_seismic_dataset(
         **kwargs,
     )
 
+    # Transform to NetworkStream
+    stream = NetworkStream(stream)
+
     # Raise error if no data
     if stream is None:
         raise ValueError("No data found.")

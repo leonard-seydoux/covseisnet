@@ -381,7 +381,10 @@ def covariance_matrix_modulus_and_spectrum(
     diversity = covariance.coherence(kind="diversity")
 
     # Labels
-    stations = [stat["station"] for stat in covariance.stats]
+    if covariance.stats is None:
+        stations = [f"Station {i}" for i in range(covariance.shape[0])]
+    else:
+        stations = [stat["station"] for stat in covariance.stats]
     xticks = range(covariance.shape[0])
     ax[0].set_xticks(xticks)
     ax[0].set_xticklabels(stations, rotation=90, fontsize="small")
@@ -503,7 +506,7 @@ def grid3d(
     )
 
     # Default values for contour
-    if isinstance(grid, csn.spatial.DifferentialTravelTimes):
+    if isinstance(grid, csn.travel_times.DifferentialTravelTimes):
         vmax = max(np.abs(grid.min()), np.abs(grid.max()))
         vmin = -vmax
         kwargs.setdefault("cmap", "RdBu")

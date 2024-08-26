@@ -31,6 +31,9 @@ from .correlation import CrossCorrelationMatrix
 from .stream import NetworkStream
 from .signal import ShortTimeFourierTransform
 from . import spatial
+from . import velocity
+from . import travel_times
+from . import backprojection
 
 # High-level methods
 from .covariance import calculate_covariance_matrix
