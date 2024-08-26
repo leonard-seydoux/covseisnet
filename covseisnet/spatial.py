@@ -54,8 +54,8 @@ def direct_distance(lon1, lat1, depth1, lon2, lat2, depth2, R=6371):
     return distance
 
 
-def pairwise_distances(
-    stats: list[Stats],
+def pairwise_distances_from_stats(
+    stats: list[Stats] | None = None,
     output_units: str = "km",
     include_diagonal: bool = True,
 ) -> list[float]:
@@ -70,6 +70,10 @@ def pairwise_distances(
     :class:`np.ndarray`
         The pairwise distances between the stations.
     """
+    # Check that stats is defined
+    if stats is None:
+        raise ValueError("The stats are not defined.")
+
     # Get the station coordinates
     coordinates = [stat.coordinates for stat in stats]
 

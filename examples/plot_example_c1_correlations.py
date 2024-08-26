@@ -144,18 +144,17 @@ lags, pairs, cross_correlation = csn.calculate_cross_correlation_matrix(
 )
 
 # Get inter-station distance
-pairs = np.array(pairs)
-distances = np.array(csn.pairwise_distances(cross_correlation.stats))
+distances = csn.pairwise_distances_from_stats(cross_correlation.stats)
 
 # Bandpass filter
 cross_correlation = cross_correlation.mean(axis=1)
-cross_correlation.bandpass(frequency_band)
+cross_correlation = cross_correlation.bandpass(frequency_band)
 cross_correlation = cross_correlation.taper()
 
 # Plot
 fig, ax = plt.subplots()
 for i_pair, pair in enumerate(pairs):
-    cc = cross_correlation[i_pair] / abs(cross_correlation[i_pair]).max() * 50
+    cc = cross_correlation[i_pair] / abs(cross_correlation[i_pair]).max() * 40
     ax.plot(lags, cc + distances[i_pair], color="C0", alpha=0.8)
 
 # Plot some velocity

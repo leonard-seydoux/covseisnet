@@ -102,7 +102,6 @@ class CovarianceMatrix(np.ndarray):
         stft: signal.ShortTimeFourierTransform | None = None,
     ) -> "CovarianceMatrix":
         r"""
-
         Note
         ----
 
