@@ -65,7 +65,7 @@ times, frequencies, covariances = csn.calculate_covariance_matrix(
 )
 
 # Show covariance from sample window and frequency
-t_index = 65
+t_index = 60
 f_index = 100
 csn.plot.covariance_matrix_modulus_and_spectrum(covariances[t_index, f_index])
 
@@ -84,7 +84,13 @@ coherence = covariances.coherence(kind="spectral_width")
 
 # Show
 ax = csn.plot.stream_and_coherence(
-    stream, times, frequencies, coherence, f_min=0.5
+    stream,
+    times,
+    frequencies,
+    coherence,
+    f_min=0.5,
 )
+
+# Mark extracted time and frequency
 ax[1].axvline(times[t_index], color="k", linestyle="--", lw=0.7)
 ax[1].axhline(frequencies[f_index], color="k", linestyle="--", lw=0.7)

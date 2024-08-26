@@ -249,7 +249,7 @@ def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
         frequencies,
         coherence.T,
         shading="nearest",
-        cmap="magma_r",
+        cmap="viridis_r",
         **kwargs,
     )
 
@@ -303,7 +303,7 @@ def stream_and_coherence(
     trace_times = stream.times(type="matplotlib")
     for index, trace in enumerate(stream):
         waveform = trace.data * trace_factor
-        ax[0].plot(trace_times, waveform + index, color="k", lw=0.3)
+        ax[0].plot(trace_times, waveform + index, color="C0", lw=0.3)
 
     # Labels
     stations = [trace.stats.station for trace in stream]
@@ -373,7 +373,7 @@ def covariance_matrix_modulus_and_spectrum(
     _, ax = plt.subplots(ncols=2, figsize=(8, 2.7), constrained_layout=True)
 
     # Plot covariance matrix
-    mappable = ax[0].matshow(np.abs(covariance), cmap="cividis", vmin=0)
+    mappable = ax[0].matshow(np.abs(covariance), cmap="viridis", vmin=0)
 
     # Coherence
     spectral_width = covariance.coherence(kind="spectral_width")
@@ -470,6 +470,9 @@ def grid3d(
     label=None,
     **kwargs,
 ):
+    # Set limits
+    if grid.lon is None or grid.lat is None or grid.depth is None:
+        return
 
     # Create mosaic plot
     _, ax = plt.subplot_mosaic(
@@ -548,6 +551,13 @@ def grid3d(
     cb.ax.xaxis.set_major_locator(MaxNLocator(4))
     if label is not None:
         cb.set_label(label)
+
+    ax["xy"].set_xlim(grid.lon.min(), grid.lon.max())
+    ax["xy"].set_ylim(grid.lat.min(), grid.lat.max())
+    ax["xz"].set_xlim(grid.lon.min(), grid.lon.max())
+    ax["zy"].set_ylim(grid.lat.min(), grid.lat.max())
+    ax["zy"].set_xlim(grid.depth.min(), grid.depth.max())
+    ax["xz"].set_ylim(grid.depth.max(), grid.depth.min())
 
     # If receiver coordinates are provided, plot them
     if receiver_coordinates is None:

@@ -27,7 +27,7 @@ import covseisnet as csn
 # Path to the example stream
 filepath_waveforms = "../data/undervolc_example.mseed"
 
-# Download stream if not available
+# Download stream if not available (this may take a while)
 if not os.path.exists(filepath_waveforms):
     csn.data.download_undervolc_data()
 
@@ -49,7 +49,7 @@ whiten_1 = "none"
 # Pre-process stream with temporal normalization
 case_2 = "Temporal normalization"
 stream_2 = stream.copy()
-stream_2.time_normalize(method="smooth", smooth_length=1001)
+stream_2.time_normalize(method="smooth", smooth_length=901)
 stream_2.taper(max_percentage=0.01)
 whiten_2 = "none"
 
@@ -108,7 +108,7 @@ fig, ax = plt.subplots(
 )
 
 # Plot a trace
-ax[0].plot(stream.times("matplotlib"), stream.traces[0].data, color="black")
+ax[0].plot(stream.times("matplotlib"), stream.traces[0].data)
 ax[0].set_title(f"Trace from {stream.traces[0].id}")
 ax[0].set_ylabel("Amplitude")
 
