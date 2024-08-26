@@ -604,13 +604,13 @@ class CovarianceMatrix(np.ndarray):
         trii, trij = np.triu_indices(self.shape[-1], **kwargs)
         return self[..., trii, trij]
 
-    def twosided(self, axis: int = 1) -> "CovarianceMatrix":
+    def twosided(self, axis: int = -3) -> "CovarianceMatrix":
         r"""Get the full covariance spectrum.
 
         Given that the covariance matrix is Hermitian, the full covariance
         matrix can be obtained by filling the negative frequencies with the
-        complex conjugate of the positive frequencies. The function
-        :func:`~covseisnet.covariance.get_twosided_covariance` performs this
+        complex conjugate of the positive frequencies. The method
+        :meth:`~covseisnet.covariance.CovarianceMatrix.twosided` performs this
         operation.
 
         The frequency axis is assumed to be the second axis of the covariance
@@ -621,43 +621,50 @@ class CovarianceMatrix(np.ndarray):
         Arguments
         ---------
         axis: int, optional
-            The frequency axis of the covariance matrix. Default is 1.
+            The frequency axis of the covariance matrix. Default is -3.
 
         Returns
         -------
         :class:`~covseisnet.covariance.CovarianceMatrix`
             The full covariance matrix.
         """
-        # Get number of samples that were used to calculate the covariance matrix
-        stft = self.stft
-        if stft is None:
+        # Get number of samples used to calculate the covariance matrix
+        if self.stft is None:
             raise ValueError("ShortTimeFourierTransform instance not found.")
 
         # Get number of samples in the window
-        n_samples_in = len(stft.win)
+        n_samples = len(self.stft.win)
 
         # Find out output shape
         input_shape = self.shape
         output_shape = list(input_shape)
-        output_shape[axis] = n_samples_in
+        output_shape[axis] = n_samples
 
         # Initialize full covariance matrix with negative frequencies
-        covariance_matrix_full = np.zeros(output_shape, dtype=np.complex128)
+        output = np.zeros(output_shape, dtype=np.complex128)
 
         # Fill negative frequencies
-        covariance_matrix_full[:, : n_samples_in // 2 + 1] = self
-        covariance_matrix_full[:, n_samples_in // 2 + 1 :] = np.conj(
-            self[:, -2:0:-1]
-        )
+        n_oneside = n_samples // 2 + 1
+        output[:, :n_oneside] = self
+        output[:, n_oneside:] = np.conj(self[:, -2:0:-1])
 
-        # Return full covariance matrix
-        covariance_matrix_full = covariance_matrix_full.view(CovarianceMatrix)
-        covariance_matrix_full.__dict__.update(self.__dict__)
-        return covariance_matrix_full
+        return CovarianceMatrix(output, stats=self.stats, stft=self.stft)
 
     @property
     def is_hermitian(self, tol: float = 1e-10) -> bool:
         r"""Check if the covariance matrix is Hermitian.
+
+        Given a covariance matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times
+        N}`, the matrix is Hermitian if the matrix is equal to its conjugate
+        transpose, that is
+
+        .. math::
+
+            \mathbf{C} = \mathbf{C}^\dagger
+
+        to some extent provided by the ``tol`` parameter. This check is
+        performed on all the covariance matrices of the object, e.g., for each
+        time and frequency sample if any.
 
         Arguments
         ---------

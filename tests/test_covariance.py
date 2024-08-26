@@ -128,3 +128,18 @@ def test_pickle_persistance():
 
     # Assertions
     assert hasattr(cov, "stats")
+
+
+def test_twosided():
+    """Test on the two-sided covariance matrix."""
+    stream = csn.NetworkStream.read()
+    times, _, covariances = csn.calculate_covariance_matrix(
+        stream, window_duration=5, average=5
+    )
+    covariances_twosided = covariances.twosided()
+    assert covariances_twosided.shape == (
+        len(times),
+        covariances_twosided.shape[1],
+        3,
+        3,
+    )
