@@ -1,6 +1,6 @@
 """Spectral analysis and covariance matrix calculation."""
 
-from typing import Any, Callable
+from typing import Callable
 
 import numpy as np
 from numpy.linalg import eigvalsh, eigh
@@ -65,7 +65,7 @@ class CovarianceMatrix(np.ndarray):
     def __new__(
         cls,
         input_array: "np.ndarray | CovarianceMatrix | list",
-        stats: list[Stats] | None = None,
+        stats: list[Stats] | list[dict] | None = None,
         stft: signal.ShortTimeFourierTransform | None = None,
     ) -> "CovarianceMatrix":
         r"""
@@ -643,7 +643,7 @@ def calculate_covariance_matrix(
     average: int,
     average_step: int | None = None,
     whiten: str = "none",
-    **kwargs: Any,
+    **kwargs,
 ) -> tuple[np.ndarray, np.ndarray, CovarianceMatrix]:
     r"""Calculate covariance matrix.
 
