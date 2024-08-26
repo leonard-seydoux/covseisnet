@@ -3,7 +3,7 @@
 import numpy as np
 
 from obspy.core.trace import Stats
-from scipy.signal import windows
+from scipy.signal import windows, correlation_lags
 from scipy.ndimage import gaussian_filter1d
 
 from .covariance import CovarianceMatrix
@@ -381,8 +381,7 @@ def calculate_cross_correlation_matrix(
     correlation = np.fft.fftshift(np.fft.ifft(covariance_triu), axes=-1).real
 
     # Calculate lags
-    lag_max = n_samples / sampling_rate / 2
-    lags = np.linspace(-lag_max, lag_max, n_samples)
+    lags = correlation_lags(n_samples, n_samples, mode="same") / sampling_rate
 
     # Turn into CrossCorrelationMatrix
     correlation = CrossCorrelationMatrix(

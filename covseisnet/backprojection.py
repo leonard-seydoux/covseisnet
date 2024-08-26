@@ -81,9 +81,9 @@ class DifferentialBackProjection(Regular3DGrid):
                 moveout = moveouts.flat[i]
                 idx = int(cross_correlation.sampling_rate * moveout)
                 try:
-                    self.flat[i] += cross_correlation[i_pair, half_size - idx]
+                    self.flat[i] += cross_correlation[i_pair, half_size + idx]
                 except IndexError:
-                    self.flat[i] += 0
+                    continue
 
         # Normalize the likelihood
         self /= self.sum()

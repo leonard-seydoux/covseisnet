@@ -536,6 +536,8 @@ def grid3d(
     ax["xy"].axhline(profile_coordinates[1], dashes=[8, 3], color="k", lw=0.5)
     ax["zy"].axvline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
     ax["xz"].axhline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
+    ax["zy"].axhline(profile_coordinates[1], dashes=[8, 3], color="k", lw=0.5)
+    ax["xz"].axvline(profile_coordinates[0], dashes=[8, 3], color="k", lw=0.5)
     ax["xz"].invert_yaxis()
     ax["xy"].set_ylabel("Latitude (º)")
     ax["xz"].set_xlabel("Longitude (º)")
