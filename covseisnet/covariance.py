@@ -1,4 +1,4 @@
-"""Spectral analysis and covariance matrix calculation."""
+"""Calculation and analysis of the network covariance matrix."""
 
 from typing import Callable
 
@@ -13,39 +13,60 @@ from . import signal
 
 class CovarianceMatrix(np.ndarray):
     r"""
-    This class is a subclass of :class:`numpy.ndarray`, which means it
-    inherits all the methods of standard numpy arrays, along with extra
-    methods tailored for array processing. Any numpy method or function
-    applied to an instance of :class:`~covseisnet.covariance.CovarianceMatrix`
-    will return an instance of
-    :class:`~covseisnet.covariance.CovarianceMatrix`.
+    This class inherits all the methods of standard numpy arrays, along with
+    extra methods tailored for array processing. Any numpy method or function
+    applied to an instance of CovarianceMatrix will return an instance of
+    CovarianceMatrix.
 
-    Let's consider a continuous set of network seismograms
-    :math:`\{u_i(t)\}_{i=1\dots N}` with :math:`N` traces. The Fourier
-    transform of the traces is defined as :math:`u_i(f)`, with :math:`f` the
-    frequency. The spectral covariance matrix is defined as
+    .. rubric:: Mathematical definition
+
+    We consider the set of network seismograms :math:`\{v_i(t)\}_{i=1}^N` with
+    :math:`N` traces, all recorded on the same time samples (synchronized).
+    For the sake of simplicity, we use the continuous time notation. We first
+    calculate the short-time Fourier transform of each trace within a sliding
+    window of duration :math:`T`, and center time :math:`t_m` (with the index
+    :math:`m` the time window index), defined on the time interval
+    :math:`\tau_m = [t_m - T/2, t_m + T/2]`. The short-time Fourier transform
+    of the traces is defined as
 
     .. math::
 
-        C_{ij}(f) = \sum_{m=1}^M u_{i}(t \in \tau_m, f) u_{j}^*(t \in \tau_m,
-        f)
+        u_{i,m}(f) = \mathcal{F} v_i(t \in \tau_m)
+
+    The spectral covariance matrix is defined as the average of the outer
+    product of the short-time Fourier transform of the traces over a set of
+    time windows :math:`\{\tau_m\}_{m=1}^M`, with :math:`M` the number of
+    windows used to estimate the covariance. This lead to the definition of
+    the spectral covariance matrix :math:`C_{ij}(f)` as
+
+    .. math::
+
+        C_{ij}(f) = \sum_{m=1}^M u_{i,m}(f) u_{j,m}^*(f)
 
     where :math:`M` is the number of windows used to estimate the covariance,
     :math:`^*` is the complex conjugate, and :math:`\tau_m` is the time window
     of index :math:`m`. The covariance matrix is a complex-valued matrix of
-    shape :math:`N \times N`. Depending on the averaging size and frequency
-    content, the covariance matrix can have a different shape:
+    shape :math:`N \times N`.
 
-    - ``(n_traces, n_traces)`` if a single frequency and time window is given.
-      This configuration is also obtained when slicing or reducing a
+    .. rubric:: Practical implementation
+
+    The short-time Fourier transform is calculated with the help of the
+    :class:`~covseisnet.signal.ShortTimeFourierTransform` class. Both the
+    calculation of the short-time Fourier transform and the covariance matrix
+    can run in parallel depending on the available resources. Depending on the
+    averaging size and frequency content, the covariance matrix can have a
+    different shape:
+
+    - Shape is ``(n_traces, n_traces)`` if a single frequency and time window
+      is given. This configuration is also obtained when slicing or reducing a
       covariance matrix object.
 
-    - ``(n_frequencies, n_traces, n_traces)`` if only one time frame is given,
-      for ``n_frequencies`` frequencies, which depends on the window size and
-      sampling rate.
+    - Shape is ``(n_frequencies, n_traces, n_traces)`` if only one time frame
+      is given, for ``n_frequencies`` frequencies, which depends on the window
+      size and sampling rate.
 
-    - ``(n_times, n_frequencies, n_traces, n_traces)`` if multiple time frames
-      are given.
+    - Shape is ``(n_times, n_frequencies, n_traces, n_traces)`` if multiple
+      time frames are given.
 
     All the methods defined in the the
     :class:`~covseisnet.covariance.CovarianceMatrix` class are performed on
@@ -57,9 +78,21 @@ class CovarianceMatrix(np.ndarray):
     Tip
     ---
 
-    The :class:`~covseisnet.covariance.CovarianceMatrix` class is not meant to
-    be instantiated directly. It should be obtained from the output of the
-    :func:`~covseisnet.covariance.calculate_covariance_matrix` function.
+    The :class:`~covseisnet.covariance.CovarianceMatrix` class is rarely meant
+    to be instantiated directly. It should most often be obtained from the
+    output of the :func:`~covseisnet.covariance.calculate_covariance_matrix`
+    function as in the following example:
+
+    >>> import covseisnet as csn
+    >>> import numpy as np
+    >>> stream = csn.NetworkStream()
+    >>> time, frequency, covariance = csn.calculate_covariance_matrix(
+    ...     stream, window_duration=10.0, average=10
+    ... )
+    >>> print(type(covariance))
+    <class 'covseisnet.covariance.CovarianceMatrix'>
+
+
     """
 
     def __new__(
@@ -81,27 +114,29 @@ class CovarianceMatrix(np.ndarray):
         We recommend using the contructor of the class, which allows to pass
         the stats and stft attributes, as in the following example:
 
-        >>> import covseisnet as cn
+        >>> import covseisnet as csn
         >>> import numpy as np
-        >>> c = CovarianceMatrix(np.zeros((4, 4)), stats=None, stft=None)
-        >>> c
+        >>> covariance = csn.CovarianceMatrix(
+        ...     np.zeros((4, 4)), stats=None, stft=None
+        ... )
+        >>> covariance
         CovarianceMatrix([[ 0.,  0.,  0.,  0.],
-                            [ 0.,  0.,  0.,  0.],
-                            [ 0.,  0.,  0.,  0.],
-                            [ 0.,  0.,  0.,  0.]])
+                          [ 0.,  0.,  0.,  0.],
+                          [ 0.,  0.,  0.,  0.],
+                          [ 0.,  0.,  0.,  0.]])
 
         In that case, the covariance matrix object passes through several
         tests such as the Hermitian property of the two last dimensions, and
         the number of dimensions of the input array. If the input array does
-        not pass the tests, a ValueError is raised. The input array can be an
-        "array-like" object, as it is passed to the :func:`numpy.asarray`
+        not pass the tests, a ValueError is raised. The input array can be any
+        array-like object, as it is passed to the :func:`numpy.asarray`
         function, which also allow to turn the input array into a
         complex-valued numpy array. The input array is then cast into a
-        :class:`~covseisnet.covariance.CovarianceMatrix` object with the
-        :meth:`~numpy.ndarray.view` method, and the attributes stats and stft
-        are added to the object. You can also directly employ the view method
-        of the numpy array, but you will have to set the stats and stft
-        attributes manually.
+        CovarianceMatrix object with the `view casting mechanism of numpy
+        <https://numpy.org/doc/stable/user/basics.subclassing.html#view-casting>`_,
+        and the attributes stats and stft are added to the object. You can
+        also directly employ the view method of the numpy array, but you will
+        have to set the stats and stft attributes manually.
         """
         # Enforce the input array to be a complex-valued numpy array.
         input_array = np.asarray(input_array, dtype=complex)
@@ -649,51 +684,38 @@ def calculate_covariance_matrix(
 
     The covariance matrix is calculated from the Fourier transform of the
     input stream. The covariance matrix is calculated for each time window and
-    frequency, and averaged over a given number of windows.
+    frequency, and averaged over a given number of windows. Please refer to
+    the :class:`~covseisnet.covariance.CovarianceMatrix` class, rubric
+    **Mathematical definition** for a detailed explanation of the covariance
+    matrix. You may also refer to the paper :footcite:`seydoux_detecting_2016`
+    for deeper insights.
 
-    Given a stream of :math:`N` traces :math:`\{u_i(t)\}_{i=1\dots N}` with
-    :math:`N` traces, the Fourier transform of the traces is defined as
-    :math:`u_i(f)`, with :math:`f` the frequency. The spectral covariance
-    matrix is defined as
+    .. rubric:: Covariance-level whitening
 
-    .. math::
-
-        C_{ij}(f) = \sum_{m=1}^M u_{i}(t \in \tau_m, f) u_{j}^*(t \in \tau_m,
-        f)
-
-    where :math:`M` is the number of windows used to estimate the covariance,
-    :math:`^*` is the complex conjugate, and :math:`\tau_m` is the time window
-    of index :math:`m`. The covariance matrix is a complex-valued matrix of
-    shape :math:`N \times N`. Depending on the averaging size and frequency
-    content, the covariance matrix can have a different shape. Please refer to
-    the :class:`~covseisnet.covariance.CovarianceMatrix` class for more
-    information. You can also find more information on the covariance matrix
-    in the paper of :footcite:`seydoux_detecting_2016`.
-
-    The whitening parameter can be used to normalize the covariance matrix.
-    The parameter can be set to "none" (default), "slice", or "window". The
-    "none" option does not apply any whitening to the covariance matrix. The
-    "slice" option normalizes the spectra :math:`u_i(t \in \tau_m, f)` by the
-    mean of the absolute value of the spectra within the same group of time
-    windows :math:`\{\tau_m\}_{m=1\dots M}`, so that
+    The whitening parameter can be used to normalize the covariance matrix
+    directly, in addition to the trace-level whitening implementation in the
+    :meth:`covseisnet.stream.NetworkStream.whiten` method. The parameter can
+    be set to "none" (default), "slice", or "window". The "none" option does
+    not apply any whitening to the covariance matrix. The "slice" option
+    normalizes the spectra :math:`u_{i,m}(f)` by the mean of the absolute
+    value of the spectra within the same group of time windows
+    :math:`\{\tau_m\}_{m=1}^M`, so that
 
     .. math::
 
-        u_i(t \in \tau_m, f) = \frac{u_i(t \in \tau_m, f)}{\sum_{i=1}^N |u_i(t
-        \in \tau_m, f)|}
+        u_{i,m}(f) = \frac{u_{i,m}(f)}{\sum_{i=1}^M |u_{i,m}(f)|}
 
-    The "window" option normalizes the spectra :math:`u_i(t \in \tau_m, f)` by
-    the absolute value of the spectra within the same time window :math:`\tau_m`
+    The "window" option normalizes the spectra :math:`u_{i,m}(f)` by the
+    absolute value of the spectra within the same time window :math:`\tau_m`
     so that
 
     .. math::
 
-        u_i(t \in \tau_m, f) = \frac{u_i(t \in \tau_m, f)}{|u_i(t \in \tau_m,
-        f)|}
+        u_{i,m}(f) = \frac{u_{i,m}(f)}{|u_{i,m}(f)|}
 
     These additional whitening methods can be used in addition to the
-    :meth:`~covseisnet.stream.NetworkStream.whiten` method to further whiten
-    the covariance matrix.
+    trave-level :meth:`~covseisnet.stream.NetworkStream.whiten` method to
+    further whiten the covariance matrix.
 
     Arguments
     ---------
@@ -705,8 +727,8 @@ def calculate_covariance_matrix(
         The sliding window step for covariance matrix calculation (in number
         of windows).
     whiten: str, optional
-        The type of whitening applied to the covariance matrix. Can be
-        "none" (default), "slice", or "window". This parameter can be used in
+        The type of whitening applied to the covariance matrix. Can be "none"
+        (default), "slice", or "window". This parameter can be used in
         addition to the :meth:`~covseisnet.stream.NetworkStream.whiten` method
         to further whiten the covariance matrix.
     **kwargs: dict, optional
@@ -716,7 +738,8 @@ def calculate_covariance_matrix(
     Returns
     -------
     :class:`numpy.ndarray`
-        The time vector of the beginning of each covariance window.
+        The time vector of the beginning of each covariance window, expressed
+        in matplotlib time.
     :class:`numpy.ndarray`
         The frequency vector.
     :class:`~covseisnet.covariance.CovarianceMatrix`

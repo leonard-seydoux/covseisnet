@@ -8,10 +8,14 @@ import numpy as np
 import covseisnet as csn
 
 
-def test_fuzzy_covariance_matrix():
-    """Check if the fuzzy covariance matrix is calculated correctly."""
+def test_covariance_matrix_construction_errors():
+    """Not enought dimensions."""
     with pytest.raises(ValueError):
         csn.CovarianceMatrix(np.array(1))
+    with pytest.raises(ValueError):
+        csn.CovarianceMatrix(np.array([1, 2]))
+    with pytest.raises(ValueError):
+        csn.CovarianceMatrix(np.random.randn(3, 3, 3, 3, 3))
 
 
 def test_covariance_matrix_instance():
@@ -25,6 +29,7 @@ def test_covariance_matrix_instance():
 
 
 def test_covariance_matrix_operations():
+    """Check some operations of the CovarianceMatrix class."""
     # Build a complex Hermitian matrix
     x = np.random.rand(3, 3) + 1j * np.random.rand(3, 3)
     x = x @ x.T.conj()
@@ -34,6 +39,7 @@ def test_covariance_matrix_operations():
 
 
 def test_covariance_matrix_stats():
+    """Tests on the stats attribute of the CovarianceMatrix class."""
     # Calculate covariance
     stream = csn.read()
     times, frequencies, covariances = csn.calculate_covariance_matrix(
@@ -51,6 +57,7 @@ def test_covariance_matrix_stats():
 
 
 def test_flat():
+    """Tests on the flat attribute of the CovarianceMatrix class."""
     # Calculate covariance
     stream = csn.read()
     *_, covariances = csn.calculate_covariance_matrix(
@@ -66,6 +73,7 @@ def test_flat():
 
 
 def test_triu():
+    """Tests on the triu method of the CovarianceMatrix class."""
     # Calculate covariance
     stream = csn.read()
     *_, covariances = csn.calculate_covariance_matrix(
@@ -81,6 +89,7 @@ def test_triu():
 
 
 def test_eigenvalues():
+    """Tests on the eigenvalues method of the CovarianceMatrix class."""
     cov = np.random.randn(3, 3, 3) + 1j * np.random.randn(3, 3, 3)
     cov = np.array([cov @ cov.T.conj() for cov in cov])
     cov = csn.CovarianceMatrix(cov)
@@ -88,6 +97,7 @@ def test_eigenvalues():
 
 
 def test_eigenvectors():
+    """Tests on the eigenvectors method of the CovarianceMatrix class."""
     cov = np.zeros((3, 5, 10, 10), dtype=np.complex128)
     for i in range(3):
         for j in range(5):
@@ -102,6 +112,7 @@ def test_eigenvectors():
 
 
 def test_pickle_persistance():
+    """Tests on the pickle persistance of the CovarianceMatrix class."""
     cov = np.zeros((3, 5, 10, 10), dtype=np.complex128)
     for i in range(3):
         for j in range(5):
@@ -111,15 +122,9 @@ def test_pickle_persistance():
         cov, stats=[{"station": station} for station in "ABCDE"]
     )
 
-    # Save
-    # with open("cov.pkl", "wb") as f:
-    #     pickle.dump(cov, f)
+    # Save and load
     cov = pickle.loads(pickle.dumps(cov))
     cov.coherence()
 
-    # Load
-    # with open("cov.pkl", "rb") as f:
-    #     cov = pickle.load(f)
-
-    # Print
-    print(cov.stats)
+    # Assertions
+    assert hasattr(cov, "stats")
