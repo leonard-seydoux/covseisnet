@@ -1,3 +1,5 @@
+import numpy as np
+
 from .spatial import Regular3DGrid
 from .travel_times import DifferentialTravelTimes
 from .correlation import CrossCorrelationMatrix
@@ -79,11 +81,72 @@ class DifferentialBackProjection(Regular3DGrid):
             moveouts = self.moveouts[pair]
             for i in range(self.size):
                 moveout = moveouts.flat[i]
-                idx = int(cross_correlation.sampling_rate * moveout)
+                idx = int(np.round(cross_correlation.sampling_rate * moveout))
                 try:
                     self.flat[i] += cross_correlation[i_pair, half_size + idx]
                 except IndexError:
                     continue
+
+        # Normalize the likelihood
+        self /= self.sum()
+
+        # Renormalize the likelihood if necessary
+        if normalize:
+            self /= self.max()
+
+    def calculate_likelihood_bp(
+        self,
+        cross_correlation: CrossCorrelationMatrix,
+        normalize: bool = True,
+    ):
+        r"""Calculate the likelihood of the back-projection.
+
+        This method calculates the likelihood of the back-projection for a set
+        of cross-correlation functions. The likelihood is calculated by
+        summing the cross-correlation functions for various differential
+        travel times. The likelihood is then normalized by the sum of the
+        likelihood.
+
+        The likelihood :math:`\mathcal{L}(\varphi, \lambda, z)` is calculated
+        as:
+
+        .. math::
+
+            \mathcal{L}(\varphi, \lambda, z) = \sum_{i = 1}^N C_i(\tau -
+            \delta \tau_{i}(\varphi, \lambda, z))
+
+        where :math:`C_{i}` is the cross-correlation function for the pair of
+        receivers :math:`i`, :math:`\tau` is the cross-correlation lag, and
+        :math:`\delta \tau_{i}(\varphi, \lambda, z)` is the differential travel
+        time for the pair of receivers :math:`i` at the grid point
+        :math:`(\varphi, \lambda, z)`. Once calculated, the likelihood is
+        normalized by the sum of the likelihood:
+
+        .. math::
+
+            \mathcal{L}(\varphi, \lambda, z) = \frac{\mathcal{L}(\varphi,
+            \lambda, z)}{\int \mathcal{L}(\varphi, \lambda, z) d\varphi d\lambda
+            dz}
+
+        Arguments
+        ----------
+        cross_correlation :
+        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
+            The cross-correlation functions.
+        """
+        try:
+            import beampower as bp
+        except ImportError:
+            print("beampower is not installed")
+            return
+        moveouts_arr_sec = np.array([self.moveouts[p] for p in self.pairs])
+        moveouts_arr_samp = np.int32(
+            np.round(moveouts_arr_sec * cross_correlation.sampling_rate)
+        )
+        # Calculate the likelihood with beampower
+        self[:] = bp.beampower.beamform(
+            cross_correlation, moveouts_arr_samp, mode="differential"
+        ).flat
 
         # Normalize the likelihood
         self /= self.sum()

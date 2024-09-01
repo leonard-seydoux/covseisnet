@@ -66,7 +66,7 @@ ax = csn.plot.grid3d(
 # The differential travel times are calculated using the class
 # :class:`~covseisnet.travel_times.DifferentialTravelTimes`. The differential
 # travel times are calculated between the two receivers defined above, and
-# shown on a map using the method :func:`~covseisnet.plot.grid3d`.
+# shown on a map using the function :func:`~covseisnet.plot.grid3d`.
 
 # Calculate the differential travel times
 differential_traveltime = csn.travel_times.DifferentialTravelTimes(
