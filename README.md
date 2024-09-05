@@ -1,6 +1,6 @@
 # Covseisnet
 
-<img src="docs/source/_static/logo_covseisnet_normal.svg" alt="Covseisnet Logo Normal" width="250" align="left" style="padding-left: 0px;">
+<img src="docs/source/_static/logo_covseisnet_normal.svg" alt="Covseisnet Logo Normal" width="250" align="left" style="margin-left: 0px;">
 
 [![DOI](https://zenodo.org/badge/263984678.svg)](https://zenodo.org/doi/10.5281/zenodo.10990031) [![PyPI Version](https://img.shields.io/pypi/v/covseisnet.svg)](https://pypi.org/project/covseisnet/) [![Conda Version](https://img.shields.io/conda/v/conda-forge/covseisnet)](https://anaconda.org/conda-forge/covseisnet) [![License](https://img.shields.io/conda/l/conda-forge/covseisnet)](https://www.gnu.org/licenses/lgpl.html) [![Python Versions](https://img.shields.io/pypi/pyversions/covseisnet)](https://pypi.org/project/covseisnet/) [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/covseisnet)](https://anaconda.org/conda-forge/covseisnet) [![Code Coverage](https://codecov.io/gh/covseisnet/covseisnet/branch/develop/graph/badge.svg?token=N462A7PPRF)](https://codecov.io/gh/covseisnet/covseisnet)
 
