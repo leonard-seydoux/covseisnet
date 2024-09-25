@@ -86,6 +86,17 @@ class Regular3DGrid(np.ndarray):
             + ")"
         )
 
+    @property
+    def resolution(self):
+        r"""Resolution of the grid in the form ``(lon_res, lat_res, depth_res)``."""
+        if (self.lon is None) or (self.lat is None) or (self.depth is None):
+            raise ValueError("The grid axes are not defined.")
+        return (
+            np.abs(self.lon[1] - self.lon[0]),
+            np.abs(self.lat[1] - self.lat[0]),
+            np.abs(self.depth[1] - self.depth[0]),
+        )
+
     def flatten(self):
         r"""Flatten the grid.
 

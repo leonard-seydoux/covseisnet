@@ -76,14 +76,14 @@ class DifferentialBackProjection(Regular3DGrid):
             The cross-correlation functions.
         """
         # Calculate the likelihood
-        half_size = cross_correlation.shape[-1] // 2
+        zero_lag = cross_correlation.shape[-1] // 2
+        sampling_rate = cross_correlation.sampling_rate
         for i_pair, pair in enumerate(self.pairs):
-            moveouts = self.moveouts[pair]
+            lags = np.round(self.moveouts[pair] * sampling_rate).astype(int)
             for i in range(self.size):
-                moveout = moveouts.flat[i]
-                idx = int(np.round(cross_correlation.sampling_rate * moveout))
+                lag = lags.flat[i]
                 try:
-                    self.flat[i] += cross_correlation[i_pair, half_size + idx]
+                    self.flat[i] += cross_correlation[i_pair, zero_lag + lag]
                 except IndexError:
                     continue
 
@@ -143,9 +143,40 @@ class DifferentialBackProjection(Regular3DGrid):
         moveouts_arr_samp = np.int32(
             np.round(moveouts_arr_sec * cross_correlation.sampling_rate)
         )
+        # print(moveouts_arr_samp.shape)
+        # print(moveouts_arr_samp.shape)
+        moveouts_arr_samp = moveouts_arr_samp.reshape(
+            moveouts_arr_samp.shape[0], -1
+        ).T[:, :, np.newaxis]
+        print(moveouts_arr_samp.shape)
+        weights_phase = np.ones(
+            (cross_correlation.shape[0], 1, 1), dtype=np.float32
+        )
+        # weights_phase[:, 1, 0] = (
+        #     0.0  # horizontal component traces do not contribute to P-wave beam
+        # )
+        # weights_phase[:, 1, 0] = (
+        #     1.0  # vertical component traces contribute to P-wave beam
+        # )
+        # weights_phase[:, :2, 1] = (
+        #     1.0  # horizontal component traces contribute to S-wave beam
+        # )
+        # weights_phase[:, 2, 1] = (
+        #     0.0  # vertical component traces do not contribute to S-wave beam
+        # )
+        weights_sources = np.ones(
+            moveouts_arr_samp.shape[:-1], dtype=np.float32
+        )
+        # cross_correlation = cross_correlation[:, np.newaxis, :]
+
         # Calculate the likelihood with beampower
-        self[:] = bp.beampower.beamform(
-            cross_correlation, moveouts_arr_samp, mode="differential"
+        self.flat = bp.beampower.beamform(
+            cross_correlation[:, np.newaxis, :],
+            moveouts_arr_samp,
+            weights_phase,
+            weights_sources,
+            mode="differential",
+            reduce=None,
         ).flat
 
         # Normalize the likelihood
