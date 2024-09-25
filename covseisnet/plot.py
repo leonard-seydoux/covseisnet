@@ -470,6 +470,59 @@ def grid3d(
     label=None,
     **kwargs,
 ):
+    """Plot a three-dimensional grid of data.
+
+    This function plots the data of a three-dimensional grid in three
+    different views: xy, xz, and zy. The grid data is plotted as a contour
+    plot. In addition, the function can plot receiver coordinates, and a
+    profile line can be highlighted.
+
+    Arguments
+    ---------
+    grid : :class:`~covseisnet.grid.Grid3D` or derived class
+        The grid to plot.
+    profile_coordinates : tuple, optional
+        The coordinates of the profile line to highlight. The profile line
+        will be highlighted with dashed lines.
+    receiver_coordinates : tuple, optional
+        The coordinates of the receivers to plot. The receivers will be
+        plotted as black squares.
+    label : str, optional
+        The label of the colorbar.
+    **kwargs
+        Additional arguments passed to the contourf method.
+
+    Returns
+    -------
+    ax : dict
+        A dictionary with the axes of the plot. The keys are "xy", "xz", "zy",
+        "cb", and ".". This is the output of the
+        :func:`~matplotlib.pyplot.subplot_mosaic` function.
+
+    Examples
+    --------
+    Create a simple grid and plot it:
+
+    .. plot::
+
+        import covseisnet as csn
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        # Create a random grid
+        grid = csn.spatial.Regular3DGrid(extent=(-10, 10, -10, 10, 0, 10), shape=(10, 10, 10))
+        grid[:] = grid.mesh[0] + grid.mesh[1] + grid.mesh[2]
+
+        # Show the grid
+        csn.plot.grid3d(
+            grid,
+            profile_coordinates=(0, 0, 0),
+            receiver_coordinates=(0, 0, 0),
+            label="Amplitude (dB)"
+        )
+        plt.show()
+
+    """
     # Set limits
     if grid.lon is None or grid.lat is None or grid.depth is None:
         return
@@ -516,10 +569,13 @@ def grid3d(
     else:
         vmax = np.max(grid)
         vmin = np.min(grid)
+
+    # Contour levels
     contour_levels = np.linspace(vmin, vmax, kwargs.pop("levels", 20))
+
+    # Assign default values
     kwargs.setdefault("vmin", vmin)
     kwargs.setdefault("vmax", vmax)
-    kwargs.setdefault("cmap", "cividis_r")
     kwargs.setdefault("levels", contour_levels)
 
     # Plotting xy
