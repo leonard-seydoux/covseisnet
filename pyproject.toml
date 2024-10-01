@@ -21,12 +21,7 @@ classifiers = [
 dependencies = ["numpy", "obspy", "scipy"]
 
 [project.optional-dependencies]
-docs = [
-    "sphinx",
-    "sphinx_book_theme",
-    "sphinx_gallery",
-    "sphinxcontrib-packages",
-]
+docs = ["sphinx", "sphinx_book_theme", "sphinx_gallery", "sphinxcontrib-bibtex"]
 
 [tool.hatch.version]
 path = "covseisnet/__init__.py"
