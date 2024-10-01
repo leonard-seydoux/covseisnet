@@ -18,7 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Build Tools",
 ]
-dependencies = ["numpy", "obspy", "scipy"]
+dependencies = ["numpy", "obspy", "scipy", "cartopy"]
 
 [project.optional-dependencies]
 docs = ["sphinx", "sphinx_book_theme", "sphinx_gallery", "sphinxcontrib-bibtex"]
