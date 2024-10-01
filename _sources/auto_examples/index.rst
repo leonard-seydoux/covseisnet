@@ -151,6 +151,23 @@ Gallery
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to calculate the differential travel times of seismic waves in a constant velocity model between two receivers. We first define the model and the sources and receivers coordinates. We then calculate the travel times for each receiver using the class TravelTimes, and we calculate the differential travel times using the class DifferentialTravelTimes. Finally, we locate the source of the seismic waves using the class DifferentialBackProjection and plot the results on a map. ">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_example_d3_constant_velocity_loc_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_example_d3_constant_velocity_loc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Locating events within a constant velocity model</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -169,6 +186,7 @@ Gallery
    /auto_examples/plot_example_c1_correlations
    /auto_examples/plot_example_d1_constant_velocity
    /auto_examples/plot_example_d2_constant_velocity_diff
+   /auto_examples/plot_example_d3_constant_velocity_loc
 
 
 .. only:: html
