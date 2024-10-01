@@ -1,0 +1,611 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data management &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e872a992"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'data';</script>
+    <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Geographical and spatial functions" href="spatial.html" />
+    <link rel="prev" title="Plotting tools" href="plot.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting tools</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2Fdata.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data management</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-structure">File structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#presets">Presets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.data.download_seismic_dataset"><code class="docutils literal notranslate"><span class="pre">download_seismic_dataset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.data.download_undervolc_data"><code class="docutils literal notranslate"><span class="pre">download_undervolc_data()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.data.download_usarray_data"><code class="docutils literal notranslate"><span class="pre">download_usarray_data()</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-covseisnet.data">
+<span id="data-management"></span><h1>Data management<a class="headerlink" href="#module-covseisnet.data" title="Link to this heading">#</a></h1>
+<p>The data shown in this documentation is for demonstration purposes only. In
+order to deal with seismic data download and management, this module provides
+functions to download seismic data from different datacenters.</p>
+<section id="file-structure">
+<h2>File structure<a class="headerlink" href="#file-structure" title="Link to this heading">#</a></h2>
+<p>We download the data with the ObsPy library, in particular with the Obspy
+client interface for dealing with FDSN web services. For more information about
+the usage of this interface, please visit the user guide about <a class="reference external" href="https://docs.obspy.org/packages/obspy.clients.fdsn.html">FDSN web
+service client for ObsPy</a>.</p>
+<p>By default, the client downloads the data into the <code class="docutils literal notranslate"><span class="pre">/data</span></code> repository
+located at the root of this project, as shown in the following file structure
+of the project. If you would like to write the data to another location, we
+recommend you to use the <code class="docutils literal notranslate"><span class="pre">filepath_destination</span></code> argument of the methods
+presented in this module, and run them in your own script.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/
+├── data/datasets.mseed
+├── covseisnet/
+├── docs/
+├── examples/
+├── tests/
+├── README.md
+├── LICENSE
+└── pyproject.toml
+</pre></div>
+</div>
+</section>
+<section id="presets">
+<h2>Presets<a class="headerlink" href="#presets" title="Link to this heading">#</a></h2>
+<p>Note that these functions are presets to download data from specific networks
+and time periods. These thwo datasets are used in the examples of the
+documentation. If you modify the data download, you may need to adapt the
+examples accordingly.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#covseisnet.data.download_undervolc_data" title="covseisnet.data.download_undervolc_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_undervolc_data()</span></code></a> to download data from the
+UnderVolc network between 2010-10-14T09:00:00 and 2010-10-14T16:00:00.
+During these times, we observe an elevation of the seismic activity prior to
+an eruption of the Piton de la Fournaise accompanied by a co-eruptive
+tremor.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.data.download_usarray_data" title="covseisnet.data.download_usarray_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_usarray_data()</span></code></a> to download data from the US
+Transportable Array experiment between 2010-01-01 and 2010-03-01. In this
+case, we download only the channels LHZ from the stations R04C, O03C, M03C,
+L02A, I05A, allowing to show interesting results of ambient-noise
+cross-correlation.</p></li>
+</ul>
+<p>These functions all call the <a class="reference internal" href="#covseisnet.data.download_seismic_dataset" title="covseisnet.data.download_seismic_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_seismic_dataset()</span></code></a>
+with specific arguments. You can also directly use these function to download
+datasets that you would like to try the package on.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.data.download_seismic_dataset">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.data.</span></span><span class="sig-name descname"><span class="pre">download_seismic_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datacenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'IRIS'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><span class="pre">Stream</span></a></span></span><a class="reference internal" href="_modules/covseisnet/data.html#download_seismic_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.data.download_seismic_dataset" title="Link to this definition">#</a></dt>
+<dd><p>Download seismic data from a datacenter.</p>
+<p>This function is a simple wwrapper to the
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.clients.fdsn.client.Client.get_waveforms.html#obspy.clients.fdsn.client.Client.get_waveforms" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_waveforms()</span></code></a> method. It connect
+to the FDSN client using the specified <code class="docutils literal notranslate"><span class="pre">datacenter</span></code> (which by default is
+set to IRIS), and download seismic waveforms between the <code class="docutils literal notranslate"><span class="pre">starttime</span></code> and
+<code class="docutils literal notranslate"><span class="pre">endtime</span></code>. Using the other arguments allow to specify the query to the
+datacenter. For more information, please check the Obspy documentation.</p>
+<p>As we aim our package to be used without explicitely calling the Obspy
+library, the dates are possible to be passed as strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starttime</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a>) -- The start time of the data to download.</p></li>
+<li><p><strong>endtime</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a>) -- The end time of the data to download.</p></li>
+<li><p><strong>network</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) -- The network code to download the data from.</p></li>
+<li><p><strong>station</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) -- The station code to download the data from.</p></li>
+<li><p><strong>channel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The channel code to download the data from. Default is &quot;*&quot;.</p></li>
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The location code to download the data from. Default is &quot;*&quot;.</p></li>
+<li><p><strong>datacenter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The datacenter to download the data from. Default is &quot;IRIS&quot;.</p></li>
+<li><p><strong>process</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- A dictionary with the processing chain to apply to the downloaded
+data. The keys of the dictionary are the processing functions to
+apply, and the values are the arguments to pass to the processing
+function.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional parameters to pass to the download method. These arguments
+may vary depending on the datacenter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a> -- The downloaded seismic data.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">download_seismic_dataset</span><span class="p">(</span>
+<span class="go">        starttime=&quot;2020-01-01 00:00&quot;,</span>
+<span class="go">        endtime=&quot;2020-01-01 00:01&quot;,</span>
+<span class="go">        channel=&quot;BHZ&quot;,</span>
+<span class="go">        station=&quot;TAM&quot;,</span>
+<span class="go">        network=&quot;G&quot;,</span>
+<span class="go">        datacenter=&quot;IPGP&quot;,</span>
+<span class="go">    )</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="go">1 Trace(s) in Stream:</span>
+<span class="go">G.TAM.00.BHZ | 2020-01-01T00:00:03.350000Z -             2020-01-01T00:01:00.000000Z | 20.0 Hz, 1134 samples</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.data.download_undervolc_data">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.data.</span></span><span class="sig-name descname"><span class="pre">download_undervolc_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath_destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2010-10-14T09:00:00'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2010-10-14T16:00:00'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'YA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'UV*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'HHZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datacenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'RESIF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'merge':</span> <span class="pre">{'fill_value':</span> <span class="pre">0,</span> <span class="pre">'method':</span> <span class="pre">1},</span> <span class="pre">'resample':</span> <span class="pre">20,</span> <span class="pre">'sort':</span> <span class="pre">{'keys':</span> <span class="pre">['station']}}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/data.html#download_undervolc_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.data.download_undervolc_data" title="Link to this definition">#</a></dt>
+<dd><p>Download data from the UnderVolc network.</p>
+<p>The argument are the same as the
+<a class="reference internal" href="#covseisnet.data.download_seismic_dataset" title="covseisnet.data.download_seismic_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_seismic_dataset()</span></code></a> with the following
+default values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">starttime</span></code>: &quot;2010-10-14T09:00:00&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">endtime</span></code>: &quot;2010-10-14T16:00:00&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">network</span></code>: &quot;YA&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">station</span></code>: &quot;UV*&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">location</span></code>: &quot;*&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">channel</span></code>: &quot;HHZ&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datacenter</span></code>: &quot;RESIF&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">process</span></code>: resample to 20 Hz, merge the traces, and sort by station.</p></li>
+</ul>
+<p>And a default value for the <code class="docutils literal notranslate"><span class="pre">filepath_destination</span></code> argument, which is
+set to the <code class="docutils literal notranslate"><span class="pre">/data</span></code> repository located at the root of this project.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.data.download_usarray_data">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.data.</span></span><span class="sig-name descname"><span class="pre">download_usarray_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath_destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2006-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2006-03-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datacenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'IRIS'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'TA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'R04C,O03C,M03C,L02A,I05A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'LHZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'merge':</span> <span class="pre">{'fill_value':</span> <span class="pre">0,</span> <span class="pre">'method':</span> <span class="pre">1},</span> <span class="pre">'resample':</span> <span class="pre">0.2,</span> <span class="pre">'sort':</span> <span class="pre">{'keys':</span> <span class="pre">['station']}}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/data.html#download_usarray_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.data.download_usarray_data" title="Link to this definition">#</a></dt>
+<dd><p>Download data from the USArray network.</p>
+<p>The argument are the same as the
+<a class="reference internal" href="#covseisnet.data.download_seismic_dataset" title="covseisnet.data.download_seismic_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_seismic_dataset()</span></code></a> with the following
+default values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">starttime</span></code>: &quot;2006-01-01&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">endtime</span></code>: &quot;2006-03-01&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">network</span></code>: &quot;TA&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">station</span></code>: &quot;R04C,O03C,M03C,L02A,I05A&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">location</span></code>: &quot;*&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">channel</span></code>: &quot;LHZ&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datacenter</span></code>: &quot;IRIS&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">process</span></code>: merge the traces, resample to 0.2 Hz, and sort by station.</p></li>
+</ul>
+<p>And a default value for the <code class="docutils literal notranslate"><span class="pre">filepath_destination</span></code> argument, which is
+set to the <code class="docutils literal notranslate"><span class="pre">/data</span></code> repository located at the root of this project.</p>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="plot.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Plotting tools</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="spatial.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Geographical and spatial functions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-structure">File structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#presets">Presets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.data.download_seismic_dataset"><code class="docutils literal notranslate"><span class="pre">download_seismic_dataset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.data.download_undervolc_data"><code class="docutils literal notranslate"><span class="pre">download_undervolc_data()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.data.download_usarray_data"><code class="docutils literal notranslate"><span class="pre">download_usarray_data()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

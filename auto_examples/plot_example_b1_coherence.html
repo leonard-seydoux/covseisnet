@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Spectral width &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/plot_example_b1_coherence';</script>
+    <link rel="icon" href="../_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Compare pre-processing" href="plot_example_b2_coherence_preprocess.html" />
+    <link rel="prev" title="Spectral whitening" href="plot_example_a3_whiten.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="../_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Gallery</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2Fauto_examples/plot_example_b1_coherence.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Spectral width</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-pre-process-stream">Read and pre-process stream</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-matrix">Covariance matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Spectral width</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-example-b1-coherence-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="spectral-width">
+<span id="sphx-glr-auto-examples-plot-example-b1-coherence-py"></span><h1>Spectral width<a class="headerlink" href="#spectral-width" title="Link to this heading">#</a></h1>
+<p>Spatial coherence on the Piton de la Fournaise volcano.</p>
+<p>We here reproduce a part of the result published in
+<span id="id1">Seydoux <em>et al.</em> (<a class="reference internal" href="../index.html#id35" title="Léonard Seydoux, Nikolai M. Shapiro, Julien De Rosny, Florent Brenguier, and Matthieu Landès. Detecting seismic activity with a covariance matrix analysis of data recorded on seismic arrays. Geophysical Journal International, 204(3):1430–1442, March 2016. URL: https://academic.oup.com/gji/article-lookup/doi/10.1093/gji/ggv531 (visited on 2022-11-22), doi:10.1093/gji/ggv531.">2016</a>)</span>, and revisited over this particular time
+period in <span id="id2">Journeau <em>et al.</em> (<a class="reference internal" href="../index.html#id28" title="Cyril Journeau, Nikolai M. Shapiro, Léonard Seydoux, Jean Soubestre, Ivan Y. Koulakov, Andrei V. Jakovlev, Ilyas Abkadyrov, Evgeny I. Gordeev, Danila V. Chebrov, Dmitry V. Droznin, Christoph Sens-Schönfelder, Birger G. Luehr, Francis Tong, Gaspard Farge, and Claude Jaupart. Seismic tremor reveals active trans-crustal magmatic system beneath Kamchatka volcanoes. Science Advances, 8(5):eabj1571, February 2022. URL: https://www.science.org/doi/10.1126/sciadv.abj1571 (visited on 2022-11-22), doi:10.1126/sciadv.abj1571.">2022</a>)</span>. In this example, the processing
+is made in two domains: first in the time domain with a smoothing of the
+envelope of the signal, and then in the frequency domain with the estimation
+of the covariance matrix.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+</pre></div>
+</div>
+<section id="read-and-pre-process-stream">
+<h2>Read and pre-process stream<a class="headerlink" href="#read-and-pre-process-stream" title="Link to this heading">#</a></h2>
+<p>The stream is read and pre-processed by detrending, tapering, and highpass
+filtering. Several other pre-processing methods are available in the
+<a class="reference internal" href="../stream.html#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> classs. The stream is then whitened
+using the method <a class="reference internal" href="../stream.html#covseisnet.stream.NetworkStream.whiten" title="covseisnet.stream.NetworkStream.whiten"><code class="xref py py-func docutils literal notranslate"><span class="pre">whiten()</span></code></a>. The method
+requires a window duration in seconds and a smooth length to smooth the
+spectral whitening.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to the example stream</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filepath_waveforms</span></a> <span class="o">=</span> <span class="s2">&quot;../data/undervolc_example.mseed&quot;</span>
+
+<span class="c1"># Download stream if not available</span>
+<span class="k">if</span> <span class="ow">not</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.exists" title="os.path.exists" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filepath_waveforms</span></a><span class="p">):</span>
+    <span class="n">csn</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">download_undervolc_data</span><span class="p">()</span>
+
+<span class="c1"># Read example stream</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filepath_waveforms</span></a><span class="p">)</span>
+<a href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.filter.html#obspy.core.stream.Stream.filter" title="obspy.core.stream.Stream.filter" class="sphx-glr-backref-module-obspy-core-stream sphx-glr-backref-type-py-method"><span class="n">stream</span><span class="o">.</span><span class="n">filter</span></a><span class="p">(</span><span class="s2">&quot;highpass&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">time_normalize</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span> <span class="n">smooth_length</span><span class="o">=</span><span class="mi">1001</span><span class="p">)</span>
+<a href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.taper.html#obspy.core.stream.Stream.taper" title="obspy.core.stream.Stream.taper" class="sphx-glr-backref-module-obspy-core-stream sphx-glr-backref-type-py-method"><span class="n">stream</span><span class="o">.</span><span class="n">taper</span></a><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="covariance-matrix">
+<h2>Covariance matrix<a class="headerlink" href="#covariance-matrix" title="Link to this heading">#</a></h2>
+<p>The covariance matrix is calculated using the method
+<a class="reference internal" href="../covariance.html#covseisnet.covariance.calculate_covariance_matrix" title="covseisnet.covariance.calculate_covariance_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_covariance_matrix()</span></code></a>. The method
+returns the times, frequencies, and covariances of the covariance matrix.
+Among the parameters of the method, the window duration and the number of
+windows are important to consider. The window duration is the length of the
+Fourier estimation window in seconds, and the number of windows is the
+number of windows to average to estimate the covariance matrix.</p>
+<p>We can then visualize the covariance matrix at a given time and frequency,
+and its corresponding eigenvalues.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate covariance matrix</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frequencies</span></a><span class="p">,</span> <span class="n">covariances</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">calculate_covariance_matrix</span><span class="p">(</span>
+    <span class="n">stream</span><span class="p">,</span> <span class="n">window_duration</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="s2">&quot;slice&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Show covariance from sample window and frequency</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t_index</span></a> <span class="o">=</span> <span class="mi">60</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_index</span></a> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">covariance_matrix_modulus_and_spectrum</span><span class="p">(</span><span class="n">covariances</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t_index</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_index</span></a><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_example_b1_coherence_001.png" srcset="../_images/sphx_glr_plot_example_b1_coherence_001.png, ../_images/sphx_glr_plot_example_b1_coherence_001_4_00x.png 4.00x" alt="Covariance matrix, Eigenspectrum" class = "sphx-glr-single-img"/></section>
+<section id="id3">
+<h2>Spectral width<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>We here extract the coherence from the covariance matrix. The coherence is
+calculated using the method
+<a class="reference internal" href="../covariance.html#covseisnet.covariance.CovarianceMatrix.coherence" title="covseisnet.covariance.CovarianceMatrix.coherence"><code class="xref py py-func docutils literal notranslate"><span class="pre">coherence()</span></code></a>. It can either
+measure the spectral width of the eigenvalue distribution at each frequency,
+or with applying the formula of the Neumann entropy.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate coherence</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coherence</span></a> <span class="o">=</span> <span class="n">covariances</span><span class="o">.</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coherence</span></a><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;spectral_width&quot;</span><span class="p">)</span>
+
+<span class="c1"># Show</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">stream_and_coherence</span><span class="p">(</span>
+    <span class="n">stream</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frequencies</span></a><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coherence</span></a><span class="p">,</span>
+    <span class="n">f_min</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Mark extracted time and frequency</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t_index</span></a><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frequencies</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_index</span></a><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_example_b1_coherence_002.png" srcset="../_images/sphx_glr_plot_example_b1_coherence_002.png, ../_images/sphx_glr_plot_example_b1_coherence_002_4_00x.png 4.00x" alt="Normalized seismograms, Spatial coherence" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 17.205 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-example-b1-coherence-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a007df271d805e4dcbd0906c895403fe/plot_example_b1_coherence.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_example_b1_coherence.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/8d453a8dbfa2fc3b096bb537498f443c/plot_example_b1_coherence.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_example_b1_coherence.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/33ee7e27582cd32f92fab479293703f1/plot_example_b1_coherence.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_example_b1_coherence.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="plot_example_a3_whiten.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Spectral whitening</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="plot_example_b2_coherence_preprocess.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compare pre-processing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-pre-process-stream">Read and pre-process stream</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-matrix">Covariance matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Spectral width</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

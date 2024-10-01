@@ -1,0 +1,730 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>covseisnet.data &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/data';</script>
+    <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2F_modules/covseisnet/data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for covseisnet.data</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The data shown in this documentation is for demonstration purposes only. In</span>
+<span class="sd">order to deal with seismic data download and management, this module provides</span>
+<span class="sd">functions to download seismic data from different datacenters. </span>
+
+<span class="sd">File structure</span>
+<span class="sd">--------------</span>
+
+<span class="sd">We download the data with the ObsPy library, in particular with the Obspy</span>
+<span class="sd">client interface for dealing with FDSN web services. For more information about</span>
+<span class="sd">the usage of this interface, please visit the user guide about `FDSN web</span>
+<span class="sd">service client for ObsPy</span>
+<span class="sd">&lt;https://docs.obspy.org/packages/obspy.clients.fdsn.html&gt;`_. </span>
+
+<span class="sd">By default, the client downloads the data into the ``/data`` repository</span>
+<span class="sd">located at the root of this project, as shown in the following file structure</span>
+<span class="sd">of the project. If you would like to write the data to another location, we</span>
+<span class="sd">recommend you to use the ``filepath_destination`` argument of the methods</span>
+<span class="sd">presented in this module, and run them in your own script. </span>
+
+<span class="sd">::</span>
+
+<span class="sd">    /</span>
+<span class="sd">    ├── data/datasets.mseed </span>
+<span class="sd">    ├── covseisnet/</span>
+<span class="sd">    ├── docs/</span>
+<span class="sd">    ├── examples/</span>
+<span class="sd">    ├── tests/</span>
+<span class="sd">    ├── README.md</span>
+<span class="sd">    ├── LICENSE</span>
+<span class="sd">    └── pyproject.toml</span>
+
+<span class="sd">Presets</span>
+<span class="sd">-------</span>
+
+<span class="sd">Note that these functions are presets to download data from specific networks</span>
+<span class="sd">and time periods. These thwo datasets are used in the examples of the</span>
+<span class="sd">documentation. If you modify the data download, you may need to adapt the</span>
+<span class="sd">examples accordingly.</span>
+
+<span class="sd">- :func:`~covseisnet.data.download_undervolc_data` to download data from the</span>
+<span class="sd">  UnderVolc network between 2010-10-14T09:00:00 and 2010-10-14T16:00:00.</span>
+<span class="sd">  During these times, we observe an elevation of the seismic activity prior to</span>
+<span class="sd">  an eruption of the Piton de la Fournaise accompanied by a co-eruptive</span>
+<span class="sd">  tremor. </span>
+
+<span class="sd">- :func:`~covseisnet.data.download_usarray_data` to download data from the US</span>
+<span class="sd">  Transportable Array experiment between 2010-01-01 and 2010-03-01. In this</span>
+<span class="sd">  case, we download only the channels LHZ from the stations R04C, O03C, M03C,</span>
+<span class="sd">  L02A, I05A, allowing to show interesting results of ambient-noise</span>
+<span class="sd">  cross-correlation. </span>
+
+<span class="sd">These functions all call the :func:`~covseisnet.data.download_seismic_dataset`</span>
+<span class="sd">with specific arguments. You can also directly use these function to download</span>
+<span class="sd">datasets that you would like to try the package on. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+
+<span class="kn">import</span> <span class="nn">obspy</span>
+<span class="kn">from</span> <span class="nn">obspy.core.utcdatetime</span> <span class="kn">import</span> <span class="n">UTCDateTime</span>
+<span class="kn">from</span> <span class="nn">obspy.clients.fdsn</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="kn">from</span> <span class="nn">.stream</span> <span class="kn">import</span> <span class="n">NetworkStream</span>
+
+<span class="n">DIRECTORY_PACKAGE</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">DIRECTORY_DATA</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">DIRECTORY_PACKAGE</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="download_seismic_dataset">
+<a class="viewcode-back" href="../../data.html#covseisnet.data.download_seismic_dataset">[docs]</a>
+<span class="k">def</span> <span class="nf">download_seismic_dataset</span><span class="p">(</span>
+    <span class="n">starttime</span><span class="p">:</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">endtime</span><span class="p">:</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">network</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">station</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="n">datacenter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;IRIS&quot;</span><span class="p">,</span>
+    <span class="n">process</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">obspy</span><span class="o">.</span><span class="n">Stream</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download seismic data from a datacenter.</span>
+
+<span class="sd">    This function is a simple wwrapper to the</span>
+<span class="sd">    :meth:`~obspy.clients.fdsn.client.Client.get_waveforms` method. It connect</span>
+<span class="sd">    to the FDSN client using the specified ``datacenter`` (which by default is</span>
+<span class="sd">    set to IRIS), and download seismic waveforms between the ``starttime`` and</span>
+<span class="sd">    ``endtime``. Using the other arguments allow to specify the query to the</span>
+<span class="sd">    datacenter. For more information, please check the Obspy documentation.</span>
+
+<span class="sd">    As we aim our package to be used without explicitely calling the Obspy</span>
+<span class="sd">    library, the dates are possible to be passed as strings.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    starttime: str or :class:`~obspy.core.utcdatetime.UTCDateTime`</span>
+<span class="sd">        The start time of the data to download.</span>
+<span class="sd">    endtime: str or :class:`~obspy.core.utcdatetime.UTCDateTime`</span>
+<span class="sd">        The end time of the data to download.</span>
+<span class="sd">    network: str</span>
+<span class="sd">        The network code to download the data from.</span>
+<span class="sd">    station: str</span>
+<span class="sd">        The station code to download the data from.</span>
+<span class="sd">    channel: str, optional</span>
+<span class="sd">        The channel code to download the data from. Default is &quot;*&quot;.</span>
+<span class="sd">    location: str, optional</span>
+<span class="sd">        The location code to download the data from. Default is &quot;*&quot;.</span>
+<span class="sd">    datacenter: str, optional</span>
+<span class="sd">        The datacenter to download the data from. Default is &quot;IRIS&quot;.</span>
+<span class="sd">    process: dict, optional</span>
+<span class="sd">        A dictionary with the processing chain to apply to the downloaded</span>
+<span class="sd">        data. The keys of the dictionary are the processing functions to</span>
+<span class="sd">        apply, and the values are the arguments to pass to the processing</span>
+<span class="sd">        function.</span>
+<span class="sd">    **kwargs: dict</span>
+<span class="sd">        Additional parameters to pass to the download method. These arguments</span>
+<span class="sd">        may vary depending on the datacenter.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`~obspy.core.stream.Stream`</span>
+<span class="sd">        The downloaded seismic data.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.data.download_seismic_dataset(</span>
+<span class="sd">                starttime=&quot;2020-01-01 00:00&quot;,</span>
+<span class="sd">                endtime=&quot;2020-01-01 00:01&quot;,</span>
+<span class="sd">                channel=&quot;BHZ&quot;,</span>
+<span class="sd">                station=&quot;TAM&quot;,</span>
+<span class="sd">                network=&quot;G&quot;,</span>
+<span class="sd">                datacenter=&quot;IPGP&quot;,</span>
+<span class="sd">            )</span>
+<span class="sd">        &gt;&gt;&gt; print(stream)</span>
+<span class="sd">        1 Trace(s) in Stream:</span>
+<span class="sd">        G.TAM.00.BHZ | 2020-01-01T00:00:03.350000Z - \</span>
+<span class="sd">            2020-01-01T00:01:00.000000Z | 20.0 Hz, 1134 samples</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Client</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">datacenter</span><span class="p">)</span>
+
+    <span class="c1"># Turn string into UTCDateTime</span>
+    <span class="n">starttime</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">starttime</span><span class="p">)</span>
+    <span class="n">endtime</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">endtime</span><span class="p">)</span>
+
+    <span class="c1"># Download data</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_waveforms</span><span class="p">(</span>
+        <span class="n">starttime</span><span class="o">=</span><span class="n">starttime</span><span class="p">,</span>
+        <span class="n">endtime</span><span class="o">=</span><span class="n">endtime</span><span class="p">,</span>
+        <span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span>
+        <span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">,</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Transform to NetworkStream</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">NetworkStream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+
+    <span class="c1"># Raise error if no data</span>
+    <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No data found.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Preprocess</span>
+    <span class="k">if</span> <span class="n">process</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+
+    <span class="c1"># Raise error if no data</span>
+    <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No data in stream.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">stream</span></div>
+
+
+
+<div class="viewcode-block" id="download_undervolc_data">
+<a class="viewcode-back" href="../../data.html#covseisnet.data.download_undervolc_data">[docs]</a>
+<span class="k">def</span> <span class="nf">download_undervolc_data</span><span class="p">(</span>
+    <span class="n">filepath_destination</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">starttime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2010-10-14T09:00:00&quot;</span><span class="p">,</span>
+    <span class="n">endtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2010-10-14T16:00:00&quot;</span><span class="p">,</span>
+    <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;YA&quot;</span><span class="p">,</span>
+    <span class="n">station</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;UV*&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HHZ&quot;</span><span class="p">,</span>
+    <span class="n">datacenter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RESIF&quot;</span><span class="p">,</span>
+    <span class="n">process</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;resample&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="s2">&quot;merge&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;fill_value&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]},</span>
+    <span class="p">},</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download data from the UnderVolc network.</span>
+
+<span class="sd">    The argument are the same as the</span>
+<span class="sd">    :func:`~covseisnet.data.download_seismic_dataset` with the following</span>
+<span class="sd">    default values:</span>
+
+<span class="sd">    - ``starttime``: &quot;2010-10-14T09:00:00&quot;</span>
+<span class="sd">    - ``endtime``: &quot;2010-10-14T16:00:00&quot;</span>
+<span class="sd">    - ``network``: &quot;YA&quot;</span>
+<span class="sd">    - ``station``: &quot;UV*&quot;</span>
+<span class="sd">    - ``location``: &quot;*&quot;</span>
+<span class="sd">    - ``channel``: &quot;HHZ&quot;</span>
+<span class="sd">    - ``datacenter``: &quot;RESIF&quot;</span>
+<span class="sd">    - ``process``: resample to 20 Hz, merge the traces, and sort by station.</span>
+
+<span class="sd">    And a default value for the ``filepath_destination`` argument, which is</span>
+<span class="sd">    set to the ``/data`` repository located at the root of this project.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Infer location</span>
+    <span class="k">if</span> <span class="n">filepath_destination</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;undervolc_example.mseed&quot;</span>
+        <span class="n">filepath_destination</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIRECTORY_DATA</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="c1"># Print message</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading data from the </span><span class="si">{</span><span class="n">datacenter</span><span class="si">}</span><span class="s2"> datacenter.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Download data</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">download_seismic_dataset</span><span class="p">(</span>
+        <span class="n">starttime</span><span class="o">=</span><span class="n">starttime</span><span class="p">,</span>
+        <span class="n">endtime</span><span class="o">=</span><span class="n">endtime</span><span class="p">,</span>
+        <span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span>
+        <span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+        <span class="n">datacenter</span><span class="o">=</span><span class="n">datacenter</span><span class="p">,</span>
+        <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+
+    <span class="c1"># Write stream</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filepath_destination</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;MSEED&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;FLOAT64&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Print message</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data saved to </span><span class="si">{</span><span class="n">filepath_destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="download_usarray_data">
+<a class="viewcode-back" href="../../data.html#covseisnet.data.download_usarray_data">[docs]</a>
+<span class="k">def</span> <span class="nf">download_usarray_data</span><span class="p">(</span>
+    <span class="n">filepath_destination</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">starttime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2006-01-01&quot;</span><span class="p">,</span>
+    <span class="n">endtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2006-03-01&quot;</span><span class="p">,</span>
+    <span class="n">datacenter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;IRIS&quot;</span><span class="p">,</span>
+    <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TA&quot;</span><span class="p">,</span>
+    <span class="n">station</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;R04C,O03C,M03C,L02A,I05A&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LHZ&quot;</span><span class="p">,</span>
+    <span class="n">process</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;merge&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;fill_value&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="s2">&quot;resample&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]},</span>
+    <span class="p">},</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download data from the USArray network.</span>
+
+<span class="sd">    The argument are the same as the</span>
+<span class="sd">    :func:`~covseisnet.data.download_seismic_dataset` with the following</span>
+<span class="sd">    default values:</span>
+
+<span class="sd">    - ``starttime``: &quot;2006-01-01&quot;</span>
+<span class="sd">    - ``endtime``: &quot;2006-03-01&quot;</span>
+<span class="sd">    - ``network``: &quot;TA&quot;</span>
+<span class="sd">    - ``station``: &quot;R04C,O03C,M03C,L02A,I05A&quot;</span>
+<span class="sd">    - ``location``: &quot;*&quot;</span>
+<span class="sd">    - ``channel``: &quot;LHZ&quot;</span>
+<span class="sd">    - ``datacenter``: &quot;IRIS&quot;</span>
+<span class="sd">    - ``process``: merge the traces, resample to 0.2 Hz, and sort by station.</span>
+
+<span class="sd">    And a default value for the ``filepath_destination`` argument, which is</span>
+<span class="sd">    set to the ``/data`` repository located at the root of this project.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Infer location</span>
+    <span class="k">if</span> <span class="n">filepath_destination</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;usarray_example.mseed&quot;</span>
+        <span class="n">filepath_destination</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIRECTORY_DATA</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="c1"># Print message</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading data from the </span><span class="si">{</span><span class="n">datacenter</span><span class="si">}</span><span class="s2"> datacenter.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Download data</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">download_seismic_dataset</span><span class="p">(</span>
+        <span class="n">starttime</span><span class="o">=</span><span class="n">starttime</span><span class="p">,</span>
+        <span class="n">endtime</span><span class="o">=</span><span class="n">endtime</span><span class="p">,</span>
+        <span class="n">datacenter</span><span class="o">=</span><span class="n">datacenter</span><span class="p">,</span>
+        <span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span>
+        <span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+        <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Write stream</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filepath_destination</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;MSEED&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;FLOAT64&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get coordinates</span>
+    <span class="n">filepath_inventory</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIRECTORY_DATA</span><span class="p">,</span> <span class="s2">&quot;usarray_example.xml&quot;</span><span class="p">)</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">NetworkStream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="n">inventory</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">download_inventory</span><span class="p">(</span><span class="n">datacenter</span><span class="o">=</span><span class="n">datacenter</span><span class="p">)</span>
+    <span class="n">inventory</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filepath_inventory</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;STATIONXML&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Print message</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data saved to </span><span class="si">{</span><span class="n">filepath_destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

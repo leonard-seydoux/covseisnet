@@ -1,0 +1,1217 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Network stream &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e872a992"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stream';</script>
+    <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Signal processing" href="signal.html" />
+    <link rel="prev" title="API Reference" href="api.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2Fstream.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Network stream</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream"><code class="docutils literal notranslate"><span class="pre">NetworkStream</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.stats"><code class="docutils literal notranslate"><span class="pre">NetworkStream.stats()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.read"><code class="docutils literal notranslate"><span class="pre">NetworkStream.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.times"><code class="docutils literal notranslate"><span class="pre">NetworkStream.times()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.time_extent"><code class="docutils literal notranslate"><span class="pre">NetworkStream.time_extent()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.cut"><code class="docutils literal notranslate"><span class="pre">NetworkStream.cut()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.synchronize"><code class="docutils literal notranslate"><span class="pre">NetworkStream.synchronize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.process"><code class="docutils literal notranslate"><span class="pre">NetworkStream.process()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.whiten"><code class="docutils literal notranslate"><span class="pre">NetworkStream.whiten()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.time_normalize"><code class="docutils literal notranslate"><span class="pre">NetworkStream.time_normalize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.assign_coordinates"><code class="docutils literal notranslate"><span class="pre">NetworkStream.assign_coordinates()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.download_inventory"><code class="docutils literal notranslate"><span class="pre">NetworkStream.download_inventory()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.synced"><code class="docutils literal notranslate"><span class="pre">NetworkStream.synced</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.equal_rates"><code class="docutils literal notranslate"><span class="pre">NetworkStream.equal_rates</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.equal_length"><code class="docutils literal notranslate"><span class="pre">NetworkStream.equal_length</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.sampling_rate"><code class="docutils literal notranslate"><span class="pre">NetworkStream.sampling_rate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.npts"><code class="docutils literal notranslate"><span class="pre">NetworkStream.npts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.coordinates"><code class="docutils literal notranslate"><span class="pre">NetworkStream.coordinates</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-covseisnet.stream">
+<span id="network-stream"></span><h1>Network stream<a class="headerlink" href="#module-covseisnet.stream" title="Link to this heading">#</a></h1>
+<p>In order to ease the analysis of network seismic data, we offer a set of
+classes and methods designed for reading, pre-processing, and analyzing
+seismic data from these networks. The workflow involves working on traces that
+have been synchronized and pre-processed using consistent methods. To
+facilitate this, we introduce the concept of a
+<a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a>, a subclass of the ObsPy
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a> object, which retains all the methods of
+the Stream object while adding specialized methods for the pre-processing and
+synchronization of traces.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.stream.</span></span><span class="sig-name descname"><span class="pre">NetworkStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a></p>
+<p>Subclass of the ObsPy <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a> tailored for
+managing continuous data from seismic networks. The class is designed to
+handle multiple traces from different stations, and provides additional
+methods for pre-processing and synchronization of the traces. It also
+provide network-wide methods such as the calculation of the common time
+vector of the traces.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following list of methods and attributes are the ones that are
+specific to the <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> object. The
+full list of methods and attributes of the ObsPy
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a> object are available in the ObsPy
+documentation.</p>
+</div>
+<p class="rubric">Boolean attributes</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.synced" title="covseisnet.stream.NetworkStream.synced"><code class="xref py py-attr docutils literal notranslate"><span class="pre">synced</span></code></a> — traces share the same
+time vector.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.equal_rates" title="covseisnet.stream.NetworkStream.equal_rates"><code class="xref py py-attr docutils literal notranslate"><span class="pre">equal_rates</span></code></a> — traces have the
+same sampling rate.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.equal_length" title="covseisnet.stream.NetworkStream.equal_length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">equal_length</span></code></a> — traces have the
+same number of points.</p></li>
+</ul>
+<p class="rubric">Numeric attributes</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.sampling_rate" title="covseisnet.stream.NetworkStream.sampling_rate"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sampling_rate</span></code></a> — common traces
+sampling rate.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.npts" title="covseisnet.stream.NetworkStream.npts"><code class="xref py py-attr docutils literal notranslate"><span class="pre">npts</span></code></a> — common traces number of
+samples.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.coordinates" title="covseisnet.stream.NetworkStream.coordinates"><code class="xref py py-attr docutils literal notranslate"><span class="pre">coordinates</span></code></a> — geographical
+coordinates of the stations.</p></li>
+</ul>
+<p class="rubric">Methods</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.stats" title="covseisnet.stream.NetworkStream.stats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stats()</span></code></a> — stats dictionaries of
+traces.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.read" title="covseisnet.stream.NetworkStream.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a> — read seismic waveforms
+files into a <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> object.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.times" title="covseisnet.stream.NetworkStream.times"><code class="xref py py-meth docutils literal notranslate"><span class="pre">times()</span></code></a> — common traces time
+vector.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.time_extent" title="covseisnet.stream.NetworkStream.time_extent"><code class="xref py py-meth docutils literal notranslate"><span class="pre">time_extent()</span></code></a> — minimal time
+extent of traces in a stream.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.cut" title="covseisnet.stream.NetworkStream.cut"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cut()</span></code></a> — trim stream between
+given start and end times with string format.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.synchronize" title="covseisnet.stream.NetworkStream.synchronize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">synchronize()</span></code></a> — synchronize the
+traces into the same times with interpolation.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.process" title="covseisnet.stream.NetworkStream.process"><code class="xref py py-meth docutils literal notranslate"><span class="pre">process()</span></code></a> — process the traces
+with a dictionary of processing steps.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.whiten" title="covseisnet.stream.NetworkStream.whiten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whiten()</span></code></a> — whiten traces in the
+spectral domain.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.time_normalize" title="covseisnet.stream.NetworkStream.time_normalize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">time_normalize()</span></code></a> — normalize
+the traces in the temporal domain.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.assign_coordinates" title="covseisnet.stream.NetworkStream.assign_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assign_coordinates()</span></code></a> — assign
+the geographical coordinates to the traces.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.stream.NetworkStream.download_inventory" title="covseisnet.stream.NetworkStream.download_inventory"><code class="xref py py-meth docutils literal notranslate"><span class="pre">download_inventory()</span></code></a> — get the
+inventory of each trace.</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>There are three main ways to create a NetworkStream object:</p>
+<ol class="arabic simple">
+<li><p>Use the <a class="reference internal" href="#covseisnet.stream.NetworkStream.read" title="covseisnet.stream.NetworkStream.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NetworkStream.read()</span></code></a> method to read seismic waveforms
+files into a NetworkStream object. This method is the core method
+to read seismic data into the package.</p></li>
+<li><p>Use the <a class="reference internal" href="#covseisnet.stream.read" title="covseisnet.stream.read"><code class="xref py py-func docutils literal notranslate"><span class="pre">covseisnet.stream.read()</span></code></a> function, which is a wrapper
+to the first method. Note that this function is directly available
+from the package root.</p></li>
+<li><p>Pass any ObsPy <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a> object to the
+<a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> constructor. This is the
+case if you have a special reader for your data.</p></li>
+</ol>
+<p>Other standard ObsPy methods are available for instanciating a
+<a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> object, directly documented
+in the ObsPy documentation.</p>
+</div>
+<p class="rubric">Examples</p>
+<ol class="arabic simple">
+<li><p>Read seismic waveforms with the <a class="reference internal" href="#covseisnet.stream.NetworkStream.read" title="covseisnet.stream.NetworkStream.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NetworkStream.read()</span></code></a> method.</p></li>
+</ol>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">NetworkStream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">stream</span><span class="p">))</span>
+<span class="go">&lt;class &#39;covseisnet.stream.NetworkStream&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="go">NetworkStream of 3 traces from 1 station(s) (synced):</span>
+<span class="go">BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples</span>
+<span class="go">BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples</span>
+<span class="go">BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Read seismic waveforms with the <a class="reference internal" href="#covseisnet.stream.read" title="covseisnet.stream.read"><code class="xref py py-func docutils literal notranslate"><span class="pre">read()</span></code></a>
+function.</p></li>
+</ol>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">stream</span><span class="p">))</span>
+<span class="go">&lt;class &#39;covseisnet.stream.NetworkStream&#39;&gt;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Create a <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> object from an ObsPy
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a> object.</p></li>
+</ol>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">obspy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network_stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">NetworkStream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">network_stream</span><span class="p">))</span>
+<span class="go">&lt;class &#39;covseisnet.stream.NetworkStream&#39;&gt;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.stats">
+<span class="sig-name descname"><span class="pre">stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.stats" title="Link to this definition">#</a></dt>
+<dd><p>Stats dictionary of one of the traces in the stream.</p>
+<p>The purpose of this method is to extract the stats dictionary of one
+of the traces (by default the first trace) in the stream when the
+traces are synchronized. This is not to be confused with the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">stats()</span></code> attribute available at the
+trace level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The index of the trace in the stream. Default to 0.</p></li>
+<li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The key of the stats dictionary. If set, the method returns the
+value of the key in the stats dictionary. If not set, the method
+returns the stats dictionary itself.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Any</span></code> or <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stats</span></code></a> -- The stats dictionary of the trace. If the key is set, the method
+returns the value of the key in the stats dictionary.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">stats</span><span class="p">()</span>
+<span class="go">         network: BW</span>
+<span class="go">         station: RJOB</span>
+<span class="go">        location:</span>
+<span class="go">         channel: EHZ</span>
+<span class="go">       starttime: 2009-08-24T00:20:03.000000Z</span>
+<span class="go">         endtime: 2009-08-24T00:20:32.990000Z</span>
+<span class="go">   sampling_rate: 100.0</span>
+<span class="go">           delta: 0.01</span>
+<span class="go">            npts: 3000</span>
+<span class="go">           calib: 1.0</span>
+<span class="go">    back_azimuth: 100.0</span>
+<span class="go">     inclination: 30.0</span>
+<span class="go">        response: Channel Response</span>
+<span class="go">        From M/S (Velocity in Meters Per Second) to COUNTS (Digital Counts)</span>
+<span class="go">        Overall Sensitivity: 2.5168e+09 defined at 0.020 Hz</span>
+<span class="go">        4 stages:</span>
+<span class="go">                Stage 1: PolesZerosResponseStage from M/S to V, gain: 1500</span>
+<span class="go">                Stage 2: CoefficientsTypeResponseStage from V to COUNTS, gain: 1.67785e+06</span>
+<span class="go">                Stage 3: FIRResponseStage from COUNTS to COUNTS, gain: 1</span>
+<span class="go">                Stage 4: FIRResponseStage from COUNTS to COUNTS, gain: 1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.read">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathname_or_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BytesIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><span class="pre">NetworkStream</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.read" title="Link to this definition">#</a></dt>
+<dd><p>Read seismic waveforms files into a
+<a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> object.</p>
+<p>This function uses the <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">obspy.core.stream.read()</span></code></a> function to read
+the streams. A detailed list of arguments and options are available in
+the documentation. This function opens either one or multiple waveform
+files given via file name or URL using the <code class="docutils literal notranslate"><span class="pre">pathname_or_url</span></code>
+attribute. The format of the waveform file will be automatically
+detected if not given. See the <cite>Supported Formats</cite> section in the
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">obspy.core.stream.read()</span></code></a> function.</p>
+<p>This function returns an <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a>
+object which directly inherits from the
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">obspy.core.stream.Stream</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pathname_or_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/io.html#io.BytesIO" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">io.BytesIO</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) -- String containing a file name or a URL or a open file-like object.
+Wildcards are allowed for a file name. If this attribute is
+omitted, an example <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a>
+object will be returned.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Other parameters are passed to the <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">obspy.core.stream.read()</span></code></a>
+directly.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> -- The seismic waveforms.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">NetworkStream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="go">Network Stream of 3 traces from 1 stations (synced):</span>
+<span class="go">BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="go">BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="go">BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">read()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.times">
+<span class="sig-name descname"><span class="pre">times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.times" title="Link to this definition">#</a></dt>
+<dd><p>Common time vector.</p>
+<p>Because the <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> handles traces
+sampled on the same time vector, this function only returns the times
+of the first trace with the Trace method
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.times.html#obspy.core.trace.Trace.times" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">times()</span></code></a> if the traces are synchronized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>) -- Arguments passed to the Trace method
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.times.html#obspy.core.trace.Trace.times" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">times()</span></code></a>. For instance, passing
+<code class="docutils literal notranslate"><span class="pre">&quot;matplotlib&quot;</span></code> allows to recover matplotlib timestamps instead
+of seconds from the start of the trace (default).</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Arguments passed to the method
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.times.html#obspy.core.trace.Trace.times" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">times()</span></code></a>. For instance, passing
+<code class="docutils literal notranslate"><span class="pre">type=&quot;matplotlib&quot;</span></code> allows to recover matplotlib timestamps
+instead of seconds from the start of the trace (default).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The timestamps.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.12)"><strong>AssertionError</strong></a> -- If the traces are not synchronized.</p>
+</dd>
+</dl>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>By default, the method returns the times in seconds since the
+start of the trace. In order to extract times in matplotlib
+format, you can set the <code class="docutils literal notranslate"><span class="pre">type</span></code> parameter of the
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.times.html#obspy.core.trace.Trace.times" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">times()</span></code></a> method such as</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="s2">&quot;matplotlib&quot;</span><span class="p">)</span>
+<span class="go">array([14480.01392361, 14480.01392373, 14480.01392384, ...,</span>
+<span class="go">14480.01427049, 14480.0142706 , 14480.01427072])</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.times.html#obspy.core.trace.Trace.times" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">obspy.core.trace.Trace.times()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.time_extent">
+<span class="sig-name descname"><span class="pre">time_extent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.time_extent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.time_extent" title="Link to this definition">#</a></dt>
+<dd><p>Get the minimal time extent of traces in a stream.</p>
+<p>This function returns the minimal start and end times of the traces in
+the stream. This is useful when synchronizing the traces to the same
+time vector. The start time is defined as the maximum start time of
+the traces, and the end time is defined as the minimum end time of the
+traces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream</strong> (<a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> or)</p></li>
+<li><p><strong>:class:`~obspy.core.stream.Stream`</strong> -- The stream object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a> -- The minimal start and end times of the traces.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">time_extent</span><span class="p">()</span>
+<span class="go">(UTCDateTime(2009, 8, 24, 0, 20, 3), UTCDateTime(2009, 8, 24, 0, 20, 32, 990000))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.cut">
+<span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><span class="pre">UTCDateTime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.cut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.cut" title="Link to this definition">#</a></dt>
+<dd><p>Trim traces between start and end date times.</p>
+<p>This function is a wrapper to the ObsPy
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.trim.html#obspy.core.stream.Stream.trim" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trim()</span></code></a> method, but supports string
+format for the start and end times, enabling a more user-friendly
+interface. The function uses the ObsPy
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a> function in order to
+parse the start and end times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starttime</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a>) -- The start date time.</p></li>
+<li><p><strong>endtime</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a>) -- The end date time.</p></li>
+<li><p><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The duration of the trace in seconds. If set, the end time is
+calculated as <code class="docutils literal notranslate"><span class="pre">starttime</span> <span class="pre">+</span> <span class="pre">duration</span></code>. This parameter is ignored
+if the <code class="docutils literal notranslate"><span class="pre">endtime</span></code> parameter is set.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Arguments passed to the <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.trim.html#obspy.core.stream.Stream.trim" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trim()</span></code></a>
+method.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>This example shows how to cut a stream between two given times. The
+stream is first read from the example data, and then cut between two
+given times.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="s2">&quot;2009-08-24 00:20:05&quot;</span><span class="p">,</span> <span class="s2">&quot;2009-08-24 00:20:12&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="go">NetworkStream of 3 traces from 1 station(s) (synced):</span>
+<span class="go">BW.RJOB..EHZ | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples</span>
+<span class="go">BW.RJOB..EHN | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples</span>
+<span class="go">BW.RJOB..EHE | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.trim.html#obspy.core.stream.Stream.trim" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">obspy.core.stream.Stream.trim()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.synchronize">
+<span class="sig-name descname"><span class="pre">synchronize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interpolation_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.synchronize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.synchronize" title="Link to this definition">#</a></dt>
+<dd><p>Synchronize seismic traces with interpolation.</p>
+<p>This method synchronizes the seismic traces in the stream by
+interpolating the traces to a common time vector. The method uses the
+largest start time and the smallest end time of the traces to
+interpolate all traces to the same time vector with the ObsPy method
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.interpolate.html#obspy.core.trace.Trace.interpolate" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">interpolate()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>default</em>) -- Interpolation method. Default to <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>.</p></li>
+<li><p><strong>sampling_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The sampling rate of the traces. If not set and if the traces have
+all the same sampling rate, the method uses the sampling rate of
+the first trace. If not set and if the traces have different
+sampling rates, the method raises a ValueError.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments passed to the
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.interpolate.html#obspy.core.trace.Trace.interpolate" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">interpolate()</span></code></a> method. Check the
+ObsPy documentation for more details on the available options.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> -- If the traces have different sampling rates and the
+    <code class="docutils literal notranslate"><span class="pre">sampling_rate</span></code> parameter is not set.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.interpolate.html#obspy.core.trace.Trace.interpolate" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">obspy.core.trace.Trace.interpolate()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.process" title="Link to this definition">#</a></dt>
+<dd><p>Process the seismic traces in the stream.</p>
+<p>This method processes the seismic traces in the stream with a
+dictionary of processing steps. The dictionary must contain the
+processing steps as keys and the parameters as values. The method
+applies the processing steps to each trace in the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processing</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- The dictionary of processing steps.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">NetworkStream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">processing</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;detrend&quot;</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;taper&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bandpass&quot;</span><span class="p">,</span> <span class="s2">&quot;freqmin&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;freqmax&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s2">&quot;time_normalize&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;onebit&quot;</span><span class="p">}</span>
+<span class="go">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">processing</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.whiten">
+<span class="sig-name descname"><span class="pre">whiten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.whiten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.whiten" title="Link to this definition">#</a></dt>
+<dd><p>Whiten traces in the spectral domain.</p>
+<p>The action of whitening a seismic trace is to normalize the trace in
+the spectral domain. Typically, the spectrum becomes flat after
+whitening, resembling white noise. This strategy is often used to
+remove the influence of time-localized signal and diminish the site
+effects from a seismic station to another. Any local source is also
+drastically reduced thanks to the whitening process.</p>
+<p>The following description is applied to every trace in the stream. For
+the sake of simplicity, we consider a single trace <span class="math notranslate nohighlight">\(x(t)\)</span>. Note
+that the method is applied in every window of a short-time Fourier
+transform of the trace, namely <span class="math notranslate nohighlight">\(s(t, \omega)\)</span> before applying
+the inverse short-time Fourier transform to obtain the whitened
+seismogram <span class="math notranslate nohighlight">\(\hat x(t)\)</span>. We here nore <span class="math notranslate nohighlight">\(x(\omega)\)</span> the
+spectrum of the trace within a given window. For more information on
+the short-time Fourier transform, see the
+<a class="reference internal" href="signal.html#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFourierTransform</span></code></a> class
+documentation.</p>
+<p>We define the whitening process as</p>
+<div class="math notranslate nohighlight">
+\[\hat x(\omega) = \frac{x(\omega)}{\mathcal{S}x(\omega) +
+\epsilon},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is a smoothing operator applied to the
+spectrum <span class="math notranslate nohighlight">\(x(\omega)\)</span>, and <span class="math notranslate nohighlight">\(\epsilon\)</span> is a regularization
+parameter to avoid division by zero. The smoothing operator is defined
+by the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> parameter. We distinguish two cases:</p>
+<ul>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> parameter is set to 0, the operator
+<span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is defined as <span class="math notranslate nohighlight">\(\mathcal{S}x(\omega) =
+|x(\omega)|\)</span>, and therefore</p>
+<div class="math notranslate nohighlight">
+\[\hat x(\omega) = \frac{x(\omega)}{|x(\omega)| + \epsilon}
+\approx e^{i\phi}.\]</div>
+<p>In this case, the method calls the
+<a class="reference internal" href="signal.html#covseisnet.signal.modulus_division" title="covseisnet.signal.modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">modulus_division()</span></code></a>.</p>
+</li>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> parameter is set to a value greater than 0,
+the operator <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is defined as a <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">Savitzky-Golay
+filter</a> with
+parameters set by <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> and <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code>. This
+allows to introduce less artifacts in the whitening process. In this
+case, the method calls the
+<a class="reference internal" href="signal.html#covseisnet.signal.smooth_modulus_division" title="covseisnet.signal.smooth_modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_modulus_division()</span></code></a>.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window_duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The duration of the window for the short-time Fourier transform.</p></li>
+<li><p><strong>smooth_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The length of the Savitzky-Golay filter for smoothing the
+spectrum. If set to 0, the spectrum is not smoothed (default).</p></li>
+<li><p><strong>smooth_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The order of the Savitzky-Golay filter for smoothing the spectrum.
+This parameter is only used if <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> is greater than
+0.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- Regularization parameter in division, set to 1e-10 by default.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments passed to the covseisnet
+<a class="reference internal" href="signal.html#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><code class="xref py py-func docutils literal notranslate"><span class="pre">ShortTimeFourierTransform()</span></code></a> class
+constructor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.time_normalize">
+<span class="sig-name descname"><span class="pre">time_normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'onebit'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.time_normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.time_normalize" title="Link to this definition">#</a></dt>
+<dd><p>Normalize the seismic traces in temporal domain.</p>
+<p>Considering the seismic trace <span class="math notranslate nohighlight">\(x(t)\)</span>, the normalized trace
+<span class="math notranslate nohighlight">\(\hat x(t)\)</span> is obtained with</p>
+<div class="math notranslate nohighlight">
+\[\hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is an operator applied to the trace <span class="math notranslate nohighlight">\(x(t)\)</span>, and
+<span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> is a regularization value to avoid division by 0.
+The operator <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined by the <code class="docutils literal notranslate"><span class="pre">method</span></code>
+parameter. We distinguish two cases:</p>
+<ul>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">&quot;onebit&quot;</span></code>, the operator
+<span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined as <span class="math notranslate nohighlight">\(\mathcal{A}x(t) = |x(t)|\)</span>,
+and therefore</p>
+<div class="math notranslate nohighlight">
+\[\hat x(t) = \frac{x(t)}{|x(t)| + \epsilon} \approx
+\text{sign}(x(t)).\]</div>
+<p>In this case, the method calls the
+<a class="reference internal" href="signal.html#covseisnet.signal.modulus_division" title="covseisnet.signal.modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">modulus_division()</span></code></a>.</p>
+</li>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">&quot;smooth&quot;</span></code>, the operator
+<span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined as a <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">Savitzky-Golay filter</a>
+applied to the Hilbert envelope of the trace. The Savitzky-Golay
+filter is defined by the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> and <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code>
+parameters. This allows to introduce less artifacts in the
+normalization process. In this case, the method calls the
+<a class="reference internal" href="signal.html#covseisnet.signal.smooth_envelope_division" title="covseisnet.signal.smooth_envelope_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_envelope_division()</span></code></a>.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- Must be one of <code class="docutils literal notranslate"><span class="pre">&quot;onebit&quot;</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">&quot;smooth&quot;</span></code>.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;onebit&quot;</span></code>: compress the seismic trace into a series of -1 and
+1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;smooth&quot;</span></code>: normalize each trace by a smooth version of its
+envelope.</p></li>
+</ul>
+</li>
+<li><p><strong>smooth_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- If the <code class="docutils literal notranslate"><span class="pre">method</span></code> keyword argument is set to <code class="docutils literal notranslate"><span class="pre">&quot;smooth&quot;</span></code>, the
+normalization is performed with the smoothed trace envelopes,
+calculated over a sliding window of <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> samples.</p></li>
+<li><p><strong>smooth_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- If the <code class="docutils literal notranslate"><span class="pre">method</span></code> keyword argument is set to <code class="docutils literal notranslate"><span class="pre">&quot;smooth&quot;</span></code>, the
+normalization is performed with the smoothed trace envelopes. The
+smoothing order is set by the <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code> parameter.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- Regularization parameter in division, set to 1e-10 by default.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.assign_coordinates">
+<span class="sig-name descname"><span class="pre">assign_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inventory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.inventory.inventory.Inventory.html#obspy.core.inventory.inventory.Inventory" title="(in ObsPy v1.4.1)"><span class="pre">Inventory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.assign_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.assign_coordinates" title="Link to this definition">#</a></dt>
+<dd><p>Assign the geographical coordinates to the traces.</p>
+<p>This method assigns the geographical coordinates of the stations to
+the traces in the stream from
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.inventory.inventory.Inventory.html#obspy.core.inventory.inventory.Inventory" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inventory</span></code></a> or the inventory
+file containing the inventory. The method uses the ObsPy
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.inventory.inventory.read_inventory.html#obspy.core.inventory.inventory.read_inventory" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_inventory()</span></code></a> method to
+extract the coordinates of each trace in the stream if a filepath is
+provided.</p>
+<p>The method adds a coordinate dictionary to each trace in the stream.
+The coordinate dictionary contains the keys <code class="docutils literal notranslate"><span class="pre">latitude</span></code>,
+<code class="docutils literal notranslate"><span class="pre">longitude</span></code>, and <code class="docutils literal notranslate"><span class="pre">elevation</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inventory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.inventory.inventory.Inventory.html#obspy.core.inventory.inventory.Inventory" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inventory</span></code></a>) -- The inventory file or the inventory object containing the station
+coordinates.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">(</span><span class="s2">&quot;inventory.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.inventory.inventory.read_inventory.html#obspy.core.inventory.inventory.read_inventory" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_inventory()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.download_inventory">
+<span class="sig-name descname"><span class="pre">download_inventory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datacenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'IRIS'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.inventory.inventory.Inventory.html#obspy.core.inventory.inventory.Inventory" title="(in ObsPy v1.4.1)"><span class="pre">Inventory</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#NetworkStream.download_inventory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.NetworkStream.download_inventory" title="Link to this definition">#</a></dt>
+<dd><p>Get the inventory of each trace in the stream.</p>
+<p>This method uses the ObsPy
+<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.clients.fdsn.client.Client.get_stations.html#obspy.clients.fdsn.client.Client.get_stations" title="(in ObsPy v1.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_stations()</span></code></a> method to
+extract the inventory of each trace in the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datacenter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The datacenter to use for retrieving the station coordinates. The
+default is <code class="docutils literal notranslate"><span class="pre">&quot;IRIS&quot;</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">download_inventory</span><span class="p">(</span><span class="n">datacenter</span><span class="o">=</span><span class="s2">&quot;LMU&quot;</span><span class="p">)</span>
+<span class="go">    Inventory created at 2024-08-20T09:10:33.403152Z</span>
+<span class="go">        Created by: ObsPy 1.4.1</span>
+<span class="go">                    https://www.obspy.org</span>
+<span class="go">        Sending institution: ObsPy 1.4.1,SeisComP (LMU)</span>
+<span class="go">        Contains:</span>
+<span class="go">                Networks (3):</span>
+<span class="go">                        BW (3x)</span>
+<span class="go">                Stations (3):</span>
+<span class="go">                        BW.RJOB (Jochberg, Bavaria, BW-Net) (3x)</span>
+<span class="go">                Channels (0):</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.synced">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">synced</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#covseisnet.stream.NetworkStream.synced" title="Link to this definition">#</a></dt>
+<dd><p>Check if traces are sampled on the same time vector.</p>
+<p>This method checks if all traces are sampled on the same time vector.
+This is useful to ensure that the traces are synchronized before
+performing any operation that requires the traces to be sampled on the
+same time vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> -- True if all traces are sampled on the same time vector, False
+otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.equal_rates">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">equal_rates</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#covseisnet.stream.NetworkStream.equal_rates" title="Link to this definition">#</a></dt>
+<dd><p>Check if all traces have the same sampling rate.</p>
+<p>This method checks if all traces have the same sampling rate. This is
+useful to ensure that the traces are synchronized before performing any
+operation that requires the traces to be sampled on the same time vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> -- True if all traces have the same sampling rate, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.equal_length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">equal_length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#covseisnet.stream.NetworkStream.equal_length" title="Link to this definition">#</a></dt>
+<dd><p>Check if all traces have the same number of samples.</p>
+<p>This method checks if all traces have the same number of samples. This
+is useful to ensure that the traces are synchronized before performing
+any operation that requires the traces to be sampled on the same time
+vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> -- True if all traces have the same number of samples, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.sampling_rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#covseisnet.stream.NetworkStream.sampling_rate" title="Link to this definition">#</a></dt>
+<dd><p>Common sampling rate in Hertz.</p>
+<p>This property asserts that all traces have the same sampling rate and
+returns the sampling rate of the first trace via the NetworkStream
+<a class="reference internal" href="#covseisnet.stream.NetworkStream.stats" title="covseisnet.stream.NetworkStream.stats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stats()</span></code></a> custom method. This is equivalent to getting
+<code class="docutils literal notranslate"><span class="pre">stream[0].stats.sampling_rate</span></code> directly, minus the assertion.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">sampling_rate</span>
+<span class="go">100.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.npts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">npts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#covseisnet.stream.NetworkStream.npts" title="Link to this definition">#</a></dt>
+<dd><p>Common number of samples.</p>
+<p>This property asserts that all traces have the same number of samples
+and returns the number of samples of the first trace via the
+NetworkStream <a class="reference internal" href="#covseisnet.stream.NetworkStream.stats" title="covseisnet.stream.NetworkStream.stats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stats()</span></code></a> custom method. This is equivalent to
+getting <code class="docutils literal notranslate"><span class="pre">stream[0].stats.npts</span></code> directly, minus the assertion.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">npts</span>
+<span class="go">3000</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.stream.NetworkStream.coordinates">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coordinates</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#covseisnet.stream.NetworkStream.coordinates" title="Link to this definition">#</a></dt>
+<dd><p>Geographical coordinates of the traces.</p>
+<p>This property is also available directly from looping over the traces
+and accessing the <code class="xref py py-attr docutils literal notranslate"><span class="pre">stats.coordinates</span></code> attribute of each trace.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.stream.read">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.stream.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathname_or_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BytesIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><span class="pre">NetworkStream</span></a></span></span><a class="reference internal" href="_modules/covseisnet/stream.html#read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.stream.read" title="Link to this definition">#</a></dt>
+<dd><p>Read seismic waveforms files into an NetworkStream object.</p>
+<p>This function uses the <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">obspy.core.stream.read()</span></code></a> function to read the
+streams. A detailed list of arguments and options are available in the
+documentation. This function opens either one or multiple waveform files
+given via file name or URL using the <code class="docutils literal notranslate"><span class="pre">pathname_or_url</span></code> attribute. The
+format of the waveform file will be automatically detected if not given.
+See the <cite>Supported Formats</cite> section in the <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">obspy.core.stream.read()</span></code></a>
+function.</p>
+<p>This function returns an <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> object
+which directly inherits from the <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">obspy.core.stream.Stream</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pathname_or_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/io.html#io.BytesIO" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">io.BytesIO</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) -- String containing a file name or a URL or a open file-like object.
+Wildcards are allowed for a file name. If this attribute is omitted,
+an example <a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> object will be
+returned.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Other parameters are passed to the <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">obspy.core.stream.read()</span></code></a>
+directly.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a> -- The seismic waveforms.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>For a quick start you may omit all arguments and ObsPy will load a basic
+example seismogram. Further usages of this function can be seen in the
+ObsPy documentation.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="go">Network Stream of 3 traces from 1 stations (synced):</span>
+<span class="go">BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="go">BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="go">BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html#obspy.core.stream.read" title="(in ObsPy v1.4.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">read()</span></code></a></p>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="signal.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Signal processing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream"><code class="docutils literal notranslate"><span class="pre">NetworkStream</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.stats"><code class="docutils literal notranslate"><span class="pre">NetworkStream.stats()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.read"><code class="docutils literal notranslate"><span class="pre">NetworkStream.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.times"><code class="docutils literal notranslate"><span class="pre">NetworkStream.times()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.time_extent"><code class="docutils literal notranslate"><span class="pre">NetworkStream.time_extent()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.cut"><code class="docutils literal notranslate"><span class="pre">NetworkStream.cut()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.synchronize"><code class="docutils literal notranslate"><span class="pre">NetworkStream.synchronize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.process"><code class="docutils literal notranslate"><span class="pre">NetworkStream.process()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.whiten"><code class="docutils literal notranslate"><span class="pre">NetworkStream.whiten()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.time_normalize"><code class="docutils literal notranslate"><span class="pre">NetworkStream.time_normalize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.assign_coordinates"><code class="docutils literal notranslate"><span class="pre">NetworkStream.assign_coordinates()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.download_inventory"><code class="docutils literal notranslate"><span class="pre">NetworkStream.download_inventory()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.synced"><code class="docutils literal notranslate"><span class="pre">NetworkStream.synced</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.equal_rates"><code class="docutils literal notranslate"><span class="pre">NetworkStream.equal_rates</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.equal_length"><code class="docutils literal notranslate"><span class="pre">NetworkStream.equal_length</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.sampling_rate"><code class="docutils literal notranslate"><span class="pre">NetworkStream.sampling_rate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.npts"><code class="docutils literal notranslate"><span class="pre">NetworkStream.npts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.NetworkStream.coordinates"><code class="docutils literal notranslate"><span class="pre">NetworkStream.coordinates</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.stream.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

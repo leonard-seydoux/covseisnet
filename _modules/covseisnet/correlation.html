@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>covseisnet.correlation &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/correlation';</script>
+    <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2F_modules/covseisnet/correlation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for covseisnet.correlation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Cross-correlation matrix in time domain.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Stats</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">windows</span><span class="p">,</span> <span class="n">correlation_lags</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter1d</span>
+
+<span class="kn">from</span> <span class="nn">.covariance</span> <span class="kn">import</span> <span class="n">CovarianceMatrix</span>
+<span class="kn">from</span> <span class="nn">.signal</span> <span class="kn">import</span> <span class="n">bandpass_filter</span><span class="p">,</span> <span class="n">hilbert_envelope</span>
+<span class="kn">from</span> <span class="nn">.signal</span> <span class="kn">import</span> <span class="n">ShortTimeFourierTransform</span>
+
+
+<div class="viewcode-block" id="CrossCorrelationMatrix">
+<a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix">[docs]</a>
+<span class="k">class</span> <span class="nc">CrossCorrelationMatrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    .. rubric:: Mathematical definition</span>
+
+<span class="sd">    This class is used to store the correlation matrix in the time domain. The</span>
+<span class="sd">    cross-correlation is defined as the inverse Fourier transform of the</span>
+<span class="sd">    covariance. Given a covariance matrix :math:`C_{ij}(f)`, the correlation</span>
+<span class="sd">    matrix :math:`R_{ij}(\tau)` is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        R_{ij}(\tau) = \mathcal{F}^{-1} \{ C_{ij}(f) \}</span>
+
+<span class="sd">    where :math:`\mathcal{F}^{-1}` is the inverse Fourier transform,</span>
+<span class="sd">    :math:`\tau` is the lag time, and :math:`i` and :math:`j` are the station</span>
+<span class="sd">    indices. Note that the correlation matrix is a symmetric matrix, with the</span>
+<span class="sd">    diagonal elements being the auto-correlation. Therefore, we do not store</span>
+<span class="sd">    the lower triangular part of the matrix.</span>
+
+<span class="sd">    .. rubric:: Practical implementation</span>
+
+<span class="sd">    The correlation matrix is stored as a 3D array with the first dimension</span>
+<span class="sd">    being the number of pairs, the second dimension the number of windows, and</span>
+<span class="sd">    the third dimension the number of lags. The correlation matrix can be</span>
+<span class="sd">    visualized as a 2D array with the pairs and windows in the first dimension</span>
+<span class="sd">    and the lags in the second dimension with the method :meth:`~flat`.</span>
+
+<span class="sd">    Tip</span>
+<span class="sd">    ---</span>
+
+<span class="sd">    The correlation matrix is usually calculated from the covariance matrix</span>
+<span class="sd">    using the method :func:`~calculate_cross_correlation_matrix`. The method</span>
+<span class="sd">    returns a :class:`~covseisnet.correlation.CrossCorrelationMatrix` object</span>
+<span class="sd">    with adequate attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">input_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">stats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Stats</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">stft</span><span class="p">:</span> <span class="n">ShortTimeFourierTransform</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Note</span>
+<span class="sd">        ----</span>
+
+<span class="sd">        If for some reason you need to create a</span>
+<span class="sd">        :class:`~covseisnet.covariance.CrossCorrelationMatrix` object from a</span>
+<span class="sd">        numpy array, you have the several solutions provided by the `numpy</span>
+<span class="sd">        subclassing mechanism</span>
+<span class="sd">        &lt;https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray&gt;`_.</span>
+<span class="sd">        We recommend using the contructor of the class, which allows to pass</span>
+<span class="sd">        the stats and stft attributes, as in the following example:</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from covseisnet.correlation import CrossCorrelationMatrix</span>
+<span class="sd">        &gt;&gt;&gt; correlation = CrossCorrelationMatrix(</span>
+<span class="sd">        ...     np.random.rand(10, 5, 100),</span>
+<span class="sd">        ...     stats=None,</span>
+<span class="sd">        ...     stft=None,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Enforce the input array to be a complex-valued numpy array.</span>
+        <span class="n">input_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">input_array</span><span class="p">)</span>
+
+        <span class="c1"># Cast the input array into CovarianceMatrix and add the stats and</span>
+        <span class="c1"># stft attributes.</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">input_array</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">stats</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">stft</span> <span class="o">=</span> <span class="n">stft</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Finalize the array.</span>
+
+<span class="sd">        This method is essential to the subclassing mechanism of numpy. It</span>
+<span class="sd">        guarantees that the attributes of the object are correctly set when</span>
+<span class="sd">        slicing or reducing the array. The method is called after the</span>
+<span class="sd">        creation of the object, and is used to set the attributes of the</span>
+<span class="sd">        object to the attributes of the input array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stft</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;stft&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Reduce the object.</span>
+
+<span class="sd">        This method is used to preserve the attributes and methods of the object</span>
+<span class="sd">        over pickling and unpickling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the reduction tuple from the base ndarray</span>
+        <span class="n">pickled_state</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__reduce__</span><span class="p">()</span>
+
+        <span class="c1"># Combine the ndarray state with the additional attributes saved in</span>
+        <span class="c1"># the __dict__ attribute.</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">pickled_state</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">pickled_state</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">(</span><span class="n">pickled_state</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set the state of the object.</span>
+
+<span class="sd">        This method is used to set the state of the object after pickling and</span>
+<span class="sd">        unpickling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Extract the ndarray part of the state and the additional attributes</span>
+        <span class="n">ndarray_state</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">state</span>
+
+        <span class="c1"># Set the ndarray part of the state</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">ndarray_state</span><span class="p">)</span>
+
+        <span class="c1"># Set the additional attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sampling_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the sampling rate in Hz.</span>
+
+<span class="sd">        The sampling rate is extracted from the first stats in the list of</span>
+<span class="sd">        stats extracted from the covariance matrix. Note that if the</span>
+<span class="sd">        covariance matrix was calculated with the</span>
+<span class="sd">        :func:`~covseisnet.covariance.calculate_covariance_matrix`, all streams</span>
+<span class="sd">        must be synchronized and have the same sampling rate.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The sampling rate in Hz.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the stats attribute is not set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Stats are needed to get the sampling rate.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sampling_rate</span>
+
+<div class="viewcode-block" id="CrossCorrelationMatrix.envelope">
+<a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.envelope">[docs]</a>
+    <span class="k">def</span> <span class="nf">envelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Hilbert envelope of the correlation matrix.</span>
+
+<span class="sd">        The Hilbert envelope is calculated using the Hilbert transform of the</span>
+<span class="sd">        pairwise cross-correlation:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            E_{ij}(\tau) = | R_{ij}(\tau) + i \mathcal{H} R_{ij}(\tau)  |</span>
+
+<span class="sd">        where :math:`\mathcal{H}` is the Hilbert transform, and :math:`i` is</span>
+<span class="sd">        the imaginary unit. The Hilbert envelope is the absolute value of the</span>
+<span class="sd">        Hilbert transform of the correlation matrix.</span>
+
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        **kwargs: dict</span>
+<span class="sd">            Additional arguments to pass to :func:`~scipy.signal.hilbert`. By</span>
+<span class="sd">            default, the axis is set to the last axis (lags).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~covseisnet.correlation.CrossCorrelationMatrix`</span>
+<span class="sd">            The Hilbert envelope of the correlation matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CrossCorrelationMatrix</span><span class="p">(</span>
+            <span class="n">hilbert_envelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">stats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span>
+            <span class="n">stft</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stft</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CrossCorrelationMatrix.taper">
+<a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.taper">[docs]</a>
+    <span class="k">def</span> <span class="nf">taper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_percentage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Taper the correlation matrix.</span>
+
+<span class="sd">        Taper the correlation matrix with the given taper. The taper is</span>
+<span class="sd">        applied to the last axis (lags) of the correlation matrix. The tapered</span>
+<span class="sd">        correlation matrix is defined as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            R&#39;_{ij}(\tau) = w_T(\tau) R_{ij}(\tau)</span>
+
+<span class="sd">        where :math:`w_T(\tau)` is the taper of maximum duration :math:`T`.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        max_percentage: float</span>
+<span class="sd">            The maximum percentage of the taper. The taper is a Tukey window</span>
+<span class="sd">            with the given percentage of the window duration. Default is 0.1.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~covseisnet.correlation.CrossCorrelationMatrix`</span>
+<span class="sd">            The tapered correlation matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CrossCorrelationMatrix</span><span class="p">(</span>
+            <span class="bp">self</span> <span class="o">*</span> <span class="n">windows</span><span class="o">.</span><span class="n">tukey</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">max_percentage</span><span class="p">),</span>
+            <span class="n">stats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span>
+            <span class="n">stft</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stft</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CrossCorrelationMatrix.smooth">
+<a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.smooth">[docs]</a>
+    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Use a Gaussian kernel to smooth the correlation matrix.</span>
+
+<span class="sd">        This function is usually applied to the envelope of the correlation</span>
+<span class="sd">        matrix to smooth the envelope. The smoothing is done using a Gaussian</span>
+<span class="sd">        kernel with a standard deviation :math:`\sigma`. The smoothing is done</span>
+<span class="sd">        along the last axis (lags). The smoothed correlation matrix is</span>
+<span class="sd">        :math:`R&#39;` is defined as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            R&#39;_{ij}(\tau) = G_{\sigma} * R_{ij}(\tau)</span>
+
+<span class="sd">        where :math:`G_{\sigma}` is the Gaussian kernel with standard</span>
+<span class="sd">        deviation :math:`\sigma`.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        sigma: float</span>
+<span class="sd">            Standard deviation of the Gaussian kernel. The larger the value,</span>
+<span class="sd">            the smoother the correlation matrix. Default is 1.</span>
+<span class="sd">        **kwargs: dict</span>
+<span class="sd">            Additional arguments passed to</span>
+<span class="sd">            :func:`~scipy.ndimage.gaussian_filter1d`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~covseisnet.correlation.CrossCorrelationMatrix`</span>
+<span class="sd">            The smoothed cross-correlation matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CrossCorrelationMatrix</span><span class="p">(</span>
+            <span class="n">gaussian_filter1d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">stats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span>
+            <span class="n">stft</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stft</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CrossCorrelationMatrix.flat">
+<a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.flat">[docs]</a>
+    <span class="k">def</span> <span class="nf">flat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Flatten the first dimensions.</span>
+
+<span class="sd">        The shape of the pairwise cross-correlation is at maximum 3D, with the</span>
+<span class="sd">        first dimension being the number of pairs, the second dimension the</span>
+<span class="sd">        number of windows, and the third dimension the number of lags. This</span>
+<span class="sd">        method flattens the first two dimensions to have a 2D array with the</span>
+<span class="sd">        pairs and windows in the first dimension and the lags in the second</span>
+<span class="sd">        dimension. This method also works for smaller dimensions.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`np.ndarray`</span>
+<span class="sd">            The flattened pairwise cross-correlation.s</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="CrossCorrelationMatrix.bandpass">
+<a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.bandpass">[docs]</a>
+    <span class="k">def</span> <span class="nf">bandpass</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">frequency_band</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="nb">list</span><span class="p">,</span> <span class="n">filter_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Bandpass filter the correlation functions.</span>
+
+<span class="sd">        Apply a Butterworth bandpass filter to the correlation functions. Uses</span>
+<span class="sd">        :func:`~scipy.signal.butter` and :func:`~scipy.signal.filtfilt` to</span>
+<span class="sd">        avoid phase shift.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frequency_band: tuple</span>
+<span class="sd">            The frequency band to filter in Hz.</span>
+<span class="sd">        filter_order: int, optional</span>
+<span class="sd">            The order of the Butterworth filter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~covseisnet.correlation.CrossCorrelationMatrix`</span>
+<span class="sd">            The bandpass filtered correlation functions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Flatten the correlation functions</span>
+        <span class="n">correlation_flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flat</span><span class="p">()</span>
+
+        <span class="c1"># Apply bandpass filter</span>
+        <span class="n">correlation_filtered</span> <span class="o">=</span> <span class="n">bandpass_filter</span><span class="p">(</span>
+            <span class="n">correlation_flat</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">,</span>
+            <span class="n">frequency_band</span><span class="p">,</span>
+            <span class="n">filter_order</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Reshape the correlation functions</span>
+        <span class="n">correlation_filtered</span> <span class="o">=</span> <span class="n">correlation_filtered</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="c1"># Update self array</span>
+        <span class="k">return</span> <span class="n">CrossCorrelationMatrix</span><span class="p">(</span>
+            <span class="n">correlation_filtered</span><span class="p">,</span> <span class="n">stats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">stft</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stft</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="calculate_cross_correlation_matrix">
+<a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.calculate_cross_correlation_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_cross_correlation_matrix</span><span class="p">(</span>
+    <span class="n">covariance_matrix</span><span class="p">:</span> <span class="n">CovarianceMatrix</span><span class="p">,</span>
+    <span class="n">include_autocorrelation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">CrossCorrelationMatrix</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Extract correlation in time domain from the given covariance matrix.</span>
+
+<span class="sd">    This method calculates the correlation in the time domain from the given</span>
+<span class="sd">    covariance matrix. The covariance matrix is expected to be obtained from</span>
+<span class="sd">    the method :func:`~covseisnet.covariance.calculate_covariance_matrix`, in</span>
+<span class="sd">    the :class:`~covseisnet.covariance.CovarianceMatrix` class.</span>
+
+<span class="sd">    The method first duplicate the covariance matrix to have a two-sided</span>
+<span class="sd">    covariance matrix and perform the inverse Fourier transform to obtain the</span>
+<span class="sd">    correlation matrix. The attributes of the covariance matrix are used to</span>
+<span class="sd">    calculate the lags and pairs names of the correlation matrix.</span>
+
+<span class="sd">    For more details, see the</span>
+<span class="sd">    :class:`~covseisnet.correlation.CrossCorrelationMatrix` class, in the</span>
+<span class="sd">    rubric **Mathematical definition**.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    covariance_matrix: :class:`~covseisnet.covariance.CovarianceMatrix`</span>
+<span class="sd">        The covariance matrix.</span>
+<span class="sd">    include_autocorrelation: bool, optional</span>
+<span class="sd">        Include the auto-correlation in the correlation matrix. Default is</span>
+<span class="sd">        True.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`~numpy.ndarray`</span>
+<span class="sd">        The lag time between stations.</span>
+<span class="sd">    list</span>
+<span class="sd">        The list of pairs.</span>
+<span class="sd">    :class:`~covseisnet.correlation.CrossCorrelationMatrix`</span>
+<span class="sd">        The correlations with shape ``(n_pairs, n_windows, n_lags)``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Two-sided covariance matrix</span>
+    <span class="n">covariance_matrix_twosided</span> <span class="o">=</span> <span class="n">covariance_matrix</span><span class="o">.</span><span class="n">twosided</span><span class="p">()</span>
+
+    <span class="c1"># Extract upper triangular</span>
+    <span class="n">distante_to_diagonal</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">include_autocorrelation</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">covariance_triu</span> <span class="o">=</span> <span class="n">covariance_matrix_twosided</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">distante_to_diagonal</span><span class="p">)</span>
+
+    <span class="c1"># Extract pairs names from the combination of stations</span>
+    <span class="k">if</span> <span class="n">covariance_matrix</span><span class="o">.</span><span class="n">stats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stations</span> <span class="o">=</span> <span class="p">[</span><span class="n">stat</span><span class="o">.</span><span class="n">station</span> <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">covariance_matrix</span><span class="o">.</span><span class="n">stats</span><span class="p">]</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stations</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">distante_to_diagonal</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">stations</span><span class="p">)):</span>
+                <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">stations</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">stations</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;pair </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">covariance_triu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="c1"># Change axes position to have the pairs first</span>
+    <span class="n">covariance_triu</span> <span class="o">=</span> <span class="n">covariance_triu</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Get transform parameters</span>
+    <span class="k">if</span> <span class="n">covariance_matrix</span><span class="o">.</span><span class="n">stft</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;STFT parameters are needed to calculate correlation.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="o">.</span><span class="n">stft</span><span class="o">.</span><span class="n">win</span><span class="p">)</span>
+    <span class="n">sampling_rate</span> <span class="o">=</span> <span class="n">covariance_matrix</span><span class="o">.</span><span class="n">stft</span><span class="o">.</span><span class="n">fs</span>
+
+    <span class="c1"># Inverse Fourier transform</span>
+    <span class="n">correlation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">covariance_triu</span><span class="p">),</span> <span class="n">axes</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+
+    <span class="c1"># Calculate lags</span>
+    <span class="n">lags</span> <span class="o">=</span> <span class="n">correlation_lags</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">sampling_rate</span>
+
+    <span class="c1"># Turn into CrossCorrelationMatrix</span>
+    <span class="n">correlation</span> <span class="o">=</span> <span class="n">CrossCorrelationMatrix</span><span class="p">(</span>
+        <span class="n">correlation</span><span class="p">,</span> <span class="n">stats</span><span class="o">=</span><span class="n">covariance_matrix</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">stft</span><span class="o">=</span><span class="n">covariance_matrix</span><span class="o">.</span><span class="n">stft</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lags</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">correlation</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

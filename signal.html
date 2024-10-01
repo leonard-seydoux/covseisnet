@@ -1,0 +1,919 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Signal processing &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e872a992"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'signal';</script>
+    <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Covariance Matrix" href="covariance.html" />
+    <link rel="prev" title="Network stream" href="stream.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stream.html">Network stream</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2Fsignal.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Signal processing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.sampling_rate"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.sampling_rate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.frequencies"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.frequencies</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.times"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.times()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.valid_window_bounds"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.valid_window_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.transform"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.map_transform"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.map_transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.modulus_division"><code class="docutils literal notranslate"><span class="pre">modulus_division()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.smooth_modulus_division"><code class="docutils literal notranslate"><span class="pre">smooth_modulus_division()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.smooth_envelope_division"><code class="docutils literal notranslate"><span class="pre">smooth_envelope_division()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.entropy"><code class="docutils literal notranslate"><span class="pre">entropy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.diversity"><code class="docutils literal notranslate"><span class="pre">diversity()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.width"><code class="docutils literal notranslate"><span class="pre">width()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.bandpass_filter"><code class="docutils literal notranslate"><span class="pre">bandpass_filter()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.hilbert_envelope"><code class="docutils literal notranslate"><span class="pre">hilbert_envelope()</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-covseisnet.signal">
+<span id="signal-processing"></span><h1>Signal processing<a class="headerlink" href="#module-covseisnet.signal" title="Link to this heading">#</a></h1>
+<p>The package provides tools for spectral analysis of seismic data. The main
+class is the <a class="reference internal" href="#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFourierTransform</span></code></a> class, which extends the
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFFT</span></code></a> class to provide a more user-friendly
+interface for the Short-Time Fourier Transform with streams.</p>
+<p>Other functions are provided to normalize seismic traces in the spectral
+domain, such as the <a class="reference internal" href="#covseisnet.signal.modulus_division" title="covseisnet.signal.modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">modulus_division()</span></code></a> and <a class="reference internal" href="#covseisnet.signal.smooth_modulus_division" title="covseisnet.signal.smooth_modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_modulus_division()</span></code></a> functions. Also, we provide the <a class="reference internal" href="#covseisnet.signal.smooth_envelope_division" title="covseisnet.signal.smooth_envelope_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_envelope_division()</span></code></a> function to normalize seismic traces by a smooth version of its envelope.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">ShortTimeFourierTransform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hann'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/signal.html#ShortTimeFourierTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFFT</span></code></a></p>
+<p>Short-Time Fourier Transform instance.</p>
+<p>This class extends the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a> class to
+provide a more user-friendly interface for the Short-Time Fourier
+Transform with ObsPy and Covseisnet Streams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window_duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The duration of the window in seconds. Default is 2.0 seconds.</p></li>
+<li><p><strong>window_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The step between windows in seconds. Default is half the window
+duration.</p></li>
+<li><p><strong>window_function</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The window function to use. Default is the Hann window.</p></li>
+<li><p><strong>sampling_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The sampling rate of the data. Default is 1.0 Hz. In most methods
+the sampling rate is set automatically from the data.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments are passed to the
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft.html#scipy.signal.ShortTimeFFT.stft" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft()</span></code></a> method.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition-notes admonition">
+<p class="admonition-title">Notes</p>
+<p>By default, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a> class pads the data
+with zeros on both sides to avoid edge effects, and enable the
+analysis of edge samples (see the <a class="reference external" href="https://docs.scipy.org/doc/scipy/tutorial/signal.html#tutorial-stft">tutorial on the Short-Time Fourier
+Transform</a>
+in the SciPy documentation). Because the main purpose of this class
+is to analyse the spatial coherence of seismic data, this default
+behaviour is disabled. Indeed, the edges appear wrongly coherent
+because of the zero-padding. This is why the representation of the
+Short-Time Fourier Transform indicates the number of samples and
+windows that are out-of-bounds. These samples are discarded from the
+analysis. Note that this is not a real issue since the covariance
+matrix analysis is performed on sliding windows.</p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">covseisnet.signal</span> <span class="kn">import</span> <span class="n">ShortTimeFourierTransform</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stft</span> <span class="o">=</span> <span class="n">ShortTimeFourierTransform</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">window_duration</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">window_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">window_function</span><span class="o">=</span><span class="s2">&quot;hann&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sampling_rate</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stft</span><span class="p">)</span>
+<span class="go">Short-Time Fourier Transform instance</span>
+<span class="go">    Sampling rate: 100.0 Hz</span>
+<span class="go">    Frequency range: 0.50 to 50.00 Hz</span>
+<span class="go">    Frequency resolution: 0.5 Hz</span>
+<span class="go">    Frequency bins: 101</span>
+<span class="go">    Window length: 200 samples</span>
+<span class="go">    Window step: 100 samples</span>
+<span class="go">    Out-of-bounds: 101 sample(s), 1 window(s)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a></p>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform.sampling_rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform.sampling_rate" title="Link to this definition">#</a></dt>
+<dd><p>The sampling rate of the Short-Time Fourier Transform.</p>
+<p>This property returns the sampling rate of the Short-Time Fourier
+Transform in Hertz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> -- The sampling rate of the Short-Time Fourier Transform in Hertz.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform.frequencies">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequencies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></em><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform.frequencies" title="Link to this definition">#</a></dt>
+<dd><p>The frequencies of the Short-Time Fourier Transform.</p>
+<p>This property returns the frequencies of the Short-Time Fourier
+Transform in Hertz. The frequencies are calculated from the sampling
+rate and the number of frequency bins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The frequencies of the Short-Time Fourier Transform in Hertz.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform.times">
+<span class="sig-name descname"><span class="pre">times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#ShortTimeFourierTransform.times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform.times" title="Link to this definition">#</a></dt>
+<dd><p>The times of the window centers in seconds.</p>
+<p>This method returns the times of the window centers in seconds. The
+times are calculated from the start time of the trace and the window
+step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stats</strong> (<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stats</span></code></a>) -- The stats object of the trace.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The times of the window centers in matplotlib datenum format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform.valid_window_bounds">
+<span class="sig-name descname"><span class="pre">valid_window_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#ShortTimeFourierTransform.valid_window_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform.valid_window_bounds" title="Link to this definition">#</a></dt>
+<dd><p>The bounds of the Short-Time Fourier Transform.</p>
+<p>This method calculate the valid window bounds of the Short-Time
+Fourier Transform in seconds. The bounds are calculated from the
+start time of the trace, the window duration, and the window step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stats</strong> (<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stats</span></code></a>) -- The stats object of the trace.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> -- The lower and upper bounds of the Short-Time Fourier Transform in
+seconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace" title="(in ObsPy v1.4.1)"><span class="pre">Trace</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">detrend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.12)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'constant'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#ShortTimeFourierTransform.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform.transform" title="Link to this definition">#</a></dt>
+<dd><p>Short-time Fourier Transform of a trace.</p>
+<p>This method calculates the Short-Time Fourier Transform of a trace
+using the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft_detrend.html#scipy.signal.ShortTimeFFT.stft_detrend" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft_detrend()</span></code></a> method. The
+method returns the times of the window centers in matplotlib datenum
+format, the frequencies of the spectrogram, and the short-time spectra
+of the trace.</p>
+<p>Prior to the Short-Time Fourier Transform, the method removes the
+linear trend from the trace to avoid edge effects. The method also
+discards the out-of-bounds samples and windows that are padded with
+zeros by the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> (<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a>) -- The trace to transform.</p></li>
+<li><p><strong>detrend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The detrending method. Default is &quot;linear&quot;.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments are passed to the
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft_detrend.html#scipy.signal.ShortTimeFFT.stft_detrend" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft_detrend()</span></code></a> method. The same
+arguments are passed to the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.t.lower.html#scipy.signal.ShortTimeFFT.t" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.t()</span></code></a>
+method to get the times of the window centers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>times</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The times of the window centers in matplotlib datenum format.</p></li>
+<li><p><strong>frequencies</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The frequencies of the spectrogram.</p></li>
+<li><p><strong>short_time_spectra</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The short-time spectra of the trace with shape <code class="docutils literal notranslate"><span class="pre">(n_frequencies,</span>
+<span class="pre">n_times)</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stft</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">ShortTimeFourierTransform</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">window_duration</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">window_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">window_function</span><span class="o">=</span><span class="s2">&quot;hann&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sampling_rate</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trace</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">short_time_spectra</span> <span class="o">=</span> <span class="n">stft</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">short_time_spectra</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(28,) (101,) (101, 28)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform.map_transform">
+<span class="sig-name descname"><span class="pre">map_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><span class="pre">Stream</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#ShortTimeFourierTransform.map_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform.map_transform" title="Link to this definition">#</a></dt>
+<dd><p>Transform a stream into the spectral domain.</p>
+<p>This method transforms a stream into the spectral domain by applying
+the Short-Time Fourier Transform to each trace of the stream. The
+method returns the times of the spectrogram in matplotlib datenum
+format, the frequencies of the spectrogram, and the spectrogram of the
+stream.</p>
+<p>This method is basically a wrapper around the <a class="reference internal" href="#covseisnet.signal.ShortTimeFourierTransform.transform" title="covseisnet.signal.ShortTimeFourierTransform.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform()</span></code></a> method
+that applies the Short-Time Fourier Transform to each trace of the
+stream.</p>
+<p>Note that the stream must be ready for processing, i.e., it must pass
+the quality control from the property <code class="xref py py-attr docutils literal notranslate"><span class="pre">is_ready_to_process</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stream</strong> (<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a>) -- The stream to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>times</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The times of the spectrogram in matplotlib datenum format.</p></li>
+<li><p><strong>frequencies</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The frequencies of the spectrogram.</p></li>
+<li><p><strong>short_time_spectra</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The spectrogram of the stream with shape <code class="docutils literal notranslate"><span class="pre">(n_trace,</span> <span class="pre">n_frequencies,</span>
+<span class="pre">n_times)</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments are passed to the <a class="reference internal" href="#covseisnet.signal.ShortTimeFourierTransform.transform" title="covseisnet.signal.ShortTimeFourierTransform.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform()</span></code></a>
+method.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stft</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">ShortTimeFourierTransform</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">window_duration</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">window_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">window_function</span><span class="o">=</span><span class="s2">&quot;hann&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sampling_rate</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">short_time_spectra</span> <span class="o">=</span> <span class="n">stft</span><span class="o">.</span><span class="n">map_transform</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">short_time_spectra</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(28,) (101,) (3, 101, 28)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.modulus_division">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">modulus_division</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.12)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#modulus_division"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.modulus_division" title="Link to this definition">#</a></dt>
+<dd><p>Division of a number by the absolute value or its modulus.</p>
+<p>Given a complex number (or array) <span class="math notranslate nohighlight">\(x = a e^{i\phi}\)</span>,
+where <span class="math notranslate nohighlight">\(a\)</span> is the modulus and <span class="math notranslate nohighlight">\(\phi\)</span> the phase, the function
+returns the unit-modulus complex number such as</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{C} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx e^{i\phi}\]</div>
+<p>This method normalizes the input complex number by dividing it by its
+modulus plus a small epsilon value to prevent division by zero,
+effectively scaling the modulus to 1 while preserving the phase.</p>
+<p>Note that this function also work with real-valued arrays, in which case
+the modulus is the absolute value of the real number. It is useful to
+normalize seismic traces in the temporal domain. It writes</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{R} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx \text{sign}(x)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The complex-valued data to extract the unit complex number from.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- A small value added to the modulus to avoid division by zero. Default
+is 1e-10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The unit complex number with the same phase as the input data, or the
+sign of the real number if the input is real-valued.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.smooth_modulus_division">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">smooth_modulus_division</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#smooth_modulus_division"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.smooth_modulus_division" title="Link to this definition">#</a></dt>
+<dd><p>Modulus division of a complex number with smoothing.</p>
+<p>Given a complex array <span class="math notranslate nohighlight">\(x[n] = a[n] e^{i\phi[n]}\)</span>, where <span class="math notranslate nohighlight">\(a[n]\)</span>
+is the modulus and <span class="math notranslate nohighlight">\(\phi[n]\)</span> the phase, the function returns the
+normalized complex array <span class="math notranslate nohighlight">\(\tilde{x}[n]\)</span> such as</p>
+<div class="math notranslate nohighlight">
+\[\tilde{x}[n] = \frac{x[n]}{\mathcal S a[n] + \epsilon}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal S a[n]\)</span> is a smoothed version of the modulus array
+<span class="math notranslate nohighlight">\(a[n]\)</span>. The smoothing function is performed with the Savitzky-Golay
+filter, and the order and length of the filter are set by the <code class="docutils literal notranslate"><span class="pre">smooth</span></code>
+and <code class="docutils literal notranslate"><span class="pre">order</span></code> parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The spectra to detrend. Must be of shape <code class="docutils literal notranslate"><span class="pre">(n_frequencies,</span> <span class="pre">n_times)</span></code>.</p></li>
+<li><p><strong>smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- Smoothing window size in points.</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- Smoothing order. Check the scipy function
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">savgol_filter()</span></code></a> function for more details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- A regularizer for avoiding zero division.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">The</span> <span class="pre">spectrum</span> <span class="pre">divided</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">smooth</span> <span class="pre">modulus</span> <span class="pre">spectrum.</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.smooth_envelope_division">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">smooth_envelope_division</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#smooth_envelope_division"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.smooth_envelope_division" title="Link to this definition">#</a></dt>
+<dd><p>Normalize seismic traces by a smooth version of its envelope.</p>
+<p>This function normalizes seismic traces by a smooth version of its
+envelope. The envelope is calculated with the Hilbert transform, and then
+smoothed with the Savitzky-Golay filter. The order and length of the
+filter are set by the <code class="docutils literal notranslate"><span class="pre">smooth</span></code> and <code class="docutils literal notranslate"><span class="pre">order</span></code> parameters.</p>
+<p>Considering the seismic trace <span class="math notranslate nohighlight">\(x(t)\)</span>, the normalized trace
+<span class="math notranslate nohighlight">\(\hat x(t)\)</span> is obtained with</p>
+<div class="math notranslate nohighlight">
+\[\hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is an smoothing operator applied to Hilbert envelope of
+the trace <span class="math notranslate nohighlight">\(x(t)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The seismic trace to normalize.</p></li>
+<li><p><strong>smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- The length of the Savitzky-Golay filter for smoothing the envelope.</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- The order of the Savitzky-Golay filter for smoothing the envelope.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- Regularization parameter in division, set to <code class="docutils literal notranslate"><span class="pre">1e-10</span></code> by default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The normalized seismic trace.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.entropy">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.entropy" title="Link to this definition">#</a></dt>
+<dd><p>Entropy calculation.</p>
+<p>Entropy calculated from a given distribution of values. The entropy is
+defined as</p>
+<div class="math notranslate nohighlight">
+\[h = - \sum_{n=0}^N n x_n \log(x_n + \epsilon)\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_n\)</span> is the distribution of values. This function assumes the
+distribution is normalized by its sum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The distribution of values.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The regularization parameter for the logarithm.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.sum()</span></code></a> function.
+Typically, the axis along which the sum is performed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.diversity">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">diversity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#diversity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.diversity" title="Link to this definition">#</a></dt>
+<dd><p>Shanon diversity index calculation.</p>
+<p>Shanon diversity index calculated from a given distribution of values. The
+diversity index is defined as</p>
+<div class="math notranslate nohighlight">
+\[D = \exp(h + \epsilon)\]</div>
+<p>where <span class="math notranslate nohighlight">\(h\)</span> is the entropy of the distribution of values. This function
+assumes the distribution is normalized by its sum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The distribution of values.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The regularization parameter for the logarithm.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.sum()</span></code></a> function.
+Typically, the axis along which the sum is performed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.width">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#width"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.width" title="Link to this definition">#</a></dt>
+<dd><p>Width calculation.</p>
+<p>Width calculated from a given distribution of values. The width is defined
+as</p>
+<div class="math notranslate nohighlight">
+\[\sigma = \sum_{n=0}^N n x_n\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_n\)</span> is the distribution of values. This function assumes the
+distribution is normalized by its sum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The distribution of values.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.sum()</span></code></a> function.
+Typically, the axis along which the sum is performed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.bandpass_filter">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_band</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/signal.html#bandpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.bandpass_filter" title="Link to this definition">#</a></dt>
+<dd><p>Bandpass filter the signal.</p>
+<p>Apply a Butterworth bandpass filter to the signal. Uses
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
+avoid phase shift.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) -- The signal to filter.</p></li>
+<li><p><strong>sampling_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The sampling rate in Hz.</p></li>
+<li><p><strong>frequency_band</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>) -- The frequency band to filter in Hz.</p></li>
+<li><p><strong>filter_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The order of the Butterworth filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a> -- The filtered signal.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.signal.hilbert_envelope">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">hilbert_envelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#hilbert_envelope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.hilbert_envelope" title="Link to this definition">#</a></dt>
+<dd><p>Hilbert envelope calculation.</p>
+<p>Calculate the envelope of a signal using the Hilbert transform. The
+envelope is defined as</p>
+<div class="math notranslate nohighlight">
+\[\text{envelope}(x) = \sqrt{x^2 + \text{hilbert}(x)^2}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The signal to calculate the envelope from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The envelope of the signal.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="stream.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Network stream</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="covariance.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Covariance Matrix</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.sampling_rate"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.sampling_rate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.frequencies"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.frequencies</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.times"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.times()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.valid_window_bounds"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.valid_window_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.transform"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.ShortTimeFourierTransform.map_transform"><code class="docutils literal notranslate"><span class="pre">ShortTimeFourierTransform.map_transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.modulus_division"><code class="docutils literal notranslate"><span class="pre">modulus_division()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.smooth_modulus_division"><code class="docutils literal notranslate"><span class="pre">smooth_modulus_division()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.smooth_envelope_division"><code class="docutils literal notranslate"><span class="pre">smooth_envelope_division()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.entropy"><code class="docutils literal notranslate"><span class="pre">entropy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.diversity"><code class="docutils literal notranslate"><span class="pre">diversity()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.width"><code class="docutils literal notranslate"><span class="pre">width()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.bandpass_filter"><code class="docutils literal notranslate"><span class="pre">bandpass_filter()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.signal.hilbert_envelope"><code class="docutils literal notranslate"><span class="pre">hilbert_envelope()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

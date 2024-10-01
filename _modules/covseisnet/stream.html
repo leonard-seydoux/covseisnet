@@ -1,0 +1,1536 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>covseisnet.stream &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/stream';</script>
+    <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2F_modules/covseisnet/stream.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for covseisnet.stream</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">In order to ease the analysis of network seismic data, we offer a set of</span>
+<span class="sd">classes and methods designed for reading, pre-processing, and analyzing</span>
+<span class="sd">seismic data from these networks. The workflow involves working on traces that</span>
+<span class="sd">have been synchronized and pre-processed using consistent methods. To</span>
+<span class="sd">facilitate this, we introduce the concept of a</span>
+<span class="sd">:class:`~covseisnet.stream.NetworkStream`, a subclass of the ObsPy</span>
+<span class="sd">:class:`~obspy.core.stream.Stream` object, which retains all the methods of</span>
+<span class="sd">the Stream object while adding specialized methods for the pre-processing and</span>
+<span class="sd">synchronization of traces.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">obspy</span>
+<span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">UTCDateTime</span>
+<span class="kn">from</span> <span class="nn">obspy.core.stream</span> <span class="kn">import</span> <span class="n">Stream</span>
+<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Stats</span><span class="p">,</span> <span class="n">Trace</span>
+<span class="kn">from</span> <span class="nn">obspy.core.inventory</span> <span class="kn">import</span> <span class="n">Inventory</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">signal</span>
+
+
+<div class="viewcode-block" id="NetworkStream">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream">[docs]</a>
+<span class="k">class</span> <span class="nc">NetworkStream</span><span class="p">(</span><span class="n">Stream</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Subclass of the ObsPy :class:`~obspy.core.stream.Stream` tailored for</span>
+<span class="sd">    managing continuous data from seismic networks. The class is designed to</span>
+<span class="sd">    handle multiple traces from different stations, and provides additional</span>
+<span class="sd">    methods for pre-processing and synchronization of the traces. It also</span>
+<span class="sd">    provide network-wide methods such as the calculation of the common time</span>
+<span class="sd">    vector of the traces.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        The following list of methods and attributes are the ones that are</span>
+<span class="sd">        specific to the :class:`~covseisnet.stream.NetworkStream` object. The</span>
+<span class="sd">        full list of methods and attributes of the ObsPy</span>
+<span class="sd">        :class:`~obspy.core.stream.Stream` object are available in the ObsPy</span>
+<span class="sd">        documentation.</span>
+
+<span class="sd">    .. rubric:: Boolean attributes</span>
+
+<span class="sd">    - :attr:`~covseisnet.stream.NetworkStream.synced` — traces share the same</span>
+<span class="sd">      time vector.</span>
+
+<span class="sd">    - :attr:`~covseisnet.stream.NetworkStream.equal_rates` — traces have the</span>
+<span class="sd">      same sampling rate.</span>
+
+<span class="sd">    - :attr:`~covseisnet.stream.NetworkStream.equal_length` — traces have the</span>
+<span class="sd">      same number of points.</span>
+
+<span class="sd">    .. rubric:: Numeric attributes</span>
+
+<span class="sd">    - :attr:`~covseisnet.stream.NetworkStream.sampling_rate` — common traces</span>
+<span class="sd">      sampling rate.</span>
+
+<span class="sd">    - :attr:`~covseisnet.stream.NetworkStream.npts` — common traces number of</span>
+<span class="sd">      samples.</span>
+
+<span class="sd">    - :attr:`~covseisnet.stream.NetworkStream.coordinates` — geographical</span>
+<span class="sd">      coordinates of the stations.</span>
+
+<span class="sd">    .. rubric:: Methods</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.stats()` — stats dictionaries of</span>
+<span class="sd">      traces.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.read()` — read seismic waveforms</span>
+<span class="sd">      files into a :class:`~covseisnet.stream.NetworkStream` object.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.times()` — common traces time</span>
+<span class="sd">      vector.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.time_extent()` — minimal time</span>
+<span class="sd">      extent of traces in a stream.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.cut()` — trim stream between</span>
+<span class="sd">      given start and end times with string format.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.synchronize()` — synchronize the</span>
+<span class="sd">      traces into the same times with interpolation.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.process()` — process the traces</span>
+<span class="sd">      with a dictionary of processing steps.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.whiten()` — whiten traces in the</span>
+<span class="sd">      spectral domain.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.time_normalize()` — normalize</span>
+<span class="sd">      the traces in the temporal domain.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.assign_coordinates()` — assign</span>
+<span class="sd">      the geographical coordinates to the traces.</span>
+
+<span class="sd">    - :meth:`~covseisnet.stream.NetworkStream.download_inventory()` — get the</span>
+<span class="sd">      inventory of each trace.</span>
+
+<span class="sd">    .. tip::</span>
+
+<span class="sd">        There are three main ways to create a NetworkStream object:</span>
+
+<span class="sd">        #. Use the :meth:`NetworkStream.read` method to read seismic waveforms</span>
+<span class="sd">           files into a NetworkStream object. This method is the core method</span>
+<span class="sd">           to read seismic data into the package.</span>
+
+<span class="sd">        #. Use the :func:`covseisnet.stream.read` function, which is a wrapper</span>
+<span class="sd">           to the first method. Note that this function is directly available</span>
+<span class="sd">           from the package root.</span>
+
+<span class="sd">        #. Pass any ObsPy :class:`~obspy.core.stream.Stream` object to the</span>
+<span class="sd">           :class:`~covseisnet.stream.NetworkStream` constructor. This is the</span>
+<span class="sd">           case if you have a special reader for your data.</span>
+
+<span class="sd">        Other standard ObsPy methods are available for instanciating a</span>
+<span class="sd">        :class:`~covseisnet.stream.NetworkStream` object, directly documented</span>
+<span class="sd">        in the ObsPy documentation.</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    1. Read seismic waveforms with the :meth:`NetworkStream.read` method.</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.NetworkStream.read()</span>
+<span class="sd">        &gt;&gt;&gt; print(type(stream))</span>
+<span class="sd">        &lt;class &#39;covseisnet.stream.NetworkStream&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; print(stream)</span>
+<span class="sd">        NetworkStream of 3 traces from 1 station(s) (synced):</span>
+<span class="sd">        BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples</span>
+<span class="sd">        BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples</span>
+<span class="sd">        BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples</span>
+
+<span class="sd">    2. Read seismic waveforms with the :func:`~covseisnet.stream.read`</span>
+<span class="sd">       function.</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; print(type(stream))</span>
+<span class="sd">        &lt;class &#39;covseisnet.stream.NetworkStream&#39;&gt;</span>
+
+<span class="sd">    3. Create a :class:`~covseisnet.stream.NetworkStream` object from an ObsPy</span>
+<span class="sd">       :class:`~obspy.core.stream.Stream` object.</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; import obspy</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = obspy.read()</span>
+<span class="sd">        &gt;&gt;&gt; network_stream = csn.NetworkStream(stream)</span>
+<span class="sd">        &gt;&gt;&gt; print(type(network_stream))</span>
+<span class="sd">        &lt;class &#39;covseisnet.stream.NetworkStream&#39;&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NetworkStream</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the NetworkStream object.</span>
+
+<span class="sd">        This method wraps the original method of Obspy Stream with two changes:</span>
+<span class="sd">        (1) the Stream is named NetworkStream to allow for differentiating</span>
+<span class="sd">        both objects, and (2) it contains the flag &quot;synced&quot; or &quot;not synced&quot;</span>
+<span class="sd">        at the first line to indicate if a synchronization is required to</span>
+<span class="sd">        further process the traces.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        *args, *kwargs: optional</span>
+<span class="sd">            Positional and keyword arguments directly passed to the original</span>
+<span class="sd">            function for legacy, future legacy, and interoperability.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str:</span>
+<span class="sd">            The string formatted representation of the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Catch orinal representation</span>
+        <span class="n">original_string</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">NetworkStream</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Turn Stream to NetworkStream</span>
+        <span class="n">string_original</span> <span class="o">=</span> <span class="n">original_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">first_line</span> <span class="o">=</span> <span class="n">string_original</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Stream&quot;</span><span class="p">,</span> <span class="s2">&quot;NetworkStream&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Add synced flag</span>
+        <span class="n">synced_flag</span> <span class="o">=</span> <span class="s2">&quot;synced&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">synced</span> <span class="k">else</span> <span class="s2">&quot;not synced&quot;</span>
+        <span class="n">string_original</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">synced_flag</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Return</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string_original</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Trace | NetworkStream&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NetworkStream.stats">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.stats">[docs]</a>
+    <span class="k">def</span> <span class="nf">stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span> <span class="o">|</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stats dictionary of one of the traces in the stream.</span>
+
+<span class="sd">        The purpose of this method is to extract the stats dictionary of one</span>
+<span class="sd">        of the traces (by default the first trace) in the stream when the</span>
+<span class="sd">        traces are synchronized. This is not to be confused with the</span>
+<span class="sd">        :meth:`~obspy.core.stream.Trace.stats` attribute available at the</span>
+<span class="sd">        trace level.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        index: int, optional</span>
+<span class="sd">            The index of the trace in the stream. Default to 0.</span>
+<span class="sd">        key: str, optional</span>
+<span class="sd">            The key of the stats dictionary. If set, the method returns the</span>
+<span class="sd">            value of the key in the stats dictionary. If not set, the method</span>
+<span class="sd">            returns the stats dictionary itself.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any or :class:`~obspy.core.trace.Stats`</span>
+<span class="sd">            The stats dictionary of the trace. If the key is set, the method</span>
+<span class="sd">            returns the value of the key in the stats dictionary.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; stream.stats()</span>
+<span class="sd">                 network: BW</span>
+<span class="sd">                 station: RJOB</span>
+<span class="sd">                location:</span>
+<span class="sd">                 channel: EHZ</span>
+<span class="sd">               starttime: 2009-08-24T00:20:03.000000Z</span>
+<span class="sd">                 endtime: 2009-08-24T00:20:32.990000Z</span>
+<span class="sd">           sampling_rate: 100.0</span>
+<span class="sd">                   delta: 0.01</span>
+<span class="sd">                    npts: 3000</span>
+<span class="sd">                   calib: 1.0</span>
+<span class="sd">            back_azimuth: 100.0</span>
+<span class="sd">             inclination: 30.0</span>
+<span class="sd">                response: Channel Response</span>
+<span class="sd">                From M/S (Velocity in Meters Per Second) to COUNTS (Digital Counts)</span>
+<span class="sd">                Overall Sensitivity: 2.5168e+09 defined at 0.020 Hz</span>
+<span class="sd">                4 stages:</span>
+<span class="sd">                        Stage 1: PolesZerosResponseStage from M/S to V, gain: 1500</span>
+<span class="sd">                        Stage 2: CoefficientsTypeResponseStage from V to COUNTS, gain: 1.67785e+06</span>
+<span class="sd">                        Stage 3: FIRResponseStage from COUNTS to COUNTS, gain: 1</span>
+<span class="sd">                        Stage 4: FIRResponseStage from COUNTS to COUNTS, gain: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Extract the stats dictionary</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="s2">&quot;stats&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Raise an error if the stats dictionary is not defined</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">stats</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Stats dictionary is not defined.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Return an item if key is set, otherwise the entire dictionary</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">stats</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">stats</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.read">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.read">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">pathname_or_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BytesIO</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NetworkStream&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read seismic waveforms files into a</span>
+<span class="sd">        :class:`~covseisnet.stream.NetworkStream` object.</span>
+
+<span class="sd">        This function uses the :func:`obspy.core.stream.read` function to read</span>
+<span class="sd">        the streams. A detailed list of arguments and options are available in</span>
+<span class="sd">        the documentation. This function opens either one or multiple waveform</span>
+<span class="sd">        files given via file name or URL using the ``pathname_or_url``</span>
+<span class="sd">        attribute. The format of the waveform file will be automatically</span>
+<span class="sd">        detected if not given. See the `Supported Formats` section in the</span>
+<span class="sd">        :func:`obspy.core.stream.read` function.</span>
+
+<span class="sd">        This function returns an :class:`~covseisnet.stream.NetworkStream`</span>
+<span class="sd">        object which directly inherits from the</span>
+<span class="sd">        :class:`obspy.core.stream.Stream` object.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        pathname_or_url: str or io.BytesIO or None</span>
+<span class="sd">            String containing a file name or a URL or a open file-like object.</span>
+<span class="sd">            Wildcards are allowed for a file name. If this attribute is</span>
+<span class="sd">            omitted, an example :class:`~covseisnet.stream.NetworkStream`</span>
+<span class="sd">            object will be returned.</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Other parameters are passed to the :func:`obspy.core.stream.read`</span>
+<span class="sd">            directly.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~covseisnet.stream.NetworkStream`</span>
+<span class="sd">            The seismic waveforms.</span>
+
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.NetworkStream.read()</span>
+<span class="sd">        &gt;&gt;&gt; print(stream)</span>
+<span class="sd">        Network Stream of 3 traces from 1 stations (synced):</span>
+<span class="sd">        BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="sd">        BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="sd">        BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`~obspy.core.stream.read`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">pathname_or_url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.times">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.times">[docs]</a>
+    <span class="k">def</span> <span class="nf">times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Common time vector.</span>
+
+<span class="sd">        Because the :class:`~covseisnet.stream.NetworkStream` handles traces</span>
+<span class="sd">        sampled on the same time vector, this function only returns the times</span>
+<span class="sd">        of the first trace with the Trace method</span>
+<span class="sd">        :meth:`~obspy.core.trace.Trace.times` if the traces are synchronized.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        *args: tuple</span>
+<span class="sd">            Arguments passed to the Trace method</span>
+<span class="sd">            :meth:`~obspy.core.trace.Trace.times`. For instance, passing</span>
+<span class="sd">            ``&quot;matplotlib&quot;`` allows to recover matplotlib timestamps instead</span>
+<span class="sd">            of seconds from the start of the trace (default).</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Arguments passed to the method</span>
+<span class="sd">            :meth:`~obspy.core.trace.Trace.times`. For instance, passing</span>
+<span class="sd">            ``type=&quot;matplotlib&quot;`` allows to recover matplotlib timestamps</span>
+<span class="sd">            instead of seconds from the start of the trace (default).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The timestamps.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        AssertionError</span>
+<span class="sd">            If the traces are not synchronized.</span>
+
+
+<span class="sd">        .. tip::</span>
+
+<span class="sd">            By default, the method returns the times in seconds since the</span>
+<span class="sd">            start of the trace. In order to extract times in matplotlib</span>
+<span class="sd">            format, you can set the ``type`` parameter of the</span>
+<span class="sd">            :meth:`~obspy.core.trace.Trace.times` method such as</span>
+
+<span class="sd">            &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">            &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">            &gt;&gt;&gt; stream.times(&quot;matplotlib&quot;)</span>
+<span class="sd">            array([14480.01392361, 14480.01392373, 14480.01392384, ...,</span>
+<span class="sd">            14480.01427049, 14480.0142706 , 14480.01427072])</span>
+
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`obspy.core.trace.Trace.times`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check if the traces are synchronized</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">synced</span><span class="p">,</span> <span class="s2">&quot;Traces not synced, check the synchronize method.&quot;</span>
+
+        <span class="c1"># Return the times of the first trace</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.time_extent">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.time_extent">[docs]</a>
+    <span class="k">def</span> <span class="nf">time_extent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">UTCDateTime</span><span class="p">,</span> <span class="n">UTCDateTime</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the minimal time extent of traces in a stream.</span>
+
+<span class="sd">        This function returns the minimal start and end times of the traces in</span>
+<span class="sd">        the stream. This is useful when synchronizing the traces to the same</span>
+<span class="sd">        time vector. The start time is defined as the maximum start time of</span>
+<span class="sd">        the traces, and the end time is defined as the minimum end time of the</span>
+<span class="sd">        traces.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        stream: :class:`~covseisnet.stream.NetworkStream` or</span>
+<span class="sd">        :class:`~obspy.core.stream.Stream`</span>
+<span class="sd">            The stream object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple of :class:`~obspy.core.utcdatetime.UTCDateTime`</span>
+<span class="sd">            The minimal start and end times of the traces.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; stream.time_extent()</span>
+<span class="sd">        (UTCDateTime(2009, 8, 24, 0, 20, 3), UTCDateTime(2009, 8, 24, 0, 20, 32, 990000))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">latest_starttime</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">earliest_endtime</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">latest_starttime</span><span class="p">,</span> <span class="n">earliest_endtime</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.cut">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.cut">[docs]</a>
+    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">starttime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span><span class="p">,</span>
+        <span class="n">endtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Trim traces between start and end date times.</span>
+
+<span class="sd">        This function is a wrapper to the ObsPy</span>
+<span class="sd">        :meth:`~obspy.core.stream.Stream.trim` method, but supports string</span>
+<span class="sd">        format for the start and end times, enabling a more user-friendly</span>
+<span class="sd">        interface. The function uses the ObsPy</span>
+<span class="sd">        :class:`~obspy.core.utcdatetime.UTCDateTime` function in order to</span>
+<span class="sd">        parse the start and end times.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+
+<span class="sd">        starttime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`</span>
+<span class="sd">            The start date time.</span>
+<span class="sd">        endtime : str or :class:`~obspy.core.utcdatetime.UTCDateTime`</span>
+<span class="sd">            The end date time.</span>
+<span class="sd">        duration : float, optional</span>
+<span class="sd">            The duration of the trace in seconds. If set, the end time is</span>
+<span class="sd">            calculated as ``starttime + duration``. This parameter is ignored</span>
+<span class="sd">            if the ``endtime`` parameter is set.</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Arguments passed to the :meth:`~obspy.core.stream.Stream.trim`</span>
+<span class="sd">            method.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        This example shows how to cut a stream between two given times. The</span>
+<span class="sd">        stream is first read from the example data, and then cut between two</span>
+<span class="sd">        given times.</span>
+
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; stream.cut(&quot;2009-08-24 00:20:05&quot;, &quot;2009-08-24 00:20:12&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(stream)</span>
+<span class="sd">        NetworkStream of 3 traces from 1 station(s) (synced):</span>
+<span class="sd">        BW.RJOB..EHZ | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples</span>
+<span class="sd">        BW.RJOB..EHN | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples</span>
+<span class="sd">        BW.RJOB..EHE | 2009-08-24T00:20:05.000000Z - 2009-08-24T00:20:12.000000Z | 100.0 Hz, 701 samples</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`obspy.core.stream.Stream.trim`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">starttime</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">starttime</span><span class="p">)</span>
+        <span class="n">endtime</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">endtime</span> <span class="ow">or</span> <span class="n">starttime</span> <span class="o">+</span> <span class="n">duration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.synchronize">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.synchronize">[docs]</a>
+    <span class="k">def</span> <span class="nf">synchronize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="n">sampling_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Synchronize seismic traces with interpolation.</span>
+
+<span class="sd">        This method synchronizes the seismic traces in the stream by</span>
+<span class="sd">        interpolating the traces to a common time vector. The method uses the</span>
+<span class="sd">        largest start time and the smallest end time of the traces to</span>
+<span class="sd">        interpolate all traces to the same time vector with the ObsPy method</span>
+<span class="sd">        :meth:`~obspy.core.trace.Trace.interpolate`.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        method: str, default</span>
+<span class="sd">            Interpolation method. Default to ``&quot;linear&quot;``.</span>
+<span class="sd">        sampling_rate: float, optional</span>
+<span class="sd">            The sampling rate of the traces. If not set and if the traces have</span>
+<span class="sd">            all the same sampling rate, the method uses the sampling rate of</span>
+<span class="sd">            the first trace. If not set and if the traces have different</span>
+<span class="sd">            sampling rates, the method raises a ValueError.</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Additional keyword arguments passed to the</span>
+<span class="sd">            :meth:`~obspy.core.trace.Trace.interpolate` method. Check the</span>
+<span class="sd">            ObsPy documentation for more details on the available options.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the traces have different sampling rates and the</span>
+<span class="sd">            ``sampling_rate`` parameter is not set.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`obspy.core.trace.Trace.interpolate`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Return if the traces are already synchronized</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">synced</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Check if traces have the same sampling rate</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">equal_rates</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Traces have different sampling rates.&quot;</span>
+                <span class="s2">&quot;Use the `resample` method to resample the traces,&quot;</span>
+                <span class="s2">&quot;or specify the `sampling_rate` parameter to interpolate&quot;</span>
+                <span class="s2">&quot;the traces with `synchronize`.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Find out the largest start time and the smallest end time</span>
+        <span class="n">time_extent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_extent</span><span class="p">()</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">time_extent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">time_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># The following information is extracted from the first trace, since</span>
+        <span class="c1"># at this point, the traces should either have the same sampling rate</span>
+        <span class="c1"># or the user should have specified the sampling rate.</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># Get the sampling rate</span>
+        <span class="n">sampling_rate</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="s2">&quot;sampling_rate&quot;</span><span class="p">,</span> <span class="n">sampling_rate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sampling_rate</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sampling rate is not defined.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the number of samples</span>
+        <span class="n">npts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">sampling_rate</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># Update kwargs</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">interpolation_method</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;npts&quot;</span><span class="p">,</span> <span class="n">npts</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;starttime&quot;</span><span class="p">,</span> <span class="n">time_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;endtime&quot;</span><span class="p">,</span> <span class="n">time_extent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">)</span>
+
+        <span class="c1"># Interpolate all traces</span>
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">trace</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.process">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.process">[docs]</a>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processing</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the seismic traces in the stream.</span>
+
+<span class="sd">        This method processes the seismic traces in the stream with a</span>
+<span class="sd">        dictionary of processing steps. The dictionary must contain the</span>
+<span class="sd">        processing steps as keys and the parameters as values. The method</span>
+<span class="sd">        applies the processing steps to each trace in the stream.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        processing: dict</span>
+<span class="sd">            The dictionary of processing steps.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.NetworkStream.read()</span>
+<span class="sd">        &gt;&gt;&gt; processing = {</span>
+<span class="sd">        ...     &quot;detrend&quot;: &quot;linear&quot;,</span>
+<span class="sd">        ...     &quot;taper&quot;: 0.05,</span>
+<span class="sd">        ...     &quot;filter&quot;: {&quot;type&quot;: &quot;bandpass&quot;, &quot;freqmin&quot;: 1, &quot;freqmax&quot;: 10},</span>
+<span class="sd">        ...     &quot;time_normalize&quot;: {&quot;method&quot;: &quot;onebit&quot;}</span>
+<span class="sd">        }</span>
+<span class="sd">        &gt;&gt;&gt; stream.process(processing)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">processing</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="n">args</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.whiten">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.whiten">[docs]</a>
+    <span class="k">def</span> <span class="nf">whiten</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">window_duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">smooth_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">smooth_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Whiten traces in the spectral domain.</span>
+
+<span class="sd">        The action of whitening a seismic trace is to normalize the trace in</span>
+<span class="sd">        the spectral domain. Typically, the spectrum becomes flat after</span>
+<span class="sd">        whitening, resembling white noise. This strategy is often used to</span>
+<span class="sd">        remove the influence of time-localized signal and diminish the site</span>
+<span class="sd">        effects from a seismic station to another. Any local source is also</span>
+<span class="sd">        drastically reduced thanks to the whitening process.</span>
+
+<span class="sd">        The following description is applied to every trace in the stream. For</span>
+<span class="sd">        the sake of simplicity, we consider a single trace :math:`x(t)`. Note</span>
+<span class="sd">        that the method is applied in every window of a short-time Fourier</span>
+<span class="sd">        transform of the trace, namely :math:`s(t, \omega)` before applying</span>
+<span class="sd">        the inverse short-time Fourier transform to obtain the whitened</span>
+<span class="sd">        seismogram :math:`\hat x(t)`. We here nore :math:`x(\omega)` the</span>
+<span class="sd">        spectrum of the trace within a given window. For more information on</span>
+<span class="sd">        the short-time Fourier transform, see the</span>
+<span class="sd">        :class:`~covseisnet.signal.ShortTimeFourierTransform` class</span>
+<span class="sd">        documentation.</span>
+
+<span class="sd">        We define the whitening process as</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \hat x(\omega) = \frac{x(\omega)}{\mathcal{S}x(\omega) +</span>
+<span class="sd">            \epsilon},</span>
+
+<span class="sd">        where :math:`\mathcal{S}` is a smoothing operator applied to the</span>
+<span class="sd">        spectrum :math:`x(\omega)`, and :math:`\epsilon` is a regularization</span>
+<span class="sd">        parameter to avoid division by zero. The smoothing operator is defined</span>
+<span class="sd">        by the ``smooth_length`` parameter. We distinguish two cases:</span>
+
+<span class="sd">        - If the ``smooth_length`` parameter is set to 0, the operator</span>
+<span class="sd">          :math:`\mathcal{S}` is defined as :math:`\mathcal{S}x(\omega) =</span>
+<span class="sd">          |x(\omega)|`, and therefore</span>
+
+<span class="sd">          .. math::</span>
+
+<span class="sd">              \hat x(\omega) = \frac{x(\omega)}{|x(\omega)| + \epsilon}</span>
+<span class="sd">              \approx e^{i\phi}.</span>
+
+<span class="sd">          In this case, the method calls the</span>
+<span class="sd">          :func:`~covseisnet.signal.modulus_division`.</span>
+
+<span class="sd">        - If the ``smooth_length`` parameter is set to a value greater than 0,</span>
+<span class="sd">          the operator :math:`\mathcal{S}` is defined as a `Savitzky-Golay</span>
+<span class="sd">          filter</span>
+<span class="sd">          &lt;https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter&gt;`_ with</span>
+<span class="sd">          parameters set by ``smooth_length`` and ``smooth_order``. This</span>
+<span class="sd">          allows to introduce less artifacts in the whitening process. In this</span>
+<span class="sd">          case, the method calls the</span>
+<span class="sd">          :func:`~covseisnet.signal.smooth_modulus_division`.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        window_duration: float</span>
+<span class="sd">            The duration of the window for the short-time Fourier transform.</span>
+<span class="sd">        smooth_length: int, optional</span>
+<span class="sd">            The length of the Savitzky-Golay filter for smoothing the</span>
+<span class="sd">            spectrum. If set to 0, the spectrum is not smoothed (default).</span>
+<span class="sd">        smooth_order: int, optional</span>
+<span class="sd">            The order of the Savitzky-Golay filter for smoothing the spectrum.</span>
+<span class="sd">            This parameter is only used if ``smooth_length`` is greater than</span>
+<span class="sd">            0.</span>
+<span class="sd">        epsilon: float, optional</span>
+<span class="sd">            Regularization parameter in division, set to 1e-10 by default.</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Additional keyword arguments passed to the covseisnet</span>
+<span class="sd">            :func:`~covseisnet.signal.ShortTimeFourierTransform` class</span>
+<span class="sd">            constructor.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Automatically set the sampling rate from self</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">)</span>
+
+        <span class="c1"># Add window duration to kwargs</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;window_duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">window_duration</span>
+
+        <span class="c1"># Short-Time Fourier Transform instance</span>
+        <span class="n">stft_instance</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">ShortTimeFourierTransform</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Assert that the transform is invertible</span>
+        <span class="k">assert</span> <span class="n">stft_instance</span><span class="o">.</span><span class="n">invertible</span><span class="p">,</span> <span class="s2">&quot;The transform is not invertible.&quot;</span>
+
+        <span class="c1"># Define the whitening method</span>
+        <span class="k">if</span> <span class="n">smooth_length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">whiten_method</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+                <span class="n">signal</span><span class="o">.</span><span class="n">modulus_division</span><span class="p">,</span>
+                <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">smooth_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">whiten_method</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+                <span class="n">signal</span><span class="o">.</span><span class="n">smooth_modulus_division</span><span class="p">,</span>
+                <span class="n">smooth</span><span class="o">=</span><span class="n">smooth_length</span><span class="p">,</span>
+                <span class="n">order</span><span class="o">=</span><span class="n">smooth_order</span><span class="p">,</span>
+                <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Incorrect smooth_length value: </span><span class="si">{</span><span class="n">smooth_length</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Loop over traces</span>
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="c1"># Calculate the Short-Time Fourier Transform</span>
+            <span class="n">waveform</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">spectrum</span> <span class="o">=</span> <span class="n">stft_instance</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">waveform</span><span class="p">)</span>
+
+            <span class="c1"># Whiten the spectrum</span>
+            <span class="n">spectrum</span> <span class="o">=</span> <span class="n">whiten_method</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+
+            <span class="c1"># Inverse Short-Time Fourier Transform</span>
+            <span class="n">waveform</span> <span class="o">=</span> <span class="n">stft_instance</span><span class="o">.</span><span class="n">istft</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+
+            <span class="c1"># Truncate the waveform and replace the trace data</span>
+            <span class="n">waveform</span> <span class="o">=</span> <span class="n">waveform</span><span class="p">[:</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">]</span>
+            <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">waveform</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.time_normalize">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.time_normalize">[docs]</a>
+    <span class="k">def</span> <span class="nf">time_normalize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;onebit&quot;</span><span class="p">,</span>
+        <span class="n">smooth_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="n">smooth_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Normalize the seismic traces in temporal domain.</span>
+
+<span class="sd">        Considering the seismic trace :math:`x(t)`, the normalized trace</span>
+<span class="sd">        :math:`\hat x(t)` is obtained with</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}</span>
+
+<span class="sd">        where :math:`A` is an operator applied to the trace :math:`x(t)`, and</span>
+<span class="sd">        :math:`\epsilon &gt; 0` is a regularization value to avoid division by 0.</span>
+<span class="sd">        The operator :math:`\mathcal{A}` is defined by the ``method``</span>
+<span class="sd">        parameter. We distinguish two cases:</span>
+
+<span class="sd">        - If the ``method`` parameter is set to ``&quot;onebit&quot;``, the operator</span>
+<span class="sd">          :math:`\mathcal{A}` is defined as :math:`\mathcal{A}x(t) = |x(t)|`,</span>
+<span class="sd">          and therefore</span>
+
+<span class="sd">          .. math::</span>
+
+<span class="sd">            \hat x(t) = \frac{x(t)}{|x(t)| + \epsilon} \approx</span>
+<span class="sd">            \text{sign}(x(t)).</span>
+
+<span class="sd">          In this case, the method calls the</span>
+<span class="sd">          :func:`~covseisnet.signal.modulus_division`.</span>
+
+<span class="sd">        - If the ``method`` parameter is set to ``&quot;smooth&quot;``, the operator</span>
+<span class="sd">          :math:`\mathcal{A}` is defined as a `Savitzky-Golay filter</span>
+<span class="sd">          &lt;https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter&gt;`_</span>
+<span class="sd">          applied to the Hilbert envelope of the trace. The Savitzky-Golay</span>
+<span class="sd">          filter is defined by the ``smooth_length`` and ``smooth_order``</span>
+<span class="sd">          parameters. This allows to introduce less artifacts in the</span>
+<span class="sd">          normalization process. In this case, the method calls the</span>
+<span class="sd">          :func:`~covseisnet.signal.smooth_envelope_division`.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        method : str, optional</span>
+<span class="sd">            Must be one of ``&quot;onebit&quot;`` (default) or ``&quot;smooth&quot;``.</span>
+
+<span class="sd">            - ``&quot;onebit&quot;``: compress the seismic trace into a series of -1 and</span>
+<span class="sd">              1.</span>
+
+<span class="sd">            - ``&quot;smooth&quot;``: normalize each trace by a smooth version of its</span>
+<span class="sd">              envelope.</span>
+
+<span class="sd">        smooth_length: int, optional</span>
+<span class="sd">            If the ``method`` keyword argument is set to ``&quot;smooth&quot;``, the</span>
+<span class="sd">            normalization is performed with the smoothed trace envelopes,</span>
+<span class="sd">            calculated over a sliding window of ``smooth_length`` samples.</span>
+<span class="sd">        smooth_order: int, optional</span>
+<span class="sd">            If the ``method`` keyword argument is set to ``&quot;smooth&quot;``, the</span>
+<span class="sd">            normalization is performed with the smoothed trace envelopes. The</span>
+<span class="sd">            smoothing order is set by the ``smooth_order`` parameter.</span>
+<span class="sd">        epsilon: float, optional</span>
+<span class="sd">            Regularization parameter in division, set to 1e-10 by default.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">match</span> <span class="n">method</span><span class="p">:</span>
+
+            <span class="k">case</span> <span class="s2">&quot;onebit&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                    <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">modulus_division</span><span class="p">(</span>
+                        <span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span>
+                    <span class="p">)</span>
+
+            <span class="k">case</span> <span class="s2">&quot;smooth&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                    <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">smooth_envelope_division</span><span class="p">(</span>
+                        <span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                        <span class="n">smooth_length</span><span class="p">,</span>
+                        <span class="n">smooth_order</span><span class="p">,</span>
+                        <span class="n">epsilon</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown method </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.assign_coordinates">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.assign_coordinates">[docs]</a>
+    <span class="k">def</span> <span class="nf">assign_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inventory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Inventory</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign the geographical coordinates to the traces.</span>
+
+<span class="sd">        This method assigns the geographical coordinates of the stations to</span>
+<span class="sd">        the traces in the stream from</span>
+<span class="sd">        :class:`~obspy.core.inventory.inventory.Inventory` or the inventory</span>
+<span class="sd">        file containing the inventory. The method uses the ObsPy</span>
+<span class="sd">        :func:`~obspy.core.inventory.inventory.read_inventory` method to</span>
+<span class="sd">        extract the coordinates of each trace in the stream if a filepath is</span>
+<span class="sd">        provided.</span>
+
+<span class="sd">        The method adds a coordinate dictionary to each trace in the stream.</span>
+<span class="sd">        The coordinate dictionary contains the keys ``latitude``,</span>
+<span class="sd">        ``longitude``, and ``elevation``.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        inventory: str or :class:`~obspy.core.inventory.inventory.Inventory`</span>
+<span class="sd">            The inventory file or the inventory object containing the station</span>
+<span class="sd">            coordinates.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; stream.assign_coordinates(&quot;inventory.xml&quot;)</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`~obspy.core.inventory.inventory.read_inventory`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">obspy.core.inventory</span> <span class="kn">import</span> <span class="n">read_inventory</span>
+
+        <span class="c1"># Get the coordinates</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inventory</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">inventory</span> <span class="o">=</span> <span class="n">read_inventory</span><span class="p">(</span><span class="n">inventory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inventory</span><span class="p">,</span> <span class="n">Inventory</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inventory is not an ObsPy Inventory object.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Add entire inventory to the stream</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory</span> <span class="o">=</span> <span class="n">inventory</span>
+
+        <span class="c1"># Loop over traces</span>
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">inventory</span><span class="o">.</span><span class="n">networks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="o">==</span> <span class="n">network</span><span class="o">.</span><span class="n">code</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">stations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span> <span class="o">==</span> <span class="n">station</span><span class="o">.</span><span class="n">code</span><span class="p">:</span>
+                            <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="p">{</span>
+                                <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">station</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                                <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">station</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                                <span class="s2">&quot;elevation&quot;</span><span class="p">:</span> <span class="n">station</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span>
+                            <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="NetworkStream.download_inventory">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.NetworkStream.download_inventory">[docs]</a>
+    <span class="k">def</span> <span class="nf">download_inventory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datacenter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;IRIS&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Inventory</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the inventory of each trace in the stream.</span>
+
+<span class="sd">        This method uses the ObsPy</span>
+<span class="sd">        :meth:`~obspy.clients.fdsn.client.Client.get_stations` method to</span>
+<span class="sd">        extract the inventory of each trace in the stream.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        datacenter: str, optional</span>
+<span class="sd">            The datacenter to use for retrieving the station coordinates. The</span>
+<span class="sd">            default is ``&quot;IRIS&quot;``.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; stream.download_inventory(datacenter=&quot;LMU&quot;)</span>
+<span class="sd">            Inventory created at 2024-08-20T09:10:33.403152Z</span>
+<span class="sd">                Created by: ObsPy 1.4.1</span>
+<span class="sd">                            https://www.obspy.org</span>
+<span class="sd">                Sending institution: ObsPy 1.4.1,SeisComP (LMU)</span>
+<span class="sd">                Contains:</span>
+<span class="sd">                        Networks (3):</span>
+<span class="sd">                                BW (3x)</span>
+<span class="sd">                        Stations (3):</span>
+<span class="sd">                                BW.RJOB (Jochberg, Bavaria, BW-Net) (3x)</span>
+<span class="sd">                        Channels (0):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">obspy.clients.fdsn</span> <span class="kn">import</span> <span class="n">Client</span>
+
+        <span class="c1"># Initialize the client and the inventory</span>
+        <span class="n">inventory</span> <span class="o">=</span> <span class="n">Inventory</span><span class="p">()</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">datacenter</span><span class="p">)</span>
+
+        <span class="c1"># Loop over traces and get the stations</span>
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">inventory</span> <span class="o">+=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_stations</span><span class="p">(</span>
+                <span class="n">network</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">,</span>
+                <span class="n">station</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                <span class="n">channel</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span>
+                <span class="n">starttime</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span>
+                <span class="n">endtime</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inventory</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">synced</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if traces are sampled on the same time vector.</span>
+
+<span class="sd">        This method checks if all traces are sampled on the same time vector.</span>
+<span class="sd">        This is useful to ensure that the traces are synchronized before</span>
+<span class="sd">        performing any operation that requires the traces to be sampled on the</span>
+<span class="sd">        same time vector.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if all traces are sampled on the same time vector, False</span>
+<span class="sd">            otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Assert sampling rate</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">equal_rates</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Assert number of samples</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">equal_length</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Collect time vectors. We use the matplotlib format for comparison of</span>
+        <span class="c1"># the absolute values of the time vectors.</span>
+        <span class="n">time_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;matplotlib&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+
+        <span class="c1"># Check if all time vectors are the same (only the first is enough)</span>
+        <span class="k">for</span> <span class="n">time_vector</span> <span class="ow">in</span> <span class="n">time_vectors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <span class="n">time_vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">equal_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if all traces have the same sampling rate.</span>
+
+<span class="sd">        This method checks if all traces have the same sampling rate. This is</span>
+<span class="sd">        useful to ensure that the traces are synchronized before performing any</span>
+<span class="sd">        operation that requires the traces to be sampled on the same time vector.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if all traces have the same sampling rate, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Collect sampling rates</span>
+        <span class="n">sampling_rates</span> <span class="o">=</span> <span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+
+        <span class="c1"># Check if all sampling rates are the same (only the first is enough)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sampling_rates</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">equal_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if all traces have the same number of samples.</span>
+
+<span class="sd">        This method checks if all traces have the same number of samples. This</span>
+<span class="sd">        is useful to ensure that the traces are synchronized before performing</span>
+<span class="sd">        any operation that requires the traces to be sampled on the same time</span>
+<span class="sd">        vector.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if all traces have the same number of samples, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Collect number of samples</span>
+        <span class="n">npts</span> <span class="o">=</span> <span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+
+        <span class="c1"># Check if all number of samples are the same (only the first is enough)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">npts</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sampling_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Common sampling rate in Hertz.</span>
+
+<span class="sd">        This property asserts that all traces have the same sampling rate and</span>
+<span class="sd">        returns the sampling rate of the first trace via the NetworkStream</span>
+<span class="sd">        :meth:`stats` custom method. This is equivalent to getting</span>
+<span class="sd">        ``stream[0].stats.sampling_rate`` directly, minus the assertion.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; stream.sampling_rate</span>
+<span class="sd">        100.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Assert sampling rate</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">equal_rates</span><span class="p">,</span> <span class="s2">&quot;Found different sampling rates.&quot;</span>
+
+        <span class="c1"># Return the sampling rate of the first trace</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sampling_rate</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">npts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Common number of samples.</span>
+
+<span class="sd">        This property asserts that all traces have the same number of samples</span>
+<span class="sd">        and returns the number of samples of the first trace via the</span>
+<span class="sd">        NetworkStream :meth:`stats` custom method. This is equivalent to</span>
+<span class="sd">        getting ``stream[0].stats.npts`` directly, minus the assertion.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; stream.npts</span>
+<span class="sd">        3000</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Assert number of samples</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">equal_length</span><span class="p">,</span> <span class="s2">&quot;Traces have different number of samples.&quot;</span>
+
+        <span class="c1"># Return the number of samples of the first trace</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">npts</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Geographical coordinates of the traces.</span>
+
+<span class="sd">        This property is also available directly from looping over the traces</span>
+<span class="sd">        and accessing the :attr:`stats.coordinates` attribute of each trace.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the coordinates</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="c1"># Check if the coordinates are defined</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Undefined coordinates for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Append the coordinates</span>
+            <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">coordinates</span></div>
+
+
+
+<div class="viewcode-block" id="read">
+<a class="viewcode-back" href="../../stream.html#covseisnet.stream.read">[docs]</a>
+<span class="k">def</span> <span class="nf">read</span><span class="p">(</span>
+    <span class="n">pathname_or_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BytesIO</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NetworkStream</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read seismic waveforms files into an NetworkStream object.</span>
+
+<span class="sd">    This function uses the :func:`obspy.core.stream.read` function to read the</span>
+<span class="sd">    streams. A detailed list of arguments and options are available in the</span>
+<span class="sd">    documentation. This function opens either one or multiple waveform files</span>
+<span class="sd">    given via file name or URL using the ``pathname_or_url`` attribute. The</span>
+<span class="sd">    format of the waveform file will be automatically detected if not given.</span>
+<span class="sd">    See the `Supported Formats` section in the :func:`obspy.core.stream.read`</span>
+<span class="sd">    function.</span>
+
+<span class="sd">    This function returns an :class:`~covseisnet.stream.NetworkStream` object</span>
+<span class="sd">    which directly inherits from the :class:`obspy.core.stream.Stream` object.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    pathname_or_url: str or io.BytesIO or None</span>
+<span class="sd">        String containing a file name or a URL or a open file-like object.</span>
+<span class="sd">        Wildcards are allowed for a file name. If this attribute is omitted,</span>
+<span class="sd">        an example :class:`~covseisnet.stream.NetworkStream` object will be</span>
+<span class="sd">        returned.</span>
+<span class="sd">    **kwargs: dict, optional</span>
+<span class="sd">        Other parameters are passed to the :func:`obspy.core.stream.read`</span>
+<span class="sd">        directly.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`~covseisnet.stream.NetworkStream`</span>
+<span class="sd">        The seismic waveforms.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    For a quick start you may omit all arguments and ObsPy will load a basic</span>
+<span class="sd">    example seismogram. Further usages of this function can be seen in the</span>
+<span class="sd">    ObsPy documentation.</span>
+
+<span class="sd">    &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">    &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">    &gt;&gt;&gt; print(stream)</span>
+<span class="sd">    Network Stream of 3 traces from 1 stations (synced):</span>
+<span class="sd">    BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="sd">    BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+<span class="sd">    BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z... | 100.0 Hz, 3000 samples</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`~obspy.core.stream.read`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">NetworkStream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">pathname_or_url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,708 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>covseisnet.spatial &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/spatial';</script>
+    <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2F_modules/covseisnet/spatial.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for covseisnet.spatial</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module to deal with spatial and geographical data.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Stats</span>
+<span class="kn">from</span> <span class="nn">obspy.geodetics.base</span> <span class="kn">import</span> <span class="n">locations2degrees</span>
+
+
+<div class="viewcode-block" id="Regular3DGrid">
+<a class="viewcode-back" href="../../spatial.html#covseisnet.spatial.Regular3DGrid">[docs]</a>
+<span class="k">class</span> <span class="nc">Regular3DGrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Base class for regular three-dimensional grid of values such as</span>
+<span class="sd">    velocity models, travel times, and differential travel times.</span>
+
+<span class="sd">    .. rubric:: Attributes</span>
+
+<span class="sd">    - :attr:`lon` (:class:`numpy.ndarray`): The longitudes of the grid in</span>
+<span class="sd">      decimal degrees.</span>
+<span class="sd">    - :attr:`lat` (:class:`numpy.ndarray`): The latitudes of the grid in</span>
+<span class="sd">      decimal degrees.</span>
+<span class="sd">    - :attr:`depth` (:class:`numpy.ndarray`): The depths of the grid in</span>
+<span class="sd">      kilometers.</span>
+<span class="sd">    - :attr:`mesh` (:class:`list` of :class:`numpy.ndarray`): The meshgrid</span>
+<span class="sd">      of the grid in the form ``(lon, lat, depth)``.</span>
+
+<span class="sd">    .. rubric:: Methods</span>
+
+<span class="sd">    - :meth:`flatten`: Flatten the grid to allow for faster calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">lon</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">depth</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">mesh</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">extent</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        extent: tuple</span>
+<span class="sd">            The geographical extent of the grid in the form ``(lon_min, lon_max,</span>
+<span class="sd">            lat_min, lat_max, depth_min, depth_max)``. The longitudes and</span>
+<span class="sd">            latitudes are in decimal degrees, and the depths in kilometers.</span>
+<span class="sd">        shape: tuple</span>
+<span class="sd">            The number of points in the grid in the form ``(n_lon, n_lat,</span>
+<span class="sd">            n_depth)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Extent</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+
+        <span class="c1"># Grid mesh</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ax_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2">: [</span><span class="si">{:0.2g}</span><span class="s2">, </span><span class="si">{:0.2g}</span><span class="s2">] with </span><span class="si">{}</span><span class="s2"> points</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The grid axes are not defined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="n">ax_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="n">ax_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="n">ax_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">mesh: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> points</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">min: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">max: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">resolution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Resolution of the grid in the form ``(lon_res, lat_res, depth_res)``.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The grid axes are not defined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Regular3DGrid.flatten">
+<a class="viewcode-back" href="../../spatial.html#covseisnet.spatial.Regular3DGrid.flatten">[docs]</a>
+    <span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Flatten the grid.</span>
+
+<span class="sd">        This method flattens the grid to allow for faster calculations. The</span>
+<span class="sd">        flattened grid is a 2D array with the shape ``(n_points, 3)`` where the</span>
+<span class="sd">        columns are the longitudes, latitudes, and depths of the grid. The</span>
+<span class="sd">        method internally uses the :attr:`mesh` attribute to flatten the grid</span>
+<span class="sd">        with the :attr:`numpy.ndarray.flat` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The grid mesh is not defined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">T</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="geographical_to_cartesian">
+<a class="viewcode-back" href="../../spatial.html#covseisnet.spatial.geographical_to_cartesian">[docs]</a>
+<span class="k">def</span> <span class="nf">geographical_to_cartesian</span><span class="p">(</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">earth_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">6371</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert geographical to Cartesian coordinates.</span>
+
+<span class="sd">    Given a point of longitude :math:`\varphi`, latitude :math:`\lambda`, and</span>
+<span class="sd">    depth :math:`d`, the Cartesian coordinates :math:`(x, y, z)` are</span>
+<span class="sd">    calculated as follows:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \begin{cases}</span>
+<span class="sd">            x = (R - d) \cos(\lambda) \cos(\varphi) \\ y = (R - d)</span>
+<span class="sd">            \cos(\lambda) \sin(\varphi) \\ z = (R - d) \sin(\lambda)</span>
+<span class="sd">        \end{cases}</span>
+
+
+<span class="sd">    where :math:`R` is the mean radius of the Earth. The depth is given in</span>
+<span class="sd">    kilometers. And the latitude and longitude are given in radians (turned</span>
+<span class="sd">    into radians by the function internally). Note that this transformation is</span>
+<span class="sd">    only valid for small distances, and that no reference coordinate is</span>
+<span class="sd">    provided. This is to calculate the relative distances between points in</span>
+<span class="sd">    the same region.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    lon, lat, depth : float</span>
+<span class="sd">        Longitude, latitude, and depth of the point, with depth in kilometers,</span>
+<span class="sd">        and latitude and longitude in degrees.</span>
+<span class="sd">    earth_radius : float, optional</span>
+<span class="sd">        Mean radius of the Earth in kilometers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x, y, z : float</span>
+<span class="sd">        Cartesian coordinates of the point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert latitude and longitude from degrees to radians</span>
+    <span class="n">lat_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">lon_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
+
+    <span class="c1"># Calculate Cartesian coordinates</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">earth_radius</span> <span class="o">-</span> <span class="n">depth</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lon_rad</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">earth_radius</span> <span class="o">-</span> <span class="n">depth</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lon_rad</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">earth_radius</span> <span class="o">-</span> <span class="n">depth</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat_rad</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
+
+
+
+<div class="viewcode-block" id="straight_ray_distance">
+<a class="viewcode-back" href="../../spatial.html#covseisnet.spatial.straight_ray_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">straight_ray_distance</span><span class="p">(</span>
+    <span class="n">lon1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">lat1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">depth1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">lon2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">lat2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">depth2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">earth_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">6371</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Straight-ray distance between two geographical coordinates.</span>
+
+<span class="sd">    The straight-ray distance between two points is calculated using the</span>
+<span class="sd">    Euclidean distance between the Cartesian coordinates of the points. The</span>
+<span class="sd">    Cartesian coordinates are calculated using the geographical coordinates</span>
+<span class="sd">    and the mean radius of the Earth, with the :func:`geographical_to_cartesian`</span>
+<span class="sd">    function. The units of the longitudes and latitudes are in degrees, and the</span>
+<span class="sd">    depths in kilometers.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    lon1, lat1, depth1 : float</span>
+<span class="sd">        Longitude, latitude, and depth of the first point.</span>
+<span class="sd">    lon2, lat2, depth2 : float</span>
+<span class="sd">        Longitude, latitude, and depth of the second point.</span>
+<span class="sd">    earth_radius : float, optional</span>
+<span class="sd">        Mean radius of the Earth in kilometers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    distance : float</span>
+<span class="sd">        Straight-ray distance between the two points in kilometers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert both points to Cartesian coordinates</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">geographical_to_cartesian</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">depth1</span><span class="p">,</span> <span class="n">earth_radius</span><span class="p">)</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">geographical_to_cartesian</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">depth2</span><span class="p">,</span> <span class="n">earth_radius</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the distance using the 3D distance formula</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z2</span> <span class="o">-</span> <span class="n">z1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">distance</span></div>
+
+
+
+<div class="viewcode-block" id="pairwise_great_circle_distances_from_stats">
+<a class="viewcode-back" href="../../spatial.html#covseisnet.spatial.pairwise_great_circle_distances_from_stats">[docs]</a>
+<span class="k">def</span> <span class="nf">pairwise_great_circle_distances_from_stats</span><span class="p">(</span>
+    <span class="n">stats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Stats</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">output_units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;km&quot;</span><span class="p">,</span>
+    <span class="n">include_diagonal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the pairwise great-circle distances between stats coordinates.</span>
+
+<span class="sd">    Calculate the pairwise great-circle distances between the coordinates of</span>
+<span class="sd">    the different stations listed by a list of</span>
+<span class="sd">    :class:`~obspy.core.trace.Stats` objects. The distances are calculated</span>
+<span class="sd">    using the :func:`obspy.geodetics.base.locations2degrees`, if the stats</span>
+<span class="sd">    contain a `coordinates` attribute. The output units can be in degrees or</span>
+<span class="sd">    kilometers.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    stats : list of :class:`~obspy.core.trace.Stats`, optional</span>
+<span class="sd">        The list of stats objects containing the coordinates of the stations.</span>
+<span class="sd">    output_units : str, optional</span>
+<span class="sd">        The output units of the pairwise distances. The units can be &#39;degrees&#39;,</span>
+<span class="sd">        &#39;kilometers&#39;, or &#39;miles&#39;.</span>
+<span class="sd">    include_diagonal : bool, optional</span>
+<span class="sd">        Whether to include the diagonal of the pairwise distances.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`numpy.ndarray`</span>
+<span class="sd">        The pairwise distances between the stations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check that stats is defined</span>
+    <span class="k">if</span> <span class="n">stats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The stats are not defined.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get the station coordinates</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="n">stat</span><span class="o">.</span><span class="n">coordinates</span> <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">]</span>
+
+    <span class="c1"># Calculate the pairwise distances of the upper triangular part</span>
+    <span class="n">distance_to_diagonal</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">include_diagonal</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">n_stations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="n">pairwise_distances</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_stations</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">distance_to_diagonal</span><span class="p">,</span> <span class="n">n_stations</span><span class="p">):</span>
+            <span class="n">degrees</span> <span class="o">=</span> <span class="n">locations2degrees</span><span class="p">(</span>
+                <span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                <span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                <span class="n">coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                <span class="n">coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">pairwise_distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">degrees</span><span class="p">)</span>
+
+    <span class="c1"># Convert the pairwise distances to the output units</span>
+    <span class="k">match</span> <span class="n">output_units</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s2">&quot;degrees&quot;</span><span class="p">:</span>
+            <span class="n">pairwise_distances</span> <span class="o">=</span> <span class="n">pairwise_distances</span>
+        <span class="k">case</span> <span class="s2">&quot;kilometers&quot;</span> <span class="o">|</span> <span class="s2">&quot;km&quot;</span><span class="p">:</span>
+            <span class="n">pairwise_distances</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">distance</span> <span class="o">*</span> <span class="mf">111.11</span> <span class="k">for</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">pairwise_distances</span>
+            <span class="p">]</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid output units &#39;</span><span class="si">{</span><span class="n">output_units</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="s2">&quot;The output units must be &#39;degrees&#39;, &#39;kilometers&#39;, or &#39;miles&#39;.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pairwise_distances</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

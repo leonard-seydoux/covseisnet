@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>covseisnet.signal &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/signal';</script>
+    <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="../../_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../correlation.html">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2F_modules/covseisnet/signal.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for covseisnet.signal</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The package provides tools for spectral analysis of seismic data. The main</span>
+<span class="sd">class is the :class:`~ShortTimeFourierTransform` class, which extends the</span>
+<span class="sd">:class:`~scipy.signal.ShortTimeFFT` class to provide a more user-friendly</span>
+<span class="sd">interface for the Short-Time Fourier Transform with streams. </span>
+
+<span class="sd">Other functions are provided to normalize seismic traces in the spectral</span>
+<span class="sd">domain, such as the :func:`~modulus_division` and :func:`~smooth_modulus_division` functions. Also, we provide the :func:`~smooth_envelope_division` function to normalize seismic traces by a smooth version of its envelope.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">obspy.core.stream</span> <span class="kn">import</span> <span class="n">Stream</span>
+<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Trace</span><span class="p">,</span> <span class="n">Stats</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
+
+
+<div class="viewcode-block" id="ShortTimeFourierTransform">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.ShortTimeFourierTransform">[docs]</a>
+<span class="k">class</span> <span class="nc">ShortTimeFourierTransform</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ShortTimeFFT</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">window_duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">window_step</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">window_function</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;hann&quot;</span><span class="p">,</span>
+        <span class="n">sampling_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Short-Time Fourier Transform instance.</span>
+
+<span class="sd">        This class extends the :class:`scipy.signal.ShortTimeFFT` class to</span>
+<span class="sd">        provide a more user-friendly interface for the Short-Time Fourier</span>
+<span class="sd">        Transform with ObsPy and Covseisnet Streams.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        window_duration: float, optional</span>
+<span class="sd">            The duration of the window in seconds. Default is 2.0 seconds.</span>
+<span class="sd">        window_step: float, optional</span>
+<span class="sd">            The step between windows in seconds. Default is half the window</span>
+<span class="sd">            duration.</span>
+<span class="sd">        window_function: str, optional</span>
+<span class="sd">            The window function to use. Default is the Hann window.</span>
+<span class="sd">        sampling_rate: float, optional</span>
+<span class="sd">            The sampling rate of the data. Default is 1.0 Hz. In most methods</span>
+<span class="sd">            the sampling rate is set automatically from the data.</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Additional keyword arguments are passed to the</span>
+<span class="sd">            :meth:`scipy.signal.ShortTimeFFT.stft` method.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+<span class="sd">        By default, the :class:`scipy.signal.ShortTimeFFT` class pads the data</span>
+<span class="sd">        with zeros on both sides to avoid edge effects, and enable the</span>
+<span class="sd">        analysis of edge samples (see the `tutorial on the Short-Time Fourier</span>
+<span class="sd">        Transform &lt;https://docs.scipy.org/doc/scipy/tutorial/signal.html#tutorial-stft&gt;`_</span>
+<span class="sd">        in the SciPy documentation). Because the main purpose of this class</span>
+<span class="sd">        is to analyse the spatial coherence of seismic data, this default</span>
+<span class="sd">        behaviour is disabled. Indeed, the edges appear wrongly coherent</span>
+<span class="sd">        because of the zero-padding. This is why the representation of the</span>
+<span class="sd">        Short-Time Fourier Transform indicates the number of samples and</span>
+<span class="sd">        windows that are out-of-bounds. These samples are discarded from the</span>
+<span class="sd">        analysis. Note that this is not a real issue since the covariance</span>
+<span class="sd">        matrix analysis is performed on sliding windows.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from covseisnet.signal import ShortTimeFourierTransform</span>
+<span class="sd">        &gt;&gt;&gt; stft = ShortTimeFourierTransform(</span>
+<span class="sd">        ...     window_duration=2.0,</span>
+<span class="sd">        ...     window_step=1.0,</span>
+<span class="sd">        ...     window_function=&quot;hann&quot;,</span>
+<span class="sd">        ...     sampling_rate=100.0,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; print(stft)</span>
+<span class="sd">        Short-Time Fourier Transform instance</span>
+<span class="sd">            Sampling rate: 100.0 Hz</span>
+<span class="sd">            Frequency range: 0.50 to 50.00 Hz</span>
+<span class="sd">            Frequency resolution: 0.5 Hz</span>
+<span class="sd">            Frequency bins: 101</span>
+<span class="sd">            Window length: 200 samples</span>
+<span class="sd">            Window step: 100 samples</span>
+<span class="sd">            Out-of-bounds: 101 sample(s), 1 window(s)</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :class:`scipy.signal.ShortTimeFFT`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Define apodization window</span>
+        <span class="n">window_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">window_duration</span> <span class="o">*</span> <span class="n">sampling_rate</span><span class="p">)</span>
+        <span class="n">window_array</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">windows</span><span class="o">.</span><span class="n">get_window</span><span class="p">(</span><span class="n">window_function</span><span class="p">,</span> <span class="n">window_size</span><span class="p">)</span>
+
+        <span class="c1"># Define step between windows</span>
+        <span class="n">window_step</span> <span class="o">=</span> <span class="n">window_step</span> <span class="ow">or</span> <span class="n">window_duration</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">window_step_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">window_step</span> <span class="o">*</span> <span class="n">sampling_rate</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the Short-Time Fourier Transform class</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">,</span> <span class="n">sampling_rate</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">window_array</span><span class="p">,</span> <span class="n">window_step_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">k0</span><span class="p">,</span> <span class="n">p0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_border_end</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;Short-Time Fourier Transform instance</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Sampling rate: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="si">}</span><span class="s2"> Hz</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Frequency range: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Hz</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Frequency resolution: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">delta_f</span><span class="si">}</span><span class="s2"> Hz</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Frequency bins: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pts</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Window length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Window step: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="si">}</span><span class="s2"> samples</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Out-of-bounds: </span><span class="si">{</span><span class="n">k0</span><span class="si">}</span><span class="s2"> sample(s), </span><span class="si">{</span><span class="n">p0</span><span class="si">}</span><span class="s2"> window(s)&quot;</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sampling_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The sampling rate of the Short-Time Fourier Transform.</span>
+
+<span class="sd">        This property returns the sampling rate of the Short-Time Fourier</span>
+<span class="sd">        Transform in Hertz.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The sampling rate of the Short-Time Fourier Transform in Hertz.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The frequencies of the Short-Time Fourier Transform.</span>
+
+<span class="sd">        This property returns the frequencies of the Short-Time Fourier</span>
+<span class="sd">        Transform in Hertz. The frequencies are calculated from the sampling</span>
+<span class="sd">        rate and the number of frequency bins.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The frequencies of the Short-Time Fourier Transform in Hertz.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
+
+<div class="viewcode-block" id="ShortTimeFourierTransform.times">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.ShortTimeFourierTransform.times">[docs]</a>
+    <span class="k">def</span> <span class="nf">times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stats</span><span class="p">:</span> <span class="n">Stats</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The times of the window centers in seconds.</span>
+
+<span class="sd">        This method returns the times of the window centers in seconds. The</span>
+<span class="sd">        times are calculated from the start time of the trace and the window</span>
+<span class="sd">        step.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        stats : :class:`~obspy.core.trace.Stats`</span>
+<span class="sd">            The stats object of the trace.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The times of the window centers in matplotlib datenum format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">times</span> <span class="o">/</span> <span class="mi">86400</span> <span class="o">+</span> <span class="n">mdates</span><span class="o">.</span><span class="n">date2num</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ShortTimeFourierTransform.valid_window_bounds">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.ShortTimeFourierTransform.valid_window_bounds">[docs]</a>
+    <span class="k">def</span> <span class="nf">valid_window_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stats</span><span class="p">:</span> <span class="n">Stats</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The bounds of the Short-Time Fourier Transform.</span>
+
+<span class="sd">        This method calculate the valid window bounds of the Short-Time</span>
+<span class="sd">        Fourier Transform in seconds. The bounds are calculated from the</span>
+<span class="sd">        start time of the trace, the window duration, and the window step.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        stats : :class:`~obspy.core.trace.Stats`</span>
+<span class="sd">            The stats object of the trace.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            The lower and upper bounds of the Short-Time Fourier Transform in</span>
+<span class="sd">            seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">p0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_border_end</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_border_begin</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;p0&quot;</span><span class="p">:</span> <span class="n">p0</span><span class="p">,</span> <span class="s2">&quot;p1&quot;</span><span class="p">:</span> <span class="n">p1</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ShortTimeFourierTransform.transform">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.ShortTimeFourierTransform.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">trace</span><span class="p">:</span> <span class="n">Trace</span><span class="p">,</span>
+        <span class="n">detrend</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;constant&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Short-time Fourier Transform of a trace.</span>
+
+<span class="sd">        This method calculates the Short-Time Fourier Transform of a trace</span>
+<span class="sd">        using the :meth:`scipy.signal.ShortTimeFFT.stft_detrend` method. The</span>
+<span class="sd">        method returns the times of the window centers in matplotlib datenum</span>
+<span class="sd">        format, the frequencies of the spectrogram, and the short-time spectra</span>
+<span class="sd">        of the trace.</span>
+
+<span class="sd">        Prior to the Short-Time Fourier Transform, the method removes the</span>
+<span class="sd">        linear trend from the trace to avoid edge effects. The method also</span>
+<span class="sd">        discards the out-of-bounds samples and windows that are padded with</span>
+<span class="sd">        zeros by the :class:`scipy.signal.ShortTimeFFT`.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        trace : :class:`~obspy.core.trace.Trace`</span>
+<span class="sd">            The trace to transform.</span>
+<span class="sd">        detrend : str, optional</span>
+<span class="sd">            The detrending method. Default is &quot;linear&quot;.</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Additional keyword arguments are passed to the</span>
+<span class="sd">            :meth:`scipy.signal.ShortTimeFFT.stft_detrend` method. The same</span>
+<span class="sd">            arguments are passed to the :meth:`scipy.signal.ShortTimeFFT.t`</span>
+<span class="sd">            method to get the times of the window centers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        times : numpy.ndarray</span>
+<span class="sd">            The times of the window centers in matplotlib datenum format.</span>
+<span class="sd">        frequencies : numpy.ndarray</span>
+<span class="sd">            The frequencies of the spectrogram.</span>
+<span class="sd">        short_time_spectra : numpy.ndarray</span>
+<span class="sd">            The short-time spectra of the trace with shape ``(n_frequencies,</span>
+<span class="sd">            n_times)``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stft = csn.ShortTimeFourierTransform(</span>
+<span class="sd">        ...     window_duration=2.0,</span>
+<span class="sd">        ...     window_step=1.0,</span>
+<span class="sd">        ...     window_function=&quot;hann&quot;,</span>
+<span class="sd">        ...     sampling_rate=100.0,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; trace = stream[0]</span>
+<span class="sd">        &gt;&gt;&gt; times, frequencies, short_time_spectra = stft.transform(trace)</span>
+<span class="sd">        &gt;&gt;&gt; print(times.shape, frequencies.shape, short_time_spectra.shape)</span>
+<span class="sd">        (28,) (101,) (101, 28)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Extract the lower and upper border</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_window_bounds</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">))</span>
+
+        <span class="c1"># Calculate the Short-Time Fourier Transform</span>
+        <span class="n">short_time_spectra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stft_detrend</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Get frequencies</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span>
+
+        <span class="c1"># Get times in matplotlib datenum format</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">times</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">short_time_spectra</span></div>
+
+
+<div class="viewcode-block" id="ShortTimeFourierTransform.map_transform">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.ShortTimeFourierTransform.map_transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">map_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">:</span> <span class="n">Stream</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform a stream into the spectral domain.</span>
+
+<span class="sd">        This method transforms a stream into the spectral domain by applying</span>
+<span class="sd">        the Short-Time Fourier Transform to each trace of the stream. The</span>
+<span class="sd">        method returns the times of the spectrogram in matplotlib datenum</span>
+<span class="sd">        format, the frequencies of the spectrogram, and the spectrogram of the</span>
+<span class="sd">        stream.</span>
+
+<span class="sd">        This method is basically a wrapper around the :meth:`transform` method</span>
+<span class="sd">        that applies the Short-Time Fourier Transform to each trace of the</span>
+<span class="sd">        stream.</span>
+
+<span class="sd">        Note that the stream must be ready for processing, i.e., it must pass</span>
+<span class="sd">        the quality control from the property :attr:`~covseisnet.stream.Stream.is_ready_to_process`.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        stream : :class:`~obspy.core.stream.Stream`</span>
+<span class="sd">            The stream to transform.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        times : numpy.ndarray</span>
+<span class="sd">            The times of the spectrogram in matplotlib datenum format.</span>
+<span class="sd">        frequencies : numpy.ndarray</span>
+<span class="sd">            The frequencies of the spectrogram.</span>
+<span class="sd">        short_time_spectra : numpy.ndarray</span>
+<span class="sd">            The spectrogram of the stream with shape ``(n_trace, n_frequencies,</span>
+<span class="sd">            n_times)``.</span>
+<span class="sd">        **kwargs: dict, optional</span>
+<span class="sd">            Additional keyword arguments are passed to the :meth:`transform`</span>
+<span class="sd">            method.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
+<span class="sd">        &gt;&gt;&gt; stft = csn.ShortTimeFourierTransform(</span>
+<span class="sd">        ...     window_duration=2.0,</span>
+<span class="sd">        ...     window_step=1.0,</span>
+<span class="sd">        ...     window_function=&quot;hann&quot;,</span>
+<span class="sd">        ...     sampling_rate=100.0,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; stream = csn.read()</span>
+<span class="sd">        &gt;&gt;&gt; times, frequencies, short_time_spectra = stft.map_transform(stream)</span>
+<span class="sd">        &gt;&gt;&gt; print(times.shape, frequencies.shape, short_time_spectra.shape)</span>
+<span class="sd">        (28,) (101,) (3, 101, 28)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate the Short-Time Fourier Transform</span>
+        <span class="n">short_time_spectra</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">times</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">spectra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">short_time_spectra</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spectra</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">times</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">short_time_spectra</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="modulus_division">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.modulus_division">[docs]</a>
+<span class="k">def</span> <span class="nf">modulus_division</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">complex</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-10</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Division of a number by the absolute value or its modulus.</span>
+
+<span class="sd">    Given a complex number (or array) :math:`x = a e^{i\phi}`,</span>
+<span class="sd">    where :math:`a` is the modulus and :math:`\phi` the phase, the function</span>
+<span class="sd">    returns the unit-modulus complex number such as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">              \mathbb{C} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx e^{i\phi}</span>
+
+<span class="sd">    This method normalizes the input complex number by dividing it by its</span>
+<span class="sd">    modulus plus a small epsilon value to prevent division by zero,</span>
+<span class="sd">    effectively scaling the modulus to 1 while preserving the phase.</span>
+
+<span class="sd">    Note that this function also work with real-valued arrays, in which case</span>
+<span class="sd">    the modulus is the absolute value of the real number. It is useful to</span>
+<span class="sd">    normalize seismic traces in the temporal domain. It writes</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbb{R} \ni \tilde{x} = \frac{x}{|x| + \epsilon} \approx \text{sign}(x)</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x: numpy.ndarray</span>
+<span class="sd">        The complex-valued data to extract the unit complex number from.</span>
+<span class="sd">    epsilon: float, optional</span>
+<span class="sd">        A small value added to the modulus to avoid division by zero. Default</span>
+<span class="sd">        is 1e-10.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        The unit complex number with the same phase as the input data, or the</span>
+<span class="sd">        sign of the real number if the input is real-valued.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="smooth_modulus_division">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.smooth_modulus_division">[docs]</a>
+<span class="k">def</span> <span class="nf">smooth_modulus_division</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">smooth</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Modulus division of a complex number with smoothing.</span>
+
+<span class="sd">    Given a complex array :math:`x[n] = a[n] e^{i\phi[n]}`, where :math:`a[n]`</span>
+<span class="sd">    is the modulus and :math:`\phi[n]` the phase, the function returns the</span>
+<span class="sd">    normalized complex array :math:`\tilde{x}[n]` such as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \tilde{x}[n] = \frac{x[n]}{\mathcal S a[n] + \epsilon}</span>
+
+<span class="sd">    where :math:`\mathcal S a[n]` is a smoothed version of the modulus array</span>
+<span class="sd">    :math:`a[n]`. The smoothing function is performed with the Savitzky-Golay</span>
+<span class="sd">    filter, and the order and length of the filter are set by the ``smooth``</span>
+<span class="sd">    and ``order`` parameters.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x: :class:`numpy.ndarray`</span>
+<span class="sd">        The spectra to detrend. Must be of shape ``(n_frequencies, n_times)``.</span>
+<span class="sd">    smooth: int</span>
+<span class="sd">        Smoothing window size in points.</span>
+<span class="sd">    order: int</span>
+<span class="sd">        Smoothing order. Check the scipy function</span>
+<span class="sd">        :func:`~scipy.signal.savgol_filter` function for more details.</span>
+
+<span class="sd">    Keyword arguments</span>
+<span class="sd">    -----------------</span>
+<span class="sd">    epsilon: float, optional</span>
+<span class="sd">        A regularizer for avoiding zero division.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    The spectrum divided by the smooth modulus spectrum.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smooth_modulus</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">smooth</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">smooth_modulus</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="smooth_envelope_division">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.smooth_envelope_division">[docs]</a>
+<span class="k">def</span> <span class="nf">smooth_envelope_division</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">smooth</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Normalize seismic traces by a smooth version of its envelope.</span>
+
+<span class="sd">    This function normalizes seismic traces by a smooth version of its</span>
+<span class="sd">    envelope. The envelope is calculated with the Hilbert transform, and then</span>
+<span class="sd">    smoothed with the Savitzky-Golay filter. The order and length of the</span>
+<span class="sd">    filter are set by the ``smooth`` and ``order`` parameters.</span>
+
+<span class="sd">    Considering the seismic trace :math:`x(t)`, the normalized trace</span>
+<span class="sd">    :math:`\hat x(t)` is obtained with</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}</span>
+
+<span class="sd">    where :math:`A` is an smoothing operator applied to Hilbert envelope of</span>
+<span class="sd">    the trace :math:`x(t)`.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x: numpy.ndarray</span>
+<span class="sd">        The seismic trace to normalize.</span>
+<span class="sd">    smooth: int</span>
+<span class="sd">        The length of the Savitzky-Golay filter for smoothing the envelope.</span>
+<span class="sd">    order: int</span>
+<span class="sd">        The order of the Savitzky-Golay filter for smoothing the envelope.</span>
+<span class="sd">    epsilon: float, optional</span>
+<span class="sd">        Regularization parameter in division, set to ``1e-10`` by default.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        The normalized seismic trace.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">hilbert</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="n">smooth_envelope</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">smooth</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">smooth_envelope</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="entropy">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.entropy">[docs]</a>
+<span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Entropy calculation.</span>
+
+<span class="sd">    Entropy calculated from a given distribution of values. The entropy is</span>
+<span class="sd">    defined as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        h = - \sum_{n=0}^N n x_n \log(x_n + \epsilon)</span>
+
+<span class="sd">    where :math:`x_n` is the distribution of values. This function assumes the</span>
+<span class="sd">    distribution is normalized by its sum.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x: :class:`numpy.ndarray`</span>
+<span class="sd">        The distribution of values.</span>
+<span class="sd">    epsilon: float, optional</span>
+<span class="sd">        The regularization parameter for the logarithm.</span>
+<span class="sd">    **kwargs: dict, optional</span>
+<span class="sd">        Additional keyword arguments passed to the :func:`numpy.sum` function.</span>
+<span class="sd">        Typically, the axis along which the sum is performed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="diversity">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.diversity">[docs]</a>
+<span class="k">def</span> <span class="nf">diversity</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shanon diversity index calculation.</span>
+
+<span class="sd">    Shanon diversity index calculated from a given distribution of values. The</span>
+<span class="sd">    diversity index is defined as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        D = \exp(h + \epsilon)</span>
+
+<span class="sd">    where :math:`h` is the entropy of the distribution of values. This function</span>
+<span class="sd">    assumes the distribution is normalized by its sum.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x: :class:`numpy.ndarray`</span>
+<span class="sd">        The distribution of values.</span>
+<span class="sd">    epsilon: float, optional</span>
+<span class="sd">        The regularization parameter for the logarithm.</span>
+<span class="sd">    **kwargs: dict, optional</span>
+<span class="sd">        Additional keyword arguments passed to the :func:`numpy.sum` function.</span>
+<span class="sd">        Typically, the axis along which the sum is performed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">entropy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="width">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.width">[docs]</a>
+<span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Width calculation.</span>
+
+<span class="sd">    Width calculated from a given distribution of values. The width is defined</span>
+<span class="sd">    as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \sigma = \sum_{n=0}^N n x_n</span>
+
+<span class="sd">    where :math:`x_n` is the distribution of values. This function assumes the</span>
+<span class="sd">    distribution is normalized by its sum.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x: :class:`numpy.ndarray`</span>
+<span class="sd">        The distribution of values.</span>
+<span class="sd">    **kwargs: dict, optional</span>
+<span class="sd">        Additional keyword arguments passed to the :func:`numpy.sum` function.</span>
+<span class="sd">        Typically, the axis along which the sum is performed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;axis&quot;</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="bandpass_filter">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.bandpass_filter">[docs]</a>
+<span class="k">def</span> <span class="nf">bandpass_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sampling_rate</span><span class="p">,</span> <span class="n">frequency_band</span><span class="p">,</span> <span class="n">filter_order</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bandpass filter the signal.</span>
+
+<span class="sd">    Apply a Butterworth bandpass filter to the signal. Uses</span>
+<span class="sd">    :func:`~scipy.signal.butter` and :func:`~scipy.signal.filtfilt` to</span>
+<span class="sd">    avoid phase shift.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x: :class:`~numpy.ndarray`</span>
+<span class="sd">        The signal to filter.</span>
+<span class="sd">    sampling_rate: float</span>
+<span class="sd">        The sampling rate in Hz.</span>
+<span class="sd">    frequency_band: tuple</span>
+<span class="sd">        The frequency band to filter in Hz.</span>
+<span class="sd">    filter_order: int, optional</span>
+<span class="sd">        The order of the Butterworth filter.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`~numpy.ndarray`</span>
+<span class="sd">        The filtered signal.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Turn frequencies into normalized frequencies</span>
+    <span class="n">nyquist</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">sampling_rate</span>
+    <span class="n">normalized_frequency_band</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="o">/</span> <span class="n">nyquist</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frequency_band</span><span class="p">]</span>
+
+    <span class="c1"># Extract filter</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">butter</span><span class="p">(</span>
+        <span class="n">filter_order</span><span class="p">,</span>
+        <span class="n">normalized_frequency_band</span><span class="p">,</span>
+        <span class="n">btype</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Apply filter</span>
+    <span class="k">return</span> <span class="n">signal</span><span class="o">.</span><span class="n">filtfilt</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="hilbert_envelope">
+<a class="viewcode-back" href="../../signal.html#covseisnet.signal.hilbert_envelope">[docs]</a>
+<span class="k">def</span> <span class="nf">hilbert_envelope</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Hilbert envelope calculation.</span>
+
+<span class="sd">    Calculate the envelope of a signal using the Hilbert transform. The</span>
+<span class="sd">    envelope is defined as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \text{envelope}(x) = \sqrt{x^2 + \text{hilbert}(x)^2}</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x: :class:`numpy.ndarray`</span>
+<span class="sd">        The signal to calculate the envelope from.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`numpy.ndarray`</span>
+<span class="sd">        The envelope of the signal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">hilbert</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)))</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

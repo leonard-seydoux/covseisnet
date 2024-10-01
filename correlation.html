@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+
+
+<html lang="english" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cross-correlation matrix &#8212; covseisnet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=60775dce" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=e872a992"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'correlation';</script>
+    <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Plotting tools" href="plot.html" />
+    <link rel="prev" title="Covariance Matrix" href="covariance.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="english"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stream.html">Network stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signal.html">Signal processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covariance.html">Covariance Matrix</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Cross-correlation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">Geographical and spatial functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="velocity.html">Velocity models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backprojection.html">Backprojection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/covseisnet/covseisnet/issues/new?title=Issue%20on%20page%20%2Fcorrelation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cross-correlation matrix</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.sampling_rate"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.sampling_rate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.envelope"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.envelope()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.taper"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.taper()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.smooth"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.smooth()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.flat"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.flat()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.bandpass"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.bandpass()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.calculate_cross_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">calculate_cross_correlation_matrix()</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-covseisnet.correlation">
+<span id="cross-correlation-matrix"></span><h1>Cross-correlation matrix<a class="headerlink" href="#module-covseisnet.correlation" title="Link to this heading">#</a></h1>
+<p>Cross-correlation matrix in time domain.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="covseisnet.correlation.CrossCorrelationMatrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.correlation.</span></span><span class="sig-name descname"><span class="pre">CrossCorrelationMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="signal.html#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><span class="pre">ShortTimeFourierTransform</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<p class="rubric">Mathematical definition</p>
+<p>This class is used to store the correlation matrix in the time domain. The
+cross-correlation is defined as the inverse Fourier transform of the
+covariance. Given a covariance matrix <span class="math notranslate nohighlight">\(C_{ij}(f)\)</span>, the correlation
+matrix <span class="math notranslate nohighlight">\(R_{ij}(\tau)\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[R_{ij}(\tau) = \mathcal{F}^{-1} \{ C_{ij}(f) \}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{F}^{-1}\)</span> is the inverse Fourier transform,
+<span class="math notranslate nohighlight">\(\tau\)</span> is the lag time, and <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are the station
+indices. Note that the correlation matrix is a symmetric matrix, with the
+diagonal elements being the auto-correlation. Therefore, we do not store
+the lower triangular part of the matrix.</p>
+<p class="rubric">Practical implementation</p>
+<p>The correlation matrix is stored as a 3D array with the first dimension
+being the number of pairs, the second dimension the number of windows, and
+the third dimension the number of lags. The correlation matrix can be
+visualized as a 2D array with the pairs and windows in the first dimension
+and the lags in the second dimension with the method <a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix.flat" title="covseisnet.correlation.CrossCorrelationMatrix.flat"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat()</span></code></a>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The correlation matrix is usually calculated from the covariance matrix
+using the method <a class="reference internal" href="#covseisnet.correlation.calculate_cross_correlation_matrix" title="covseisnet.correlation.calculate_cross_correlation_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_cross_correlation_matrix()</span></code></a>. The method
+returns a <a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a> object
+with adequate attributes.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If for some reason you need to create a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code> object from a
+numpy array, you have the several solutions provided by the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray">numpy
+subclassing mechanism</a>.
+We recommend using the contructor of the class, which allows to pass
+the stats and stft attributes, as in the following example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">covseisnet.correlation</span> <span class="kn">import</span> <span class="n">CrossCorrelationMatrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">correlation</span> <span class="o">=</span> <span class="n">CrossCorrelationMatrix</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">stats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">stft</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="covseisnet.correlation.CrossCorrelationMatrix.sampling_rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.sampling_rate" title="Link to this definition">#</a></dt>
+<dd><p>Return the sampling rate in Hz.</p>
+<p>The sampling rate is extracted from the first stats in the list of
+stats extracted from the covariance matrix. Note that if the
+covariance matrix was calculated with the
+<a class="reference internal" href="covariance.html#covseisnet.covariance.calculate_covariance_matrix" title="covseisnet.covariance.calculate_covariance_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_covariance_matrix()</span></code></a>, all streams
+must be synchronized and have the same sampling rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> -- The sampling rate in Hz.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> -- If the stats attribute is not set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.correlation.CrossCorrelationMatrix.envelope">
+<span class="sig-name descname"><span class="pre">envelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix.envelope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.envelope" title="Link to this definition">#</a></dt>
+<dd><p>Hilbert envelope of the correlation matrix.</p>
+<p>The Hilbert envelope is calculated using the Hilbert transform of the
+pairwise cross-correlation:</p>
+<div class="math notranslate nohighlight">
+\[E_{ij}(\tau) = | R_{ij}(\tau) + i \mathcal{H} R_{ij}(\tau)  |\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{H}\)</span> is the Hilbert transform, and <span class="math notranslate nohighlight">\(i\)</span> is
+the imaginary unit. The Hilbert envelope is the absolute value of the
+Hilbert transform of the correlation matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments to pass to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.hilbert.html#scipy.signal.hilbert" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">hilbert()</span></code></a>. By
+default, the axis is set to the last axis (lags).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a> -- The Hilbert envelope of the correlation matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.correlation.CrossCorrelationMatrix.taper">
+<span class="sig-name descname"><span class="pre">taper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_percentage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix.taper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.taper" title="Link to this definition">#</a></dt>
+<dd><p>Taper the correlation matrix.</p>
+<p>Taper the correlation matrix with the given taper. The taper is
+applied to the last axis (lags) of the correlation matrix. The tapered
+correlation matrix is defined as:</p>
+<div class="math notranslate nohighlight">
+\[R'_{ij}(\tau) = w_T(\tau) R_{ij}(\tau)\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_T(\tau)\)</span> is the taper of maximum duration <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_percentage</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The maximum percentage of the taper. The taper is a Tukey window
+with the given percentage of the window duration. Default is 0.1.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a> -- The tapered correlation matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.correlation.CrossCorrelationMatrix.smooth">
+<span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix.smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.smooth" title="Link to this definition">#</a></dt>
+<dd><p>Use a Gaussian kernel to smooth the correlation matrix.</p>
+<p>This function is usually applied to the envelope of the correlation
+matrix to smooth the envelope. The smoothing is done using a Gaussian
+kernel with a standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span>. The smoothing is done
+along the last axis (lags). The smoothed correlation matrix is
+<span class="math notranslate nohighlight">\(R'\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[R'_{ij}(\tau) = G_{\sigma} * R_{ij}(\tau)\]</div>
+<p>where <span class="math notranslate nohighlight">\(G_{\sigma}\)</span> is the Gaussian kernel with standard
+deviation <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sigma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- Standard deviation of the Gaussian kernel. The larger the value,
+the smoother the correlation matrix. Default is 1.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments passed to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter1d.html#scipy.ndimage.gaussian_filter1d" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">gaussian_filter1d()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a> -- The smoothed cross-correlation matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.correlation.CrossCorrelationMatrix.flat">
+<span class="sig-name descname"><span class="pre">flat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix.flat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.flat" title="Link to this definition">#</a></dt>
+<dd><p>Flatten the first dimensions.</p>
+<p>The shape of the pairwise cross-correlation is at maximum 3D, with the
+first dimension being the number of pairs, the second dimension the
+number of windows, and the third dimension the number of lags. This
+method flattens the first two dimensions to have a 2D array with the
+pairs and windows in the first dimension and the lags in the second
+dimension. This method also works for smaller dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">np.ndarray</span></code> -- The flattened pairwise cross-correlation.s</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.correlation.CrossCorrelationMatrix.bandpass">
+<span class="sig-name descname"><span class="pre">bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency_band</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix.bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.bandpass" title="Link to this definition">#</a></dt>
+<dd><p>Bandpass filter the correlation functions.</p>
+<p>Apply a Butterworth bandpass filter to the correlation functions. Uses
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
+avoid phase shift.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency_band</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>) -- The frequency band to filter in Hz.</p></li>
+<li><p><strong>filter_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The order of the Butterworth filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a> -- The bandpass filtered correlation functions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="covseisnet.correlation.calculate_cross_correlation_matrix">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.correlation.</span></span><span class="sig-name descname"><span class="pre">calculate_cross_correlation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">covariance_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="covariance.html#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_autocorrelation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/covseisnet/correlation.html#calculate_cross_correlation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.calculate_cross_correlation_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Extract correlation in time domain from the given covariance matrix.</p>
+<p>This method calculates the correlation in the time domain from the given
+covariance matrix. The covariance matrix is expected to be obtained from
+the method <a class="reference internal" href="covariance.html#covseisnet.covariance.calculate_covariance_matrix" title="covseisnet.covariance.calculate_covariance_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_covariance_matrix()</span></code></a>, in
+the <a class="reference internal" href="covariance.html#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> class.</p>
+<p>The method first duplicate the covariance matrix to have a two-sided
+covariance matrix and perform the inverse Fourier transform to obtain the
+correlation matrix. The attributes of the covariance matrix are used to
+calculate the lags and pairs names of the correlation matrix.</p>
+<p>For more details, see the
+<a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a> class, in the
+rubric <strong>Mathematical definition</strong>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>covariance_matrix</strong> (<a class="reference internal" href="covariance.html#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a>) -- The covariance matrix.</p></li>
+<li><p><strong>include_autocorrelation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) -- Include the auto-correlation in the correlation matrix. Default is
+True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a> -- The lag time between stations.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> -- The list of pairs.</p></li>
+<li><p><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a> -- The correlations with shape <code class="docutils literal notranslate"><span class="pre">(n_pairs,</span> <span class="pre">n_windows,</span> <span class="pre">n_lags)</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="covariance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Covariance Matrix</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="plot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Plotting tools</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.sampling_rate"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.sampling_rate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.envelope"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.envelope()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.taper"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.taper()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.smooth"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.smooth()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.flat"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.flat()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.CrossCorrelationMatrix.bandpass"><code class="docutils literal notranslate"><span class="pre">CrossCorrelationMatrix.bandpass()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.correlation.calculate_cross_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">calculate_cross_correlation_matrix()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, The Covseisnet Team.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
