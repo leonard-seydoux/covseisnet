@@ -23,6 +23,24 @@ dependencies = ["numpy", "obspy", "scipy"]
 [project.optional-dependencies]
 dev = ["check-manifest"]
 test = ["coverage"]
+docs = [
+    "sphinx",
+    "sphinx_book_theme",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.doctest",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.todo",
+    "sphinx.ext.coverage",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.ifconfig",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.napoleon",
+    "sphinx_gallery.gen_gallery",
+    "sphinxcontrib.bibtex",
+    "matplotlib.sphinxext.plot_directive",
+]
 
 [tool.hatch.version]
 path = "covseisnet/__init__.py"
