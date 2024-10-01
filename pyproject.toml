@@ -23,12 +23,7 @@ dependencies = ["numpy", "obspy", "scipy"]
 [project.optional-dependencies]
 dev = ["check-manifest"]
 test = ["coverage"]
-docs = [
-    "sphinx",
-    "sphinx_book_theme",
-    "sphinx_gallery.gen_gallery",
-    "sphinxcontrib.bibtex",
-]
+docs = ["sphinx", "sphinx_book_theme", "sphinx_gallery", "sphinxcontrib"]
 
 [tool.hatch.version]
 path = "covseisnet/__init__.py"
