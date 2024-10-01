@@ -39,7 +39,6 @@ docs = [
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
-    "matplotlib.sphinxext.plot_directive",
 ]
 
 [tool.hatch.version]
