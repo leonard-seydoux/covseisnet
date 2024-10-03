@@ -540,6 +540,14 @@ document.write(`
         <span class="c1"># Renormalize the likelihood if necessary</span>
         <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
             <span class="bp">self</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DifferentialBackProjection.maximum_coordinates">
+<a class="viewcode-back" href="../../backprojection.html#covseisnet.backprojection.DifferentialBackProjection.maximum_coordinates">[docs]</a>
+    <span class="k">def</span> <span class="nf">maximum_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the coordinates of the maximum likelihood.&quot;&quot;&quot;</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="n">k</span><span class="p">]</span></div>
 </div>
 
 </pre></div>
