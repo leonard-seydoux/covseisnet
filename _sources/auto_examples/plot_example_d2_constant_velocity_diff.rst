@@ -156,7 +156,7 @@ shown on a map using the function :func:`~covseisnet.plot.grid3d`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.018 seconds)
+   **Total running time of the script:** (0 minutes 1.035 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_d2_constant_velocity_diff.py:

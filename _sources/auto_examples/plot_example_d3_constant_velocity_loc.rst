@@ -150,7 +150,7 @@ In this specific case, the coherence is a function of the frequency only. We
 observe the earthquake-related signal induces a strong wavefield coherence
 (that is, a low spectral width) between 1 and 10 Hz in particular.
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-106
+.. GENERATED FROM PYTHON SOURCE LINES 91-107
 
 .. code-block:: Python
 
@@ -168,6 +168,7 @@ observe the earthquake-related signal induces a strong wavefield coherence
     ax.semilogx(frequencies, coherence.squeeze())
     ax.set_xlabel("Frequency (Hz)")
     ax.set_ylabel("Covariance matrix spectral width")
+    ax.grid()
 
 
 
@@ -181,7 +182,7 @@ observe the earthquake-related signal induces a strong wavefield coherence
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-120
+.. GENERATED FROM PYTHON SOURCE LINES 108-121
 
 Evaluate the pairwise cross-correlation functions
 -------------------------------------------------
@@ -197,7 +198,7 @@ envelope of the data, and smoothing the data with a Gaussian filter with a
 standard deviation of 30 samples. Finally, we normalize the data by the maximum
 value of each cross-correlation function.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-135
+.. GENERATED FROM PYTHON SOURCE LINES 121-136
 
 .. code-block:: Python
 
@@ -223,7 +224,7 @@ value of each cross-correlation function.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-145
+.. GENERATED FROM PYTHON SOURCE LINES 137-146
 
 Calculate travel times
 ----------------------
@@ -235,7 +236,7 @@ dominate the seismic records. We then calculate the differential travel times
 between the stations using the class
 :class:`~covseisnet.travel_times.DifferentialTravelTimes`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-168
+.. GENERATED FROM PYTHON SOURCE LINES 146-169
 
 .. code-block:: Python
 
@@ -269,7 +270,7 @@ between the stations using the class
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-177
+.. GENERATED FROM PYTHON SOURCE LINES 170-178
 
 Locate the source with backprojection
 -------------------------------------
@@ -280,7 +281,7 @@ differential travel times calculated previously and the pre-processed
 cross-correlation functions. We calculate the likelihood of the source location
 using the method :func:`~covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-185
+.. GENERATED FROM PYTHON SOURCE LINES 178-186
 
 .. code-block:: Python
 
@@ -304,7 +305,7 @@ using the method :func:`~covseisnet.backprojection.DifferentialBackProjection.ca
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 186-193
+.. GENERATED FROM PYTHON SOURCE LINES 187-194
 
 Compare maximum likelihood with known source location
 -----------------------------------------------------
@@ -314,7 +315,7 @@ The maximum likelihood of the source location is calculated using the method
 We plot the source location and the maximum likelihood of the source location
 on the map.
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-201
+.. GENERATED FROM PYTHON SOURCE LINES 194-202
 
 .. code-block:: Python
 
@@ -341,7 +342,7 @@ on the map.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 29.855 seconds)
+   **Total running time of the script:** (0 minutes 48.861 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_d3_constant_velocity_loc.py:

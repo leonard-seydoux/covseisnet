@@ -284,7 +284,7 @@ Rayleigh waves at 3.2 km/s with dashed lines.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 30.357 seconds)
+   **Total running time of the script:** (0 minutes 31.236 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_c1_correlations.py:
