@@ -223,12 +223,19 @@ value of each cross-correlation function.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-138
+.. GENERATED FROM PYTHON SOURCE LINES 136-145
 
 Calculate travel times
 ----------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-161
+We calculate the travel times of the seismic waves between the stations using
+the class :class:`~covseisnet.travel_times.TravelTimes`. We use a constant
+velocity model with a velocity of 3.5 km/s, assuming that the S-waves will
+dominate the seismic records. We then calculate the differential travel times
+between the stations using the class
+:class:`~covseisnet.travel_times.DifferentialTravelTimes`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 145-168
 
 .. code-block:: Python
 
@@ -262,7 +269,7 @@ Calculate travel times
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-170
+.. GENERATED FROM PYTHON SOURCE LINES 169-177
 
 Locate the source with backprojection
 -------------------------------------
@@ -273,14 +280,16 @@ differential travel times calculated previously and the pre-processed
 cross-correlation functions. We calculate the likelihood of the source location
 using the method :func:`~covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-176
+.. GENERATED FROM PYTHON SOURCE LINES 177-185
 
 .. code-block:: Python
 
 
+    # Calculate likelihood
     backprojection = DifferentialBackProjection(differential_travel_times)
     backprojection.calculate_likelihood(cross_correlation=correlations)
 
+    # Plot likelihood in 3D
     ax = csn.plot.grid3d(backprojection, cmap="viridis", label="Likelihood")
 
 
@@ -295,7 +304,7 @@ using the method :func:`~covseisnet.backprojection.DifferentialBackProjection.ca
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-184
+.. GENERATED FROM PYTHON SOURCE LINES 186-193
 
 Compare maximum likelihood with known source location
 -----------------------------------------------------
@@ -305,7 +314,7 @@ The maximum likelihood of the source location is calculated using the method
 We plot the source location and the maximum likelihood of the source location
 on the map.
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-192
+.. GENERATED FROM PYTHON SOURCE LINES 193-201
 
 .. code-block:: Python
 
@@ -313,7 +322,7 @@ on the map.
     # Infer maximum coordinates
     max_likelihood = backprojection.maximum_coordinates()
 
-    # Plot source coordinates
+    # Plot source and estimated location
     fig = inventory.plot(projection="local", resolution="h")
     plt.plot(*source_location[:2], "k*", markersize=20, transform=PlateCarree())
     plt.plot(*max_likelihood[:2], "r*", markersize=20, transform=PlateCarree())
@@ -332,7 +341,7 @@ on the map.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 44.938 seconds)
+   **Total running time of the script:** (0 minutes 29.855 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_d3_constant_velocity_loc.py:

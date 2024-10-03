@@ -135,6 +135,13 @@ correlations = correlations.squeeze()
 # %%
 # Calculate travel times
 # ----------------------
+#
+# We calculate the travel times of the seismic waves between the stations using
+# the class :class:`~covseisnet.travel_times.TravelTimes`. We use a constant
+# velocity model with a velocity of 3.5 km/s, assuming that the S-waves will
+# dominate the seismic records. We then calculate the differential travel times
+# between the stations using the class
+# :class:`~covseisnet.travel_times.DifferentialTravelTimes`.
 
 # Define the velocity model
 extent_with_depth = extent + (-3, 20)
@@ -168,9 +175,11 @@ for pair in pairs:
 # cross-correlation functions. We calculate the likelihood of the source location
 # using the method :func:`~covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood`.
 
+# Calculate likelihood
 backprojection = DifferentialBackProjection(differential_travel_times)
 backprojection.calculate_likelihood(cross_correlation=correlations)
 
+# Plot likelihood in 3D
 ax = csn.plot.grid3d(backprojection, cmap="viridis", label="Likelihood")
 
 # %%
@@ -185,7 +194,7 @@ ax = csn.plot.grid3d(backprojection, cmap="viridis", label="Likelihood")
 # Infer maximum coordinates
 max_likelihood = backprojection.maximum_coordinates()
 
-# Plot source coordinates
+# Plot source and estimated location
 fig = inventory.plot(projection="local", resolution="h")
 plt.plot(*source_location[:2], "k*", markersize=20, transform=PlateCarree())
 plt.plot(*max_likelihood[:2], "r*", markersize=20, transform=PlateCarree())
