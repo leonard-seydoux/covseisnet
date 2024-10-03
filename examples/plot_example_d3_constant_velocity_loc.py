@@ -102,6 +102,7 @@ fig, ax = plt.subplots()
 ax.semilogx(frequencies, coherence.squeeze())
 ax.set_xlabel("Frequency (Hz)")
 ax.set_ylabel("Covariance matrix spectral width")
+ax.grid()
 
 # %%
 # Evaluate the pairwise cross-correlation functions
