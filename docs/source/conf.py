@@ -144,7 +144,7 @@ html_favicon = "_static/logo_covseisnet_small.svg"
 htmlhelp_basename = "covseisnetdoc"
 html_theme_options = {
     "logo": {"alt_text": "Covseisnet logo"},
-    "repository_url": "https://github.com/covseisnet/covseisnet",
+    "repository_url": "https://github.com/leonard-seydoux/covseisnet",
     "use_repository_button": True,
     "use_download_button": False,
     "use_issues_button": True,
