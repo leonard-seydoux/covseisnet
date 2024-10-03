@@ -227,7 +227,8 @@ def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
     ax : :class:`~matplotlib.axes.Axes`, optional
         The axis to plot on. If not provided, a new figure will be created.
     **kwargs
-        Additional arguments passed to the pcolormesh method.
+        Additional arguments passed to the pcolormesh method. By default, the
+        shading is set to "nearest" and the colormap is set to "magma_r".
 
     Returns
     -------
@@ -244,14 +245,9 @@ def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
         coherence = coherence[:, n:]
 
     # Show coherence
-    mappable = ax.pcolormesh(
-        times,
-        frequencies,
-        coherence.T,
-        shading="nearest",
-        cmap="viridis_r",
-        **kwargs,
-    )
+    kwargs.setdefault("shading", "nearest")
+    kwargs.setdefault("cmap", "magma_r")
+    mappable = ax.pcolormesh(times, frequencies, coherence.T, **kwargs)
 
     # Frequency axis
     ax.set_yscale("log")
@@ -525,7 +521,7 @@ def grid3d(
     """
     # Set limits
     if grid.lon is None or grid.lat is None or grid.depth is None:
-        return
+        return {"empty": plt.gca()}
 
     # Create mosaic plot
     _, ax = plt.subplot_mosaic(
