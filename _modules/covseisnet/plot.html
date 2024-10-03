@@ -586,7 +586,8 @@ document.write(`
 <span class="sd">    ax : :class:`~matplotlib.axes.Axes`, optional</span>
 <span class="sd">        The axis to plot on. If not provided, a new figure will be created.</span>
 <span class="sd">    **kwargs</span>
-<span class="sd">        Additional arguments passed to the pcolormesh method.</span>
+<span class="sd">        Additional arguments passed to the pcolormesh method. By default, the</span>
+<span class="sd">        shading is set to &quot;nearest&quot; and the colormap is set to &quot;magma_r&quot;.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -603,14 +604,9 @@ document.write(`
         <span class="n">coherence</span> <span class="o">=</span> <span class="n">coherence</span><span class="p">[:,</span> <span class="n">n</span><span class="p">:]</span>
 
     <span class="c1"># Show coherence</span>
-    <span class="n">mappable</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-        <span class="n">times</span><span class="p">,</span>
-        <span class="n">frequencies</span><span class="p">,</span>
-        <span class="n">coherence</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis_r&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;shading&quot;</span><span class="p">,</span> <span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;cmap&quot;</span><span class="p">,</span> <span class="s2">&quot;magma_r&quot;</span><span class="p">)</span>
+    <span class="n">mappable</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">coherence</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># Frequency axis</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
@@ -896,7 +892,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Set limits</span>
     <span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">lon</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">grid</span><span class="o">.</span><span class="n">lat</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">grid</span><span class="o">.</span><span class="n">depth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;empty&quot;</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()}</span>
 
     <span class="c1"># Create mosaic plot</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot_mosaic</span><span class="p">(</span>

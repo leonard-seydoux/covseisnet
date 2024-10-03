@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:38.292** total execution time for 9 files **from all galleries**:
+**02:41.786** total execution time for 9 files **from all galleries**:
 
 .. container::
 
@@ -33,29 +33,29 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_example_b2_coherence_preprocess.py` (``../../examples/plot_example_b2_coherence_preprocess.py``)
-     - 01:02.636
+     - 01:00.641
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_d3_constant_velocity_loc.py` (``../../examples/plot_example_d3_constant_velocity_loc.py``)
-     - 00:38.572
+     - 00:44.938
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_c1_correlations.py` (``../../examples/plot_example_c1_correlations.py``)
-     - 00:31.713
+     - 00:31.037
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_b1_coherence.py` (``../../examples/plot_example_b1_coherence.py``)
-     - 00:18.298
+     - 00:18.081
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_a3_whiten.py` (``../../examples/plot_example_a3_whiten.py``)
-     - 00:03.244
+     - 00:03.246
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_a1_sync.py` (``../../examples/plot_example_a1_sync.py``)
-     - 00:01.188
+     - 00:01.207
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_a2_norm.py` (``../../examples/plot_example_a2_norm.py``)
-     - 00:01.110
+     - 00:01.108
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_d2_constant_velocity_diff.py` (``../../examples/plot_example_d2_constant_velocity_diff.py``)
-     - 00:01.016
+     - 00:01.015
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_example_d1_constant_velocity.py` (``../../examples/plot_example_d1_constant_velocity.py``)
-     - 00:00.514
+     - 00:00.512
      - 0.0
