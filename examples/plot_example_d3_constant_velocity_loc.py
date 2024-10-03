@@ -14,9 +14,14 @@ source of the seismic waves using the class
 results on a map. 
 """
 
-# sphinx_gallery_thumbnail_number = 2
+# sphinx_gallery_thumbnail_number = 3
+
+from cartopy.crs import PlateCarree
+import matplotlib.pyplot as plt
 
 import covseisnet as csn
+from covseisnet.travel_times import TravelTimes, DifferentialTravelTimes
+from covseisnet.backprojection import DifferentialBackProjection
 
 # %%
 # Load seismograms
@@ -44,71 +49,143 @@ stream.filter("highpass", freq=0.01)
 stream.synchronize()
 
 # %%
-# Associate coordinates to the seismograms
-# ----------------------------------------
+# Station and source coordinates
+# ------------------------------
 #
-# We associate the coordinates of the seismograms to the traces using the
-# method :func:`~covseisnet.stream.Stream.assign_coordinates`. The coordinates
+# We associate the coordinates of the different stations to the corresponding
+# seismograms. We first download the inventory of the seismograms from the
+# National Observatory of Athens (NOA) data center. We then associate the
+# coordinates to the seismograms using the method
+# :func:`~covseisnet.stream.Stream.assign_coordinates`. The
+# :class:`obspy.Inventory` object is then used to plot the stations on a map.
+#
+# We also add the known source coordinates of the earthquake to the map, to
+# compare the location of the earthquake with the location of the
+# backprojection results.
 
+# Get inventory to assign station coordinates
 inventory = stream.download_inventory(datacenter="NOA")
 stream.assign_coordinates(inventory)
+fig = inventory.plot(projection="local", resolution="h")
+
+# Plot source coordinates
+source_location = 23.3465, 39.8812, 10
+plt.plot(*source_location[:2], "k*", markersize=20, transform=PlateCarree())
+
+# Extract natural extent for later use
+extent = fig.axes[0].get_extent(crs=PlateCarree())
 
 # %%
-# Create a constant velocity model
-# --------------------------------
+# Evaluate covariance matrix
+# --------------------------
 #
-# We first create a constant velocity model with a velocity of 5 km/s. In order
-# to do so, we simply need to define the geographical extent of the model, the
-# resolution of the grid, and the velocity.
+# We calculate the covariance matrix of the seismograms using the method
+# :func:`~covseisnet.covariance.calculate_covariance_matrix`. We use a window
+# duration of 200 s, which allow for the slowest possible seismic waves to
+# propagate between the stations (overestimating the travel time). We average
+# the covariance matrix over 5 windows, which results in a single time window.
+#
+# In this specific case, the coherence is a function of the frequency only. We
+# observe the earthquake-related signal induces a strong wavefield coherence
+# (that is, a low spectral width) between 1 and 10 Hz in particular.
+
+# Compute covariance matrix
+times, frequencies, covariances = csn.covariance.calculate_covariance_matrix(
+    stream, window_duration=200, average=5, whiten="none"
+)
+
+# Calculate coherence
+coherence = covariances.coherence(kind="spectral_width")
+
+# Show
+fig, ax = plt.subplots()
+ax.semilogx(frequencies, coherence.squeeze())
+ax.set_xlabel("Frequency (Hz)")
+ax.set_ylabel("Covariance matrix spectral width")
+
+# %%
+# Evaluate the pairwise cross-correlation functions
+# -------------------------------------------------
+#
+# We calculate the pairwise cross-correlation functions between the seismograms
+# using the method :func:`~covseisnet.correlation.calculate_cross_correlation_matrix`.
+# We exclude the autocorrelation functions from the calculation, as they are not
+# useful for the backprojection.
+#
+# We also pre-process the cross-correlation functions by tapering the edges of
+# the functions, bandpass filtering the data between 1 and 5 Hz, calculating the
+# envelope of the data, and smoothing the data with a Gaussian filter with a
+# standard deviation of 30 samples. Finally, we normalize the data by the maximum
+# value of each cross-correlation function.
+
+# Calculate cross-correlation functions
+lags, pairs, correlations = csn.correlation.calculate_cross_correlation_matrix(
+    covariances, include_autocorrelation=False
+)
+
+
+# Pre-process the cross-correlation functions
+correlations = correlations.taper(0.1)
+correlations = correlations.bandpass(frequency_band=(1, 5))
+correlations = correlations.envelope()
+correlations = correlations.smooth(sigma=30)
+correlations /= correlations.max(axis=-1, keepdims=True)
+correlations = correlations.squeeze()
+
+# %%
+# Calculate travel times
+# ----------------------
+
+# Define the velocity model
+extent_with_depth = extent + (-3, 20)
 
 model = csn.velocity.ConstantVelocityModel(
-    extent=(40, 41, 50, 51, 0, 20),
-    shape=(20, 20, 20),
-    velocity=3.5,
+    extent=extent_with_depth, shape=(40, 40, 40), velocity=3.5
 )
+
+# Obtain the travel times
+travel_times = {
+    trace.stats.station: TravelTimes(stats=trace.stats, velocity_model=model)
+    for trace in stream
+}
+
+# Calculate differential travel times
+differential_travel_times = {}
+for pair in pairs:
+    station_1, station_2 = pair
+    differential_travel_times[pair] = DifferentialTravelTimes(
+        travel_times[station_1],
+        travel_times[station_2],
+    )
 
 # %%
-# Calculate the travel times between the sources and the receiver
-# ---------------------------------------------------------------
+# Locate the source with backprojection
+# -------------------------------------
 #
-# Each grid point of the model is considered as a source and the receiver is
-# defined by the user. In the example below, the receiver is located at
-# coordinates (40.7, 50.2, 0), somewhere in the model's domain. The travel
-# times are calculated using the class
-# :class:`~covseisnet.travel_times.TravelTimes`.
+# We locate the source of the seismic waves using the class
+# :class:`~covseisnet.backprojection.DifferentialBackProjection`. We use the
+# differential travel times calculated previously and the pre-processed
+# cross-correlation functions. We calculate the likelihood of the source location
+# using the method :func:`~covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood`.
+
+backprojection = DifferentialBackProjection(differential_travel_times)
+backprojection.calculate_likelihood(cross_correlation=correlations)
+
+ax = csn.plot.grid3d(backprojection, cmap="viridis", label="Likelihood")
+
+# %%
+# Compare maximum likelihood with known source location
+# -----------------------------------------------------
 #
-# We can then represent the travel times on a map using the method
-# :func:`~covseisnet.plot.grid3d`.
+# The maximum likelihood of the source location is calculated using the method
+# :func:`~covseisnet.backprojection.DifferentialBackProjection.maximum_coordinates`.
+# We plot the source location and the maximum likelihood of the source location
+# on the map.
 
-# Calculate the travel times
-traveltime_1 = csn.travel_times.TravelTimes(
-    model, receiver_coordinates=(40.7, 50.2, 0)
-)
+# Infer maximum coordinates
+max_likelihood = backprojection.maximum_coordinates()
 
-traveltime_2 = csn.travel_times.TravelTimes(
-    model, receiver_coordinates=(40.2, 50.9, 0)
-)
-
-# Plot the traveltime grid
-ax = csn.plot.grid3d(
-    traveltime_1,
-    cmap="RdPu",
-    label="Travel time (s)",
-    vmin=0,
-)
-
-# %% Calculate the differential travel times
-# ---------------------------------------
-#
-# The differential travel times are calculated using the class
-# :class:`~covseisnet.travel_times.DifferentialTravelTimes`. The differential
-# travel times are calculated between the two receivers defined above, and
-# shown on a map using the function :func:`~covseisnet.plot.grid3d`.
-
-# Calculate the differential travel times
-differential_traveltime = csn.travel_times.DifferentialTravelTimes(
-    traveltime_1, traveltime_2
-)
-
-# Plot the differential traveltime grid
-ax = csn.plot.grid3d(differential_traveltime, label="Travel time (s)")
+# Plot source coordinates
+fig = inventory.plot(projection="local", resolution="h")
+plt.plot(*source_location[:2], "k*", markersize=20, transform=PlateCarree())
+plt.plot(*max_likelihood[:2], "r*", markersize=20, transform=PlateCarree())

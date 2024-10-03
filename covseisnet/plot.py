@@ -469,7 +469,7 @@ def grid3d(
     receiver_coordinates=None,
     label=None,
     **kwargs,
-):
+) -> dict:
     """Plot a three-dimensional grid of data.
 
     This function plots the data of a three-dimensional grid in three

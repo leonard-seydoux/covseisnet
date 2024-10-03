@@ -185,3 +185,8 @@ class DifferentialBackProjection(Regular3DGrid):
         # Renormalize the likelihood if necessary
         if normalize:
             self /= self.max()
+
+    def maximum_coordinates(self):
+        r"""Return the coordinates of the maximum likelihood."""
+        i, j, k = np.unravel_index(np.argmax(self), self.shape)
+        return self.lon[i], self.lat[j], self.depth[k]
