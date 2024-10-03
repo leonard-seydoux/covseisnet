@@ -16,33 +16,9 @@ for seismology, on `Scipy <https://www.scipy.org>`_, and `Numpy
 linear algebra. 
 
 This library is hosted on GitHub at
-https://github.com/covseisnet/covseisnet and is distributed under the GNU
+https://github.com/leonard-seydoux/covseisnet and is distributed under the GNU
 General Public License v3.0. Contributions are welcome, and can be made via
 pull requests on the GitHub repository.
-
-.. image:: https://zenodo.org/badge/263984678.svg
-   :target: https://zenodo.org/doi/10.5281/zenodo.10990031
-   
-.. image:: https://img.shields.io/pypi/v/covseisnet.svg
-   :target: https://pypi.org/project/covseisnet/
-
-.. image:: https://img.shields.io/conda/v/conda-forge/covseisnet
-   :target: https://anaconda.org/conda-forge/covseisnet
-
-.. image:: https://img.shields.io/conda/l/conda-forge/covseisnet
-   :target: https://www.gnu.org/licenses/lgpl.html
-
-.. image:: https://img.shields.io/pypi/pyversions/covseisnet
-   :target: https://pypi.org/project/covseisnet/
-
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :target: https://github.com/psf/black
-
-.. image:: https://img.shields.io/conda/pn/conda-forge/covseisnet
-   :target: https://anaconda.org/conda-forge/covseisnet
-
-.. image:: https://codecov.io/gh/covseisnet/covseisnet/branch/develop/graph/badge.svg?token=N462A7PPRF
-   :target: https://codecov.io/gh/covseisnet/covseisnet
 
 Contents
 --------
