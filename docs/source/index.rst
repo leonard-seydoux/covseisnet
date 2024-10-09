@@ -11,7 +11,7 @@ processing tools such as beamforming and inter-station cross-correlations.
 
 In order to provide tools that are user-friendly and efficient, the package
 builts on `ObsPy <https://github.com/obspy/obspy/wiki/>`_, a Python toolbox
-for seismology, on `Scipy <https://www.scipy.org>`_, and `Numpy
+for seismology, on `SciPy <https://www.scipy.org>`_, and `NumPy
 <https://numpy.org>`_, two Python libraries for scientific computing and
 linear algebra. 
 

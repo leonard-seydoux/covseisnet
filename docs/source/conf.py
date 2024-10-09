@@ -132,8 +132,6 @@ add_module_names = True
 
 
 # Theme
-# pygments_style = "paraiso-light"
-# pygments_style_dark = "monokai"
 html_theme = "sphinx_book_theme"
 html_css_path = ["_static"]
 html_static_path = ["_static"]
@@ -148,8 +146,6 @@ html_theme_options = {
     "use_repository_button": True,
     "use_download_button": False,
     "use_issues_button": True,
-    "pygments_light_style": "paraiso-light",
-    "pygments_dark_style": "paraiso-dark",
     "home_page_in_toc": True,
     "show_toc_level": 1,
 }
