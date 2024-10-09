@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=60775dce" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17ebe808" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -348,26 +348,15 @@ document.write(`
                   
   <section id="installation-guide">
 <h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading">#</a></h1>
-<p>You can install the Covseisnet package using either <code class="docutils literal notranslate"><span class="pre">pip</span></code> or <code class="docutils literal notranslate"><span class="pre">conda</span></code>. Follow the instructions below based on your preferred package manager.</p>
-<ol class="arabic">
-<li><p><strong>Using pip</strong></p>
-<p>The package is available on the PyPI repository. To install it using <code class="docutils literal notranslate"><span class="pre">pip</span></code>, run the following command in your terminal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>covseisnet
+<p>The package is not yet available on the PyPI repository. To install it using <code class="docutils literal notranslate"><span class="pre">pip</span></code>, run the following command in your terminal, in a virtual environment of your choice:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/leonard-seydoux/covseisnet.git
 </pre></div>
 </div>
-</li>
-<li><p><strong>Using conda</strong></p>
-<p>Alternatively, you can install the package from the conda-forge repository. To do this, use the <code class="docutils literal notranslate"><span class="pre">conda</span></code> command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>covseisnet
-</pre></div>
-</div>
-</li>
-</ol>
 <p>After installation, you can check if the package was installed correctly by running a simple test in a Python environment (such as a Python shell). Execute the following command:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
 </pre></div>
 </div>
-<p>If you don’t encounter any errors, the package has been installed successfully.</p>
+<p>If you don't encounter any errors, the package has been installed successfully.</p>
 </section>
 
 

@@ -1,16 +1,20 @@
 /* Remove underline from links in code blocks */
-.highlight a, .highlight a:link, .highlight a:visited {
+.highlight a,
+.highlight a:link,
+.highlight a:visited {
     text-decoration: none;
 }
 
 /* Bold links in code blocks on hover */
-.highlight a:hover, .highlight a:focus, .highlight a:active {
+.highlight a:hover,
+.highlight a:focus,
+.highlight a:active {
     text-decoration: none;
     font-weight: bold;
 }
 
-/* Control link style */
-a.reference, .reference {
+a.reference,
+.reference {
     text-decoration: none;
 }
 
@@ -20,6 +24,6 @@ a.reference, .reference {
 }
 
 /* Sphinx gallery */
-html[data-theme=dark] .bd-content img:not(.only-dark,.dark-light) {
+html[data-theme=dark] .bd-content img:not(.only-dark, .dark-light) {
     background-color: transparent;
 }

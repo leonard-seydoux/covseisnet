@@ -197,7 +197,7 @@ the contrast within each case.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 0.311 seconds)
+   **Total running time of the script:** (1 minutes 1.677 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_b2_coherence_preprocess.py:
