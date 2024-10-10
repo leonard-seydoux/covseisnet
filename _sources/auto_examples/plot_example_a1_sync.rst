@@ -171,7 +171,7 @@ Compare traces
 
 The synchronized traces are plotted alongside the original traces to compare
 the effect of the synchronization method. Note that several interpolation
-methods are available in the synchronization method. Chech the documentation
+methods are available in the synchronization method. Check the documentation
 for more information.
 
 .. GENERATED FROM PYTHON SOURCE LINES 79-101
@@ -215,7 +215,7 @@ for more information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.207 seconds)
+   **Total running time of the script:** (0 minutes 1.165 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_a1_sync.py:
