@@ -74,7 +74,7 @@ print(processed_stream)
 #
 # The synchronized traces are plotted alongside the original traces to compare
 # the effect of the synchronization method. Note that several interpolation
-# methods are available in the synchronization method. Chech the documentation
+# methods are available in the synchronization method. Check the documentation
 # for more information.
 
 # Create figure
