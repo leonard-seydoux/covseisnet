@@ -684,6 +684,7 @@ def calculate_covariance_matrix(
     average: int,
     average_step: int | None = None,
     whiten: str = "none",
+    water_level: float = 1e-10,
     **kwargs,
 ) -> tuple[np.ndarray, np.ndarray, CovarianceMatrix]:
     r"""Calculate covariance matrix.
@@ -737,6 +738,9 @@ def calculate_covariance_matrix(
         (default), "slice", or "window". This parameter can be used in
         addition to the :meth:`~covseisnet.stream.NetworkStream.whiten` method
         to further whiten the covariance matrix.
+    water_level: float, optional
+        The water level used to avoid division by zero in the "window"
+        whitening method.
     **kwargs: dict, optional
         Additional keyword arguments passed to the
         :class:`~covseisnet.signal.ShortTimeFourierTransform` class.
@@ -794,7 +798,7 @@ def calculate_covariance_matrix(
 
     # Remove modulus
     if whiten.lower() == "window":
-        spectra /= np.abs(spectra) + 1e-5
+        spectra /= np.abs(spectra) + water_level
 
     # Parametrization
     step = average // 2 if average_step is None else average * average_step
