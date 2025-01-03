@@ -161,7 +161,7 @@ window length of 31 frequency bins.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.109 seconds)
+   **Total running time of the script:** (0 minutes 2.545 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_a3_whiten.py:
