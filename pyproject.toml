@@ -35,7 +35,11 @@ docs = ["sphinx", "sphinx_book_theme", "sphinx_gallery", "sphinxcontrib-bibtex"]
 path = "covseisnet/__init__.py"
 
 [tool.hatch.build.targets.sdist]
-include = ["/covseisnet"]
+include = ["covseisnet/**", "README.md", "LICENSE", "tests/**"]
+exclude = ["docs/**", "data/**", "examples/**"]
+
+[tool.hatch.build.targets.sdist.options]
+force-include = ["docs/**", "data/**"]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
@@ -45,3 +49,9 @@ log_cli_level = "info"
 testpaths = ["tests"]
 dev = ["check-manifest"]
 test = ["coverage"]
+
+[tool.hatch.envs.dev]
+dependencies = ["check-manifest"]
+
+[tool.hatch.envs.test]
+dependencies = ["coverage"]
