@@ -4,7 +4,7 @@ import numpy as np
 from obspy.core.trace import Stats
 
 from .spatial import straight_ray_distance, Regular3DGrid
-from .velocity import ConstantVelocityModel, VelocityModel
+from .velocity import VelocityModel0D, VelocityModel3D, VelocityModel
 
 
 class TravelTimes(Regular3DGrid):
@@ -17,18 +17,18 @@ class TravelTimes(Regular3DGrid):
     are calculated using appropriate methods:
 
     - If the velocity model is a
-      :class:`~covseisnet.velocity.ConstantVelocityModel`, the travel times
+      :class:`~covseisnet.velocity.VelocityModel0D`, the travel times
       are calculated using the straight ray distance between the sources and
       the receiver, with the :func:`~covseisnet.spatial.straight_ray_distance`.
     """
 
     stats: Stats | None
     receiver_coordinates: tuple[float, float, float] | None
-    velocity_model: VelocityModel | ConstantVelocityModel | None
+    velocity_model: VelocityModel | VelocityModel0D | VelocityModel3D | None
 
     def __new__(
         cls,
-        velocity_model: VelocityModel | ConstantVelocityModel,
+        velocity_model: VelocityModel | VelocityModel0D | VelocityModel3D,
         stats: Stats | None = None,
         receiver_coordinates: tuple[float, float, float] | None = None,
     ):
@@ -74,7 +74,7 @@ class TravelTimes(Regular3DGrid):
         obj.velocity_model = velocity_model
 
         # Calculate the travel times
-        if isinstance(velocity_model, ConstantVelocityModel):
+        if isinstance(velocity_model, {VelocityModel0D, VelocityModel3D}):
             obj[...] = travel_times_constant_velocity(
                 velocity_model, obj.receiver_coordinates
             )
@@ -150,7 +150,7 @@ class DifferentialTravelTimes(TravelTimes):
 
 
 def travel_times_constant_velocity(
-    velocity: ConstantVelocityModel,
+    velocity: VelocityModel0D,
     receiver_coordinates: tuple[float, float, float],
 ):
     r"""Calculate the travel times within a constant velocity model.
