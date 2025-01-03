@@ -11,6 +11,7 @@ synchronization of traces.
 """
 
 from io import BytesIO
+from pathlib import Path
 from functools import partial
 from typing import Any
 
@@ -264,7 +265,7 @@ class NetworkStream(Stream):
 
     @classmethod
     def read(
-        cls, pathname_or_url: str | BytesIO | None = None, **kwargs
+        cls, pathname_or_url: str | BytesIO | Path | None = None, **kwargs
     ) -> "NetworkStream":
         """Read seismic waveforms files into a
         :class:`~covseisnet.stream.NetworkStream` object.
@@ -1028,7 +1029,7 @@ class NetworkStream(Stream):
 
 
 def read(
-    pathname_or_url: str | BytesIO | None = None, **kwargs: dict
+    pathname_or_url: str | BytesIO | Path | None = None, **kwargs: dict
 ) -> NetworkStream:
     """Read seismic waveforms files into an NetworkStream object.
 

@@ -67,11 +67,16 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
-    "sphinx_gallery.gen_gallery",
+    "nbsphinx",
+    # "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_new_tab_link",
     "matplotlib.sphinxext.plot_directive",
 ]
+
+# Smart quotes
+smartquotes = False
+language = "en"
 
 
 # Plot directive
@@ -107,6 +112,7 @@ sphinx_gallery_conf = {
     "remove_config_comments": True,
     "within_subsection_order": "FileNameSortKey",
     "capture_repr": (),
+    "exclude_patterns": ["*.ipynb"],
 }
 
 # Templates

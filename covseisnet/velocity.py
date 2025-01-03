@@ -126,7 +126,7 @@ class VelocityModel0D(VelocityModel):
     r"""Class to create a constant velocity model."""
 
     velocity: float | None
-
+      
     def __new__(cls, velocity0d: float, **kwargs):
         r"""
         Arguments
