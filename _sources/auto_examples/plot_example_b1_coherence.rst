@@ -175,7 +175,7 @@ or with applying the formula of the Neumann entropy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 17.287 seconds)
+   **Total running time of the script:** (0 minutes 17.135 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example_b1_coherence.py:

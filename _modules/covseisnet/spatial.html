@@ -345,6 +345,18 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Base class for regular three-dimensional grid of values such as</span>
 <span class="sd">    velocity models, travel times, and differential travel times.</span>
 
+<span class="sd">    The grid is a placeholder for any mathematic object :math:`f` that depends</span>
+<span class="sd">    on three variables :math:`(\varphi, \lambda, z) \in \mathbb{R}^3` such as</span>
+<span class="sd">    :math:`f(\varphi, \lambda, z)`. The grid is defined by its geographical</span>
+<span class="sd">    extent :math:`(\varphi_0, \varphi_1, \lambda_0, \lambda_1, z_0, z_1)` and</span>
+<span class="sd">    the number of points in each direction :math:`(n_{\varphi}, n_{\lambda},</span>
+<span class="sd">    n_{z})`.</span>
+
+<span class="sd">    At any coordinate :math:`(\varphi, \lambda, z)` of the grid we can assign</span>
+<span class="sd">    a value :math:`f(\varphi, \lambda, z)`. The assignment of the values is</span>
+<span class="sd">    done by either filling the grid with a constant value, a random value, or</span>
+<span class="sd">    a user-defined value.</span>
+
 <span class="sd">    .. rubric:: Attributes</span>
 
 <span class="sd">    - :attr:`lon` (:class:`numpy.ndarray`): The longitudes of the grid in</span>
@@ -359,6 +371,26 @@
 <span class="sd">    .. rubric:: Methods</span>
 
 <span class="sd">    - :meth:`flatten`: Flatten the grid to allow for faster calculations.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    Create a 3D regular grid of values with random values, and plot it.</span>
+
+<span class="sd">    .. plot::</span>
+
+<span class="sd">        import numpy as np</span>
+
+<span class="sd">        import covseisnet as csn</span>
+
+<span class="sd">        np.random.seed(42)</span>
+
+<span class="sd">        grid = csn.spatial.Regular3DGrid(</span>
+<span class="sd">            extent=(40, 41, 50, 51, 0, 20), shape=(10, 10, 10),</span>
+<span class="sd">            fill_value=&quot;random&quot;,</span>
+<span class="sd">        )</span>
+
+<span class="sd">        csn.plot.grid3d(grid, cmap=&quot;cividis&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">lon</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span>
@@ -370,6 +402,7 @@
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">extent</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Arguments</span>
@@ -381,9 +414,19 @@
 <span class="sd">        shape: tuple</span>
 <span class="sd">            The number of points in the grid in the form ``(n_lon, n_lat,</span>
 <span class="sd">            n_depth)``.</span>
+<span class="sd">        fill_value: float or str, optional</span>
+<span class="sd">            The fill value of the grid. By default, it is set to :attr:`np.nan`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Extent</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">fill_value</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid fill value &#39;</span><span class="si">{</span><span class="n">fill_value</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="s2">&quot;The fill value must be a float or &#39;random&#39;.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># Grid mesh</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
