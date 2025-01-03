@@ -9,6 +9,18 @@ class Regular3DGrid(np.ndarray):
     r"""Base class for regular three-dimensional grid of values such as
     velocity models, travel times, and differential travel times.
 
+    The grid is a placeholder for any mathematic object :math:`f` that depends
+    on three variables :math:`(\varphi, \lambda, z) \in \mathbb{R}^3` such as
+    :math:`f(\varphi, \lambda, z)`. The grid is defined by its geographical
+    extent :math:`(\varphi_0, \varphi_1, \lambda_0, \lambda_1, z_0, z_1)` and
+    the number of points in each direction :math:`(n_{\varphi}, n_{\lambda},
+    n_{z})`.
+
+    At any coordinate :math:`(\varphi, \lambda, z)` of the grid we can assign
+    a value :math:`f(\varphi, \lambda, z)`. The assignment of the values is
+    done by either filling the grid with a constant value, a random value, or
+    a user-defined value.
+
     .. rubric:: Attributes
 
     - :attr:`lon` (:class:`numpy.ndarray`): The longitudes of the grid in
@@ -38,8 +50,7 @@ class Regular3DGrid(np.ndarray):
         np.random.seed(42)
 
         grid = csn.spatial.Regular3DGrid(
-            extent=(40, 41, 50, 51, 0, 20),
-            shape=(10, 10, 10),
+            extent=(40, 41, 50, 51, 0, 20), shape=(10, 10, 10),
             fill_value="random",
         )
 
