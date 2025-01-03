@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "covseisnet"
-version = "0.1.0"
+version = "0.1.1"
 description = "Covariance matrix analysis of network seismic data"
 readme = "README.md"
 license = { file = "LICENSE" }
