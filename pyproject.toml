@@ -7,7 +7,7 @@ name = "covseisnet"
 version = "0.1.0"
 description = "Covariance matrix analysis of network seismic data"
 readme = "README.md"
-license = ""
+license = { file = "LICENSE" }
 requires-python = ">=3.12, <4"
 authors = [{ name = "Leonard Seydoux" }]
 keywords = ["covariance", "data", "seismic"]
