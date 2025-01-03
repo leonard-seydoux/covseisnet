@@ -23,7 +23,7 @@ class ConstantVelocityModel(VelocityModel):
 
     constant_velocity: float | None
 
-    def __new__(cls, velocity: float, **kwargs):
+    def __new__(cls, velocity: float = 0.0, **kwargs):
         r"""
         Arguments
         ---------

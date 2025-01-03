@@ -56,6 +56,7 @@ datasets that you would like to try the package on.
 """
 
 from os import path
+from pathlib import Path
 
 import obspy
 from obspy.core.utcdatetime import UTCDateTime
@@ -174,7 +175,7 @@ def download_seismic_dataset(
 
 
 def download_undervolc_data(
-    filepath_destination: str | None = None,
+    filepath_destination: str | Path | None = None,
     starttime: str | UTCDateTime = "2010-10-14T09:00:00",
     endtime: str | UTCDateTime = "2010-10-14T16:00:00",
     network: str = "YA",

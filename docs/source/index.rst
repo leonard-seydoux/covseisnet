@@ -27,7 +27,7 @@ Contents
    :maxdepth: 1
 
    installation
-   auto_examples/index
+   tutorials
    api
    license
 
