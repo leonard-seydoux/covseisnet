@@ -47,8 +47,6 @@ xfail_strict = true
 filterwarnings = ["ignore::DeprecationWarning"]
 log_cli_level = "info"
 testpaths = ["tests"]
-dev = ["check-manifest"]
-test = ["coverage"]
 
 [tool.hatch.envs.dev]
 dependencies = ["check-manifest"]
