@@ -69,6 +69,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
+    "sphinx_new_tab_link",
     "matplotlib.sphinxext.plot_directive",
 ]
 

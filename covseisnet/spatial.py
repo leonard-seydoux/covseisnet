@@ -23,6 +23,27 @@ class Regular3DGrid(np.ndarray):
     .. rubric:: Methods
 
     - :meth:`flatten`: Flatten the grid to allow for faster calculations.
+
+    Example
+    -------
+
+    Create a 3D regular grid of values with random values, and plot it.
+
+    .. plot::
+
+        import numpy as np
+
+        import covseisnet as csn
+
+        np.random.seed(42)
+
+        grid = csn.spatial.Regular3DGrid(
+            extent=(40, 41, 50, 51, 0, 20),
+            shape=(10, 10, 10),
+            fill_value="random",
+        )
+
+        csn.plot.grid3d(grid, cmap="cividis")
     """
 
     lon: np.ndarray | None
@@ -34,6 +55,7 @@ class Regular3DGrid(np.ndarray):
         cls,
         extent: tuple[float, float, float, float, float, float],
         shape: tuple[int, int, int],
+        fill_value: float | str = np.nan,
     ):
         r"""
         Arguments
@@ -45,9 +67,19 @@ class Regular3DGrid(np.ndarray):
         shape: tuple
             The number of points in the grid in the form ``(n_lon, n_lat,
             n_depth)``.
+        fill_value: float or str, optional
+            The fill value of the grid. By default, it is set to :attr:`np.nan`.
         """
         # Extent
-        obj = np.full(shape, np.nan).view(cls)
+        if isinstance(fill_value, float):
+            obj = np.full(shape, fill_value).view(cls)
+        elif fill_value == "random":
+            obj = np.random.rand(*shape).view(cls)
+        else:
+            raise ValueError(
+                f"Invalid fill value '{fill_value}'. "
+                "The fill value must be a float or 'random'."
+            )
 
         # Grid mesh
         obj.lon = np.linspace(extent[0], extent[1], shape[0])
