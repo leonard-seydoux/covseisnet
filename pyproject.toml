@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "covseisnet"
-version = "0.1.0"
+version = "0.1.1"
 description = "Covariance matrix analysis of network seismic data"
 readme = "README.md"
-license = ""
+license = { file = "LICENSE" }
 requires-python = ">=3.12, <4"
 authors = [{ name = "Leonard Seydoux" }]
 keywords = ["covariance", "data", "seismic"]
@@ -18,7 +18,15 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Build Tools",
 ]
-dependencies = ["numpy", "obspy", "scipy", "cartopy"]
+dependencies = [
+    "numpy",
+    "obspy",
+    "scipy",
+    "cartopy",
+    "ipython",
+    "matplotlib",
+    "pytest",
+]
 
 [project.optional-dependencies]
 docs = ["sphinx", "sphinx_book_theme", "sphinx_gallery", "sphinxcontrib-bibtex"]
