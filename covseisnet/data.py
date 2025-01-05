@@ -69,7 +69,7 @@ DIRECTORY_DATA = path.join(path.dirname(DIRECTORY_PACKAGE), "data")
 
 
 def download_seismic_dataset(
-    starttime: UTCDateTime | str,
+    starttime: UTCDateTime | str | Path,
     endtime: UTCDateTime | str,
     network: str,
     station: str,
@@ -229,7 +229,6 @@ def download_undervolc_data(
         process=process,
         **kwargs,
     )
-    print(stream)
 
     # Write stream
     stream.write(filepath_destination, format="MSEED", encoding="FLOAT64")

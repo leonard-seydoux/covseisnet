@@ -559,12 +559,12 @@ def grid3d(
 
     # Default values for contour
     if isinstance(grid, csn.travel_times.DifferentialTravelTimes):
-        vmax = max(np.abs(grid.min()), np.abs(grid.max()))
+        vmax = np.nanmax(np.abs(np.nanmin(grid)), np.abs(np.nanmax(grid)))
         vmin = -vmax
         kwargs.setdefault("cmap", "RdBu")
     else:
-        vmax = np.max(grid)
-        vmin = np.min(grid)
+        vmax = np.nanmax(grid)
+        vmin = np.nanmin(grid)
 
     # Contour levels
     contour_levels = np.linspace(vmin, vmax, kwargs.pop("levels", 20))

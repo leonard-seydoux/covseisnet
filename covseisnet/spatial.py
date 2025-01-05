@@ -109,7 +109,7 @@ class Regular3DGrid(np.ndarray):
         self.mesh = getattr(obj, "mesh", None)
 
     def __str__(self):
-        ax_string = "\t{}: [{:0.2g}, {:0.2g}] with {} points\n"
+        ax_string = "\t{}: [{:.2f}, {:.2f}] with {} points\n"
         if (self.lon is None) or (self.lat is None) or (self.depth is None):
             raise ValueError("The grid axes are not defined.")
         return (
@@ -123,9 +123,10 @@ class Regular3DGrid(np.ndarray):
             + ax_string.format(
                 "depth", self.depth.min(), self.depth.max(), len(self.depth)
             )
-            + f"\tmesh: {self.size} points\n"
-            + f"\tmin: {self.min():.3f}\n"
-            + f"\tmax: {self.max():.3f}\n"
+            + f"\tmesh: {self.size:,} points\n"
+            + f"\tnan values: {np.isnan(self).sum():,} points\n"
+            + f"\tmin: {np.nanmin(self):.3f}\n"
+            + f"\tmax: {np.nanmax(self):.3f}\n"
             + ")"
         )
 

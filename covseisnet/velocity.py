@@ -56,7 +56,7 @@ class VelocityModel3D(VelocityModel):
 
     @classmethod
     def read_from_hdf5(
-        cls, data_field: str, path: str, axis_labels: tuple[str, str, str]
+        cls, field_name: str, filepath: str, axis_labels: tuple[str, str, str]
     ):
         r"""Instantiate from an hdf5 file.
 
@@ -71,7 +71,7 @@ class VelocityModel3D(VelocityModel):
         ---------
         data_field : str
             Name of the target geolocated field in the hdf5 file.
-        path : str
+        filepath : str
             Path to the hdf5 file.
         axis_labels : tuple[str, str, str]
             3-tuple of any combination of {'longitude', 'latitude', 'depth'}.
@@ -86,19 +86,19 @@ class VelocityModel3D(VelocityModel):
         import h5py as h5
 
         OUTPUT_AXIS_LABELS = ("longitude", "latitude", "depth")
-        if not os.path.isfile(path):
-            print(f"Could not find {path}.")
+        if not os.path.isfile(filepath):
+            print(f"Could not find {filepath}.")
             return
-        with h5.File(path, mode="r") as fin:
-            if data_field not in fin:
-                print(f"Could not find {data_field} in {path}.")
+        with h5.File(filepath, mode="r") as fin:
+            if field_name not in fin:
+                print(f"Could not find {field_name} in {filepath}.")
                 return
             # !!!!!!!! here we assume that the coordinates along
             #          each axis are sorted in increasing order !!!!!!!!
             longitude = np.unique(fin["longitude"][()])
             latitude = np.unique(fin["latitude"][()])
             depth = np.unique(fin["depth"][()])
-            velocity = fin[data_field][()]
+            velocity = fin[field_name][()]
         original_axis_positions = (
             axis_labels.index(OUTPUT_AXIS_LABELS[0]),
             axis_labels.index(OUTPUT_AXIS_LABELS[1]),
@@ -106,7 +106,9 @@ class VelocityModel3D(VelocityModel):
         )
         output_axis_positions = (0, 1, 2)
         # prepare arguments to instantiate `VelocityModel3D`
-        velocity = np.moveaxis(velocity, original_axis_positions, output_axis_positions)
+        velocity = np.moveaxis(
+            velocity, original_axis_positions, output_axis_positions
+        )
         num_lon = len(longitude)
         num_lat = len(latitude)
         num_dep = len(depth)
@@ -126,7 +128,7 @@ class VelocityModel0D(VelocityModel):
     r"""Class to create a constant velocity model."""
 
     velocity: float | None
-      
+
     def __new__(cls, velocity0d: float, **kwargs):
         r"""
         Arguments
