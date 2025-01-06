@@ -156,3 +156,40 @@ class VelocityModel0D(VelocityModel):
         self.depth = getattr(obj, "depth", None)
         self.mesh = getattr(obj, "mesh", None)
         self.velocity = getattr(obj, "velocity", None)
+
+
+def model_from_grid(longitude, latitude, depth, velocity):
+    r"""Create a velocity model from a grid of coordinates and velocities.
+
+    Arguments
+    ---------
+    longitude : np.ndarray
+        The longitudes of the grid in decimal degrees.
+    latitude : np.ndarray
+        The latitudes of the grid in decimal degrees.
+    depth : np.ndarray
+        The depths of the grid in kilometers.
+    velocity : np.ndarray
+        The 3d velocity of the model in kilometers per second.
+
+    Returns
+    -------
+    velocity_model_3d : VelocityModel3D
+        Instance of `VelocityModel3D` built with the grid of coordinates and
+        velocities.
+    """
+    # Get extent
+    extent = (
+        longitude.min(),
+        longitude.max(),
+        latitude.min(),
+        latitude.max(),
+        depth.min(),
+        depth.max(),
+    )
+
+    # Get shape
+    shape = velocity.shape
+
+    # Instantiate
+    return VelocityModel3D(extent=extent, shape=shape, velocity3d=velocity)
