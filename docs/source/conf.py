@@ -68,7 +68,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "nbsphinx",
-    # "sphinx_gallery.gen_gallery",
+    "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_new_tab_link",
     "matplotlib.sphinxext.plot_directive",
@@ -112,7 +112,8 @@ sphinx_gallery_conf = {
     "remove_config_comments": True,
     "within_subsection_order": "FileNameSortKey",
     "capture_repr": (),
-    "exclude_patterns": ["*.ipynb"],
+    "filename_pattern": ".ipynb",
+    # "exclude_patterns": ["*.ipynb"],
 }
 
 # Templates

@@ -5,4 +5,5 @@ Tutorials
    :maxdepth: 1
    :caption: Tutorials
 
-   tutorials/1_introduction
+   tutorials/01_introduction
+   tutorials/02_covariance

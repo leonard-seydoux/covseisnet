@@ -1,7 +1,8 @@
 """Module to deal with velocity models."""
 
 import numpy as np
-import os
+
+from scipy.interpolate import RegularGridInterpolator
 
 from .spatial import Regular3DGrid
 
@@ -19,10 +20,10 @@ class VelocityModel(Regular3DGrid):
     def __array_finalize__(self, obj):
         if obj is None:
             return
-        self.lon = getattr(obj, "lon", None)
-        self.lat = getattr(obj, "lat", None)
-        self.depth = getattr(obj, "depth", None)
-        self.mesh = getattr(obj, "mesh", None)
+        self.lon = getattr(obj, "lon", np.array([np.nan]))
+        self.lat = getattr(obj, "lat", np.array([np.nan]))
+        self.depth = getattr(obj, "depth", np.array([np.nan]))
+        self.mesh = getattr(obj, "mesh", [np.array([np.nan])])
 
     def resample(self, shape: tuple[int, int, int]):
         r"""Resample the velocity model to a new shape.
@@ -37,150 +38,86 @@ class VelocityModel(Regular3DGrid):
         velocity_model : VelocityModel
             The velocity model with the new resolution.
         """
-        lon = np.arange(self.extent[0], self.extent[1], shape[0])
-        lat = np.arange(self.extent[2], self.extent[3], shape[1])
-        depth = np.arange(self.extent[4], self.extent[5], shape[2])
-        return self.cast_to_new_grid(lon, lat, depth)
+        lon = np.linspace(self.extent[0], self.extent[1], shape[0])
+        lat = np.linspace(self.extent[2], self.extent[3], shape[1])
+        depth = np.linspace(self.extent[4], self.extent[5], shape[2])
+        return self.interpolate(lon, lat, depth)
 
-    def cast_to_new_grid(self, new_longitudes, new_latitudes, new_depths):
-        r"""Interpolate velocity model onto new grid."""
-        from scipy.interpolate import RegularGridInterpolator
+    def interpolate(
+        self,
+        lon,
+        lat,
+        depth,
+        interpolation_method="linear",
+        extrapolation_method="nearest",
+    ):
+        r"""Interpolate velocity model onto new grid.
 
-        # new Regular3DGrid instance
-        extent = (
-            new_longitudes.min(),
-            new_longitudes.max(),
-            new_latitudes.min(),
-            new_latitudes.max(),
-            new_depths.min(),
-            new_depths.max(),
+        Arguments
+        ---------
+        lon : np.ndarray
+            The longitudes of the new grid in decimal degrees.
+        lat : np.ndarray
+            The latitudes of the new grid in decimal degrees.
+        depth : np.ndarray
+            The depths of the new grid in kilometers.
+        interpolation_method : str, optional
+            The interpolation method used by `scipy.interpolate.RegularGridInterpolator`.
+            Default is 'linear'.
+        """
+
+        # Instanciate new grid
+        new_extent = (
+            lon.min(),
+            lon.max(),
+            lat.min(),
+            lat.max(),
+            depth.min(),
+            depth.max(),
         )
-        shape = (len(new_longitudes), len(new_latitudes), len(new_depths))
-        new_grid = Regular3DGrid(extent=extent, shape=shape)
-        # initialize interpolators: points outside the original
-        # grid are given the values of the nearest neighbors
-        interpolator_inside = RegularGridInterpolator(
+        new_shape = (len(lon), len(lat), len(depth))
+        new_grid = Regular3DGrid(extent=new_extent, shape=new_shape)
+
+        # Initialize interpolators. Points outside the original grid are given
+        # the values of the nearest neighbors.
+        interpolator = RegularGridInterpolator(
             (self.lon, self.lat, self.depth),
-            self,  # .velocity,
-            method="linear",
+            self,
+            method=interpolation_method,
         )
-        interpolator_outside = RegularGridInterpolator(
+        extrapolator = RegularGridInterpolator(
             (self.lon, self.lat, self.depth),
-            self,  # .velocity,
-            method="nearest",
-            fill_value=None,
+            self,
+            method=extrapolation_method,
+            fill_value=None,  # type: ignore
             bounds_error=False,
         )
-        # bounds of the new grid
-        lon_min = self.lon.min()
-        lon_max = self.lon.max()
-        lat_min = self.lat.min()
-        lat_max = self.lat.max()
-        dep_min = self.depth.min()
-        dep_max = self.depth.max()
-        # new grid
-        lon_g, lat_g, dep_g = new_grid.mesh
-        # find points inside and outside the original grid
+
+        # Find points inside and outside the original grid
+        lon, lat, depth = new_grid.mesh
         inside = (
-            (lon_g >= lon_min)
-            & (lon_g <= lon_max)
-            & (lat_g >= lat_min)
-            & (lat_g <= lat_max)
-            & (dep_g >= dep_min)
-            & (dep_g <= dep_max)
+            (lon >= self.lon.min())  # extent[0])
+            & (lon <= self.extent[1])
+            & (lat >= self.extent[2])
+            & (lat <= self.extent[3])
+            & (depth >= self.extent[4])
+            & (depth <= self.extent[5])
         )
-        outside = ~inside
-        # new field
-        new_field = np.zeros(
-            new_grid.shape, dtype=self.dtype  # self.velocity.dtype
+
+        # New field
+        velocity = np.zeros(new_grid.shape, dtype=self.dtype)
+
+        # Interpolate and extrapolate
+        velocity[inside] = interpolator(
+            (lon[inside], lat[inside], depth[inside])
         )
-        new_field[inside] = interpolator_inside(
-            (lon_g[inside], lat_g[inside], dep_g[inside])
+        velocity[~inside] = extrapolator(
+            (lon[~inside], lat[~inside], depth[~inside])
         )
-        new_field[outside] = interpolator_outside(
-            (lon_g[outside], lat_g[outside], dep_g[outside])
+
+        return VelocityModel(
+            extent=new_extent, shape=new_grid.shape, velocity=velocity
         )
-        #
-        extent = (
-            new_longitudes.min(),
-            new_longitudes.max(),
-            new_latitudes.min(),
-            new_latitudes.max(),
-            new_depths.min(),
-            new_depths.max(),
-        )
-        new_velocity_model = VelocityModel(
-            extent=extent, shape=new_grid.shape, velocity=new_field
-        )
-        return new_velocity_model
-
-
-# class VelocityModel3D(VelocityModel):
-#     r"""Class to create a 3D velocity model."""
-
-#     velocity: np.ndarray | None
-
-#     def __new__(cls, velocity3d: np.ndarray, **kwargs):
-#         r"""
-#         Arguments
-#         ---------
-#         extent: tuple
-#             The geographical extent of the grid in the form ``(lon_min, lon_max,
-#             lat_min, lat_max, depth_min, depth_max)``. The longitudes and
-#             latitudes are in decimal degrees, and the depths in kilometers.
-#         shape: tuple
-#             The number of points in the grid in the form ``(n_lon, n_lat,
-#             n_depth)``.
-#         velocity3d: np.ndarray
-#             The 3d velocity of the model in kilometers per second.
-#         """
-#         obj = super().__new__(cls, **kwargs)
-#         obj[...] = velocity3d
-#         obj.velocity = velocity3d
-#         return obj
-
-#     def __array_finalize__(self, obj):
-#         if obj is None:
-#             return
-#         self.lon = getattr(obj, "lon", None)
-#         self.lat = getattr(obj, "lat", None)
-#         self.depth = getattr(obj, "depth", None)
-#         self.mesh = getattr(obj, "mesh", None)
-#         self.velocity = getattr(obj, "velocity", None)
-
-
-# class VelocityModel0D(VelocityModel):
-#     r"""Class to create a constant velocity model."""
-
-#     velocity: float | None
-
-#     def __new__(cls, velocity0d: float, **kwargs):
-#         r"""
-#         Arguments
-#         ---------
-#         extent: tuple
-#             The geographical extent of the grid in the form ``(lon_min, lon_max,
-#             lat_min, lat_max, depth_min, depth_max)``. The longitudes and
-#             latitudes are in decimal degrees, and the depths in kilometers.
-#         shape: tuple
-#             The number of points in the grid in the form ``(n_lon, n_lat,
-#             n_depth)``.
-#         velocity0d: float
-#             The constant velocity of the model in kilometers per second.
-#         """
-#         obj = super().__new__(cls, **kwargs)
-#         obj[...] = velocity0d
-#         obj.velocity = velocity0d
-#         return obj
-
-#     def __array_finalize__(self, obj):
-#         if obj is None:
-#             return
-#         self.lon = getattr(obj, "lon", None)
-#         self.lat = getattr(obj, "lat", None)
-#         self.depth = getattr(obj, "depth", None)
-#         self.mesh = getattr(obj, "mesh", None)
-#         self.velocity = getattr(obj, "velocity", None)
 
 
 def model_from_grid(longitude, latitude, depth, velocity):

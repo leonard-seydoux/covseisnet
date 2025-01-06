@@ -57,10 +57,10 @@ class Regular3DGrid(np.ndarray):
         csn.plot.grid3d(grid, cmap="cividis")
     """
 
-    lon: np.ndarray | None
-    lat: np.ndarray | None
-    depth: np.ndarray | None
-    mesh: list[np.ndarray] | None
+    lon: np.ndarray
+    lat: np.ndarray
+    depth: np.ndarray
+    mesh: list[np.ndarray]
 
     def __new__(
         cls,
@@ -103,10 +103,10 @@ class Regular3DGrid(np.ndarray):
     def __array_finalize__(self, obj):
         if obj is None:
             return
-        self.lon = getattr(obj, "lon", None)
-        self.lat = getattr(obj, "lat", None)
-        self.depth = getattr(obj, "depth", None)
-        self.mesh = getattr(obj, "mesh", None)
+        self.lon = getattr(obj, "lon", np.array([np.nan]))
+        self.lat = getattr(obj, "lat", np.array([np.nan]))
+        self.depth = getattr(obj, "depth", np.array([np.nan]))
+        self.mesh = getattr(obj, "mesh", [np.array([np.nan])])
 
     def __str__(self):
         ax_string = "\t{}: [{:.2f}, {:.2f}] with {} points\n"
