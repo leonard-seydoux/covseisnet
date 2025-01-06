@@ -296,18 +296,8 @@ def stream_and_coherence(
     _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Show traces
-    trace_times = stream.times(type="matplotlib")
-    for index, trace in enumerate(stream):
-        waveform = trace.data * trace_factor
-        ax[0].plot(trace_times, waveform + index, color="C0", lw=0.3)
-
-    # Labels
-    stations = [trace.stats.station for trace in stream]
+    plot_stream(stream, trace_factor=trace_factor, ax=ax[0], lw=0.3, c="C0")
     ax[0].set_title("Normalized seismograms")
-    ax[0].grid()
-    ax[0].set_yticks(range(len(stations)), labels=stations, fontsize="small")
-    ax[0].set_ylabel("Normalized amplitude")
-    ax[0].set_ylim(-1, len(stations))
     xlim = ax[0].get_xlim()
 
     # Plot coherence
@@ -320,6 +310,52 @@ def stream_and_coherence(
     # Date formatter
     dateticks(ax[1])
     ax[1].set_xlim(xlim)
+
+    return ax
+
+
+def plot_stream(
+    stream: csn.stream.NetworkStream,
+    trace_factor: float = 1,
+    ax: Axes | None = None,
+    **kwargs,
+) -> Axes:
+    """Plot a stream of traces.
+
+    This function is deliberately simple and does not allow to customize the
+    trace plot. For more advanced plotting, you should consider creating a
+    derived function.
+
+    Arguments
+    ---------
+    stream : :class:`~obspy.core.stream.Stream`
+        The stream to plot.
+    **kwargs
+        Additional arguments passed to the plot method.
+
+    Returns
+    -------
+    ax : :class:`~matplotlib.axes.Axes`
+    """
+    # Create figure
+    ax = ax or plt.gca()
+
+    # Default values
+    kwargs.setdefault("c", "C0")
+
+    # Show traces
+    trace_times = stream.times(type="matplotlib")
+    for index, trace in enumerate(stream):
+        waveform = trace.data * trace_factor
+        ax.plot(trace_times, waveform + index, **kwargs)
+
+    # Labels
+    ax.grid()
+    stations = [trace.stats.station for trace in stream]
+    ax.set_yticks(range(len(stations)), labels=stations, fontsize="small")
+    ax.set_ylabel("Normalized amplitude")
+    ax.set_ylim(-1, len(stations))
+    dateticks(ax)
 
     return ax
 
