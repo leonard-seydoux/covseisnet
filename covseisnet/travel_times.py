@@ -17,18 +17,18 @@ class TravelTimes(Regular3DGrid):
     are calculated using appropriate methods:
 
     - If the velocity model is a
-      :class:`~covseisnet.velocity.VelocityModel0D`, the travel times
+      :class:`~covseisnet.velocity.VelocityModel`, the travel times
       are calculated using the straight ray distance between the sources and
       the receiver, with the :func:`~covseisnet.spatial.straight_ray_distance`.
     """
 
     stats: Stats | None
     receiver_coordinates: tuple[float, float, float] | None
-    velocity_model: VelocityModel | VelocityModel0D | VelocityModel3D | None
+    velocity_model: VelocityModel | None
 
     def __new__(
         cls,
-        velocity_model: VelocityModel | VelocityModel0D | VelocityModel3D,
+        velocity_model: VelocityModel,
         stats: Stats | None = None,
         receiver_coordinates: tuple[float, float, float] | None = None,
     ):
@@ -74,7 +74,7 @@ class TravelTimes(Regular3DGrid):
         obj.velocity_model = velocity_model
 
         # Calculate the travel times
-        if isinstance(velocity_model, {VelocityModel0D, VelocityModel3D}):
+        if isinstance(velocity_model, VelocityModel):
             obj[...] = travel_times_constant_velocity(
                 velocity_model, obj.receiver_coordinates
             )
