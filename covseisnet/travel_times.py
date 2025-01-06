@@ -149,7 +149,33 @@ class DifferentialTravelTimes(TravelTimes):
         self.receiver_coordinates = getattr(obj, "receiver_coordinates", None)
 
 
-def travel_times_constant_velocity(
+#def travel_times_constant_velocity(
+#    velocity: VelocityModel,
+#    receiver_coordinates: tuple[float, float, float],
+#):
+#    r"""Calculate the travel times within a constant velocity model.
+#
+#    Calculates the travel times of waves that travel at a constant velocity on
+#    the straight line between the sources and a receiver.
+#
+#    The sources are defined on the grid coordinates of the velocity model. The
+#    receiver is defined by its geographical coordinates, provided by the
+#    users. The method internally uses the
+#    :func:`~covseisnet.spatial.straight_ray_distance` function to calculate the
+#    straight ray distance between the sources and the receiver.
+#    """
+#    vel_unique = np.unique(velocity)
+#    assert len(vel_unique) != 1, "Velocity is not constant"
+#    # Calculate the travel times
+#    travel_times = np.full(velocity.shape, np.nan)
+#    if receiver_coordinates is None:
+#        raise ValueError("The receiver position is not defined.")
+#    for i, position in enumerate(velocity.flatten()):
+#        distance = straight_ray_distance(*receiver_coordinates, *position)
+#        travel_times.flat[i] = distance / vel_unique[0]
+#    return travel_times.reshape(travel_times.shape, order="F")
+
+def travel_times(
     velocity: VelocityModel,
     receiver_coordinates: tuple[float, float, float],
 ):
@@ -164,13 +190,16 @@ def travel_times_constant_velocity(
     :func:`~covseisnet.spatial.straight_ray_distance` function to calculate the
     straight ray distance between the sources and the receiver.
     """
-    vel_unique = np.unique(velocity)
-    assert len(vel_unique) != 1, "Velocity is not constant"
-    # Calculate the travel times
-    travel_times = np.full(velocity.shape, np.nan)
     if receiver_coordinates is None:
         raise ValueError("The receiver position is not defined.")
-    for i, position in enumerate(velocity.flatten()):
-        distance = straight_ray_distance(*receiver_coordinates, *position)
-        travel_times.flat[i] = distance / vel_unique[0]
+    travel_times = np.full(velocity.shape, np.nan)
+    vel_unique = np.unique(velocity)
+    if len(vel_unique) == 1:
+        print("Constant velocity model: use trivial calculation.")
+        for i, position in enumerate(velocity.flatten()):
+            distance = straight_ray_distance(*receiver_coordinates, *position)
+            travel_times.flat[i] = distance / vel_unique[0]
+    else:
+        print("Solve Eikonal equation.")
     return travel_times.reshape(travel_times.shape, order="F")
+
