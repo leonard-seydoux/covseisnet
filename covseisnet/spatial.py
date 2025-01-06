@@ -131,6 +131,20 @@ class Regular3DGrid(np.ndarray):
         )
 
     @property
+    def extent(self):
+        r"""Geographical extent of the grid in the form ``(lon_min, lon_max, lat_min, lat_max, depth_min, depth_max)``."""
+        if (self.lon is None) or (self.lat is None) or (self.depth is None):
+            raise ValueError("The grid axes are not defined.")
+        return (
+            self.lon.min(),
+            self.lon.max(),
+            self.lat.min(),
+            self.lat.max(),
+            self.depth.min(),
+            self.depth.max(),
+        )
+
+    @property
     def resolution(self):
         r"""Resolution of the grid in the form ``(lon_res, lat_res, depth_res)``."""
         if (self.lon is None) or (self.lat is None) or (self.depth is None):

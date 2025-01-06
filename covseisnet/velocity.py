@@ -9,10 +9,11 @@ from .spatial import Regular3DGrid
 class VelocityModel(Regular3DGrid):
     r"""Base class to create a velocity model."""
 
+    velocity: np.ndarray | float | None
+
     def __new__(cls, velocity, **kwargs):
         obj = super().__new__(cls, **kwargs)
         obj[...] = velocity
-        # obj.velocity = velocity
         return obj
 
     def __array_finalize__(self, obj):
@@ -23,12 +24,23 @@ class VelocityModel(Regular3DGrid):
         self.depth = getattr(obj, "depth", None)
         self.mesh = getattr(obj, "mesh", None)
 
-    def change_resolution(self, new_lon_res, new_lat_res, new_dep_res):
-        r"""Change grid resolution."""
-        new_longitudes = np.arange(self.lon.min(), self.lon.max(), new_lon_res)
-        new_latitudes = np.arange(self.lat.min(), self.lat.max(), new_lat_res)
-        new_depths = np.arange(self.depth.min(), self.depth.max(), new_dep_res)
-        return self.cast_to_new_grid(new_longitudes, new_latitudes, new_depths)
+    def resample(self, shape: tuple[int, int, int]):
+        r"""Resample the velocity model to a new shape.
+
+        Arguments
+        ---------
+        shape : tuple
+            The new shape of the grid in the form ``(n_lon, n_lat, n_depth)``.
+
+        Returns
+        -------
+        velocity_model : VelocityModel
+            The velocity model with the new resolution.
+        """
+        lon = np.arange(self.extent[0], self.extent[1], shape[0])
+        lat = np.arange(self.extent[2], self.extent[3], shape[1])
+        depth = np.arange(self.extent[4], self.extent[5], shape[2])
+        return self.cast_to_new_grid(lon, lat, depth)
 
     def cast_to_new_grid(self, new_longitudes, new_latitudes, new_depths):
         r"""Interpolate velocity model onto new grid."""
@@ -103,72 +115,72 @@ class VelocityModel(Regular3DGrid):
         return new_velocity_model
 
 
-class VelocityModel3D(VelocityModel):
-    r"""Class to create a 3D velocity model."""
+# class VelocityModel3D(VelocityModel):
+#     r"""Class to create a 3D velocity model."""
 
-    velocity: np.ndarray | None
+#     velocity: np.ndarray | None
 
-    def __new__(cls, velocity3d: np.ndarray, **kwargs):
-        r"""
-        Arguments
-        ---------
-        extent: tuple
-            The geographical extent of the grid in the form ``(lon_min, lon_max,
-            lat_min, lat_max, depth_min, depth_max)``. The longitudes and
-            latitudes are in decimal degrees, and the depths in kilometers.
-        shape: tuple
-            The number of points in the grid in the form ``(n_lon, n_lat,
-            n_depth)``.
-        velocity3d: np.ndarray
-            The 3d velocity of the model in kilometers per second.
-        """
-        obj = super().__new__(cls, **kwargs)
-        obj[...] = velocity3d
-        obj.velocity = velocity3d
-        return obj
+#     def __new__(cls, velocity3d: np.ndarray, **kwargs):
+#         r"""
+#         Arguments
+#         ---------
+#         extent: tuple
+#             The geographical extent of the grid in the form ``(lon_min, lon_max,
+#             lat_min, lat_max, depth_min, depth_max)``. The longitudes and
+#             latitudes are in decimal degrees, and the depths in kilometers.
+#         shape: tuple
+#             The number of points in the grid in the form ``(n_lon, n_lat,
+#             n_depth)``.
+#         velocity3d: np.ndarray
+#             The 3d velocity of the model in kilometers per second.
+#         """
+#         obj = super().__new__(cls, **kwargs)
+#         obj[...] = velocity3d
+#         obj.velocity = velocity3d
+#         return obj
 
-    def __array_finalize__(self, obj):
-        if obj is None:
-            return
-        self.lon = getattr(obj, "lon", None)
-        self.lat = getattr(obj, "lat", None)
-        self.depth = getattr(obj, "depth", None)
-        self.mesh = getattr(obj, "mesh", None)
-        self.velocity = getattr(obj, "velocity", None)
+#     def __array_finalize__(self, obj):
+#         if obj is None:
+#             return
+#         self.lon = getattr(obj, "lon", None)
+#         self.lat = getattr(obj, "lat", None)
+#         self.depth = getattr(obj, "depth", None)
+#         self.mesh = getattr(obj, "mesh", None)
+#         self.velocity = getattr(obj, "velocity", None)
 
 
-class VelocityModel0D(VelocityModel):
-    r"""Class to create a constant velocity model."""
+# class VelocityModel0D(VelocityModel):
+#     r"""Class to create a constant velocity model."""
 
-    velocity: float | None
+#     velocity: float | None
 
-    def __new__(cls, velocity0d: float, **kwargs):
-        r"""
-        Arguments
-        ---------
-        extent: tuple
-            The geographical extent of the grid in the form ``(lon_min, lon_max,
-            lat_min, lat_max, depth_min, depth_max)``. The longitudes and
-            latitudes are in decimal degrees, and the depths in kilometers.
-        shape: tuple
-            The number of points in the grid in the form ``(n_lon, n_lat,
-            n_depth)``.
-        velocity0d: float
-            The constant velocity of the model in kilometers per second.
-        """
-        obj = super().__new__(cls, **kwargs)
-        obj[...] = velocity0d
-        obj.velocity = velocity0d
-        return obj
+#     def __new__(cls, velocity0d: float, **kwargs):
+#         r"""
+#         Arguments
+#         ---------
+#         extent: tuple
+#             The geographical extent of the grid in the form ``(lon_min, lon_max,
+#             lat_min, lat_max, depth_min, depth_max)``. The longitudes and
+#             latitudes are in decimal degrees, and the depths in kilometers.
+#         shape: tuple
+#             The number of points in the grid in the form ``(n_lon, n_lat,
+#             n_depth)``.
+#         velocity0d: float
+#             The constant velocity of the model in kilometers per second.
+#         """
+#         obj = super().__new__(cls, **kwargs)
+#         obj[...] = velocity0d
+#         obj.velocity = velocity0d
+#         return obj
 
-    def __array_finalize__(self, obj):
-        if obj is None:
-            return
-        self.lon = getattr(obj, "lon", None)
-        self.lat = getattr(obj, "lat", None)
-        self.depth = getattr(obj, "depth", None)
-        self.mesh = getattr(obj, "mesh", None)
-        self.velocity = getattr(obj, "velocity", None)
+#     def __array_finalize__(self, obj):
+#         if obj is None:
+#             return
+#         self.lon = getattr(obj, "lon", None)
+#         self.lat = getattr(obj, "lat", None)
+#         self.depth = getattr(obj, "depth", None)
+#         self.mesh = getattr(obj, "mesh", None)
+#         self.velocity = getattr(obj, "velocity", None)
 
 
 def model_from_grid(longitude, latitude, depth, velocity):
