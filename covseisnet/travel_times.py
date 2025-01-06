@@ -1,6 +1,7 @@
 """Module to deal with velocity models."""
 
 import numpy as np
+import warnings
 from obspy.core.trace import Stats
 
 from .spatial import straight_ray_distance, Regular3DGrid
@@ -53,9 +54,7 @@ class TravelTimes(Regular3DGrid):
 
         # Check if stats is defined
         if stats is None and receiver_coordinates is None:
-            raise ValueError(
-                "One of stats or receiver coordinates must be defined."
-            )
+            raise ValueError("One of stats or receiver coordinates must be defined.")
         if stats is not None and receiver_coordinates is not None:
             raise ValueError(
                 "Only one of stats or receiver coordinates must be defined."
@@ -75,9 +74,7 @@ class TravelTimes(Regular3DGrid):
 
         # Calculate the travel times
         if isinstance(velocity_model, VelocityModel):
-            obj[...] = travel_times_constant_velocity(
-                velocity_model, obj.receiver_coordinates
-            )
+            obj[...] = travel_times(velocity_model, obj.receiver_coordinates)
 
         return obj
 
@@ -149,10 +146,10 @@ class DifferentialTravelTimes(TravelTimes):
         self.receiver_coordinates = getattr(obj, "receiver_coordinates", None)
 
 
-#def travel_times_constant_velocity(
+# def travel_times_constant_velocity(
 #    velocity: VelocityModel,
 #    receiver_coordinates: tuple[float, float, float],
-#):
+# ):
 #    r"""Calculate the travel times within a constant velocity model.
 #
 #    Calculates the travel times of waves that travel at a constant velocity on
@@ -175,6 +172,7 @@ class DifferentialTravelTimes(TravelTimes):
 #        travel_times.flat[i] = distance / vel_unique[0]
 #    return travel_times.reshape(travel_times.shape, order="F")
 
+
 def travel_times(
     velocity: VelocityModel,
     receiver_coordinates: tuple[float, float, float],
@@ -190,16 +188,63 @@ def travel_times(
     :func:`~covseisnet.spatial.straight_ray_distance` function to calculate the
     straight ray distance between the sources and the receiver.
     """
-    if receiver_coordinates is None:
+    if receiver_coordinates is None and self.receiver_coordinates is None:
         raise ValueError("The receiver position is not defined.")
     travel_times = np.full(velocity.shape, np.nan)
-    vel_unique = np.unique(velocity)
+    vel_unique = np.unique(velocity.flat)
     if len(vel_unique) == 1:
         print("Constant velocity model: use trivial calculation.")
         for i, position in enumerate(velocity.flatten()):
             distance = straight_ray_distance(*receiver_coordinates, *position)
             travel_times.flat[i] = distance / vel_unique[0]
     else:
-        print("Solve Eikonal equation.")
-    return travel_times.reshape(travel_times.shape, order="F")
+        import pykonal
 
+        print("Solve Eikonal equation.")
+        # define origin of the pykonal grid
+        rho_min, theta_min, lbd_min = pykonal.transformations.geo2sph(
+            [velocity.lat.max(), velocity.lon.min(), velocity.depth.max()]
+        )
+        # express resolution in radians
+        lon_res, lat_res, dep_res = velocity.resolution
+        lon_res = np.deg2rad(lon_res)
+        lat_res = np.deg2rad(lat_res)
+        # initialize the Eikonal solver
+        solver = pykonal.solver.PointSourceSolver(coord_sys="spherical")
+        # define the computational grid
+        solver.velocity.min_coords = rho_min, theta_min, lbd_min
+        solver.velocity.node_intervals = dep_res, lat_res, lon_res
+        num_lon, num_lat, num_dep = velocity.shape
+        solver.velocity.npts = num_dep, num_lat, num_lon
+        solver.velocity.values = np.swapaxes(velocity[...], 0, 2)
+        # convert the geographical coordinates of the receiver to spherical coordinates
+        rec_lon, rec_lat, rec_dep = receiver_coordinates
+        rho_rec, theta_rec, lbd_rec = pykonal.transformations.geo2sph(
+            [rec_lat, rec_lon, rec_dep]
+        )
+        # in pykonal's formulation, the receiver must be set as the source
+        solver.src_loc = np.array([rho_rec, theta_rec, lbd_rec])
+        # check if source is within grid:
+        if (
+            (solver.src_loc[0] < rho_min)
+            or (solver.src_loc[0] > rho_min + num_dep * dep_res)
+            or (solver.src_loc[1] < theta_min)
+            or (solver.src_loc[1] > theta_min + num_lat * lat_res)
+            or (solver.src_loc[2] < lbd_min)
+            or (solver.src_loc[2] > lbd_min + num_lon * lon_res)
+        ):
+            warnings.warn("Receiver is outside the grid! Pykonal will return Infs.")
+
+        solver.solve()
+
+        ## check this??
+        # if np.isinf(solver.tt.values.min()) and not np.isinf(
+        #    solver.tt.values.max()
+        # ):
+        #    mask = np.isinf(solver.tt.values)
+        #    print(f"Detected infs at {np.sum(mask)} points.")
+        #    solver.tt.values[mask] = solver.tt.values[~mask].min()
+
+        travel_times = np.swapaxes(solver.tt.values, 0, 2)
+
+    return travel_times  # .reshape(travel_times.shape, order="F")
