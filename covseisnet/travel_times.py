@@ -178,6 +178,7 @@ def travel_times(
     else:
         import pykonal
 
+        print("Using Pykonal to calculate travel times.")
         # Origin of the grid in spherical coordinates
         origin = [velocity.lat.max(), velocity.lon.min(), velocity.depth.max()]
         pykonal_origin = pykonal.transformations.geo2sph(origin)  # type: ignore

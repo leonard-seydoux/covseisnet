@@ -595,7 +595,7 @@ def grid3d(
 
     # Default values for contour
     if isinstance(grid, csn.travel_times.DifferentialTravelTimes):
-        vmax = np.nanmax(np.abs(np.nanmin(grid)), np.abs(np.nanmax(grid)))
+        vmax = np.nanmax([np.abs(np.nanmin(grid)), np.abs(np.nanmax(grid))])
         vmin = -vmax
         kwargs.setdefault("cmap", "RdBu")
     else:
