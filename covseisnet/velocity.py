@@ -119,6 +119,18 @@ class VelocityModel(Regular3DGrid):
             extent=new_extent, shape=new_grid.shape, velocity=velocity
         )
 
+    def is_constant(self):
+        r"""Check if the velocity model is constant."""
+        return np.all(self == self[0, 0, 0])
+
+    @property
+    def constant_velocity(self):
+        r"""Return the constant velocity of the model."""
+        if self.is_constant():
+            return self[0, 0, 0]
+        else:
+            raise ValueError("Velocity model is not constant.")
+
 
 def model_from_grid(longitude, latitude, depth, velocity):
     r"""Create a velocity model from a grid of coordinates and velocities.
