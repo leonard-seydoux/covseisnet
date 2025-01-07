@@ -19,10 +19,7 @@ from sphinxcontrib.bibtex.style.referencing.author_year import (
 
 # Define the bracket style for the references
 def bracket_style() -> BracketStyle:
-    return BracketStyle(
-        left="(",
-        right=")",
-    )
+    return BracketStyle(left="(", right=")")
 
 
 # Define the reference style
@@ -68,16 +65,15 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "nbsphinx",
-    "sphinx_gallery.gen_gallery",
+    # "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_new_tab_link",
     "matplotlib.sphinxext.plot_directive",
 ]
 
 # Smart quotes
-smartquotes = False
+smartquotes = True
 language = "en"
-
 
 # Plot directive
 plot_include_source = True
@@ -104,17 +100,17 @@ autoclass_content = "both"
 
 
 # Gallery
-sphinx_gallery_conf = {
-    "examples_dirs": "../../examples",
-    "gallery_dirs": "auto_examples",
-    "image_srcset": ["4x"],
-    "download_all_examples": True,
-    "remove_config_comments": True,
-    "within_subsection_order": "FileNameSortKey",
-    "capture_repr": (),
-    "filename_pattern": ".ipynb",
-    # "exclude_patterns": ["*.ipynb"],
-}
+# sphinx_gallery_conf = {
+#     "examples_dirs": "../../examples",
+#     "gallery_dirs": "auto_examples",
+#     "image_srcset": ["4x"],
+#     "download_all_examples": True,
+#     "remove_config_comments": True,
+#     "within_subsection_order": "FileNameSortKey",
+#     "capture_repr": (),
+#     "filename_pattern": r"^((?!plot_example).)*$",
+#     "ignore_pattern": r"\.ipynb$",
+# }
 
 # Templates
 templates_path = ["_templates"]

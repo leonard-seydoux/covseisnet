@@ -147,7 +147,7 @@ correlations = correlations.squeeze()
 # Define the velocity model
 extent_with_depth = extent + (-3, 20)
 
-model = csn.velocity.ConstantVelocityModel(
+model = csn.velocity.VelocityModel(
     extent=extent_with_depth, shape=(40, 40, 40), velocity=3.5
 )
 

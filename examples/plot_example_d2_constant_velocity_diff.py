@@ -24,7 +24,7 @@ import covseisnet as csn
 # to do so, we simply need to define the geographical extent of the model, the
 # resolution of the grid, and the velocity.
 
-model = csn.velocity.ConstantVelocityModel(
+model = csn.velocity.VelocityModel(
     extent=(40, 41, 50, 51, 0, 20),
     shape=(20, 20, 20),
     velocity=3.5,
