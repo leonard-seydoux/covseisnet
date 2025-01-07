@@ -23,6 +23,9 @@ __all__ = [
     "signal",
     "data",
     "spatial",
+    "velocity",
+    "travel_times",
+    "backprojection",
 ]
 
 # High-level objects
