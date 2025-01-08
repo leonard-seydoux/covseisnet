@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="english" data-content_root="./" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -30,14 +30,11 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17ebe808" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -45,11 +42,13 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=e872a992"></script>
+    <script src="_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'correlation';</script>
     <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -57,7 +56,7 @@
     <link rel="next" title="Plotting tools" href="plot.html" />
     <link rel="prev" title="Covariance Matrix" href="covariance.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="english"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
   </head>
   
@@ -161,16 +160,23 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d3_constant_velocity_loc.html">Locating events within a constant velocity model</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/synchronization.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/whitening.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/correlation.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_model.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_travel_times.html">Constant velocity differential times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_localization.html">Locating events within a constant velocity model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/01_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/02_covariance.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/03_correlation.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/04_calculate_travel_times.html">Travel times</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -392,8 +398,8 @@ numpy array, you have the several solutions provided by the <a class="reference 
 subclassing mechanism</a>.
 We recommend using the contructor of the class, which allows to pass
 the stats and stft attributes, as in the following example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">covseisnet.correlation</span> <span class="kn">import</span> <span class="n">CrossCorrelationMatrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">covseisnet.correlation</span><span class="w"> </span><span class="kn">import</span> <span class="n">CrossCorrelationMatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">correlation</span> <span class="o">=</span> <span class="n">CrossCorrelationMatrix</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">stats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -434,7 +440,7 @@ the imaginary unit. The Hilbert envelope is the absolute value of the
 Hilbert transform of the correlation matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments to pass to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.hilbert.html#scipy.signal.hilbert" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">hilbert()</span></code></a>. By
+<dd class="field-odd"><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments to pass to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.hilbert.html#scipy.signal.hilbert" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">hilbert()</span></code></a>. By
 default, the axis is set to the last axis (lags).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -483,7 +489,7 @@ deviation <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <li><p><strong>sigma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- Standard deviation of the Gaussian kernel. The larger the value,
 the smoother the correlation matrix. Default is 1.</p></li>
 <li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments passed to
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter1d.html#scipy.ndimage.gaussian_filter1d" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">gaussian_filter1d()</span></code></a>.</p></li>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter1d.html#scipy.ndimage.gaussian_filter1d" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">gaussian_filter1d()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -514,7 +520,7 @@ dimension. This method also works for smaller dimensions.</p>
 <span class="sig-name descname"><span class="pre">bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency_band</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix.bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.bandpass" title="Link to this definition">#</a></dt>
 <dd><p>Bandpass filter the correlation functions.</p>
 <p>Apply a Butterworth bandpass filter to the correlation functions. Uses
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
 avoid phase shift.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

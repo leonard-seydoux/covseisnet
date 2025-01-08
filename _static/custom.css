@@ -27,3 +27,37 @@ a.reference,
 html[data-theme=dark] .bd-content img:not(.only-dark, .dark-light) {
     background-color: transparent;
 }
+
+.nbsphinx-gallery {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    gap: 25px !important;
+    margin-top: 2em !important;
+    margin-bottom: 2em !important;
+}
+
+.nbsphinx-gallery>a {
+    padding: 15px !important;
+    border: 1px solid rgb(225, 225, 225) !important;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 10px !important;
+    text-align: center !important;
+    color: #414141 !important;
+}
+
+.nbsphinx-gallery>a:hover {
+    border: 1px solid #e89300 !important;
+}
+
+.nbsphinx-gallery img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+.nbsphinx-gallery>a>div:first-child {
+    display: flex !important;
+    align-items: start !important;
+    justify-content: center !important;
+    height: 120px !important;
+    margin-bottom: 5px !important;
+}

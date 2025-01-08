@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="english" data-content_root="../../" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -29,14 +29,11 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=17ebe808" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
   <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -44,16 +41,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/correlation';</script>
     <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="english"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
   </head>
   
@@ -159,16 +157,23 @@
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d3_constant_velocity_loc.html">Locating events within a constant velocity model</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/synchronization.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/whitening.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/correlation.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_model.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_travel_times.html">Constant velocity differential times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_localization.html">Locating events within a constant velocity model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/02_covariance.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_correlation.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/04_calculate_travel_times.html">Travel times</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -334,20 +339,20 @@
   <h1>Source code for covseisnet.correlation</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Cross-correlation matrix in time domain.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Stats</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">windows</span><span class="p">,</span> <span class="n">correlation_lags</span>
-<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter1d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">obspy.core.trace</span><span class="w"> </span><span class="kn">import</span> <span class="n">Stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">windows</span><span class="p">,</span> <span class="n">correlation_lags</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter1d</span>
 
-<span class="kn">from</span> <span class="nn">.covariance</span> <span class="kn">import</span> <span class="n">CovarianceMatrix</span>
-<span class="kn">from</span> <span class="nn">.signal</span> <span class="kn">import</span> <span class="n">bandpass_filter</span><span class="p">,</span> <span class="n">hilbert_envelope</span>
-<span class="kn">from</span> <span class="nn">.signal</span> <span class="kn">import</span> <span class="n">ShortTimeFourierTransform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">CovarianceMatrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">bandpass_filter</span><span class="p">,</span> <span class="n">hilbert_envelope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShortTimeFourierTransform</span>
 
 
 <div class="viewcode-block" id="CrossCorrelationMatrix">
 <a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">CrossCorrelationMatrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CrossCorrelationMatrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    .. rubric:: Mathematical definition</span>
@@ -384,7 +389,7 @@
 <span class="sd">    with adequate attributes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">input_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">stats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Stats</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -419,7 +424,7 @@
         <span class="n">obj</span><span class="o">.</span><span class="n">stft</span> <span class="o">=</span> <span class="n">stft</span>
         <span class="k">return</span> <span class="n">obj</span>
 
-    <span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Finalize the array.</span>
 
 <span class="sd">        This method is essential to the subclassing mechanism of numpy. It</span>
@@ -433,7 +438,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stft</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;stft&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Reduce the object.</span>
 
 <span class="sd">        This method is used to preserve the attributes and methods of the object</span>
@@ -450,7 +455,7 @@
             <span class="p">(</span><span class="n">pickled_state</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set the state of the object.</span>
 
 <span class="sd">        This method is used to set the state of the object after pickling and</span>
@@ -466,7 +471,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">sampling_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sampling_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the sampling rate in Hz.</span>
 
 <span class="sd">        The sampling rate is extracted from the first stats in the list of</span>
@@ -491,7 +496,7 @@
 
 <div class="viewcode-block" id="CrossCorrelationMatrix.envelope">
 <a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.envelope">[docs]</a>
-    <span class="k">def</span> <span class="nf">envelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">envelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Hilbert envelope of the correlation matrix.</span>
 
 <span class="sd">        The Hilbert envelope is calculated using the Hilbert transform of the</span>
@@ -527,7 +532,7 @@
 
 <div class="viewcode-block" id="CrossCorrelationMatrix.taper">
 <a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.taper">[docs]</a>
-    <span class="k">def</span> <span class="nf">taper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_percentage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">taper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_percentage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Taper the correlation matrix.</span>
 
 <span class="sd">        Taper the correlation matrix with the given taper. The taper is</span>
@@ -560,7 +565,7 @@
 
 <div class="viewcode-block" id="CrossCorrelationMatrix.smooth">
 <a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.smooth">[docs]</a>
-    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Use a Gaussian kernel to smooth the correlation matrix.</span>
 
 <span class="sd">        This function is usually applied to the envelope of the correlation</span>
@@ -599,7 +604,7 @@
 
 <div class="viewcode-block" id="CrossCorrelationMatrix.flat">
 <a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.flat">[docs]</a>
-    <span class="k">def</span> <span class="nf">flat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Flatten the first dimensions.</span>
 
 <span class="sd">        The shape of the pairwise cross-correlation is at maximum 3D, with the</span>
@@ -619,7 +624,7 @@
 
 <div class="viewcode-block" id="CrossCorrelationMatrix.bandpass">
 <a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.CrossCorrelationMatrix.bandpass">[docs]</a>
-    <span class="k">def</span> <span class="nf">bandpass</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bandpass</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">frequency_band</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="nb">list</span><span class="p">,</span> <span class="n">filter_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CrossCorrelationMatrix&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Bandpass filter the correlation functions.</span>
@@ -664,7 +669,7 @@
 
 <div class="viewcode-block" id="calculate_cross_correlation_matrix">
 <a class="viewcode-back" href="../../correlation.html#covseisnet.correlation.calculate_cross_correlation_matrix">[docs]</a>
-<span class="k">def</span> <span class="nf">calculate_cross_correlation_matrix</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_cross_correlation_matrix</span><span class="p">(</span>
     <span class="n">covariance_matrix</span><span class="p">:</span> <span class="n">CovarianceMatrix</span><span class="p">,</span>
     <span class="n">include_autocorrelation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">CrossCorrelationMatrix</span><span class="p">]:</span>

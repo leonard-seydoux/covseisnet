@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="english" data-content_root="../../" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -29,14 +29,11 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=17ebe808" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
   <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -44,16 +41,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/data';</script>
     <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="english"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
   </head>
   
@@ -159,16 +157,23 @@
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d3_constant_velocity_loc.html">Locating events within a constant velocity model</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/synchronization.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/whitening.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/correlation.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_model.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_travel_times.html">Constant velocity differential times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_localization.html">Locating events within a constant velocity model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/02_covariance.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_correlation.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/04_calculate_travel_times.html">Travel times</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -389,13 +394,14 @@
 <span class="sd">datasets that you would like to try the package on. </span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">obspy</span>
-<span class="kn">from</span> <span class="nn">obspy.core.utcdatetime</span> <span class="kn">import</span> <span class="n">UTCDateTime</span>
-<span class="kn">from</span> <span class="nn">obspy.clients.fdsn</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">obspy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">obspy.core.utcdatetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">UTCDateTime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">obspy.clients.fdsn</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
 
-<span class="kn">from</span> <span class="nn">.stream</span> <span class="kn">import</span> <span class="n">NetworkStream</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.stream</span><span class="w"> </span><span class="kn">import</span> <span class="n">NetworkStream</span>
 
 <span class="n">DIRECTORY_PACKAGE</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
 <span class="n">DIRECTORY_DATA</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">DIRECTORY_PACKAGE</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
@@ -403,8 +409,8 @@
 
 <div class="viewcode-block" id="download_seismic_dataset">
 <a class="viewcode-back" href="../../data.html#covseisnet.data.download_seismic_dataset">[docs]</a>
-<span class="k">def</span> <span class="nf">download_seismic_dataset</span><span class="p">(</span>
-    <span class="n">starttime</span><span class="p">:</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_seismic_dataset</span><span class="p">(</span>
+    <span class="n">starttime</span><span class="p">:</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">endtime</span><span class="p">:</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">network</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">station</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -512,8 +518,8 @@
 
 <div class="viewcode-block" id="download_undervolc_data">
 <a class="viewcode-back" href="../../data.html#covseisnet.data.download_undervolc_data">[docs]</a>
-<span class="k">def</span> <span class="nf">download_undervolc_data</span><span class="p">(</span>
-    <span class="n">filepath_destination</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_undervolc_data</span><span class="p">(</span>
+    <span class="n">filepath_destination</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">starttime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2010-10-14T09:00:00&quot;</span><span class="p">,</span>
     <span class="n">endtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2010-10-14T16:00:00&quot;</span><span class="p">,</span>
     <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;YA&quot;</span><span class="p">,</span>
@@ -567,7 +573,6 @@
         <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 
     <span class="c1"># Write stream</span>
     <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filepath_destination</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;MSEED&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;FLOAT64&quot;</span><span class="p">)</span>
@@ -579,7 +584,7 @@
 
 <div class="viewcode-block" id="download_usarray_data">
 <a class="viewcode-back" href="../../data.html#covseisnet.data.download_usarray_data">[docs]</a>
-<span class="k">def</span> <span class="nf">download_usarray_data</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_usarray_data</span><span class="p">(</span>
     <span class="n">filepath_destination</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">starttime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2006-01-01&quot;</span><span class="p">,</span>
     <span class="n">endtime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UTCDateTime</span> <span class="o">=</span> <span class="s2">&quot;2006-03-01&quot;</span><span class="p">,</span>

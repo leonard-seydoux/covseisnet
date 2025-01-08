@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="english" data-content_root="../../" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -29,14 +29,11 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=17ebe808" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
   <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -44,16 +41,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=e872a992"></script>
+    <script src="../../_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/covseisnet/travel_times';</script>
     <link rel="icon" href="../../_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="english"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
   </head>
   
@@ -159,16 +157,23 @@
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_example_d3_constant_velocity_loc.html">Locating events within a constant velocity model</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/synchronization.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/whitening.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/correlation.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_model.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_travel_times.html">Constant velocity differential times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/constant_velocity_localization.html">Locating events within a constant velocity model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/02_covariance.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_correlation.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/04_calculate_travel_times.html">Travel times</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -334,16 +339,17 @@
   <h1>Source code for covseisnet.travel_times</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Module to deal with velocity models.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">obspy.core.trace</span><span class="w"> </span><span class="kn">import</span> <span class="n">Stats</span>
 
-<span class="kn">from</span> <span class="nn">.spatial</span> <span class="kn">import</span> <span class="n">straight_ray_distance</span><span class="p">,</span> <span class="n">Regular3DGrid</span>
-<span class="kn">from</span> <span class="nn">.velocity</span> <span class="kn">import</span> <span class="n">ConstantVelocityModel</span><span class="p">,</span> <span class="n">VelocityModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">straight_ray_distance</span><span class="p">,</span> <span class="n">Regular3DGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.velocity</span><span class="w"> </span><span class="kn">import</span> <span class="n">VelocityModel</span>
 
 
 <div class="viewcode-block" id="TravelTimes">
 <a class="viewcode-back" href="../../travel_times.html#covseisnet.travel_times.TravelTimes">[docs]</a>
-<span class="k">class</span> <span class="nc">TravelTimes</span><span class="p">(</span><span class="n">Regular3DGrid</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TravelTimes</span><span class="p">(</span><span class="n">Regular3DGrid</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Three-dimensional travel time grid.</span>
 
 <span class="sd">    This object is a three-dimensional grid of travel times between sources</span>
@@ -353,18 +359,18 @@
 <span class="sd">    are calculated using appropriate methods:</span>
 
 <span class="sd">    - If the velocity model is a</span>
-<span class="sd">      :class:`~covseisnet.velocity.ConstantVelocityModel`, the travel times</span>
+<span class="sd">      :class:`~covseisnet.velocity.VelocityModel`, the travel times</span>
 <span class="sd">      are calculated using the straight ray distance between the sources and</span>
 <span class="sd">      the receiver, with the :func:`~covseisnet.spatial.straight_ray_distance`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">stats</span><span class="p">:</span> <span class="n">Stats</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">receiver_coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">velocity_model</span><span class="p">:</span> <span class="n">VelocityModel</span> <span class="o">|</span> <span class="n">ConstantVelocityModel</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">velocity_model</span><span class="p">:</span> <span class="n">VelocityModel</span> <span class="o">|</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">velocity_model</span><span class="p">:</span> <span class="n">VelocityModel</span> <span class="o">|</span> <span class="n">ConstantVelocityModel</span><span class="p">,</span>
+        <span class="n">velocity_model</span><span class="p">:</span> <span class="n">VelocityModel</span><span class="p">,</span>
         <span class="n">stats</span><span class="p">:</span> <span class="n">Stats</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">receiver_coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -410,20 +416,18 @@
         <span class="n">obj</span><span class="o">.</span><span class="n">velocity_model</span> <span class="o">=</span> <span class="n">velocity_model</span>
 
         <span class="c1"># Calculate the travel times</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">,</span> <span class="n">ConstantVelocityModel</span><span class="p">):</span>
-            <span class="n">obj</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">travel_times_constant_velocity</span><span class="p">(</span>
-                <span class="n">velocity_model</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">receiver_coordinates</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">,</span> <span class="n">VelocityModel</span><span class="p">):</span>
+            <span class="n">obj</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">travel_times</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">receiver_coordinates</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">obj</span>
 
-    <span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;velocity_model&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;receiver_coordinates&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
@@ -432,7 +436,7 @@
 
 <div class="viewcode-block" id="DifferentialTravelTimes">
 <a class="viewcode-back" href="../../travel_times.html#covseisnet.travel_times.DifferentialTravelTimes">[docs]</a>
-<span class="k">class</span> <span class="nc">DifferentialTravelTimes</span><span class="p">(</span><span class="n">TravelTimes</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DifferentialTravelTimes</span><span class="p">(</span><span class="n">TravelTimes</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Three-dimensional differential travel time grid.</span>
 
 <span class="sd">    This object is a three-dimensional grid of differential travel times</span>
@@ -450,7 +454,7 @@
         <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">travel_times_1</span><span class="p">:</span> <span class="n">TravelTimes</span><span class="p">,</span> <span class="n">travel_times_2</span><span class="p">:</span> <span class="n">TravelTimes</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">travel_times_1</span><span class="p">:</span> <span class="n">TravelTimes</span><span class="p">,</span> <span class="n">travel_times_2</span><span class="p">:</span> <span class="n">TravelTimes</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Arguments</span>
 <span class="sd">        ---------</span>
@@ -476,23 +480,23 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 
-    <span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;velocity_model&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;receiver_coordinates&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="travel_times_constant_velocity">
-<a class="viewcode-back" href="../../travel_times.html#covseisnet.travel_times.travel_times_constant_velocity">[docs]</a>
-<span class="k">def</span> <span class="nf">travel_times_constant_velocity</span><span class="p">(</span>
-    <span class="n">velocity</span><span class="p">:</span> <span class="n">ConstantVelocityModel</span><span class="p">,</span>
+<div class="viewcode-block" id="travel_times">
+<a class="viewcode-back" href="../../travel_times.html#covseisnet.travel_times.travel_times">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">travel_times</span><span class="p">(</span>
+    <span class="n">velocity</span><span class="p">:</span> <span class="n">VelocityModel</span><span class="p">,</span>
     <span class="n">receiver_coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the travel times within a constant velocity model.</span>
@@ -506,14 +510,71 @@
 <span class="sd">    :func:`~covseisnet.spatial.straight_ray_distance` function to calculate the</span>
 <span class="sd">    straight ray distance between the sources and the receiver.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Calculate the travel times</span>
-    <span class="n">travel_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Check if receiver coordinates are defined</span>
+    <span class="k">if</span> <span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The receiver position is not defined.&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">velocity</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
-        <span class="n">distance</span> <span class="o">=</span> <span class="n">straight_ray_distance</span><span class="p">(</span><span class="o">*</span><span class="n">receiver_coordinates</span><span class="p">,</span> <span class="o">*</span><span class="n">position</span><span class="p">)</span>
-        <span class="n">travel_times</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">velocity</span><span class="o">.</span><span class="n">constant_velocity</span>
-    <span class="k">return</span> <span class="n">travel_times</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">travel_times</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># Initialize the travel times</span>
+    <span class="n">travel_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="c1"># Split cases</span>
+    <span class="k">if</span> <span class="n">velocity</span><span class="o">.</span><span class="n">is_constant</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">velocity</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">straight_ray_distance</span><span class="p">(</span><span class="o">*</span><span class="n">receiver_coordinates</span><span class="p">,</span> <span class="o">*</span><span class="n">position</span><span class="p">)</span>
+            <span class="n">travel_times</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">velocity</span><span class="o">.</span><span class="n">constant_velocity</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pykonal</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using Pykonal to calculate travel times.&quot;</span><span class="p">)</span>
+        <span class="c1"># Origin of the grid in spherical coordinates</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="n">velocity</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">velocity</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">velocity</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span>
+        <span class="n">pykonal_origin</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">geo2sph</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">rho_min</span><span class="p">,</span> <span class="n">theta_min</span><span class="p">,</span> <span class="n">lbd_min</span> <span class="o">=</span> <span class="n">pykonal_origin</span>
+
+        <span class="c1"># Extract resolutions</span>
+        <span class="n">lon_res</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">depth_res</span> <span class="o">=</span> <span class="n">velocity</span><span class="o">.</span><span class="n">resolution</span>
+        <span class="n">lon_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lon_res</span><span class="p">)</span>
+        <span class="n">lat_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lat_res</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the Eikonal solver</span>
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">PointSourceSolver</span><span class="p">(</span><span class="n">coord_sys</span><span class="o">=</span><span class="s2">&quot;spherical&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Define the computational grid</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">min_coords</span> <span class="o">=</span> <span class="n">pykonal_origin</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">node_intervals</span> <span class="o">=</span> <span class="n">depth_res</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">lon_res</span>
+        <span class="n">num_lon</span><span class="p">,</span> <span class="n">num_lat</span><span class="p">,</span> <span class="n">num_dep</span> <span class="o">=</span> <span class="n">velocity</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">npts</span> <span class="o">=</span> <span class="n">num_dep</span><span class="p">,</span> <span class="n">num_lat</span><span class="p">,</span> <span class="n">num_lon</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Convert the geographical coordinates of the receiver to spherical coordinates</span>
+        <span class="n">rec_lon</span><span class="p">,</span> <span class="n">rec_lat</span><span class="p">,</span> <span class="n">rec_dep</span> <span class="o">=</span> <span class="n">receiver_coordinates</span>
+        <span class="n">rho_rec</span><span class="p">,</span> <span class="n">theta_rec</span><span class="p">,</span> <span class="n">lbd_rec</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">geo2sph</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rec_lat</span><span class="p">,</span> <span class="n">rec_lon</span><span class="p">,</span> <span class="n">rec_dep</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rho_rec</span><span class="p">,</span> <span class="n">theta_rec</span><span class="p">,</span> <span class="n">lbd_rec</span><span class="p">])</span>
+
+        <span class="c1"># Check if source is within grid:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rho_min</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rho_min</span> <span class="o">+</span> <span class="n">num_dep</span> <span class="o">*</span> <span class="n">depth_res</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">theta_min</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">theta_min</span> <span class="o">+</span> <span class="n">num_lat</span> <span class="o">*</span> <span class="n">lat_res</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lbd_min</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">lbd_min</span> <span class="o">+</span> <span class="n">num_lon</span> <span class="o">*</span> <span class="n">lon_res</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Receiver is outside the grid! Pykonal will return Infs.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+        <span class="n">travel_times</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">tt</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">travel_times</span></div>
 
 </pre></div>
 

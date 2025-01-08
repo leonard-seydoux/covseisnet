@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="english" data-content_root="./" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -30,14 +30,11 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17ebe808" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -45,11 +42,13 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=e872a992"></script>
+    <script src="_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'signal';</script>
     <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -57,7 +56,7 @@
     <link rel="next" title="Covariance Matrix" href="covariance.html" />
     <link rel="prev" title="Network stream" href="stream.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="english"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
   </head>
   
@@ -161,16 +160,23 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="auto_examples/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a1_sync.html">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a2_norm.html">Temporal normalization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_a3_whiten.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b1_coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_b2_coherence_preprocess.html">Compare pre-processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_c1_correlations.html">Cross-correlation at USArray</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d1_constant_velocity.html">Constant velocity travel times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d2_constant_velocity_diff.html">Constant velocity differential times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_example_d3_constant_velocity_loc.html">Locating events within a constant velocity model</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/synchronization.html">Traces synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/whitening.html">Spectral whitening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence.html">Spectral width</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/correlation.html">Cross-correlation at USArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_model.html">Constant velocity travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_travel_times.html">Constant velocity differential times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_localization.html">Locating events within a constant velocity model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/01_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/02_covariance.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/03_correlation.html">Calculate covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/04_calculate_travel_times.html">Travel times</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -363,16 +369,16 @@
 <span id="signal-processing"></span><h1>Signal processing<a class="headerlink" href="#module-covseisnet.signal" title="Link to this heading">#</a></h1>
 <p>The package provides tools for spectral analysis of seismic data. The main
 class is the <a class="reference internal" href="#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFourierTransform</span></code></a> class, which extends the
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFFT</span></code></a> class to provide a more user-friendly
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFFT</span></code></a> class to provide a more user-friendly
 interface for the Short-Time Fourier Transform with streams.</p>
 <p>Other functions are provided to normalize seismic traces in the spectral
 domain, such as the <a class="reference internal" href="#covseisnet.signal.modulus_division" title="covseisnet.signal.modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">modulus_division()</span></code></a> and <a class="reference internal" href="#covseisnet.signal.smooth_modulus_division" title="covseisnet.signal.smooth_modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_modulus_division()</span></code></a> functions. Also, we provide the <a class="reference internal" href="#covseisnet.signal.smooth_envelope_division" title="covseisnet.signal.smooth_envelope_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_envelope_division()</span></code></a> function to normalize seismic traces by a smooth version of its envelope.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">ShortTimeFourierTransform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hann'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/signal.html#ShortTimeFourierTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFFT</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFFT</span></code></a></p>
 <p>Short-Time Fourier Transform instance.</p>
-<p>This class extends the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a> class to
+<p>This class extends the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a> class to
 provide a more user-friendly interface for the Short-Time Fourier
 Transform with ObsPy and Covseisnet Streams.</p>
 <dl class="field-list simple">
@@ -385,13 +391,13 @@ duration.</p></li>
 <li><p><strong>sampling_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The sampling rate of the data. Default is 1.0 Hz. In most methods
 the sampling rate is set automatically from the data.</p></li>
 <li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments are passed to the
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft.html#scipy.signal.ShortTimeFFT.stft" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft()</span></code></a> method.</p></li>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft.html#scipy.signal.ShortTimeFFT.stft" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft()</span></code></a> method.</p></li>
 </ul>
 </dd>
 </dl>
 <div class="admonition-notes admonition">
 <p class="admonition-title">Notes</p>
-<p>By default, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a> class pads the data
+<p>By default, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a> class pads the data
 with zeros on both sides to avoid edge effects, and enable the
 analysis of edge samples (see the <a class="reference external" href="https://docs.scipy.org/doc/scipy/tutorial/signal.html#tutorial-stft" rel="noopener noreferrer" target="_blank">tutorial on the Short-Time Fourier
 Transform</a>
@@ -405,7 +411,7 @@ analysis. Note that this is not a real issue since the covariance
 matrix analysis is performed on sliding windows.</p>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">covseisnet.signal</span> <span class="kn">import</span> <span class="n">ShortTimeFourierTransform</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">covseisnet.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShortTimeFourierTransform</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stft</span> <span class="o">=</span> <span class="n">ShortTimeFourierTransform</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">window_duration</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">window_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
@@ -425,7 +431,7 @@ matrix analysis is performed on sliding windows.</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a></p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a></p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="covseisnet.signal.ShortTimeFourierTransform.sampling_rate">
@@ -494,22 +500,22 @@ seconds.</p>
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><span class="pre">Trace</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">detrend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'constant'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/covseisnet/signal.html#ShortTimeFourierTransform.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.ShortTimeFourierTransform.transform" title="Link to this definition">#</a></dt>
 <dd><p>Short-time Fourier Transform of a trace.</p>
 <p>This method calculates the Short-Time Fourier Transform of a trace
-using the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft_detrend.html#scipy.signal.ShortTimeFFT.stft_detrend" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft_detrend()</span></code></a> method. The
+using the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft_detrend.html#scipy.signal.ShortTimeFFT.stft_detrend" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft_detrend()</span></code></a> method. The
 method returns the times of the window centers in matplotlib datenum
 format, the frequencies of the spectrogram, and the short-time spectra
 of the trace.</p>
 <p>Prior to the Short-Time Fourier Transform, the method removes the
 linear trend from the trace to avoid edge effects. The method also
 discards the out-of-bounds samples and windows that are padded with
-zeros by the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a>.</p>
+zeros by the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html#scipy.signal.ShortTimeFFT" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trace</strong> (<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a>) -- The trace to transform.</p></li>
 <li><p><strong>detrend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The detrending method. Default is &quot;linear&quot;.</p></li>
 <li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments are passed to the
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft_detrend.html#scipy.signal.ShortTimeFFT.stft_detrend" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft_detrend()</span></code></a> method. The same
-arguments are passed to the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.t.lower.html#scipy.signal.ShortTimeFFT.t" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.t()</span></code></a>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.stft_detrend.html#scipy.signal.ShortTimeFFT.stft_detrend" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.stft_detrend()</span></code></a> method. The same
+arguments are passed to the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.t.lower.html#scipy.signal.ShortTimeFFT.t" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scipy.signal.ShortTimeFFT.t()</span></code></a>
 method to get the times of the window centers.</p></li>
 </ul>
 </dd>
@@ -524,7 +530,7 @@ method to get the times of the window centers.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stft</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">ShortTimeFourierTransform</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">window_duration</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">window_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
@@ -571,7 +577,7 @@ method.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">covseisnet</span> <span class="k">as</span> <span class="nn">csn</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stft</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">ShortTimeFourierTransform</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">window_duration</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">window_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
@@ -639,7 +645,7 @@ and <code class="docutils literal notranslate"><span class="pre">order</span></c
 <li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) -- The spectra to detrend. Must be of shape <code class="docutils literal notranslate"><span class="pre">(n_frequencies,</span> <span class="pre">n_times)</span></code>.</p></li>
 <li><p><strong>smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- Smoothing window size in points.</p></li>
 <li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- Smoothing order. Check the scipy function
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">savgol_filter()</span></code></a> function for more details.</p></li>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">savgol_filter()</span></code></a> function for more details.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
@@ -750,7 +756,7 @@ Typically, the axis along which the sum is performed.</p></li>
 <span class="sig-prename descclassname"><span class="pre">covseisnet.signal.</span></span><span class="sig-name descname"><span class="pre">bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_band</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/signal.html#bandpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.signal.bandpass_filter" title="Link to this definition">#</a></dt>
 <dd><p>Bandpass filter the signal.</p>
 <p>Apply a Butterworth bandpass filter to the signal. Uses
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
 avoid phase shift.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
