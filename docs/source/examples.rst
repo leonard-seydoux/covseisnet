@@ -37,4 +37,4 @@ Localization
 
    examples/constant_velocity_model
    examples/constant_velocity_travel_times
-   examples/constant_localization
+   examples/constant_velocity_localization

@@ -7,6 +7,7 @@ data and results from this package.
 from typing import Any
 
 from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from matplotlib.ticker import MaxNLocator
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -67,7 +68,7 @@ def make_axis_symmetric(ax: Axes, axis: str = "both") -> None:
         ax.set_ylim(-max(yabs), max(yabs))
 
 
-def trace_and_spectrum(trace: Trace) -> tuple[plt.Figure, Axes]:
+def trace_and_spectrum(trace: Trace) -> tuple[Figure, list[Axes]]:
     """Plot a trace and its spectrum side by side.
 
     The spectrum is calculated with the :func:`scipy.fft.rfft` function, which
@@ -124,7 +125,7 @@ def trace_and_spectrum(trace: Trace) -> tuple[plt.Figure, Axes]:
 
 def trace_and_spectrogram(
     trace: Trace, f_min: None | float = None, **kwargs: Any
-) -> tuple[plt.Figure, Axes]:
+) -> tuple[Figure, list[Axes]]:
     """Plot a trace and its spectrogram.
 
     This function is deliberately simple and does not allow to customize the
@@ -206,7 +207,9 @@ def trace_and_spectrogram(
     return fig, ax
 
 
-def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
+def coherence(
+    times, frequencies, coherence, f_min=None, ax=None, **kwargs
+) -> tuple[Figure, Axes]:
     """Plot a coherence matrix.
 
     This function is deliberately simple and does not allow to customize the
@@ -236,7 +239,10 @@ def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
     """
     # Create figure
     if ax is None:
+        fig = plt.gcf()
         ax = plt.gca()
+    else:
+        fig = plt.gcf()
 
     # Remove low frequencies
     if f_min is not None:
@@ -256,7 +262,7 @@ def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
     # Colorbar
     plt.colorbar(mappable, ax=ax).set_label("Spectral width")
 
-    return ax
+    return fig, ax
 
 
 def stream_and_coherence(
@@ -267,7 +273,7 @@ def stream_and_coherence(
     f_min: float | None = None,
     trace_factor: float = 0.1,
     **kwargs: dict,
-) -> tuple[plt.Figure, Axes]:
+) -> tuple[Figure, list[Axes]]:
     """Plot a stream of traces and the coherence matrix.
 
     This function is deliberately simple and does not allow to customize the
@@ -301,7 +307,9 @@ def stream_and_coherence(
     xlim = ax[0].get_xlim()
 
     # Plot coherence
-    csn.plot.coherence(times, frequencies, coherence, f_min=f_min, ax=ax[1], **kwargs)
+    csn.plot.coherence(
+        times, frequencies, coherence, f_min=f_min, ax=ax[1], **kwargs
+    )
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].set_title("Spatial coherence")
 
@@ -360,7 +368,7 @@ def plot_stream(
 
 def covariance_matrix_modulus_and_spectrum(
     covariance: csn.covariance.CovarianceMatrix,
-) -> tuple[plt.Figure, Axes]:
+) -> tuple[Figure, Axes]:
     """Plot the modulus of a covariance matrix and its spectrum.
 
     This function plots the modulus of the covariance matrix and its
@@ -499,7 +507,7 @@ def grid3d(
     receiver_coordinates=None,
     label=None,
     **kwargs,
-) -> tuple[plt.Figure, dict]:
+) -> tuple[Figure, dict]:
     """Plot a three-dimensional grid of data.
 
     This function plots the data of a three-dimensional grid in three
@@ -555,7 +563,7 @@ def grid3d(
     """
     # Set limits
     if grid.lon is None or grid.lat is None or grid.depth is None:
-        return {"empty": plt.gca()}
+        return plt.gcf(), {"empty": plt.gca()}
 
     # Create mosaic plot
     fig, ax = plt.subplot_mosaic(
@@ -612,8 +620,12 @@ def grid3d(
     mappable = ax["xy"].contourf(
         grid.lon, grid.lat, grid[:, :, profile_index[2]].T, **kwargs
     )
-    ax["xz"].contourf(grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs)
-    ax["zy"].contourf(grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs)
+    ax["xz"].contourf(
+        grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs
+    )
+    ax["zy"].contourf(
+        grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs
+    )
     ax["xy"].axvline(profile_coordinates[0], dashes=[8, 3], color="k", lw=0.5)
     ax["xy"].axhline(profile_coordinates[1], dashes=[8, 3], color="k", lw=0.5)
     ax["zy"].axvline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
@@ -629,7 +641,9 @@ def grid3d(
     ax["zy"].yaxis.set_label_position("right")
     ax["zy"].set_yticks(ax["xy"].get_yticks())
     ax["zy"].set_yticklabels(ax["xy"].get_yticklabels())
-    cb = plt.colorbar(mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5)
+    cb = plt.colorbar(
+        mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5
+    )
     cb.ax.xaxis.set_major_locator(MaxNLocator(4))
     if label is not None:
         cb.set_label(label)
