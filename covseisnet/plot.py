@@ -67,7 +67,7 @@ def make_axis_symmetric(ax: Axes, axis: str = "both") -> None:
         ax.set_ylim(-max(yabs), max(yabs))
 
 
-def trace_and_spectrum(trace: Trace) -> list:
+def trace_and_spectrum(trace: Trace) -> tuple[plt.Figure, Axes]:
     """Plot a trace and its spectrum side by side.
 
     The spectrum is calculated with the :func:`scipy.fft.rfft` function, which
@@ -124,7 +124,7 @@ def trace_and_spectrum(trace: Trace) -> list:
 
 def trace_and_spectrogram(
     trace: Trace, f_min: None | float = None, **kwargs: Any
-) -> list:
+) -> tuple[plt.Figure, Axes]:
     """Plot a trace and its spectrogram.
 
     This function is deliberately simple and does not allow to customize the
@@ -267,7 +267,7 @@ def stream_and_coherence(
     f_min: float | None = None,
     trace_factor: float = 0.1,
     **kwargs: dict,
-) -> list[Axes]:
+) -> tuple[plt.Figure, Axes]:
     """Plot a stream of traces and the coherence matrix.
 
     This function is deliberately simple and does not allow to customize the
@@ -301,9 +301,7 @@ def stream_and_coherence(
     xlim = ax[0].get_xlim()
 
     # Plot coherence
-    csn.plot.coherence(
-        times, frequencies, coherence, f_min=f_min, ax=ax[1], **kwargs
-    )
+    csn.plot.coherence(times, frequencies, coherence, f_min=f_min, ax=ax[1], **kwargs)
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].set_title("Spatial coherence")
 
@@ -362,7 +360,7 @@ def plot_stream(
 
 def covariance_matrix_modulus_and_spectrum(
     covariance: csn.covariance.CovarianceMatrix,
-) -> Axes:
+) -> tuple[plt.Figure, Axes]:
     """Plot the modulus of a covariance matrix and its spectrum.
 
     This function plots the modulus of the covariance matrix and its
@@ -501,7 +499,7 @@ def grid3d(
     receiver_coordinates=None,
     label=None,
     **kwargs,
-) -> dict:
+) -> tuple[plt.Figure, dict]:
     """Plot a three-dimensional grid of data.
 
     This function plots the data of a three-dimensional grid in three
@@ -614,12 +612,8 @@ def grid3d(
     mappable = ax["xy"].contourf(
         grid.lon, grid.lat, grid[:, :, profile_index[2]].T, **kwargs
     )
-    ax["xz"].contourf(
-        grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs
-    )
-    ax["zy"].contourf(
-        grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs
-    )
+    ax["xz"].contourf(grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs)
+    ax["zy"].contourf(grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs)
     ax["xy"].axvline(profile_coordinates[0], dashes=[8, 3], color="k", lw=0.5)
     ax["xy"].axhline(profile_coordinates[1], dashes=[8, 3], color="k", lw=0.5)
     ax["zy"].axvline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
@@ -635,9 +629,7 @@ def grid3d(
     ax["zy"].yaxis.set_label_position("right")
     ax["zy"].set_yticks(ax["xy"].get_yticks())
     ax["zy"].set_yticklabels(ax["xy"].get_yticklabels())
-    cb = plt.colorbar(
-        mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5
-    )
+    cb = plt.colorbar(mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5)
     cb.ax.xaxis.set_major_locator(MaxNLocator(4))
     if label is not None:
         cb.set_label(label)
@@ -653,13 +645,13 @@ def grid3d(
     if receiver_coordinates is None:
         if hasattr(grid, "receiver_coordinates"):
             if grid.receiver_coordinates is None:
-                return ax
+                return fig, ax
             if not isinstance(grid.receiver_coordinates[0], (list, tuple)):
                 receiver_coordinates = (grid.receiver_coordinates,)
             else:
                 receiver_coordinates = grid.receiver_coordinates
         else:
-            return ax
+            return fig, ax
     else:
         if not isinstance(receiver_coordinates[0], (list, tuple)):
             receiver_coordinates = (receiver_coordinates,)
