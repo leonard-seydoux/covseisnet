@@ -65,7 +65,6 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "nbsphinx",
-    # "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_new_tab_link",
     "matplotlib.sphinxext.plot_directive",
@@ -98,25 +97,11 @@ autosummary_generate_overwrite = True
 autodoc_member_order = "bysource"
 autoclass_content = "both"
 
-
-# Gallery
-# sphinx_gallery_conf = {
-#     "examples_dirs": "../../examples",
-#     "gallery_dirs": "auto_examples",
-#     "image_srcset": ["4x"],
-#     "download_all_examples": True,
-#     "remove_config_comments": True,
-#     "within_subsection_order": "FileNameSortKey",
-#     "capture_repr": (),
-#     "filename_pattern": r"^((?!plot_example).)*$",
-#     "ignore_pattern": r"\.ipynb$",
-# }
-
 # Templates
 templates_path = ["_templates"]
 
 # Sources
-source_suffix = [".rst", ".md"]
+source_suffix = [".rst"]
 bibtex_bibfiles = ["references.bib"]
 bibtex_reference_style = "author_year_round"
 
