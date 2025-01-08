@@ -36,6 +36,7 @@ docs = [
     "sphinxcontrib-bibtex",
     "sphinx_new_tab_link",
     "nbsphinx",
+    "pandoc",
 ]
 
 [tool.hatch.version]
