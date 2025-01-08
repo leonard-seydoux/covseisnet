@@ -35,6 +35,7 @@ docs = [
     "sphinx_gallery",
     "sphinxcontrib-bibtex",
     "sphinx_new_tab_link",
+    "nbsphinx",
 ]
 
 [tool.hatch.version]
