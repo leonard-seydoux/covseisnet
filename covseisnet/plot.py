@@ -97,7 +97,7 @@ def trace_and_spectrum(trace: Trace) -> list:
 
     """
     # Create figure
-    _, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
+    fig, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
 
     # Extract data
     times = trace.times()
@@ -119,7 +119,7 @@ def trace_and_spectrum(trace: Trace) -> list:
     ax[1].set_ylabel("Spectrum")
     ax[1].grid()
 
-    return ax
+    return fig, ax
 
 
 def trace_and_spectrogram(
@@ -155,7 +155,7 @@ def trace_and_spectrogram(
 
     """
     # Create figure
-    _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
+    fig, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Calculate spectrogram
     stft = ShortTimeFourierTransform(
@@ -203,7 +203,7 @@ def trace_and_spectrogram(
     colorbar = plt.colorbar(mappable, ax=ax[1])
     colorbar.set_label("Spectral energy (dBA)")
 
-    return ax
+    return fig, ax
 
 
 def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
@@ -293,7 +293,7 @@ def stream_and_coherence(
         Additional arguments passed to the pcolormesh method.
     """
     # Create figure
-    _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
+    fig, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Show traces
     plot_stream(stream, trace_factor=trace_factor, ax=ax[0], lw=0.3, c="C0")
@@ -311,7 +311,7 @@ def stream_and_coherence(
     dateticks(ax[1])
     ax[1].set_xlim(xlim)
 
-    return ax
+    return fig, ax
 
 
 def plot_stream(
@@ -402,7 +402,7 @@ def covariance_matrix_modulus_and_spectrum(
     eigenvalues = covariance.eigenvalues(norm=np.sum)
 
     # Create figure
-    _, ax = plt.subplots(ncols=2, figsize=(8, 2.7), constrained_layout=True)
+    fig, ax = plt.subplots(ncols=2, figsize=(8, 2.7), constrained_layout=True)
 
     # Plot covariance matrix
     mappable = ax[0].matshow(np.abs(covariance), cmap="viridis", vmin=0)
@@ -443,7 +443,7 @@ def covariance_matrix_modulus_and_spectrum(
     ax[1].axvline(diversity, color="C3", label="Diversity")
     ax[1].legend(loc="upper left", frameon=False, bbox_to_anchor=(1, 1))
 
-    return ax
+    return fig, ax
 
 
 def dateticks(ax: Axes, locator: mdates.DateLocator | None = None) -> None:
@@ -560,7 +560,7 @@ def grid3d(
         return {"empty": plt.gca()}
 
     # Create mosaic plot
-    _, ax = plt.subplot_mosaic(
+    fig, ax = plt.subplot_mosaic(
         figsize=(5, 5),
         mosaic=[["xy", "zy"], ["xz", "."], ["xz", "cb"], ["xz", "."]],
         gridspec_kw={
@@ -673,4 +673,4 @@ def grid3d(
         ax["xz"].plot(receiver[0], receiver[2], "kv", clip_on=False)
         ax["zy"].plot(receiver[2], receiver[1], "k>", clip_on=False)
 
-    return ax
+    return fig, ax
