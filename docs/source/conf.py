@@ -72,7 +72,7 @@ extensions = [
 
 # Smart quotes
 smartquotes = False
-language = "en-uk-x-altquot"
+language = "en"
 
 # Plot directive
 plot_include_source = True
@@ -112,7 +112,7 @@ master_doc = "index"
 # a list of supported languages. This is also used if you do content
 # translation via gettext catalogs. Usually you set "language" from the
 # command line for these cases.
-language = "english"
+# language = "english"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
