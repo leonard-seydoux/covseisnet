@@ -119,6 +119,8 @@ master_doc = "index"
 exclude_patterns = []
 add_module_names = True
 
+# Sphinx notebook gallery
+nbsphinx_input_prompt = "%s"
 
 # Theme
 html_theme = "sphinx_book_theme"
