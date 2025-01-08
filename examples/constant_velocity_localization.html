@@ -361,7 +361,7 @@
 <p>This example shows how to calculate the differential travel times of seismic waves in a constant velocity model between two receivers. We first define the model and the sources and receivers coordinates. We then calculate the travel times for each receiver using the class <code class="docutils literal notranslate"><span class="pre">covseisnet.travel_times.TravelTimes</span></code>, and we calculate the differential travel times using the class <code class="docutils literal notranslate"><span class="pre">covseisnet.travel_times.DifferentialTravelTimes</span></code>. Finally, we locate the source of the seismic waves using the class
 <code class="docutils literal notranslate"><span class="pre">covseisnet.backprojection.DifferentialBackProjection</span></code> and plot the results on a map.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>5
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlateCarree</span>
@@ -378,7 +378,7 @@
 <p>We first load the seismograms from the example data set. We downloaded the seismogram from the Wilber 3 interface, <a class="reference external" href="https://ds.iris.edu/wilber3/data_request/leonard-seydoux/2020-10-05-mb44-aegean-sea-1" rel="noopener noreferrer" target="_blank">archived at this link</a>. These seismograms contains the record of the Mb 4.4 earthquake that occurred in the Aegean Sea on October 5, 2020 at 14:57:51 UTC at 39.9°N, 23.3° E and 10 km depth.</p>
 <p>We also pre-process the seismograms by merging overlapping traces, removing the linear trend, filtering the data with a high-pass filter with a corner frequency of 0.01 Hz, and synchronizing the traces, as shown in the other examples.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>6
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load seismograms</span>
@@ -398,7 +398,7 @@
 <p>We associate the coordinates of the different stations to the corresponding seismograms. We first download the inventory of the seismograms from the National Observatory of Athens (NOA) data center. We then associate the coordinates to the seismograms using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.Stream.assign_coordinates</span></code>. The :class:<code class="docutils literal notranslate"><span class="pre">obspy.Inventory</span></code> object is then used to plot the stations on a map.</p>
 <p>We also add the known source coordinates of the earthquake to the map, to compare the location of the earthquake with the location of the backprojection results.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>7
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get inventory to assign station coordinates</span>
@@ -428,7 +428,7 @@
 <p>We calculate the covariance matrix of the seismograms using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.covariance.calculate_covariance_matrix</span></code>. We use a window duration of 200 s, which allow for the slowest possible seismic waves to propagate between the stations (overestimating the travel time). We average the covariance matrix over 5 windows, which results in a single time window.</p>
 <p>In this specific case, the coherence is a function of the frequency only. We observe the earthquake-related signal induces a strong wavefield coherence (that is, a low spectral width) between 1 and 10 Hz in particular.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>8
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute covariance matrix</span>
@@ -461,7 +461,7 @@
 <p>We calculate the pairwise cross-correlation functions between the seismograms using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.correlation.calculate_cross_correlation_matrix</span></code>. We exclude the autocorrelation functions from the calculation, as they are not useful for the backprojection.</p>
 <p>We also pre-process the cross-correlation functions by tapering the edges of the functions, bandpass filtering the data between 1 and 5 Hz, calculating the envelope of the data, and smoothing the data with a Gaussian filter with a standard deviation of 30 samples. Finally, we normalize the data by the maximum value of each cross-correlation function.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>9
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate cross-correlation functions</span>
@@ -485,7 +485,7 @@
 <h2>Calculate travel times<a class="headerlink" href="#Calculate-travel-times" title="Link to this heading">#</a></h2>
 <p>We calculate the travel times of the seismic waves between the stations using the class :class:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.TravelTimes</span></code>. We use a constant velocity model with a velocity of 3.5 km/s, assuming that the S-waves will dominate the seismic records. We then calculate the differential travel times between the stations using the class :class:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.DifferentialTravelTimes</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>11
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the velocity model</span>
@@ -517,7 +517,7 @@
 <h2>Locate the source with backprojection<a class="headerlink" href="#Locate-the-source-with-backprojection" title="Link to this heading">#</a></h2>
 <p>We locate the source of the seismic waves using the class :class:<code class="docutils literal notranslate"><span class="pre">~covseisnet.backprojection.DifferentialBackProjection</span></code>. We use the differential travel times calculated previously and the pre-processed cross-correlation functions. We calculate the likelihood of the source location using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>13
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate likelihood</span>
@@ -541,7 +541,7 @@
 <h2>Compare maximum likelihood with known source location<a class="headerlink" href="#Compare-maximum-likelihood-with-known-source-location" title="Link to this heading">#</a></h2>
 <p>The maximum likelihood of the source location is calculated using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.backprojection.DifferentialBackProjection.maximum_coordinates</span></code>. We plot the source location and the maximum likelihood of the source location on the map.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>16
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Infer maximum coordinates</span>

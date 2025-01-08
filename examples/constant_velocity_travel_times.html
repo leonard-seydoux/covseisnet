@@ -356,7 +356,7 @@
 <h1>Constant velocity differential times<a class="headerlink" href="#Constant-velocity-differential-times" title="Link to this heading">#</a></h1>
 <p>This example shows how to calculate the differential travel times of seismic waves in a constant velocity model between two receivers. We first define the model and the sources and receivers coordinates. We then calculate the travel times for each receiver using the class :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.TravelTimes</span></code>, and we calculate the differential travel times using the class :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.DifferentialTravelTimes</span></code>. Finally, we plot the differential travel times on a map.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>1
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
@@ -367,7 +367,7 @@
 <h2>Create a constant velocity model<a class="headerlink" href="#Create-a-constant-velocity-model" title="Link to this heading">#</a></h2>
 <p>We first create a constant velocity model with a velocity of 5 km/s. In order to do so, we simply need to define the geographical extent of the model, the resolution of the grid, and the velocity.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>2
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">VelocityModel</span><span class="p">(</span>
@@ -384,7 +384,7 @@
 <p>Each grid point of the model is considered as a source and the receiver is defined by the user. In the example below, the receiver is located at coordinates (40.7, 50.2, 0), somewhere in the model’s domain. The travel times are calculated using the class :class:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.TravelTimes</span></code>.</p>
 <p>We can then represent the travel times on a map using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.plot.grid3d</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>5
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the travel times</span>
@@ -418,7 +418,7 @@
 <h2>Differential travel times<a class="headerlink" href="#Differential-travel-times" title="Link to this heading">#</a></h2>
 <p>The differential travel times are calculated using the class :class:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.DifferentialTravelTimes</span></code>. The differential travel times are calculated between the two receivers defined above, and shown on a map using the function :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.plot.grid3d</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>7
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the differential travel times</span>

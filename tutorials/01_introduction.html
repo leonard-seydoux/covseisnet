@@ -358,7 +358,7 @@
 <p>Note that this tutorial uses <code class="docutils literal notranslate"><span class="pre">Path</span></code> objects to handle conveniently file paths. For more information on <code class="docutils literal notranslate"><span class="pre">Path</span></code> objects, read the <cite>official ``pathlib`</cite> documentation &lt;<a class="reference external" href="https://docs.python.org/3/library/pathlib.html" rel="noopener noreferrer" target="_blank">https://docs.python.org/3/library/pathlib.html</a>&gt;`__. Note also that the velocity model is stored as an <code class="docutils literal notranslate"><span class="pre">hdf5</span></code> file, which is a binary file format that we manipulate with the <code class="docutils literal notranslate"><span class="pre">h5py</span></code> library. If you are not familiar with <code class="docutils literal notranslate"><span class="pre">hdf5</span></code> files, you can read the <a class="reference external" href="https://docs.h5py.org/en/stable/" rel="noopener noreferrer" target="_blank">h5py documentation</a>. In general, the
 velocity model may be written in any format.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>4
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -387,7 +387,7 @@ The autoreload extension is already loaded. To reload it, use:
 <h2>Download the seimograms<a class="headerlink" href="#Download-the-seimograms" title="Link to this heading">#</a></h2>
 <p>This first cell downloads the continuous seismograms from the RESIF datacenter. The dataset takes about 60MB. The function is written in the <code class="docutils literal notranslate"><span class="pre">covseisnet.data</span></code> module and internally calls the <code class="docutils literal notranslate"><span class="pre">covseisnet.data.download_seismic_dataset</span></code> function. Check out its documentation for more information.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>5
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the download path for the data</span>
@@ -416,7 +416,7 @@ Data saved to data/undervolc.mseed
 <h2>Download data inventory<a class="headerlink" href="#Download-data-inventory" title="Link to this heading">#</a></h2>
 <p>Most notebooks will use metadata stored in the inventory of the RESIF datacenter. This inventory is an XML file that can be obtained with obspy. With <code class="docutils literal notranslate"><span class="pre">covseisnet</span></code>, the inventory can be downloaded with <code class="docutils literal notranslate"><span class="pre">covseisnet.NetworkStream</span></code>’s method called <code class="docutils literal notranslate"><span class="pre">download_inventory</span></code>. The inventory is then saved in the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>6
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download the inventory</span>
@@ -429,7 +429,7 @@ Data saved to data/undervolc.mseed
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">inventory</span></code> object is an ObsPy object that comes with several useful methods, including a plotting method. If your Python environment includes <code class="docutils literal notranslate"><span class="pre">cartopy</span></code>, <code class="docutils literal notranslate"><span class="pre">inventory.plot</span></code> uses it to draw the map.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>7
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the inventory</span>
@@ -471,7 +471,7 @@ Text(0.5, 1.0, &#39;Map of seismic stations near Piton de la Fournaise&#39;)
 <div><p>Mordret, A., Rivet, D., Landès, M., &amp; Shapiro, N. M. (2015). Three‐dimensional shear velocity anisotropic model of Piton de la Fournaise Volcano (La Réunion Island) from ambient seismic noise. Journal of Geophysical Research: Solid Earth, 120(1), 406-427.</p>
 </div></blockquote>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>11
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the model</span>
@@ -526,7 +526,7 @@ Text(0.5, 0.98, &#39;S-wave velocity model in the original grid&#39;)
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>14
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_i</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">resample</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
@@ -552,7 +552,7 @@ Text(0.5, 0.98, &#39;S-wave velocity model in the original grid&#39;)
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>16
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">55.5</span><span class="p">,</span> <span class="mf">55.9</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -580,7 +580,7 @@ Text(0.5, 0.98, &#39;S-wave velocity model in the original grid&#39;)
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>11
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_i</span><span class="o">.</span><span class="n">lon</span>

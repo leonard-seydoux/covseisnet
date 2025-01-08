@@ -355,9 +355,9 @@
                   
   <section id="Traces-synchronization">
 <h1>Traces synchronization<a class="headerlink" href="#Traces-synchronization" title="Link to this heading">#</a></h1>
-<p>This example demonstrates how to synchronize a stream of traces using the :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.synchronize</span></code> method. This method finds the latest start time and the earliest end time among the traces in the stream, and interpolates the traces between these times with a common sampling interval. More information about the method can be found in the documentation.</p>
+<p>This example demonstrates how to synchronize a stream of traces using the <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.synchronize</span></code> method. This method finds the latest start time and the earliest end time among the traces in the stream, and interpolates the traces between these times with a common sampling interval. More information about the method can be found in the documentation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>1
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -369,9 +369,9 @@
 </div>
 <section id="Read-waveforms">
 <h2>Read waveforms<a class="headerlink" href="#Read-waveforms" title="Link to this heading">#</a></h2>
-<p>This section reads an example stream of seismic data, which is shipped with ObsPy. The stream contains three traces, which are highpass at a very high frequency to see more details in the synchronization.</p>
+<p>This section reads an example stream of seismic data, which is shipped with <a class="reference external" href="https://docs.obspy.org" rel="noopener noreferrer" target="_blank">ObsPy</a>. The stream contains three traces, which are highpass at a very high frequency to see more details in the synchronization.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>2
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the example stream (shipped with ObsPy)</span>
@@ -382,7 +382,6 @@
 
 <span class="c1"># Cut the stream out of the tapering</span>
 <span class="n">stream</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="s2">&quot;2009-08-24T00:20:20&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-
 
 <span class="c1"># Print the original stream</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
@@ -405,7 +404,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.000000Z - 2009-08-24T00:20:20.300000Z | 100.0
 <h2>Desynchronize<a class="headerlink" href="#Desynchronize" title="Link to this heading">#</a></h2>
 <p>This first section desynchronizes the traces in the stream, in order to demonstrate the synchronization method from the example stream. The traces are shifted in time by different amounts, and a small number of samples are collected for visualization.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>3
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a random shift to the traces (seeded for reproducibility)</span>
@@ -434,7 +433,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.002320Z - 2009-08-24T00:20:20.302320Z | 100.0
 <h2>Synchronize<a class="headerlink" href="#Synchronize" title="Link to this heading">#</a></h2>
 <p>We now synchronize the traces in the stream using the :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.synchronize</span></code> method. The method finds the latest start time and the earliest end time among the traces in the stream, and aligns the traces to these times with interpolation.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>4
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Synchronize the traces</span>
@@ -462,11 +461,11 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.004507Z - 2009-08-24T00:20:20.294507Z | 100.0
 <h2>Compare traces<a class="headerlink" href="#Compare-traces" title="Link to this heading">#</a></h2>
 <p>The synchronized traces are plotted alongside the original traces to compare the effect of the synchronization method. Note that several interpolation methods are available in the synchronization method. Check the documentation for more information.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>5
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create figure</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;hspace&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">})</span>
 
 <span class="c1"># Loop over traces</span>
 <span class="k">for</span> <span class="n">trace</span><span class="p">,</span> <span class="n">synced</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">processed_stream</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
