@@ -27,6 +27,7 @@ Contents
    :maxdepth: 1
 
    installation
+   examples
    tutorials
    api
    license

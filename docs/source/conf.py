@@ -72,8 +72,8 @@ extensions = [
 ]
 
 # Smart quotes
-smartquotes = True
-language = "en"
+smartquotes = False
+language = "en-uk-x-altquot"
 
 # Plot directive
 plot_include_source = True

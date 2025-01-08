@@ -1,0 +1,33 @@
+.nbsphinx-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 25px;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.nbsphinx-gallery>a {
+    padding: 15px;
+    border: 1px solid rgb(225, 225, 225);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    color: #414141;
+}
+
+.nbsphinx-gallery>a:hover {
+    border: 1px solid #e89300;
+}
+
+.nbsphinx-gallery img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.nbsphinx-gallery>a>div:first-child {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    height: 120px;
+    margin-bottom: 5px;
+}
