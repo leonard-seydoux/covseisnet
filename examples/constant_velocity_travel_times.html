@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Constant velocity differential times &#8212; covseisnet</title>
+    <title>Constant differential times &#8212; covseisnet</title>
   
   
   
@@ -169,7 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Coherence preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_model.html">Constant velocity travel times</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Constant velocity differential times</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Constant differential times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_localization.html">Locating events within a constant velocity model</a></li>
 </ul>
 </details></li>
@@ -329,7 +329,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Constant velocity differential times</h1>
+    <h1>Constant differential times</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -353,8 +353,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Constant-velocity-differential-times">
-<h1>Constant velocity differential times<a class="headerlink" href="#Constant-velocity-differential-times" title="Link to this heading">#</a></h1>
+  <section id="Constant-differential-times">
+<h1>Constant differential times<a class="headerlink" href="#Constant-differential-times" title="Link to this heading">#</a></h1>
 <p>This example shows how to calculate the differential travel times of seismic waves in a constant velocity model between two receivers. We first define the model and the sources and receivers coordinates. We then calculate the travel times for each receiver using the class :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.TravelTimes</span></code>, and we calculate the differential travel times using the class :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.travel_times.DifferentialTravelTimes</span></code>. Finally, we plot the differential travel times on a map.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
