@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Cross-correlation at USArray &#8212; covseisnet</title>
+    <title>Cross-correlation &#8212; covseisnet</title>
   
   
   
@@ -167,7 +167,7 @@
 <li class="toctree-l2"><a class="reference internal" href="whitening.html">Spectral whitening</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coherence.html">Spatial coherence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Coherence preprocessing</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Cross-correlation at USArray</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Cross-correlation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_travel_times.html">Constant velocity differential times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_localization.html">Locating events within a constant velocity model</a></li>
@@ -329,7 +329,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Cross-correlation at USArray</h1>
+    <h1>Cross-correlation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -343,7 +343,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Assign-coordinates-to-the-stream">Assign coordinates to the stream</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Covariance-matrix">Covariance matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Spectral-width">Spectral width</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Cross-correlation">Cross-correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Cross-correlation</a></li>
 </ul>
             </nav>
         </div>
@@ -355,20 +355,16 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Cross-correlation-at-USArray">
-<h1>Cross-correlation at USArray<a class="headerlink" href="#Cross-correlation-at-USArray" title="Link to this heading">#</a></h1>
-<p>This example shows how to calculate the cross-correlation functions from five sensors of the USArray network stacked over two months from January 1, 2006 to March 1, 2006.</p>
-<p>At first, we made sure to download and provide an example of the USArray data and inventory. If for any reason, the data is not available under the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder under the root of the repository, or if you would like to run this script outside of the repository, the data will be automatically downloaded with the :func:<code class="docutils literal notranslate"><span class="pre">covseisnet.data.download_usarray_data</span></code> function (see in the second cell of this notebook).</p>
+  <section id="Cross-correlation">
+<h1>Cross-correlation<a class="headerlink" href="#Cross-correlation" title="Link to this heading">#</a></h1>
+<p>This example shows how to calculate the cross-correlation functions from five sensors of the USArray network stacked over two months from January 1, 2006 to March 1, 2006. At first, we made sure to access the example USArray data and inventory. If for any reason, the data is not available under the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder under the <code class="docutils literal notranslate"><span class="pre">docs/sources</span></code> directory of the repository, or if you would like to run this script outside of the repository, the data will be automatically downloaded with the
+<code class="docutils literal notranslate"><span class="pre">covseisnet.data.download_usarray_data</span></code> function (see in the second cell of this notebook).</p>
 <p>Note that the sampling rate of these traces is voluntarily low to reduce the size of the example data and the speed of the calculations. The data is downsampled at 0.2 Hz.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
-
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
 </pre></div>
@@ -378,16 +374,12 @@
 <h2>Read and pre-process stream<a class="headerlink" href="#Read-and-pre-process-stream" title="Link to this heading">#</a></h2>
 <p>We first read the example stream and pre-process it. At first, we simply detrend and high-pass filter the data. Because the USArray data is not synchronized at these stations, especially in 2006, we synchronize the stream using the method :meth:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.synchronize</span></code>. This method is automatic and can be used in a custom way. We then normalize the traces for cross-correlation in the time domain.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to the example stream</span>
-<span class="n">FILEPATH_WAVEFORMS</span> <span class="o">=</span> <span class="s2">&quot;data/usarray_example.mseed&quot;</span>
-<span class="n">FILEPATH_INVENTORY</span> <span class="o">=</span> <span class="s2">&quot;data/usarray_example.xml&quot;</span>
-
-<span class="c1"># Download the data if does not exist</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">FILEPATH_WAVEFORMS</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">FILEPATH_INVENTORY</span><span class="p">):</span>
-    <span class="n">csn</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">download_usarray_data</span><span class="p">()</span>
+<span class="n">FILEPATH_WAVEFORMS</span> <span class="o">=</span> <span class="s2">&quot;../data/usarray.mseed&quot;</span>
+<span class="n">FILEPATH_INVENTORY</span> <span class="o">=</span> <span class="s2">&quot;../data/usarray.xml&quot;</span>
 
 <span class="c1"># Read example stream</span>
 <span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">FILEPATH_WAVEFORMS</span><span class="p">)</span>
@@ -406,105 +398,31 @@
 <p>We finally assign the coordinates to the stream using the method :meth:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.assign_coordinates</span></code>. This method requires the path to the inventory file of the network. If you do not have the inventory file, you can download it with the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.download_coordinates</span></code>. These methods deal directly with the :class:<code class="docutils literal notranslate"><span class="pre">~obspy.core.inventory.Inventory</span></code> object of the traces within the stream. Thanks to a lot of useful methods therein,
 we can easily plot the inventory on a map and perform other selection tasks.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign coordinates to the stream</span>
 <span class="n">stream</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">(</span><span class="n">FILEPATH_INVENTORY</span><span class="p">)</span>
 
 <span class="c1"># Plot inventory</span>
-<span class="n">stream</span><span class="o">.</span><span class="n">inventory</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">inventory</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.12.8/x64/lib/python3.12/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_ocean.zip
-  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
-/opt/hostedtoolcache/Python/3.12.8/x64/lib/python3.12/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_land.zip
-  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
-/opt/hostedtoolcache/Python/3.12.8/x64/lib/python3.12/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_cultural/ne_50m_admin_0_boundary_lines_land.zip
-  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
-/opt/hostedtoolcache/Python/3.12.8/x64/lib/python3.12/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_coastline.zip
-  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/examples_correlation_5_1.png" src="../_images/examples_correlation_5_1.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_correlation_5_3.png" src="../_images/examples_correlation_5_3.png" />
+<img alt="../_images/examples_correlation_5_0.png" src="../_images/examples_correlation_5_0.png" />
 </div>
 </div>
 </section>
 <section id="Covariance-matrix">
 <h2>Covariance matrix<a class="headerlink" href="#Covariance-matrix" title="Link to this heading">#</a></h2>
-<p>The covariance matrix is calculated using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.covariance.calculate_covariance_matrix</span></code>. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix.</p>
+<p>The covariance matrix is calculated using the method <code class="docutils literal notranslate"><span class="pre">covseisnet.covariance.calculate_covariance_matrix</span></code>. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix.</p>
 <p>We can then visualize the covariance matrix at a given time and frequency, and its corresponding eigenvalues.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate covariance matrix</span>
@@ -517,9 +435,9 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 </section>
 <section id="Spectral-width">
 <h2>Spectral width<a class="headerlink" href="#Spectral-width" title="Link to this heading">#</a></h2>
-<p>We here extract the coherence from the covariance matrix. The coherence is calculated using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.covariance.CovarianceMatrix.coherence</span></code>. It can either measure the spectral width of the eigenvalue distribution at each frequency, or with applying the formula of the Neumann entropy.</p>
+<p>We here extract the coherence from the covariance matrix. The coherence is calculated using the method <code class="docutils literal notranslate"><span class="pre">covseisnet.covariance.CovarianceMatrix.coherence</span></code>. It can either measure the spectral width of the eigenvalue distribution at each frequency, or with applying the formula of the Neumann entropy.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">frequency_band</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">15</span>
@@ -528,7 +446,7 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 <span class="n">coherence</span> <span class="o">=</span> <span class="n">covariances</span><span class="o">.</span><span class="n">coherence</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;spectral_width&quot;</span><span class="p">)</span>
 
 <span class="c1"># Show</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">stream_and_coherence</span><span class="p">(</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">stream_and_coherence</span><span class="p">(</span>
     <span class="n">stream</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">coherence</span><span class="p">,</span> <span class="n">trace_factor</span><span class="o">=</span><span class="mf">0.1</span>
 <span class="p">)</span>
 
@@ -538,129 +456,28 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.patches.Rectangle at 0x7fcd3372cfe0&gt;
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans.
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
+&lt;matplotlib.patches.Polygon at 0x14e9e5c70&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_correlation_9_2.png" src="../_images/examples_correlation_9_2.png" />
+<img alt="../_images/examples_correlation_9_1.png" src="../_images/examples_correlation_9_1.png" />
 </div>
 </div>
 </section>
-<section id="Cross-correlation">
-<h2>Cross-correlation<a class="headerlink" href="#Cross-correlation" title="Link to this heading">#</a></h2>
-<p>The cross-correlation matrix is calculated using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.correlation.calculate_cross_correlation_matrix</span></code>. The method returns the lags, pairs names, and cross-correlation functions calculated from the inverse Fourier transform of the covariance matrix. The method requires the covariance matrix as input.</p>
+<section id="id1">
+<h2>Cross-correlation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>The cross-correlation matrix is calculated using the method <code class="docutils literal notranslate"><span class="pre">covseisnet.correlation.calculate_cross_correlation_matrix</span></code>. The method returns the lags, pairs names, and cross-correlation functions calculated from the inverse Fourier transform of the covariance matrix. The method requires the covariance matrix as input.</p>
 <p>We can then visualize the cross-correlation functions between the sensors as a function of the lag time and the distance between the sensors. Since we selected a frequency band where no clear localized source is observed in the covariance matrix spectral width, we can assume that the cross-correlation functions are symmetric as we observe in the plot. We indicate the speed of Rayleigh waves at 3.2 km/s with dashed lines.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate cross-correlation</span>
@@ -701,7 +518,7 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -709,112 +526,11 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 Text(0, 0.5, &#39;Pairwise distance (km)&#39;)
 </pre></div></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_correlation_11_2.png" src="../_images/examples_correlation_11_2.png" />
+<img alt="../_images/examples_correlation_11_1.png" src="../_images/examples_correlation_11_1.png" />
 </div>
 </div>
 </section>
@@ -870,7 +586,7 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Assign-coordinates-to-the-stream">Assign coordinates to the stream</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Covariance-matrix">Covariance matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Spectral-width">Spectral width</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Cross-correlation">Cross-correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Cross-correlation</a></li>
 </ul>
   </nav></div>
 
