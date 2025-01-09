@@ -460,7 +460,7 @@ Text(0.5, 1.0, &#39;Map of seismic stations near Piton de la Fournaise&#39;)
 <div><p>Mordret, A., Rivet, D., Landès, M., &amp; Shapiro, N. M. (2015). Three‐dimensional shear velocity anisotropic model of Piton de la Fournaise Volcano (La Réunion Island) from ambient seismic noise. Journal of Geophysical Research: Solid Earth, 120(1), 406-427.</p>
 </div></blockquote>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the model</span>
@@ -490,15 +490,8 @@ Text(0.5, 1.0, &#39;Map of seismic stations near Piton de la Fournaise&#39;)
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(151, 130, 61)
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
@@ -509,28 +502,11 @@ Text(0.5, 0.98, &#39;S-wave velocity model in the original grid&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_01_introduction_9_2.png" src="../_images/tutorials_01_introduction_9_2.png" />
+<img alt="../_images/tutorials_01_introduction_9_1.png" src="../_images/tutorials_01_introduction_9_1.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">velocity</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(1197430,)
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_i</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">resample</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
@@ -552,11 +528,11 @@ Text(0.5, 0.98, &#39;S-wave velocity model in the original grid&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_01_introduction_11_0.png" src="../_images/tutorials_01_introduction_11_0.png" />
+<img alt="../_images/tutorials_01_introduction_10_0.png" src="../_images/tutorials_01_introduction_10_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">55.5</span><span class="p">,</span> <span class="mf">55.9</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -580,43 +556,8 @@ Text(0.5, 0.98, &#39;S-wave velocity model in the original grid&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_01_introduction_12_0.png" src="../_images/tutorials_01_introduction_12_0.png" />
+<img alt="../_images/tutorials_01_introduction_11_0.png" src="../_images/tutorials_01_introduction_11_0.png" />
 </div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_i</span><span class="o">.</span><span class="n">lon</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([55.5       , 55.5040404 , 55.50808081, 55.51212121, 55.51616162,
-       55.52020202, 55.52424242, 55.52828283, 55.53232323, 55.53636364,
-       55.54040404, 55.54444444, 55.54848485, 55.55252525, 55.55656566,
-       55.56060606, 55.56464646, 55.56868687, 55.57272727, 55.57676768,
-       55.58080808, 55.58484848, 55.58888889, 55.59292929, 55.5969697 ,
-       55.6010101 , 55.60505051, 55.60909091, 55.61313131, 55.61717172,
-       55.62121212, 55.62525253, 55.62929293, 55.63333333, 55.63737374,
-       55.64141414, 55.64545455, 55.64949495, 55.65353535, 55.65757576,
-       55.66161616, 55.66565657, 55.66969697, 55.67373737, 55.67777778,
-       55.68181818, 55.68585859, 55.68989899, 55.69393939, 55.6979798 ,
-       55.7020202 , 55.70606061, 55.71010101, 55.71414141, 55.71818182,
-       55.72222222, 55.72626263, 55.73030303, 55.73434343, 55.73838384,
-       55.74242424, 55.74646465, 55.75050505, 55.75454545, 55.75858586,
-       55.76262626, 55.76666667, 55.77070707, 55.77474747, 55.77878788,
-       55.78282828, 55.78686869, 55.79090909, 55.79494949, 55.7989899 ,
-       55.8030303 , 55.80707071, 55.81111111, 55.81515152, 55.81919192,
-       55.82323232, 55.82727273, 55.83131313, 55.83535354, 55.83939394,
-       55.84343434, 55.84747475, 55.85151515, 55.85555556, 55.85959596,
-       55.86363636, 55.86767677, 55.87171717, 55.87575758, 55.87979798,
-       55.88383838, 55.88787879, 55.89191919, 55.8959596 , 55.9       ])
-</pre></div></div>
 </div>
 </section>
 </section>
