@@ -461,6 +461,9 @@ class NetworkStream(Stream):
         self,
         interpolation_method: str = "linear",
         sampling_rate: float | None = None,
+        starttime: UTCDateTime | None = None,
+        endtime: UTCDateTime | None = None,
+        npts: int | None = None,
         **kwargs,
     ) -> None:
         """Synchronize seismic traces with interpolation.
@@ -522,15 +525,12 @@ class NetworkStream(Stream):
         if not sampling_rate:
             raise ValueError("Sampling rate is not defined.")
 
-        # Calculate the number of samples
-        npts = int(duration * sampling_rate) + 1
-
         # Update kwargs
         kwargs.setdefault("method", interpolation_method)
-        kwargs.setdefault("npts", npts)
-        kwargs.setdefault("starttime", time_extent[0])
-        kwargs.setdefault("endtime", time_extent[-1])
-        kwargs.setdefault("sampling_rate", self.sampling_rate)
+        kwargs.setdefault("sampling_rate", sampling_rate)
+        kwargs.setdefault("npts", npts or int(duration * sampling_rate) + 1)
+        kwargs.setdefault("starttime", starttime or time_extent[0])
+        kwargs.setdefault("endtime", endtime or time_extent[-1])
 
         # Interpolate all traces
         for trace in self:
