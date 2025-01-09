@@ -1,0 +1,593 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.2">
+  <Source>ObsPy 1.4.1,RESIF-SI</Source>
+  <Sender>RESIF-DC</Sender>
+  <Module>ObsPy 1.4.1</Module>
+  <ModuleURI>https://www.obspy.org</ModuleURI>
+  <Created>2025-01-06T14:46:52.351962Z</Created>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV01" startDate="2009-09-18T00:00:00.000000Z" endDate="2011-05-18T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2437</Latitude>
+      <Longitude unit="DEGREES">55.6529</Longitude>
+      <Elevation>2373.0</Elevation>
+      <Site>
+        <Name>Morne Langevin</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-18T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV02" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-17T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2739</Latitude>
+      <Longitude unit="DEGREES">55.7793</Longitude>
+      <Elevation>471.0</Elevation>
+      <Site>
+        <Name>Grandes pentes coulee 1943 bas</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV03" startDate="2009-12-01T00:00:00.000000Z" endDate="2011-05-17T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2234</Latitude>
+      <Longitude unit="DEGREES">55.7579</Longitude>
+      <Elevation>1006.0</Elevation>
+      <Site>
+        <Name>Crac</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-12-01T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV04" startDate="2010-03-12T00:00:01.000000Z" endDate="2011-05-17T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2674</Latitude>
+      <Longitude unit="DEGREES">55.7616</Longitude>
+      <Elevation>1002.0</Elevation>
+      <Site>
+        <Name>Grandes Pentes Sud</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2010-03-12T00:00:01.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV05" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-18T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2486</Latitude>
+      <Longitude unit="DEGREES">55.7141</Longitude>
+      <Elevation>2528.0</Elevation>
+      <Site>
+        <Name>Dolomieu Sud Ouest</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV06" startDate="2010-03-12T00:00:01.000000Z" endDate="2011-05-16T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2398</Latitude>
+      <Longitude unit="DEGREES">55.7525</Longitude>
+      <Elevation>1417.0</Elevation>
+      <Site>
+        <Name>Grandes Pentes Nord</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2010-03-12T00:00:01.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV07" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-16T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2289</Latitude>
+      <Longitude unit="DEGREES">55.6916</Longitude>
+      <Elevation>2211.0</Elevation>
+      <Site>
+        <Name>Enclos Formica Leo</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV08" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-06T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2464</Latitude>
+      <Longitude unit="DEGREES">55.6845</Longitude>
+      <Elevation>2190.0</Elevation>
+      <Site>
+        <Name>Enclos Sery</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV09" startDate="2009-10-15T00:00:00.000000Z" endDate="2011-05-17T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2111</Latitude>
+      <Longitude unit="DEGREES">55.7202</Longitude>
+      <Elevation>1958.0</Elevation>
+      <Site>
+        <Name>Cratere Himiltrude</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-10-15T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV10" startDate="2009-10-15T00:00:00.000000Z" endDate="2011-05-17T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2837</Latitude>
+      <Longitude unit="DEGREES">55.725</Longitude>
+      <Elevation>1897.0</Elevation>
+      <Site>
+        <Name>Cratere Villele</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-10-15T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV11" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-10T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2398</Latitude>
+      <Longitude unit="DEGREES">55.7092</Longitude>
+      <Elevation>2545.0</Elevation>
+      <Site>
+        <Name>Bory Nord</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV12" startDate="2009-10-15T00:00:00.000000Z" endDate="2011-05-18T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2554</Latitude>
+      <Longitude unit="DEGREES">55.7247</Longitude>
+      <Elevation>2079.0</Elevation>
+      <Site>
+        <Name>Cratere Zoe</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-10-15T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV13" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-18T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2917</Latitude>
+      <Longitude unit="DEGREES">55.7079</Longitude>
+      <Elevation>2085.0</Elevation>
+      <Site>
+        <Name>Puys Ramond</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV14" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-18T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2019</Latitude>
+      <Longitude unit="DEGREES">55.6954</Longitude>
+      <Elevation>1780.0</Elevation>
+      <Site>
+        <Name>Fond de la Riviere de l Est</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+  <Network code="YA" startDate="2009-01-01T00:00:00.000000Z" endDate="2011-12-31T23:59:59.000000Z" restrictedStatus="open" alternateCode="UNDERVOLC">
+    <Description>La Réunion Island 2009,UNDERVOLC temporary experiment</Description>
+    <Identifier type="DOI">10.15778/RESIF.YA2009</Identifier>
+    <Operator>
+      <Agency>Parc national sismologique mobile (SisMob)</Agency>
+      <WebSite>http://www.undervolc.fr/</WebSite>
+    </Operator>
+    <TotalNumberStations>21</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="UV15" startDate="2009-09-17T00:00:00.000000Z" endDate="2011-05-18T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">-21.2451</Latitude>
+      <Longitude unit="DEGREES">55.7089</Longitude>
+      <Elevation>2586.0</Elevation>
+      <Site>
+        <Name>Cratere Bory (station acoustique, ca)</Name>
+      </Site>
+      <Geology>C:deep deposits of dense or medium-dense sand, gravel or stiff clay (Vs30&gt;180 m/s and &lt;360 m/s)</Geology>
+      <Operator>
+        <Agency>Institut de physique du globe de Paris (IPGP)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Observatoire volcanologique du Piton de la Fournaise (OVPF)</Agency>
+        <Contact/>
+        <WebSite>https://www.ipgp.fr/ovpf</WebSite>
+      </Operator>
+      <Operator>
+        <Agency>Parc national sismologique mobile (SisMob)</Agency>
+        <Contact>
+          <Email>sismob@resif.fr</Email>
+        </Contact>
+        <WebSite>https://sismob.resif.fr</WebSite>
+      </Operator>
+      <CreationDate>2009-09-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>9</TotalNumberChannels>
+      <SelectedNumberChannels>1</SelectedNumberChannels>
+    </Station>
+  </Network>
+</FDSNStationXML>
