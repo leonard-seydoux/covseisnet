@@ -1,0 +1,4 @@
+savefig.format: svg
+savefig.transparent: True
+font.family: sans-serif
+font.sans-serif: Arial
