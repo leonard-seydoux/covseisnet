@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Traces synchronization &#8212; covseisnet</title>
+    <title>Synchronization &#8212; covseisnet</title>
   
   
   
@@ -54,7 +54,7 @@
     <link rel="icon" href="../_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Temporal normalization" href="normalization.html" />
+    <link rel="next" title="Time normalization" href="normalization.html" />
     <link rel="prev" title="Examples" href="../examples.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -162,11 +162,11 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="normalization.html">Time normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whitening.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spatial coherence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Coherence preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation at USArray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_travel_times.html">Constant velocity differential times</a></li>
@@ -329,7 +329,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Traces synchronization</h1>
+    <h1>Synchronization</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -354,8 +354,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Traces-synchronization">
-<h1>Traces synchronization<a class="headerlink" href="#Traces-synchronization" title="Link to this heading">#</a></h1>
+  <section id="Synchronization">
+<h1>Synchronization<a class="headerlink" href="#Synchronization" title="Link to this heading">#</a></h1>
 <p>In various cases the seismic data can be recorded by different instruments with different sampling rates and start times, or have a time-varying time delta. This notebook demonstrates how to synchronize a stream of with different traces using the <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.synchronize</span></code> method. This method finds the latest start time and the earliest end time among the traces in the stream, and interpolates the traces between these times with a common sampling interval. More information
 about the method can be found in the documentation.</p>
 <div class="nbinput nblast docutils container">
@@ -497,7 +497,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.004507Z - 2009-08-24T00:20:20.294507Z | 100.0
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Seismogram amplitude (counts)&quot;</span><span class="p">)</span>
 
 <span class="c1"># Figure title</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Synchronization of traces&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Synchronization of seismic traces&quot;</span><span class="p">)</span>
 
 <span class="c1"># Date formatting</span>
 <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">dateticks</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -539,7 +539,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.004507Z - 2009-08-24T00:20:20.294507Z | 100.0
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Temporal normalization</p>
+        <p class="prev-next-title">Time normalization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

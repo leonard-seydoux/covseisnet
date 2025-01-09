@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compare pre-processing &#8212; covseisnet</title>
+    <title>Coherence preprocessing &#8212; covseisnet</title>
   
   
   
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Cross-correlation at USArray" href="correlation.html" />
-    <link rel="prev" title="Spectral width" href="coherence.html" />
+    <link rel="prev" title="Spatial coherence" href="coherence.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
@@ -162,11 +162,11 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="synchronization.html">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="synchronization.html">Synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="normalization.html">Time normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whitening.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spectral width</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spatial coherence</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Coherence preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation at USArray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_travel_times.html">Constant velocity differential times</a></li>
@@ -329,7 +329,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Compare pre-processing</h1>
+    <h1>Coherence preprocessing</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -341,7 +341,7 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-and-pre-process-stream">Read and pre-process stream</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Covariance-matrix">Covariance matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot">Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Compare-the-coherence-for-different-cases">Compare the coherence for different cases</a></li>
 </ul>
             </nav>
         </div>
@@ -353,10 +353,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Compare-pre-processing">
-<h1>Compare pre-processing<a class="headerlink" href="#Compare-pre-processing" title="Link to this heading">#</a></h1>
-<p>Spatial coherence on the Piton de la Fournaise volcano.</p>
-<p>We here reproduce a part of the result published in :footcite:<code class="docutils literal notranslate"><span class="pre">seydoux_detecting_2016</span></code>.</p>
+  <section id="Coherence-preprocessing">
+<h1>Coherence preprocessing<a class="headerlink" href="#Coherence-preprocessing" title="Link to this heading">#</a></h1>
+<p>We here reproduce a part of the result published in <a class="reference external" href="https://academic.oup.com/gji/article/204/3/1430/677678" rel="noopener noreferrer" target="_blank">Seydoux et al. (2016)</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -371,17 +370,13 @@
 </div>
 <section id="Read-and-pre-process-stream">
 <h2>Read and pre-process stream<a class="headerlink" href="#Read-and-pre-process-stream" title="Link to this heading">#</a></h2>
-<p>The stream is read and pre-processed by detrending, tapering, and highpass filtering. Several other pre-processing methods are available in the :class:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream</span></code> classs. The stream is then whitened using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.whiten</span></code>. The method requires a window duration in seconds and a smooth length to smooth the spectral whitening.</p>
+<p>The stream is read and pre-processed by detrending, tapering, and highpass filtering. Several other pre-processing methods are available in the <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream</span></code> classs. The stream is then whitened using the method <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.whiten</span></code>. The method requires a window duration in seconds and a smooth length to smooth the spectral whitening.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to the example stream</span>
 <span class="n">filepath_waveforms</span> <span class="o">=</span> <span class="s2">&quot;data/undervolc_example.mseed&quot;</span>
-
-<span class="c1"># Download stream if not available (this may take a while)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath_waveforms</span><span class="p">):</span>
-    <span class="n">csn</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">download_undervolc_data</span><span class="p">()</span>
 
 <span class="c1"># Read example stream</span>
 <span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filepath_waveforms</span><span class="p">)</span>
@@ -416,8 +411,8 @@ YA.UV15.00.HHZ | 2010-10-14T09:00:00.000000Z - 2010-10-14T15:59:59.950000Z | 20.
 </section>
 <section id="Covariance-matrix">
 <h2>Covariance matrix<a class="headerlink" href="#Covariance-matrix" title="Link to this heading">#</a></h2>
-<p>The covariance matrix is calculated using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.covariance.calculate_covariance_matrix</span></code>. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix. We can then
-visualize the covariance matrix at a given time and frequency, and its corresponding eigenvalues.</p>
+<p>The covariance matrix is calculated using the method <code class="docutils literal notranslate"><span class="pre">covseisnet.covariance.calculate_covariance_matrix</span></code>. The method returns the times, frequencies, and covariances of the covariance matrix. Among the parameters of the method, the window duration and the number of windows are important to consider. The window duration is the length of the Fourier estimation window in seconds, and the number of windows is the number of windows to average to estimate the covariance matrix. We can then visualize
+the covariance matrix at a given time and frequency, and its corresponding eigenvalues.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -471,8 +466,8 @@ visualize the covariance matrix at a given time and frequency, and its correspon
 </div>
 </div>
 </section>
-<section id="Plot">
-<h2>Plot<a class="headerlink" href="#Plot" title="Link to this heading">#</a></h2>
+<section id="Compare-the-coherence-for-different-cases">
+<h2>Compare the coherence for different cases<a class="headerlink" href="#Compare-the-coherence-for-different-cases" title="Link to this heading">#</a></h2>
 <p>We can now plot the coherence for each case, with an example trace at the top. The colorbars are fixed to better compare the coherences, and in particular, the contrast within each case.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -501,7 +496,12 @@ visualize the covariance matrix at a given time and frequency, and its correspon
     <span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">case</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set x-axis</span>
 <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">dateticks</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Figure title</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Coherence analysis with various pre-processing&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -532,7 +532,7 @@ visualize the covariance matrix at a given time and frequency, and its correspon
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Spectral width</p>
+        <p class="prev-next-title">Spatial coherence</p>
       </div>
     </a>
     <a class="right-next"
@@ -563,7 +563,7 @@ visualize the covariance matrix at a given time and frequency, and its correspon
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-and-pre-process-stream">Read and pre-process stream</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Covariance-matrix">Covariance matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot">Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Compare-the-coherence-for-different-cases">Compare the coherence for different cases</a></li>
 </ul>
   </nav></div>
 

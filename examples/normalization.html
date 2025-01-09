@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Temporal normalization &#8212; covseisnet</title>
+    <title>Time normalization &#8212; covseisnet</title>
   
   
   
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Spectral whitening" href="whitening.html" />
-    <link rel="prev" title="Traces synchronization" href="synchronization.html" />
+    <link rel="prev" title="Synchronization" href="synchronization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
@@ -162,11 +162,11 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="synchronization.html">Traces synchronization</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="synchronization.html">Synchronization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Time normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whitening.html">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spatial coherence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Coherence preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation at USArray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_travel_times.html">Constant velocity differential times</a></li>
@@ -329,7 +329,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Temporal normalization</h1>
+    <h1>Time normalization</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -340,8 +340,8 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-waveforms">Read waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Normalization-methods">Normalization methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparison">Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
 </ul>
             </nav>
         </div>
@@ -353,9 +353,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Temporal-normalization">
-<h1>Temporal normalization<a class="headerlink" href="#Temporal-normalization" title="Link to this heading">#</a></h1>
-<p>This example shows how to perform a temporal normalization of traces with different methods.</p>
+  <section id="Time-normalization">
+<h1>Time normalization<a class="headerlink" href="#Time-normalization" title="Link to this heading">#</a></h1>
+<p>This example shows how to perform a temporal normalization of traces with different methods. These methods are described in the paper from <a class="reference external" href="https://scholar.google.fr/scholar?q=bensen+et+al+2007&amp;hl=fr&amp;as_sdt=0&amp;as_vis=1&amp;oi=scholart" rel="noopener noreferrer" target="_blank">Bensen et al. (2007)</a>, and a ubiquitous in ambient noise seismology to mitigate the effect of localized seismic sources that may bias the analysis of cross-correlation functions.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -368,18 +368,19 @@
 </div>
 <section id="Read-waveforms">
 <h2>Read waveforms<a class="headerlink" href="#Read-waveforms" title="Link to this heading">#</a></h2>
-<p>This section reads an example stream of seismic data, which is shipped with ObsPy. The stream contains three traces.</p>
+<p>This section reads an <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html" rel="noopener noreferrer" target="_blank">example stream of seismic data shipped with Obspy</a>. The stream contains three traces, which are highpass at a very high frequency to see more details in the synchronization.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the example stream (shipped with ObsPy)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the example stream. Using the read method without arguments reads the</span>
+<span class="c1"># example stream shipped with Obspy.</span>
 <span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<span class="c1"># Highpass filter the stream to better see the sync in high frequencies</span>
-<span class="n">stream</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;highpass&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="c1"># Highpass filter the stream for a better illustration</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;highpass&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># Print the original stream</span>
+<span class="c1"># Print the stream</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -395,11 +396,21 @@ BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0
 BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0 Hz, 3000 samples
 </pre></div></div>
 </div>
-<hr class="docutils" />
-<div class="line-block">
-<div class="line">We here show the trace normalized with different methods. The methods are applied to the stream, and the normalized traces are stored in a list. See</div>
-<div class="line">:footcite:<code class="docutils literal notranslate"><span class="pre">bensen2007processing</span></code> for more information on the normalization</div>
-</div>
+</section>
+<section id="Normalization-methods">
+<h2>Normalization methods<a class="headerlink" href="#Normalization-methods" title="Link to this heading">#</a></h2>
+<p>We here show the trace normalized with different methods, namely a one-bit normalization, and a smooth envelope removal technique. The methods are applied to the stream, and the normalized traces are stored in a list. Considering the seismic trace <span class="math notranslate nohighlight">\(x(t)\)</span> the normalized trace <span class="math notranslate nohighlight">\(\hat x(t)\)</span> is obtained with</p>
+<div class="math notranslate nohighlight">
+\[\hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is an operator applied to the trace <span class="math notranslate nohighlight">\(x(t)\)</span>, and <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> is a regularization value to avoid division by 0. The operator <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined by the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter. We distinguish two cases:</p>
+<ul>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">&quot;onebit&quot;</span></code>, the operator <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined as <span class="math notranslate nohighlight">\(\mathcal{A}x(t) = |x(t)|\)</span>, and therefore</p>
+<div class="math notranslate nohighlight">
+\[\hat x(t) = \frac{x(t)}{|x(t)| + \epsilon} \approx \text{sign}(x(t))\]</div>
+<p>In this case, the method calls the <code class="docutils literal notranslate"><span class="pre">covseisnet.signal.modulus_division</span></code></p>
+</li>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">&quot;smooth&quot;</span></code>, the operator <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined as a <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter" rel="noopener noreferrer" target="_blank">Savitzky-Golay filter</a> applied to the Hilbert envelope of the trace. The Savitzky-Golay filter is defined by the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> and <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code> parameters.</p></li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -429,7 +440,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0
 <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;original&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">normalization_methods</span>
 
 <span class="c1"># Create gigure</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;hspace&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">})</span>
 
 <span class="c1"># Plot each case</span>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">streams</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
@@ -437,6 +448,9 @@ BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="c1"># Set the title</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Time normalization of seismic traces&quot;</span><span class="p">)</span>
 
 <span class="c1"># Set the x-axis label</span>
 <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">dateticks</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -450,9 +464,6 @@ BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0
 <img alt="../_images/examples_normalization_7_0.png" src="../_images/examples_normalization_7_0.png" />
 </div>
 </div>
-</section>
-<section id="References">
-<h2>References<a class="headerlink" href="#References" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -473,7 +484,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Traces synchronization</p>
+        <p class="prev-next-title">Synchronization</p>
       </div>
     </a>
     <a class="right-next"
@@ -503,8 +514,8 @@ BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-waveforms">Read waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Normalization-methods">Normalization methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparison">Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
 </ul>
   </nav></div>
 

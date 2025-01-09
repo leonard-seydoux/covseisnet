@@ -54,8 +54,8 @@
     <link rel="icon" href="../_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Spectral width" href="coherence.html" />
-    <link rel="prev" title="Temporal normalization" href="normalization.html" />
+    <link rel="next" title="Spatial coherence" href="coherence.html" />
+    <link rel="prev" title="Time normalization" href="normalization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
@@ -162,11 +162,11 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="synchronization.html">Traces synchronization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="normalization.html">Temporal normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="synchronization.html">Synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="normalization.html">Time normalization</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Spectral whitening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spectral width</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Compare pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coherence.html">Spatial coherence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coherence_preprocess.html">Coherence preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlation.html">Cross-correlation at USArray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constant_velocity_travel_times.html">Constant velocity differential times</a></li>
@@ -355,7 +355,7 @@
                   
   <section id="Spectral-whitening">
 <h1>Spectral whitening<a class="headerlink" href="#Spectral-whitening" title="Link to this heading">#</a></h1>
-<p>This example show the effect of spectral whitening on a stream of traces. The stream is read from the obspy example data, and the whitening is performed with the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.whiten</span></code>. The method applies a Fourier transform to the traces, divides the spectrum of the traces by the modulus of the spectrum (or a smooth version of it), and then applies the inverse Fourier transform to the traces.</p>
+<p>This example show the effect of spectral whitening on a stream of traces. The stream is read from the obspy example data, and the whitening is performed with the method <code class="docutils literal notranslate"><span class="pre">covseisnet.stream</span> <span class="pre">NetworkStream.whiten</span></code>. The method applies a Fourier transform to the traces, divides the spectrum of the traces by the modulus of the spectrum (or a smooth version of it), and then applies the inverse Fourier transform to the traces.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -366,7 +366,7 @@
 </div>
 <section id="Read-waveforms">
 <h2>Read waveforms<a class="headerlink" href="#Read-waveforms" title="Link to this heading">#</a></h2>
-<p>This section reads an example stream of seismic data, which is shipped with ObsPy. The stream contains three traces.</p>
+<p>This section reads an <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html" rel="noopener noreferrer" target="_blank">example stream of seismic data shipped with Obspy</a>. The stream contains three traces, which are highpass at a very high frequency to see more details in the synchronization.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -393,7 +393,7 @@
 </section>
 <section id="Spectral-whitenin-(onebit)">
 <h2>Spectral whitenin (onebit)<a class="headerlink" href="#Spectral-whitenin-(onebit)" title="Link to this heading">#</a></h2>
-<p>The spectral whitening is applied to the stream using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.whiten</span></code>. The method applies a Fourier transform to the traces, divides the spectrum of the traces by the modulus of the spectrum, and then applies the inverse Fourier transform to the traces.</p>
+<p>The spectral whitening is applied to the stream using the method <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.whiten</span></code>. The method applies a Fourier transform to the traces, divides the spectrum of the traces by the modulus of the spectrum, and then applies the inverse Fourier transform to the traces.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -402,11 +402,12 @@
 <span class="n">whitened_stream</span><span class="o">.</span><span class="n">whiten</span><span class="p">(</span><span class="n">window_duration</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">smooth_length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Plot whitened trace and corresponding spectrum</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">trace_and_spectrogram</span><span class="p">(</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">trace_and_spectrogram</span><span class="p">(</span>
     <span class="n">whitened_stream</span><span class="o">.</span><span class="n">traces</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">window_duration</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Whitened trace&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Whitened spectrogram&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Whitening of seismic traces&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -416,7 +417,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Text(0.5, 1.0, &#39;Whitened spectrogram&#39;)
+Text(0.5, 0.98, &#39;Whitening of seismic traces&#39;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -429,7 +430,7 @@ Text(0.5, 1.0, &#39;Whitened spectrogram&#39;)
 </section>
 <section id="Spectral-whitening-(smooth)">
 <h2>Spectral whitening (smooth)<a class="headerlink" href="#Spectral-whitening-(smooth)" title="Link to this heading">#</a></h2>
-<p>The spectral whitening is applied to the stream using the method :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.whiten</span></code>. The method applies a Fourier transform to the traces, divides the spectrum of the traces by a smooth version of the modulus of the spectrum, and then applies the inverse Fourier transform. The smoothing is performed with a Savitzky-Golay filter, with a window length of 31 frequency bins.</p>
+<p>The spectral whitening is applied to the stream using the method <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.whiten</span></code>. The method applies a Fourier transform to the traces, divides the spectrum of the traces by a smooth version of the modulus of the spectrum, and then applies the inverse Fourier transform. The smoothing is performed with a Savitzky-Golay filter, with a window length of 31 frequency bins.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -438,11 +439,12 @@ Text(0.5, 1.0, &#39;Whitened spectrogram&#39;)
 <span class="n">whitened_stream</span><span class="o">.</span><span class="n">whiten</span><span class="p">(</span><span class="n">window_duration</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">smooth_length</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
 
 <span class="c1"># Plot whitened trace and corresponding spectrum</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">trace_and_spectrogram</span><span class="p">(</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">trace_and_spectrogram</span><span class="p">(</span>
     <span class="n">whitened_stream</span><span class="o">.</span><span class="n">traces</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">window_duration</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Whitened trace (smooth)&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Whitened spectrogram (smooth)&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Smooth whitening of seismic traces&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -452,7 +454,7 @@ Text(0.5, 1.0, &#39;Whitened spectrogram&#39;)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Text(0.5, 1.0, &#39;Whitened spectrogram (smooth)&#39;)
+Text(0.5, 0.98, &#39;Smooth whitening of seismic traces&#39;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -482,7 +484,7 @@ Text(0.5, 1.0, &#39;Whitened spectrogram (smooth)&#39;)
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Temporal normalization</p>
+        <p class="prev-next-title">Time normalization</p>
       </div>
     </a>
     <a class="right-next"
@@ -490,7 +492,7 @@ Text(0.5, 1.0, &#39;Whitened spectrogram (smooth)&#39;)
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Spectral width</p>
+        <p class="prev-next-title">Spatial coherence</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
