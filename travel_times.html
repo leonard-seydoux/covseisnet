@@ -336,9 +336,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.TravelTimes"><code class="docutils literal notranslate"><span class="pre">TravelTimes</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.TravelTimes"><code class="docutils literal notranslate"><span class="pre">TravelTimes</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.TravelTimes.compute_travel_times"><code class="docutils literal notranslate"><span class="pre">TravelTimes.compute_travel_times()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.DifferentialTravelTimes"><code class="docutils literal notranslate"><span class="pre">DifferentialTravelTimes</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.travel_times"><code class="docutils literal notranslate"><span class="pre">travel_times()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.calculate_travel_times"><code class="docutils literal notranslate"><span class="pre">calculate_travel_times()</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -383,6 +386,19 @@ and this argument is ignored.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="covseisnet.travel_times.TravelTimes.compute_travel_times">
+<span class="sig-name descname"><span class="pre">compute_travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#TravelTimes.compute_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.TravelTimes.compute_travel_times" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the travel times within a constant velocity model.</p>
+<p>Calculates the travel times of waves that travel at a constant velocity on
+the straight line between the sources and a receiver.</p>
+<p>The sources are defined on the grid coordinates of the velocity model. The
+receiver is defined by its geographical coordinates, provided by the
+users. The method internally uses the
+<a class="reference internal" href="spatial.html#covseisnet.spatial.straight_ray_distance" title="covseisnet.spatial.straight_ray_distance"><code class="xref py py-func docutils literal notranslate"><span class="pre">straight_ray_distance()</span></code></a> function to calculate the
+straight ray distance between the sources and the receiver.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -410,8 +426,8 @@ sources are defined on the grid coordinates of the velocity model.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="covseisnet.travel_times.travel_times">
-<span class="sig-prename descclassname"><span class="pre">covseisnet.travel_times.</span></span><span class="sig-name descname"><span class="pre">travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="velocity.html#covseisnet.velocity.VelocityModel" title="covseisnet.velocity.VelocityModel"><span class="pre">VelocityModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.travel_times" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="covseisnet.travel_times.calculate_travel_times">
+<span class="sig-prename descclassname"><span class="pre">covseisnet.travel_times.</span></span><span class="sig-name descname"><span class="pre">calculate_travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="velocity.html#covseisnet.velocity.VelocityModel" title="covseisnet.velocity.VelocityModel"><span class="pre">VelocityModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#calculate_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.calculate_travel_times" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the travel times within a constant velocity model.</p>
 <p>Calculates the travel times of waves that travel at a constant velocity on
 the straight line between the sources and a receiver.</p>
@@ -470,9 +486,12 @@ straight ray distance between the sources and the receiver.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.TravelTimes"><code class="docutils literal notranslate"><span class="pre">TravelTimes</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.TravelTimes"><code class="docutils literal notranslate"><span class="pre">TravelTimes</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.TravelTimes.compute_travel_times"><code class="docutils literal notranslate"><span class="pre">TravelTimes.compute_travel_times()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.DifferentialTravelTimes"><code class="docutils literal notranslate"><span class="pre">DifferentialTravelTimes</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.travel_times"><code class="docutils literal notranslate"><span class="pre">travel_times()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covseisnet.travel_times.calculate_travel_times"><code class="docutils literal notranslate"><span class="pre">calculate_travel_times()</span></code></a></li>
 </ul>
   </nav></div>
 

@@ -418,7 +418,7 @@
 
         <span class="c1"># Calculate the travel times</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">,</span> <span class="n">VelocityModel</span><span class="p">):</span>
-            <span class="n">obj</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">travel_times</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">receiver_coordinates</span><span class="p">)</span>
+            <span class="n">obj</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">compute_travel_times</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">receiver_coordinates</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">obj</span>
 
@@ -431,7 +431,107 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;velocity_model&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;receiver_coordinates&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;receiver_coordinates&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TravelTimes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The object must be a TravelTimes object.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">velocity_model</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The velocity model must be the same.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DifferentialTravelTimes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TravelTimes.compute_travel_times">
+<a class="viewcode-back" href="../../travel_times.html#covseisnet.travel_times.TravelTimes.compute_travel_times">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_travel_times</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">receiver_coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the travel times within a constant velocity model.</span>
+
+<span class="sd">        Calculates the travel times of waves that travel at a constant velocity on</span>
+<span class="sd">        the straight line between the sources and a receiver.</span>
+
+<span class="sd">        The sources are defined on the grid coordinates of the velocity model. The</span>
+<span class="sd">        receiver is defined by its geographical coordinates, provided by the</span>
+<span class="sd">        users. The method internally uses the</span>
+<span class="sd">        :func:`~covseisnet.spatial.straight_ray_distance` function to calculate the</span>
+<span class="sd">        straight ray distance between the sources and the receiver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The velocity model is not defined.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if receiver coordinates are defined</span>
+        <span class="k">if</span> <span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The receiver position is not defined.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the travel times</span>
+        <span class="n">travel_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="c1"># Split cases</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">is_constant</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">straight_ray_distance</span><span class="p">(</span>
+                    <span class="o">*</span><span class="n">receiver_coordinates</span><span class="p">,</span> <span class="o">*</span><span class="n">position</span>
+                <span class="p">)</span>
+                <span class="n">travel_times</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">distance</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">constant_velocity</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pykonal</span>
+
+            <span class="c1"># Origin of the grid in spherical coordinates</span>
+            <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>
+            <span class="p">]</span>
+            <span class="n">pykonal_origin</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">geo2sph</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">rho_min</span><span class="p">,</span> <span class="n">theta_min</span><span class="p">,</span> <span class="n">lbd_min</span> <span class="o">=</span> <span class="n">pykonal_origin</span>
+
+            <span class="c1"># Extract resolutions</span>
+            <span class="n">lon_res</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">depth_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">resolution</span>
+            <span class="n">lon_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lon_res</span><span class="p">)</span>
+            <span class="n">lat_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lat_res</span><span class="p">)</span>
+
+            <span class="c1"># Initialize the Eikonal solver</span>
+            <span class="n">solver</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">PointSourceSolver</span><span class="p">(</span><span class="n">coord_sys</span><span class="o">=</span><span class="s2">&quot;spherical&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Define the computational grid</span>
+            <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">min_coords</span> <span class="o">=</span> <span class="n">pykonal_origin</span>
+            <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">node_intervals</span> <span class="o">=</span> <span class="n">depth_res</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">lon_res</span>
+            <span class="n">num_lon</span><span class="p">,</span> <span class="n">num_lat</span><span class="p">,</span> <span class="n">num_dep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">npts</span> <span class="o">=</span> <span class="n">num_dep</span><span class="p">,</span> <span class="n">num_lat</span><span class="p">,</span> <span class="n">num_lon</span>
+            <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity_model</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Convert the geographical coordinates of the receiver to spherical coordinates</span>
+            <span class="n">rec_lon</span><span class="p">,</span> <span class="n">rec_lat</span><span class="p">,</span> <span class="n">rec_dep</span> <span class="o">=</span> <span class="n">receiver_coordinates</span>
+            <span class="n">rho_rec</span><span class="p">,</span> <span class="n">theta_rec</span><span class="p">,</span> <span class="n">lbd_rec</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">geo2sph</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rec_lat</span><span class="p">,</span> <span class="n">rec_lon</span><span class="p">,</span> <span class="n">rec_dep</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rho_rec</span><span class="p">,</span> <span class="n">theta_rec</span><span class="p">,</span> <span class="n">lbd_rec</span><span class="p">])</span>
+
+            <span class="c1"># Check if source is within grid:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rho_min</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rho_min</span> <span class="o">+</span> <span class="n">num_dep</span> <span class="o">*</span> <span class="n">depth_res</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">theta_min</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">theta_min</span> <span class="o">+</span> <span class="n">num_lat</span> <span class="o">*</span> <span class="n">lat_res</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lbd_min</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">lbd_min</span> <span class="o">+</span> <span class="n">num_lon</span> <span class="o">*</span> <span class="n">lon_res</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;Receiver is outside the grid! Pykonal will return Infs.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+            <span class="n">travel_times</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">tt</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">travel_times</span></div>
+</div>
 
 
 
@@ -468,7 +568,7 @@
         <span class="n">obj</span> <span class="o">=</span> <span class="n">travel_times_1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
         <span class="c1"># Calculate the differential travel times</span>
-        <span class="n">obj</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">travel_times_1</span> <span class="o">-</span> <span class="n">travel_times_2</span>
+        <span class="n">obj</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">travel_times_1</span><span class="o">.</span><span class="n">__array__</span><span class="p">()</span> <span class="o">-</span> <span class="n">travel_times_2</span><span class="o">.</span><span class="n">__array__</span><span class="p">()</span>
 
         <span class="c1"># Attributions</span>
         <span class="k">if</span> <span class="n">travel_times_1</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -494,11 +594,12 @@
 
 
 
-<div class="viewcode-block" id="travel_times">
-<a class="viewcode-back" href="../../travel_times.html#covseisnet.travel_times.travel_times">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">travel_times</span><span class="p">(</span>
+<div class="viewcode-block" id="calculate_travel_times">
+<a class="viewcode-back" href="../../travel_times.html#covseisnet.travel_times.calculate_travel_times">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_travel_times</span><span class="p">(</span>
     <span class="n">velocity</span><span class="p">:</span> <span class="n">VelocityModel</span><span class="p">,</span>
-    <span class="n">receiver_coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">receiver_coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stats</span><span class="p">:</span> <span class="n">Stats</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the travel times within a constant velocity model.</span>
 
@@ -511,71 +612,10 @@
 <span class="sd">    :func:`~covseisnet.spatial.straight_ray_distance` function to calculate the</span>
 <span class="sd">    straight ray distance between the sources and the receiver.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Check if receiver coordinates are defined</span>
-    <span class="k">if</span> <span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver_coordinates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The receiver position is not defined.&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Initialize the travel times</span>
-    <span class="n">travel_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-
-    <span class="c1"># Split cases</span>
-    <span class="k">if</span> <span class="n">velocity</span><span class="o">.</span><span class="n">is_constant</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">velocity</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
-            <span class="n">distance</span> <span class="o">=</span> <span class="n">straight_ray_distance</span><span class="p">(</span><span class="o">*</span><span class="n">receiver_coordinates</span><span class="p">,</span> <span class="o">*</span><span class="n">position</span><span class="p">)</span>
-            <span class="n">travel_times</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">velocity</span><span class="o">.</span><span class="n">constant_velocity</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">pykonal</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using Pykonal to calculate travel times.&quot;</span><span class="p">)</span>
-        <span class="c1"># Origin of the grid in spherical coordinates</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="n">velocity</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">velocity</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">velocity</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span>
-        <span class="n">pykonal_origin</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">geo2sph</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-        <span class="n">rho_min</span><span class="p">,</span> <span class="n">theta_min</span><span class="p">,</span> <span class="n">lbd_min</span> <span class="o">=</span> <span class="n">pykonal_origin</span>
-
-        <span class="c1"># Extract resolutions</span>
-        <span class="n">lon_res</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">depth_res</span> <span class="o">=</span> <span class="n">velocity</span><span class="o">.</span><span class="n">resolution</span>
-        <span class="n">lon_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lon_res</span><span class="p">)</span>
-        <span class="n">lat_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lat_res</span><span class="p">)</span>
-
-        <span class="c1"># Initialize the Eikonal solver</span>
-        <span class="n">solver</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">PointSourceSolver</span><span class="p">(</span><span class="n">coord_sys</span><span class="o">=</span><span class="s2">&quot;spherical&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Define the computational grid</span>
-        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">min_coords</span> <span class="o">=</span> <span class="n">pykonal_origin</span>
-        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">node_intervals</span> <span class="o">=</span> <span class="n">depth_res</span><span class="p">,</span> <span class="n">lat_res</span><span class="p">,</span> <span class="n">lon_res</span>
-        <span class="n">num_lon</span><span class="p">,</span> <span class="n">num_lat</span><span class="p">,</span> <span class="n">num_dep</span> <span class="o">=</span> <span class="n">velocity</span><span class="o">.</span><span class="n">shape</span>
-        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">npts</span> <span class="o">=</span> <span class="n">num_dep</span><span class="p">,</span> <span class="n">num_lat</span><span class="p">,</span> <span class="n">num_lon</span>
-        <span class="n">solver</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Convert the geographical coordinates of the receiver to spherical coordinates</span>
-        <span class="n">rec_lon</span><span class="p">,</span> <span class="n">rec_lat</span><span class="p">,</span> <span class="n">rec_dep</span> <span class="o">=</span> <span class="n">receiver_coordinates</span>
-        <span class="n">rho_rec</span><span class="p">,</span> <span class="n">theta_rec</span><span class="p">,</span> <span class="n">lbd_rec</span> <span class="o">=</span> <span class="n">pykonal</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">geo2sph</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rec_lat</span><span class="p">,</span> <span class="n">rec_lon</span><span class="p">,</span> <span class="n">rec_dep</span><span class="p">])</span>
-        <span class="p">)</span>
-        <span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rho_rec</span><span class="p">,</span> <span class="n">theta_rec</span><span class="p">,</span> <span class="n">lbd_rec</span><span class="p">])</span>
-
-        <span class="c1"># Check if source is within grid:</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rho_min</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rho_min</span> <span class="o">+</span> <span class="n">num_dep</span> <span class="o">*</span> <span class="n">depth_res</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">theta_min</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">theta_min</span> <span class="o">+</span> <span class="n">num_lat</span> <span class="o">*</span> <span class="n">lat_res</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lbd_min</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">src_loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">lbd_min</span> <span class="o">+</span> <span class="n">num_lon</span> <span class="o">*</span> <span class="n">lon_res</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Receiver is outside the grid! Pykonal will return Infs.&quot;</span>
-            <span class="p">)</span>
-
-        <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
-
-        <span class="n">travel_times</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">solver</span><span class="o">.</span><span class="n">tt</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">travel_times</span></div>
+    <span class="c1"># Create the instance</span>
+    <span class="k">return</span> <span class="n">TravelTimes</span><span class="p">(</span>
+        <span class="n">velocity</span><span class="p">,</span> <span class="n">stats</span><span class="o">=</span><span class="n">stats</span><span class="p">,</span> <span class="n">receiver_coordinates</span><span class="o">=</span><span class="n">receiver_coordinates</span>
+    <span class="p">)</span></div>
 
 </pre></div>
 
