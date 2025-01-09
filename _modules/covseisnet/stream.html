@@ -170,10 +170,11 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_introduction.html">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/02_covariance.html">Calculate covariance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_correlation.html">Calculate covariance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/04_calculate_travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_introduction.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/02_covariance.html">2. Coherence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_correlation.html">3. Correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/04_calculate_travel_times.html">4. Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/05_localization.html">5. Localization</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -819,6 +820,9 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
         <span class="n">sampling_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">starttime</span><span class="p">:</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">endtime</span><span class="p">:</span> <span class="n">UTCDateTime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">npts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Synchronize seismic traces with interpolation.</span>
@@ -880,15 +884,12 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sampling_rate</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sampling rate is not defined.&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Calculate the number of samples</span>
-        <span class="n">npts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">sampling_rate</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-
         <span class="c1"># Update kwargs</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">interpolation_method</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;npts&quot;</span><span class="p">,</span> <span class="n">npts</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;starttime&quot;</span><span class="p">,</span> <span class="n">time_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;endtime&quot;</span><span class="p">,</span> <span class="n">time_extent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">,</span> <span class="n">sampling_rate</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;npts&quot;</span><span class="p">,</span> <span class="n">npts</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">sampling_rate</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;starttime&quot;</span><span class="p">,</span> <span class="n">starttime</span> <span class="ow">or</span> <span class="n">time_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;endtime&quot;</span><span class="p">,</span> <span class="n">endtime</span> <span class="ow">or</span> <span class="n">time_extent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># Interpolate all traces</span>
         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>

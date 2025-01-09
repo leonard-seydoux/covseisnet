@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction &#8212; covseisnet</title>
+    <title>1. Introduction &#8212; covseisnet</title>
   
   
   
@@ -54,7 +54,7 @@
     <link rel="icon" href="../_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Calculate covariance" href="02_covariance.html" />
+    <link rel="next" title="2. Coherence" href="02_covariance.html" />
     <link rel="prev" title="Tutorials" href="../tutorials.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -174,10 +174,11 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_covariance.html">Calculate covariance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03_correlation.html">Calculate covariance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04_calculate_travel_times.html">Travel times</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_covariance.html">2. Coherence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_correlation.html">3. Correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_calculate_travel_times.html">4. Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_localization.html">5. Localization</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -328,7 +329,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction</h1>
+    <h1>1. Introduction</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -352,19 +353,16 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Introduction">
-<h1>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading">#</a></h1>
+  <section id="1.-Introduction">
+<h1>1. Introduction<a class="headerlink" href="#1.-Introduction" title="Link to this heading">#</a></h1>
 <p>The first notebook downloads all necessary data and metadata for the tutorial. A similar approach may be reproduced to analyze any seismic data set of your choice.</p>
-<p>Note that this tutorial uses <code class="docutils literal notranslate"><span class="pre">Path</span></code> objects to handle conveniently file paths. For more information on <code class="docutils literal notranslate"><span class="pre">Path</span></code> objects, read the <cite>official ``pathlib`</cite> documentation &lt;<a class="reference external" href="https://docs.python.org/3/library/pathlib.html" rel="noopener noreferrer" target="_blank">https://docs.python.org/3/library/pathlib.html</a>&gt;`__. Note also that the velocity model is stored as an <code class="docutils literal notranslate"><span class="pre">hdf5</span></code> file, which is a binary file format that we manipulate with the <code class="docutils literal notranslate"><span class="pre">h5py</span></code> library. If you are not familiar with <code class="docutils literal notranslate"><span class="pre">hdf5</span></code> files, you can read the <a class="reference external" href="https://docs.h5py.org/en/stable/" rel="noopener noreferrer" target="_blank">h5py documentation</a>. In general, the
-velocity model may be written in any format.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<p>Note that this tutorial uses <code class="docutils literal notranslate"><span class="pre">pathlib.Path</span></code> objects to handle conveniently file paths. For more information you read the <a class="reference external" href="https://docs.python.org/3/library/pathlib.html" rel="noopener noreferrer" target="_blank">official pathlib documentation</a>. Also note that the velocity model is stored as an <code class="docutils literal notranslate"><span class="pre">hdf5</span></code> file, which is a binary file format that we manipulate with the <code class="docutils literal notranslate"><span class="pre">h5py</span></code> library. If you are not familiar with <code class="docutils literal notranslate"><span class="pre">hdf5</span></code> files, you can read the <a class="reference external" href="https://docs.h5py.org/en/stable/" rel="noopener noreferrer" target="_blank">h5py documentation</a>. In general, the velocity model
+may be written in any format.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">h5</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -374,20 +372,11 @@ velocity model may be written in any format.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
-</pre></div></div>
-</div>
 <section id="Download-the-seimograms">
 <h2>Download the seimograms<a class="headerlink" href="#Download-the-seimograms" title="Link to this heading">#</a></h2>
 <p>This first cell downloads the continuous seismograms from the RESIF datacenter. The dataset takes about 60MB. The function is written in the <code class="docutils literal notranslate"><span class="pre">covseisnet.data</span></code> module and internally calls the <code class="docutils literal notranslate"><span class="pre">covseisnet.data.download_seismic_dataset</span></code> function. Check out its documentation for more information.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the download path for the data</span>
@@ -429,7 +418,7 @@ Data saved to data/undervolc.mseed
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">inventory</span></code> object is an ObsPy object that comes with several useful methods, including a plotting method. If your Python environment includes <code class="docutils literal notranslate"><span class="pre">cartopy</span></code>, <code class="docutils literal notranslate"><span class="pre">inventory.plot</span></code> uses it to draw the map.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the inventory</span>
@@ -448,7 +437,7 @@ Data saved to data/undervolc.mseed
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -579,42 +568,6 @@ Text(0.5, 0.98, &#39;S-wave velocity model in the original grid&#39;)
 <img alt="../_images/tutorials_01_introduction_11_0.png" src="../_images/tutorials_01_introduction_11_0.png" />
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_i</span><span class="o">.</span><span class="n">lon</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([55.5       , 55.5040404 , 55.50808081, 55.51212121, 55.51616162,
-       55.52020202, 55.52424242, 55.52828283, 55.53232323, 55.53636364,
-       55.54040404, 55.54444444, 55.54848485, 55.55252525, 55.55656566,
-       55.56060606, 55.56464646, 55.56868687, 55.57272727, 55.57676768,
-       55.58080808, 55.58484848, 55.58888889, 55.59292929, 55.5969697 ,
-       55.6010101 , 55.60505051, 55.60909091, 55.61313131, 55.61717172,
-       55.62121212, 55.62525253, 55.62929293, 55.63333333, 55.63737374,
-       55.64141414, 55.64545455, 55.64949495, 55.65353535, 55.65757576,
-       55.66161616, 55.66565657, 55.66969697, 55.67373737, 55.67777778,
-       55.68181818, 55.68585859, 55.68989899, 55.69393939, 55.6979798 ,
-       55.7020202 , 55.70606061, 55.71010101, 55.71414141, 55.71818182,
-       55.72222222, 55.72626263, 55.73030303, 55.73434343, 55.73838384,
-       55.74242424, 55.74646465, 55.75050505, 55.75454545, 55.75858586,
-       55.76262626, 55.76666667, 55.77070707, 55.77474747, 55.77878788,
-       55.78282828, 55.78686869, 55.79090909, 55.79494949, 55.7989899 ,
-       55.8030303 , 55.80707071, 55.81111111, 55.81515152, 55.81919192,
-       55.82323232, 55.82727273, 55.83131313, 55.83535354, 55.83939394,
-       55.84343434, 55.84747475, 55.85151515, 55.85555556, 55.85959596,
-       55.86363636, 55.86767677, 55.87171717, 55.87575758, 55.87979798,
-       55.88383838, 55.88787879, 55.89191919, 55.8959596 , 55.9       ])
-</pre></div></div>
-</div>
 </section>
 </section>
 
@@ -643,7 +596,7 @@ array([55.5       , 55.5040404 , 55.50808081, 55.51212121, 55.51616162,
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Calculate covariance</p>
+        <p class="prev-next-title">2. Coherence</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

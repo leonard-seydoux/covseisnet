@@ -10,3 +10,4 @@ Tutorials
    tutorials/02_covariance
    tutorials/03_correlation
    tutorials/04_calculate_travel_times
+   tutorials/05_localization

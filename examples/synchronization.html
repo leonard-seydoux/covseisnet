@@ -174,10 +174,11 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_introduction.html">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/02_covariance.html">Calculate covariance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_correlation.html">Calculate covariance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/04_calculate_travel_times.html">Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_introduction.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/02_covariance.html">2. Coherence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_correlation.html">3. Correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/04_calculate_travel_times.html">4. Travel times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_localization.html">5. Localization</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -339,7 +340,7 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-waveforms">Read waveforms</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Desynchronize">Desynchronize</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Desynchronize-waveforms">Desynchronize waveforms</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Synchronize">Synchronize</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Compare-traces">Compare traces</a></li>
 </ul>
@@ -355,7 +356,8 @@
                   
   <section id="Traces-synchronization">
 <h1>Traces synchronization<a class="headerlink" href="#Traces-synchronization" title="Link to this heading">#</a></h1>
-<p>This example demonstrates how to synchronize a stream of traces using the <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.synchronize</span></code> method. This method finds the latest start time and the earliest end time among the traces in the stream, and interpolates the traces between these times with a common sampling interval. More information about the method can be found in the documentation.</p>
+<p>In various cases the seismic data can be recorded by different instruments with different sampling rates and start times, or have a time-varying time delta. This notebook demonstrates how to synchronize a stream of with different traces using the <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.synchronize</span></code> method. This method finds the latest start time and the earliest end time among the traces in the stream, and interpolates the traces between these times with a common sampling interval. More information
+about the method can be found in the documentation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -369,21 +371,25 @@
 </div>
 <section id="Read-waveforms">
 <h2>Read waveforms<a class="headerlink" href="#Read-waveforms" title="Link to this heading">#</a></h2>
-<p>This section reads an example stream of seismic data, which is shipped with <a class="reference external" href="https://docs.obspy.org" rel="noopener noreferrer" target="_blank">ObsPy</a>. The stream contains three traces, which are highpass at a very high frequency to see more details in the synchronization.</p>
+<p>This section reads an <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.read.html" rel="noopener noreferrer" target="_blank">example stream of seismic data shipped with Obspy</a>. The stream contains three traces, which are highpass at a very high frequency to see more details in the synchronization.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the example stream (shipped with ObsPy)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the example stream. Using the read method without arguments reads the</span>
+<span class="c1"># example stream shipped with Obspy.</span>
 <span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<span class="c1"># Highpass filter the stream to better see the sync in high frequencies</span>
+<span class="c1"># Highpass filter the stream to better see the synchronization.</span>
 <span class="n">stream</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;highpass&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># Cut the stream out of the tapering</span>
+<span class="c1"># Cut the stream out of the tapering. The cut method is a wrapper around the</span>
+<span class="c1"># trim method but allows to give dates as strings (thus avoiding importing</span>
+<span class="c1"># Obspy UTCDateTime explicitely).</span>
 <span class="n">stream</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="s2">&quot;2009-08-24T00:20:20&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 
-<span class="c1"># Print the original stream</span>
+<span class="c1"># Print the original stream. The header of the NetworkStream object indicates</span>
+<span class="c1"># that the traces are sampled on the same sampling times.</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -400,9 +406,9 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.000000Z - 2009-08-24T00:20:20.300000Z | 100.0
 </pre></div></div>
 </div>
 </section>
-<section id="Desynchronize">
-<h2>Desynchronize<a class="headerlink" href="#Desynchronize" title="Link to this heading">#</a></h2>
-<p>This first section desynchronizes the traces in the stream, in order to demonstrate the synchronization method from the example stream. The traces are shifted in time by different amounts, and a small number of samples are collected for visualization.</p>
+<section id="Desynchronize-waveforms">
+<h2>Desynchronize waveforms<a class="headerlink" href="#Desynchronize-waveforms" title="Link to this heading">#</a></h2>
+<p>This first section desynchronizes the traces in the stream, in order to demonstrate the synchronization method from the example stream. The traces are shifted in time by different random amount of times, and a small number of samples are collected for visualization. Note the change in the <code class="docutils literal notranslate"><span class="pre">NetworkStream</span></code> header when printed.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -410,9 +416,15 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.000000Z - 2009-08-24T00:20:20.300000Z | 100.0
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a random shift to the traces (seeded for reproducibility)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
-    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">)</span>
 
-<span class="c1"># Print the desynchronized stream</span>
+    <span class="c1"># Random shift</span>
+    <span class="n">shift_seconds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">)</span>
+
+    <span class="c1"># Add the shift to the starttime of the trace</span>
+    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">+=</span> <span class="n">shift_seconds</span>
+
+<span class="c1"># Print the desynchronized stream (the header of the NetworkStream object</span>
+<span class="c1"># indicates that the traces are not synced anymore).</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -431,7 +443,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.002320Z - 2009-08-24T00:20:20.302320Z | 100.0
 </section>
 <section id="Synchronize">
 <h2>Synchronize<a class="headerlink" href="#Synchronize" title="Link to this heading">#</a></h2>
-<p>We now synchronize the traces in the stream using the :func:<code class="docutils literal notranslate"><span class="pre">~covseisnet.stream.NetworkStream.synchronize</span></code> method. The method finds the latest start time and the earliest end time among the traces in the stream, and aligns the traces to these times with interpolation.</p>
+<p>We now synchronize the traces in the stream using the <code class="docutils literal notranslate"><span class="pre">covseisnet.stream.NetworkStream.synchronize</span></code> method. The method finds the latest start time and the earliest end time among the traces in the stream, and aligns the traces to these times with interpolation. It is also possible to specify different arguments for synchronization, such as the sampling rate, the interpolation method, the expected start and end times, etc.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -440,7 +452,8 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.002320Z - 2009-08-24T00:20:20.302320Z | 100.0
 <span class="n">processed_stream</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">processed_stream</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">interpolation_method</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">)</span>
 
-<span class="c1"># Print the synchronized stream</span>
+<span class="c1"># Print the synchronized stream, the header of the NetworkStream object</span>
+<span class="c1"># indicates that the traces are now synchronized.</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">processed_stream</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -461,7 +474,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.004507Z - 2009-08-24T00:20:20.294507Z | 100.0
 <h2>Compare traces<a class="headerlink" href="#Compare-traces" title="Link to this heading">#</a></h2>
 <p>The synchronized traces are plotted alongside the original traces to compare the effect of the synchronization method. Note that several interpolation methods are available in the synchronization method. Check the documentation for more information.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create figure</span>
@@ -475,13 +488,16 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.004507Z - 2009-08-24T00:20:20.294507Z | 100.0
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">synced</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="s2">&quot;matplotlib&quot;</span><span class="p">),</span> <span class="n">synced</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;.-&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Synced&quot;</span><span class="p">)</span>
 
     <span class="c1"># Local settings</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">synced</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="s2">&quot;matplotlib&quot;</span><span class="p">):</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="c1"># Labels</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude (counts)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Seismogram amplitude (counts)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Figure title</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Synchronization of traces&quot;</span><span class="p">)</span>
 
 <span class="c1"># Date formatting</span>
 <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">dateticks</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -545,7 +561,7 @@ BW.RJOB..EHE | 2009-08-24T00:20:20.004507Z - 2009-08-24T00:20:20.294507Z | 100.0
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-waveforms">Read waveforms</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Desynchronize">Desynchronize</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Desynchronize-waveforms">Desynchronize waveforms</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Synchronize">Synchronize</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Compare-traces">Compare traces</a></li>
 </ul>

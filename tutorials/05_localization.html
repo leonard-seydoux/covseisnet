@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>3. Correlations &#8212; covseisnet</title>
+    <title>5. Localization &#8212; covseisnet</title>
   
   
   
@@ -50,12 +50,12 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/03_correlation';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/05_localization';</script>
     <link rel="icon" href="../_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Travel times" href="04_calculate_travel_times.html" />
-    <link rel="prev" title="2. Coherence" href="02_covariance.html" />
+    <link rel="next" title="API Reference" href="../api.html" />
+    <link rel="prev" title="4. Travel times" href="04_calculate_travel_times.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0" />
@@ -176,9 +176,9 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_introduction.html">1. Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02_covariance.html">2. Coherence</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">3. Correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_correlation.html">3. Correlations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04_calculate_travel_times.html">4. Travel times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="05_localization.html">5. Localization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5. Localization</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -271,7 +271,7 @@
       
       
       
-      <li><a href="https://github.com/leonard-seydoux/covseisnet/issues/new?title=Issue%20on%20page%20%2Ftutorials/03_correlation.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/leonard-seydoux/covseisnet/issues/new?title=Issue%20on%20page%20%2Ftutorials/05_localization.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -329,7 +329,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>3. Correlations</h1>
+    <h1>5. Localization</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -341,6 +341,7 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-covariance">Read covariance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-correlation">Plot correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Coherence">Coherence</a></li>
 </ul>
             </nav>
         </div>
@@ -352,8 +353,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="3.-Correlations">
-<h1>3. Correlations<a class="headerlink" href="#3.-Correlations" title="Link to this heading">#</a></h1>
+  <section id="5.-Localization">
+<h1>5. Localization<a class="headerlink" href="#5.-Localization" title="Link to this heading">#</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -442,7 +443,184 @@ Text(0, 0.5, &#39;Pairwise distance (km)&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_03_correlation_5_1.png" src="../_images/tutorials_03_correlation_5_1.png" />
+<img alt="../_images/tutorials_05_localization_5_1.png" src="../_images/tutorials_05_localization_5_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;data/undervolc.mseed&quot;</span><span class="p">)</span>
+
+<span class="c1"># Pre-process</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">global_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;highpass&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">time_normalize</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span> <span class="n">smooth_length</span><span class="o">=</span><span class="mi">1001</span><span class="p">)</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">(</span><span class="s2">&quot;data/undervolc.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[91]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">h5</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">covseisnet.travel_times</span><span class="w"> </span><span class="kn">import</span> <span class="n">TravelTimes</span><span class="p">,</span> <span class="n">DifferentialTravelTimes</span>
+
+<span class="c1"># Calculate cross-correlation</span>
+<span class="n">lags</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">correlations</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">calculate_cross_correlation_matrix</span><span class="p">(</span><span class="n">covariances</span><span class="p">)</span>
+
+<span class="c1"># Pre-process the cross-correlation functions</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">correlations</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">correlations</span><span class="o">.</span><span class="n">bandpass</span><span class="p">(</span><span class="n">frequency_band</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">correlations</span><span class="o">.</span><span class="n">envelope</span><span class="p">()</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">correlations</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">correlations</span> <span class="o">/=</span> <span class="n">correlations</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">correlations</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+<span class="c1"># Read the model</span>
+<span class="n">filepath_model</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data/velocity_model_Mordret2025.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+<span class="n">velocity_field_name</span> <span class="o">=</span> <span class="s2">&quot;Vs&quot;</span>
+
+<span class="c1"># The h5 file contains the velocity model in a 3D grid with the following</span>
+<span class="c1"># dimensions in order: longitude, latitude, depth. The depth and velocity are</span>
+<span class="c1"># in meters and meters per second, respectively.</span>
+<span class="k">with</span> <span class="n">h5</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath_model</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">velocity_model</span><span class="p">:</span>
+
+    <span class="c1"># Coordinates</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">])</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">])</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e-3</span>
+
+    <span class="c1"># Velocity</span>
+    <span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="n">velocity_field_name</span><span class="p">])</span>
+    <span class="n">velocity</span> <span class="o">/=</span> <span class="mf">1e3</span>
+
+<span class="c1"># Get extent</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">model_from_grid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
+<span class="n">model</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">model</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">340</span><span class="o">/</span><span class="mi">1000</span>
+
+
+<span class="c1"># Obtain the travel times</span>
+<span class="n">travel_times</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">:</span> <span class="n">TravelTimes</span><span class="p">(</span><span class="n">stats</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">velocity_model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span>
+<span class="p">}</span>
+
+<span class="c1"># Calculate differential travel times</span>
+<span class="n">differential_travel_times</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+    <span class="n">station_1</span><span class="p">,</span> <span class="n">station_2</span> <span class="o">=</span> <span class="n">pair</span>
+    <span class="n">tt1</span> <span class="o">=</span> <span class="n">travel_times</span><span class="p">[</span><span class="n">station_1</span><span class="p">]</span>
+    <span class="n">tt1</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">tt1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">tt2</span> <span class="o">=</span> <span class="n">travel_times</span><span class="p">[</span><span class="n">station_2</span><span class="p">]</span>
+    <span class="n">tt2</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">tt2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">differential_travel_times</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span> <span class="o">=</span> <span class="n">DifferentialTravelTimes</span><span class="p">(</span><span class="n">tt1</span><span class="p">,</span> <span class="n">tt2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+Using Pykonal to calculate travel times.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">differential_travel_times</span><span class="p">[(</span><span class="s2">&quot;UV01&quot;</span><span class="p">,</span> <span class="s2">&quot;UV02&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DifferentialTravelTimes(
+        lon: [55.55, 55.85] with 140 points
+        lat: [-21.38, -21.10] with 151 points
+        depth: [-2.80, 3.20] with 61 points
+        mesh: 1,289,540 points
+        nan values: 0 points
+        min: -6.922
+        max: 7.009
+)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span>
+    <span class="n">differential_travel_times</span><span class="p">[(</span><span class="s2">&quot;UV01&quot;</span><span class="p">,</span> <span class="s2">&quot;UV02&quot;</span><span class="p">)],</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Time difference (s)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;xy&#39;: &lt;Axes: label=&#39;xy&#39;, ylabel=&#39;Latitude (º)&#39;&gt;,
+ &#39;zy&#39;: &lt;Axes: label=&#39;zy&#39;, xlabel=&#39;Depth (km)&#39;&gt;,
+ &#39;xz&#39;: &lt;Axes: label=&#39;xz&#39;, xlabel=&#39;Longitude (º)&#39;, ylabel=&#39;Depth (km)&#39;&gt;,
+ &#39;cb&#39;: &lt;Axes: label=&#39;cb&#39;, xlabel=&#39;Time difference (s)&#39;&gt;}
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_05_localization_9_1.png" src="../_images/tutorials_05_localization_9_1.png" />
+</div>
+</div>
+</section>
+<section id="Coherence">
+<h2>Coherence<a class="headerlink" href="#Coherence" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[99]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">covseisnet.backprojection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DifferentialBackProjection</span>
+
+<span class="c1"># Calculate likelihood</span>
+<span class="n">backprojection</span> <span class="o">=</span> <span class="n">DifferentialBackProjection</span><span class="p">(</span><span class="n">differential_travel_times</span><span class="p">)</span>
+<span class="n">backprojection</span><span class="o">.</span><span class="n">calculate_likelihood</span><span class="p">(</span><span class="n">cross_correlation</span><span class="o">=</span><span class="n">correlations</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Plot likelihood in 3D</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span><span class="n">backprojection</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Likelihood&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_05_localization_11_0.png" src="../_images/tutorials_05_localization_11_0.png" />
 </div>
 </div>
 </section>
@@ -460,20 +638,20 @@ Text(0, 0.5, &#39;Pairwise distance (km)&#39;)
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="02_covariance.html"
+       href="04_calculate_travel_times.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">2. Coherence</p>
+        <p class="prev-next-title">4. Travel times</p>
       </div>
     </a>
     <a class="right-next"
-       href="04_calculate_travel_times.html"
+       href="../api.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">4. Travel times</p>
+        <p class="prev-next-title">API Reference</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -496,6 +674,7 @@ Text(0, 0.5, &#39;Pairwise distance (km)&#39;)
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Read-covariance">Read covariance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-correlation">Plot correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Coherence">Coherence</a></li>
 </ul>
   </nav></div>
 
