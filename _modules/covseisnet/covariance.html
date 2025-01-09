@@ -1042,6 +1042,7 @@
     <span class="n">stream</span><span class="p">:</span> <span class="n">NetworkStream</span><span class="p">,</span>
     <span class="n">window_duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">average</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">window_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">average_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">whiten</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
     <span class="n">water_level</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span>
@@ -1088,6 +1089,13 @@
 <span class="sd">    ---------</span>
 <span class="sd">    stream: :class:`~covseisnet.stream.NetworkStream`</span>
 <span class="sd">        The input data stream.</span>
+<span class="sd">    window_duration: float</span>
+<span class="sd">        The duration of the window used to calculate the short-time Fourier</span>
+<span class="sd">        transform, in seconds.</span>
+<span class="sd">    window_step: float</span>
+<span class="sd">        The step of the window used to calculate the short-time Fourier, in</span>
+<span class="sd">        seconds. Default is None, which is equivalent to half of the window</span>
+<span class="sd">        duration.</span>
 <span class="sd">    average: int</span>
 <span class="sd">        The number of window used to estimate the sample covariance.</span>
 <span class="sd">    average_step: int, optional</span>
@@ -1142,6 +1150,7 @@
     <span class="c1"># Calculate spectrogram</span>
     <span class="n">short_time_fourier_transform</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">ShortTimeFourierTransform</span><span class="p">(</span>
         <span class="n">window_duration</span><span class="o">=</span><span class="n">window_duration</span><span class="p">,</span>
+        <span class="n">window_step</span><span class="o">=</span><span class="n">window_step</span><span class="p">,</span>
         <span class="n">sampling_rate</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
