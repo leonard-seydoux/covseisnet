@@ -377,11 +377,11 @@
 <div><p>Mordret, A., Rivet, D., Landès, M., &amp; Shapiro, N. M. (2015). Three‐dimensional shear velocity anisotropic model of Piton de la Fournaise Volcano (La Réunion Island) from ambient seismic noise. Journal of Geophysical Research: Solid Earth, 120(1), 406-427.</p>
 </div></blockquote>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the model</span>
-<span class="n">filepath_model</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data/velocity_model_Mordret2025.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+<span class="n">filepath_model</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../data/undervolc_vs_mordret_2015.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
 <span class="n">velocity_field_name</span> <span class="o">=</span> <span class="s2">&quot;Vs&quot;</span>
 
 <span class="c1"># The h5 file contains the velocity model in a 3D grid with the following</span>
@@ -392,45 +392,32 @@
     <span class="c1"># Coordinates</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">])</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">])</span>
-    <span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e-3</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span>
 
     <span class="c1"># Velocity</span>
     <span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_model</span><span class="p">[</span><span class="n">velocity_field_name</span><span class="p">])</span>
-    <span class="n">velocity</span> <span class="o">/=</span> <span class="mf">1e3</span>
 
 <span class="c1"># Get extent</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">model_from_grid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
 
 <span class="c1"># Plot the grid</span>
-<span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">profile_coordinates</span><span class="o">=</span><span class="p">[</span><span class="mf">55.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdYlBu&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$V_s$ (km/s)&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">profile_coordinates</span><span class="o">=</span><span class="p">[</span><span class="mf">55.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdYlBu&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$V_s$ (km/s)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-{&#39;xy&#39;: &lt;Axes: label=&#39;xy&#39;, ylabel=&#39;Latitude (º)&#39;&gt;,
- &#39;zy&#39;: &lt;Axes: label=&#39;zy&#39;, xlabel=&#39;Depth (km)&#39;&gt;,
- &#39;xz&#39;: &lt;Axes: label=&#39;xz&#39;, xlabel=&#39;Longitude (º)&#39;, ylabel=&#39;Depth (km)&#39;&gt;,
- &#39;cb&#39;: &lt;Axes: label=&#39;cb&#39;, xlabel=&#39;$V_s$ (km/s)&#39;&gt;}
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_04_calculate_travel_times_3_1.png" src="../_images/tutorials_04_calculate_travel_times_3_1.png" />
+<img alt="../_images/tutorials_04_calculate_travel_times_3_0.png" src="../_images/tutorials_04_calculate_travel_times_3_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[101]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;data/undervolc.mseed&quot;</span><span class="p">)</span>
-<span class="n">stream</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">(</span><span class="s2">&quot;data/undervolc.xml&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stream</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;../data/undervolc.mseed&quot;</span><span class="p">)</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">(</span><span class="s2">&quot;../data/undervolc.xml&quot;</span><span class="p">)</span>
 <span class="n">longitudes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">]</span>
 <span class="n">latitudes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">]</span>
 <span class="n">depths</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">elevation</span> <span class="o">*</span> <span class="mf">1e-3</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">]</span>
@@ -440,7 +427,7 @@
 <span class="n">travel_times</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">travel_times</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">travel_times</span><span class="p">)</span>
 
-<span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">csn</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span>
     <span class="n">travel_times</span><span class="p">,</span>
     <span class="n">receiver_coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">longitudes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">latitudes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">depths</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
     <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdYlBu&quot;</span><span class="p">,</span>
@@ -454,77 +441,48 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
+Using Pykonal to calculate travel times.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/eric/WORK/software/covseisnet/covseisnet/travel_times.py:224: RuntimeWarning: divide by zero encountered in scalar divide
+  solver.solve()
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 TravelTimes(
-        lon: [55.55, 55.85] with 140 points
-        lat: [-21.38, -21.10] with 151 points
+        lon: [55.55, 55.85] with 151 points
+        lat: [-21.38, -21.12] with 130 points
         depth: [-2.80, 3.20] with 61 points
-        mesh: 1,289,540 points
+        mesh: 1,197,430 points
         nan values: 0 points
-        min: 0.073
+        min: 0.432
         max: inf
 )
 TravelTimes(
-        lon: [55.55, 55.85] with 140 points
-        lat: [-21.38, -21.10] with 151 points
+        lon: [55.55, 55.85] with 151 points
+        lat: [-21.38, -21.12] with 130 points
         depth: [-2.80, 3.20] with 61 points
-        mesh: 1,289,540 points
-        nan values: 441,392 points
-        min: 0.073
-        max: 10.998
+        mesh: 1,197,430 points
+        nan values: 372,659 points
+        min: 0.432
+        max: 11.604
 )
 </pre></div></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[101]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-{&#39;xy&#39;: &lt;Axes: label=&#39;xy&#39;, ylabel=&#39;Latitude (º)&#39;&gt;,
- &#39;zy&#39;: &lt;Axes: label=&#39;zy&#39;, xlabel=&#39;Depth (km)&#39;&gt;,
- &#39;xz&#39;: &lt;Axes: label=&#39;xz&#39;, xlabel=&#39;Longitude (º)&#39;, ylabel=&#39;Depth (km)&#39;&gt;,
- &#39;cb&#39;: &lt;Axes: label=&#39;cb&#39;, xlabel=&#39;$V_s$ (km/s)&#39;&gt;}
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_04_calculate_travel_times_4_2.png" src="../_images/tutorials_04_calculate_travel_times_4_2.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-{&#39;xy&#39;: &lt;Axes: label=&#39;xy&#39;, ylabel=&#39;Latitude (º)&#39;&gt;,
- &#39;zy&#39;: &lt;Axes: label=&#39;zy&#39;, xlabel=&#39;Depth (km)&#39;&gt;,
- &#39;xz&#39;: &lt;Axes: label=&#39;xz&#39;, xlabel=&#39;Longitude (º)&#39;, ylabel=&#39;Depth (km)&#39;&gt;,
- &#39;cb&#39;: &lt;Axes: label=&#39;cb&#39;, xlabel=&#39;$V_s$ (km/s)&#39;&gt;}
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/tutorials_04_calculate_travel_times_6_1.png" src="../_images/tutorials_04_calculate_travel_times_6_1.png" />
+<img alt="../_images/tutorials_04_calculate_travel_times_4_3.png" src="../_images/tutorials_04_calculate_travel_times_4_3.png" />
 </div>
 </div>
 </section>
