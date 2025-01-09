@@ -413,11 +413,6 @@ def covariance_matrix_modulus_and_spectrum(
     # Plot covariance matrix
     mappable = ax[0].matshow(np.abs(covariance), cmap="viridis", vmin=0)
 
-    # Coherence
-    spectral_width = covariance.coherence(kind="spectral_width")
-    entropy = covariance.coherence(kind="entropy")
-    diversity = covariance.coherence(kind="diversity")
-
     # Labels
     if covariance.stats is None:
         stations = [f"Station {i}" for i in range(covariance.shape[0])]
@@ -435,19 +430,13 @@ def covariance_matrix_modulus_and_spectrum(
 
     # Plot eigenvalues
     eigenindex = np.arange(covariance.shape[0])
-    ax[1].plot(eigenindex, eigenvalues, marker="o")
+    ax[1].stem(eigenindex, eigenvalues, basefmt="C0")
     ax[1].set_ylim(bottom=0, top=1)
     ax[1].set_xticks(eigenindex)
     ax[1].set_xlabel(r"Eigenvalue index ($n$)")
     ax[1].set_ylabel(r"Eigenvalue ($\lambda_n$)")
     ax[1].set_title("Eigenspectrum")
     ax[1].grid()
-
-    # Annotations
-    ax[1].axvline(spectral_width, color="C1", label="Spectral width")
-    ax[1].axvline(entropy, color="C2", label="Entropy")
-    ax[1].axvline(diversity, color="C3", label="Diversity")
-    ax[1].legend(loc="upper left", frameon=False, bbox_to_anchor=(1, 1))
 
     return fig, ax
 
