@@ -369,22 +369,49 @@
 
 <div class="viewcode-block" id="VelocityModel.resample">
 <a class="viewcode-back" href="../../velocity.html#covseisnet.velocity.VelocityModel.resample">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">resample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Resample the velocity model to a new shape.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resample</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">resolution</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Resample the velocity model to the target shape or resolution.</span>
+
+<span class="sd">        Note that one, and only one, of `shape` or `resolution` must be prescribed.</span>
 
 <span class="sd">        Arguments</span>
 <span class="sd">        ---------</span>
-<span class="sd">        shape : tuple</span>
+<span class="sd">        shape : tuple, optional</span>
 <span class="sd">            The new shape of the grid in the form ``(n_lon, n_lat, n_depth)``.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        resolution : tuple, optional</span>
+<span class="sd">            The new resolution of the grid in the form ``(res_lon, res_lat, res_dep)``.</span>
+<span class="sd">            Defaults to None.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        velocity_model : VelocityModel</span>
 <span class="sd">            The velocity model with the new resolution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span>
+            <span class="n">resolution</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">),</span> <span class="s2">&quot;Only one of shape or resolution must be defined.&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span>
+            <span class="n">resolution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">),</span> <span class="s2">&quot;One of shape or resolution must be defined.&quot;</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">resolution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">resolution</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">resolution</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="p">)</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">resolution</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">resolution</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">resolution</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">resolution</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span></div>
 
 
@@ -455,16 +482,10 @@
         <span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
         <span class="c1"># Interpolate and extrapolate</span>
-        <span class="n">velocity</span><span class="p">[</span><span class="n">inside</span><span class="p">]</span> <span class="o">=</span> <span class="n">interpolator</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">inside</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">inside</span><span class="p">],</span> <span class="n">depth</span><span class="p">[</span><span class="n">inside</span><span class="p">])</span>
-        <span class="p">)</span>
-        <span class="n">velocity</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">]</span> <span class="o">=</span> <span class="n">extrapolator</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">],</span> <span class="n">depth</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">])</span>
-        <span class="p">)</span>
+        <span class="n">velocity</span><span class="p">[</span><span class="n">inside</span><span class="p">]</span> <span class="o">=</span> <span class="n">interpolator</span><span class="p">((</span><span class="n">lon</span><span class="p">[</span><span class="n">inside</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">inside</span><span class="p">],</span> <span class="n">depth</span><span class="p">[</span><span class="n">inside</span><span class="p">]))</span>
+        <span class="n">velocity</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">]</span> <span class="o">=</span> <span class="n">extrapolator</span><span class="p">((</span><span class="n">lon</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">],</span> <span class="n">depth</span><span class="p">[</span><span class="o">~</span><span class="n">inside</span><span class="p">]))</span>
 
-        <span class="k">return</span> <span class="n">VelocityModel</span><span class="p">(</span>
-            <span class="n">extent</span><span class="o">=</span><span class="n">new_extent</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">velocity</span><span class="o">=</span><span class="n">velocity</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">VelocityModel</span><span class="p">(</span><span class="n">extent</span><span class="o">=</span><span class="n">new_extent</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">velocity</span><span class="o">=</span><span class="n">velocity</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="VelocityModel.is_constant">
