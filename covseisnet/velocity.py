@@ -25,22 +25,49 @@ class VelocityModel(Regular3DGrid):
         self.depth = getattr(obj, "depth", np.array([np.nan]))
         self.mesh = getattr(obj, "mesh", [np.array([np.nan])])
 
-    def resample(self, shape: tuple[int, int, int]):
-        r"""Resample the velocity model to a new shape.
+    def resample(
+        self,
+        shape: tuple[int, int, int] | None = None,
+        resolution: tuple[float, float, float] | None = None,
+    ):
+        r"""Resample the velocity model to the target shape or resolution.
+
+        Note that one, and only one, of `shape` or `resolution` must be prescribed.
 
         Arguments
         ---------
-        shape : tuple
+        shape : tuple, optional
             The new shape of the grid in the form ``(n_lon, n_lat, n_depth)``.
+            Defaults to None.
+        resolution : tuple, optional
+            The new resolution of the grid in the form ``(res_lon, res_lat, res_dep)``.
+            Defaults to None.
 
         Returns
         -------
         velocity_model : VelocityModel
             The velocity model with the new resolution.
         """
-        lon = np.linspace(self.extent[0], self.extent[1], shape[0])
-        lat = np.linspace(self.extent[2], self.extent[3], shape[1])
-        depth = np.linspace(self.extent[4], self.extent[5], shape[2])
+        assert (shape is None) | (
+            resolution is None
+        ), "Only one of shape or resolution must be defined."
+        assert (shape is not None) | (
+            resolution is not None
+        ), "One of shape or resolution must be defined."
+        if shape is not None:
+            lon = np.linspace(self.extent[0], self.extent[1], shape[0])
+            lat = np.linspace(self.extent[2], self.extent[3], shape[1])
+            depth = np.linspace(self.extent[4], self.extent[5], shape[2])
+        elif resolution is not None:
+            lon = np.arange(
+                    self.extent[0], self.extent[1] + resolution[0], resolution[0]
+                    )
+            lat = np.arange(
+                    self.extent[2], self.extent[3] + resolution[1], resolution[1]
+                    )
+            depth = np.arange(
+                    self.extent[4], self.extent[5] + resolution[2], resolution[2]
+                    )
         return self.interpolate(lon, lat, depth)
 
     def interpolate(
@@ -108,16 +135,10 @@ class VelocityModel(Regular3DGrid):
         velocity = np.zeros(new_grid.shape, dtype=self.dtype)
 
         # Interpolate and extrapolate
-        velocity[inside] = interpolator(
-            (lon[inside], lat[inside], depth[inside])
-        )
-        velocity[~inside] = extrapolator(
-            (lon[~inside], lat[~inside], depth[~inside])
-        )
+        velocity[inside] = interpolator((lon[inside], lat[inside], depth[inside]))
+        velocity[~inside] = extrapolator((lon[~inside], lat[~inside], depth[~inside]))
 
-        return VelocityModel(
-            extent=new_extent, shape=new_grid.shape, velocity=velocity
-        )
+        return VelocityModel(extent=new_extent, shape=new_grid.shape, velocity=velocity)
 
     def is_constant(self):
         r"""Check if the velocity model is constant."""
