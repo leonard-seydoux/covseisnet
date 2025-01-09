@@ -682,6 +682,7 @@ def calculate_covariance_matrix(
     stream: NetworkStream,
     window_duration: float,
     average: int,
+    window_step: float | None = None,
     average_step: int | None = None,
     whiten: str = "none",
     water_level: float = 1e-10,
@@ -728,6 +729,13 @@ def calculate_covariance_matrix(
     ---------
     stream: :class:`~covseisnet.stream.NetworkStream`
         The input data stream.
+    window_duration: float
+        The duration of the window used to calculate the short-time Fourier
+        transform, in seconds.
+    window_step: float
+        The step of the window used to calculate the short-time Fourier, in
+        seconds. Default is None, which is equivalent to half of the window
+        duration.
     average: int
         The number of window used to estimate the sample covariance.
     average_step: int, optional
@@ -782,6 +790,7 @@ def calculate_covariance_matrix(
     # Calculate spectrogram
     short_time_fourier_transform = signal.ShortTimeFourierTransform(
         window_duration=window_duration,
+        window_step=window_step,
         sampling_rate=stream.sampling_rate,
         **kwargs,
     )
