@@ -145,6 +145,6 @@ intersphinx_mapping = {
 nbsphinx_execute = "auto"
 nbsphinx_prompt_width = 0
 nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'svg', 'pdf'}",
-    "--InlineBackend.rc={'figure.dpi': 96}",
+    "--InlineBackend.figure_formats={'svg'}",
+    "--InlineBackend.rc={'figure.dpi': 150}",
 ]

@@ -876,9 +876,7 @@ div.nboutput.container div.output_area pre {
     color: var(--pst-color-tertiary) !important;
 }
 
-div.nboutput.container div.output_area img {
-    width: 1000px !important;
-}
+
 
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
