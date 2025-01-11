@@ -2,3 +2,4 @@ savefig.format: svg
 savefig.transparent: True
 font.family: sans-serif
 font.sans-serif: Arial
+axes.prop_cycle: cycler('color', ['3b97ad', 'd99f23', 'b3b3b3', 'e06666'])

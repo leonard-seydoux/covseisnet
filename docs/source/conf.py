@@ -7,6 +7,7 @@ list see the documentation: http://www.sphinx-doc.org/en/stable/config.
 import os
 import sys
 
+sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from dataclasses import dataclass, field
@@ -140,3 +141,10 @@ intersphinx_mapping = {
     "obspy": ("https://docs.obspy.org", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
 }
+
+nbsphinx_execute = "auto"
+nbsphinx_prompt_width = 0
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
