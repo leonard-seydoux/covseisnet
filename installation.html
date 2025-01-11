@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Installation Guide &#8212; covseisnet</title>
+    <title>Installation &#8212; covseisnet</title>
   
   
   
@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1d1c9fbe" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
@@ -157,13 +157,13 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/synchronization.html">Synchronization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/normalization.html">Time normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/whitening.html">Spectral whitening</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/coherence.html">Spatial coherence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Coherence preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Pre-processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/correlation.html">Cross-correlation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_travel_times.html">Constant differential times</a></li>
@@ -313,7 +313,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -324,11 +326,21 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Installation Guide</h1>
+    <h1>Installation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-anaconda-virtual-environment">Create an Anaconda virtual environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-with-pip-from-github">Installation with Pip from GitHub</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-installation">Testing the installation</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -338,17 +350,45 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="installation-guide">
-<h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading">#</a></h1>
-<p>The package is not yet available on the PyPI repository. To install it using <code class="docutils literal notranslate"><span class="pre">pip</span></code>, run the following command in your terminal, preferably in a Python <a class="reference external" href="https://docs.python.org/3/library/venv.html" rel="noopener noreferrer" target="_blank">virtual environment</a> of your choice:</p>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The package is not yet available on the <a class="reference external" href="https://pypi.org/" rel="noopener noreferrer" target="_blank">PyPI repository</a>. The following instructions are for installing the package directly from the GitHub repository. These installation instruction assume that you have <a class="reference external" href="https://www.python.org/downloads/" rel="noopener noreferrer" target="_blank">Python</a> and <a class="reference external" href="https://pip.pypa.io/en/stable/installing/" rel="noopener noreferrer" target="_blank">pip</a> installed on your system. We recommend using a <a class="reference external" href="https://docs.python.org/3/library/venv.html" rel="noopener noreferrer" target="_blank">virtual environment</a> to install the package.</p>
+</div>
+<section id="create-an-anaconda-virtual-environment">
+<h2>Create an Anaconda virtual environment<a class="headerlink" href="#create-an-anaconda-virtual-environment" title="Link to this heading">#</a></h2>
+<p>This example shows how to create a new virtual environment using <a class="reference external" href="https://www.anaconda.com/products/distribution" rel="noopener noreferrer" target="_blank">Anaconda</a> and install the package in it. You can also choose another virtual environment manager, such as <a class="reference external" href="https://virtualenv.pypa.io/en/latest/" rel="noopener noreferrer" target="_blank">virtualenv</a>. First, we create a new virtual environment using Anaconda. We suggest the environment name <code class="docutils literal notranslate"><span class="pre">covseisnet</span></code>, but if your environment is specific to a project, you can name it accordingly. We also install Python 3.12 in the environment, which comes with Pip (Python's package installer). Run the following command in your terminal:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>conda create --name covseisnet python=3.12
+</pre></div>
+</div>
+<p>Then, activate the virtual environment and use the newly installed Python version:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>covseisnet
+</pre></div>
+</div>
+</section>
+<section id="installation-with-pip-from-github">
+<h2>Installation with Pip from GitHub<a class="headerlink" href="#installation-with-pip-from-github" title="Link to this heading">#</a></h2>
+<p>We can now install the package using Pip. Running the following command will download the package from the GitHub repository and install it in the virtual environment:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/leonard-seydoux/covseisnet.git
 </pre></div>
 </div>
+</section>
+<section id="testing-the-installation">
+<h2>Testing the installation<a class="headerlink" href="#testing-the-installation" title="Link to this heading">#</a></h2>
 <p>After the installation completes, you can check if the package was installed correctly by running a simple test in a Python environment (such as a Python shell). Execute the following command:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
 </pre></div>
 </div>
-<p>If you don't encounter any errors, the package has been installed successfully.</p>
+<p>If you don't encounter any errors, the package has been installed successfully. If you need to run more complex tests, you can run a <a class="reference external" href="https://docs.pytest.org/en/stable/" rel="noopener noreferrer" target="_blank">PyTest</a> test suite. First, install the PyTest package using Pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pytest
+</pre></div>
+</div>
+<p>Then, navigate to the package's <code class="docutils literal notranslate"><span class="pre">tests</span></code> directory and run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -386,6 +426,24 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-anaconda-virtual-environment">Create an Anaconda virtual environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-with-pip-from-github">Installation with Pip from GitHub</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-installation">Testing the installation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

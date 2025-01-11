@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1d1c9fbe" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
@@ -157,13 +157,13 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/synchronization.html">Synchronization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/normalization.html">Time normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/whitening.html">Spectral whitening</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/coherence.html">Spatial coherence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Coherence preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Pre-processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/correlation.html">Cross-correlation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_travel_times.html">Constant differential times</a></li>
@@ -404,7 +404,7 @@ that is symmetric around zero.</p>
 <dt class="sig sig-object py" id="covseisnet.plot.trace_and_spectrum">
 <span class="sig-prename descclassname"><span class="pre">covseisnet.plot.</span></span><span class="sig-name descname"><span class="pre">trace_and_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><span class="pre">Trace</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" rel="noopener noreferrer" target="_blank" title="(in Matplotlib v3.10.0)"><span class="pre">Figure</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" rel="noopener noreferrer" target="_blank" title="(in Matplotlib v3.10.0)"><span class="pre">Axes</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/covseisnet/plot.html#trace_and_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.plot.trace_and_spectrum" title="Link to this definition">#</a></dt>
 <dd><p>Plot a trace and its spectrum side by side.</p>
-<p>The spectrum is calculated with the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fft.rfft.html#scipy.fft.rfft" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.fft.rfft()</span></code></a> function, which
+<p>The spectrum is calculated with the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fft.rfft.html#scipy.fft.rfft" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.fft.rfft()</span></code></a> function, which
 assumes that the trace is real-valued and therefore only returns the
 positive frequencies.</p>
 <dl class="field-list simple">

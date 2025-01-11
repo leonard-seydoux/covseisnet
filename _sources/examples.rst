@@ -4,8 +4,6 @@ Examples
 Trace processing  
 ----------------
 
-The following examples demonstrate how to process seismic traces with various tools. 
-
 .. nbgallery::
    :name: rst-gallery
    :glob:

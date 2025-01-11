@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1d1c9fbe" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
@@ -159,13 +159,13 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/synchronization.html">Synchronization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/normalization.html">Time normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/whitening.html">Spectral whitening</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/coherence.html">Spatial coherence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Coherence preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Pre-processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/correlation.html">Cross-correlation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_travel_times.html">Constant differential times</a></li>
@@ -441,7 +441,7 @@ the imaginary unit. The Hilbert envelope is the absolute value of the
 Hilbert transform of the correlation matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments to pass to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.hilbert.html#scipy.signal.hilbert" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">hilbert()</span></code></a>. By
+<dd class="field-odd"><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments to pass to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.hilbert.html#scipy.signal.hilbert" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">hilbert()</span></code></a>. By
 default, the axis is set to the last axis (lags).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -490,7 +490,7 @@ deviation <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <li><p><strong>sigma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- Standard deviation of the Gaussian kernel. The larger the value,
 the smoother the correlation matrix. Default is 1.</p></li>
 <li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- Additional arguments passed to
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter1d.html#scipy.ndimage.gaussian_filter1d" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">gaussian_filter1d()</span></code></a>.</p></li>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter1d.html#scipy.ndimage.gaussian_filter1d" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">gaussian_filter1d()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -521,7 +521,7 @@ dimension. This method also works for smaller dimensions.</p>
 <span class="sig-name descname"><span class="pre">bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency_band</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/correlation.html#CrossCorrelationMatrix.bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.correlation.CrossCorrelationMatrix.bandpass" title="Link to this definition">#</a></dt>
 <dd><p>Bandpass filter the correlation functions.</p>
 <p>Apply a Butterworth bandpass filter to the correlation functions. Uses
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html#scipy.signal.butter" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">butter()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy.signal.filtfilt" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">filtfilt()</span></code></a> to
 avoid phase shift.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

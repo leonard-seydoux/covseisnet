@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=02ec9fb4" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1d1c9fbe" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
@@ -159,13 +159,13 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/synchronization.html">Synchronization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/normalization.html">Time normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/whitening.html">Spectral whitening</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/coherence.html">Spatial coherence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Coherence preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/coherence_preprocess.html">Pre-processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/correlation.html">Cross-correlation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_model.html">Constant velocity travel times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/constant_velocity_travel_times.html">Constant differential times</a></li>
@@ -625,7 +625,7 @@ real- and positive-valued. The eigenvectors are returned as a matrix</p>
 rank of the eigenvectors. The eigenvectors are sorted in decreasing
 order of the eigenvalues, and the eigenvectors are normalized. The
 function used for extracting eigenvectors is
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a>. It assumes that the input matrix is 2D and
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a>. It assumes that the input matrix is 2D and
 hermitian, so the decomposition is performed onto the lower triangular
 part.</p>
 <p>If the <code class="docutils literal notranslate"><span class="pre">covariance</span></code> parameter is set to False (default), the
@@ -670,7 +670,7 @@ else <code class="docutils literal notranslate"><span class="pre">(n_times,</spa
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.eigenvalues" title="covseisnet.covariance.CovarianceMatrix.eigenvalues"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eigenvalues()</span></code></a>, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a></p>
+<p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.eigenvalues" title="covseisnet.covariance.CovarianceMatrix.eigenvalues"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eigenvalues()</span></code></a>, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a></p>
 </div>
 </dd></dl>
 
