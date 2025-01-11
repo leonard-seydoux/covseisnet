@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    --pst-font-family-heading: "Ubuntu", sans-serif;
+    --pst-font-family-base: "Ubuntu", sans-serif;
+    --pst-font-family-monospace: "Ubuntu Mono", monospace;
+}
+
+pre,
+code {
+    font-size: 108%;
+}
+
 html[data-theme="light"]:root {
     --pst-color-primary: #3b97ad;
     --pst-color-secondary: #d99f23;
@@ -5,7 +19,15 @@ html[data-theme="light"]:root {
     --pst-color-quaternary: #e06666;
     --pst-color-inline-code: var(--pst-color-quaternary);
     --pst-color-surface: #f6f6f6;
-    --pst-color-border: none;
+    --pst-color-border: #e3e3e3;
+    --pst-color-note: var(--pst-color-primary);
+    --pst-color-note-bg: #3b96ad1d;
+    --pst-color-info: var(--pst-color-primary);
+    --pst-color-info-bg: #3b96ad40;
+    --pst-color-success: var(--pst-color-tertiary);
+    --pst-color-success-bg: #b3b3b340;
+    --pst-color-seealso: #d99f23b3;
+    --pst-color-seealso-bg: #d99f232a;
 }
 
 
@@ -17,6 +39,10 @@ html[data-theme="dark"]:root {
     --pst-color-inline-code: var(--pst-color-quaternary);
     --pst-color-surface: #0c2127;
     --pst-color-border: none;
+    --pst-color-info: var(--pst-color-primary);
+    --pst-color-info-bg: #3b96ad40;
+    --pst-color-success: var(--pst-color-tertiary);
+    --pst-color-success-bg: #b3b3b340;
 }
 
 
@@ -61,14 +87,16 @@ html[data-theme=dark] .bd-content img:not(.only-dark, .dark-light) {
 .nbsphinx-gallery>a {
     padding: 15px !important;
     border: 1px solid rgb(225, 225, 225) !important;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2) !important;
-    border-radius: 10px !important;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 5px !important;
     text-align: center !important;
-    color: #414141 !important;
+    color: var(--pst-color-tertiary) !important;
 }
 
 .nbsphinx-gallery>a:hover {
-    border: 1px solid #e89300 !important;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    color: rgba(0, 0, 0, 0.7) !important;
 }
 
 .nbsphinx-gallery img {
@@ -867,16 +895,62 @@ html[data-theme="dark"] .highlight .il {
 }
 
 /* Literal.Number.Integer.Long */
-
 div.nbinput.container div.input_area {
-    border: none;
+    background-color: var(--pst-color-surface);
+    padding: 20px;
+}
+
+pre,
+div.nbinput.container div.input_area,
+div.admonition {
+    border-radius: 5px !important;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1) !important;
+}
+
+div.admonition {
+    border-left: none;
+    border-right: none;
+    border: 1px solid;
+}
+
+.admonition-title {
+    position: fixed;
+    background-color: transparent !important;
+}
+
+div.admonition.note {
+    background-color: var(--pst-color-note-bg);
+    border-color: var(--pst-color-note);
+    box-shadow: 3px 3px 0px var(--pst-color-note) !important;
+}
+
+div.admonition-notes {
+    background-color: var(--pst-color-note-bg);
+    border-color: var(--pst-color-note);
+    box-shadow: 3px 3px 0px var(--pst-color-note) !important;
+}
+
+div.admonition.info {
+    background-color: var(--pst-color-info-bg);
+    border-color: var(--pst-color-info);
+    box-shadow: 3px 3px 0px var(--pst-color-info) !important;
+}
+
+div.admonition.seealso {
+    background-color: var(--pst-color-seealso-bg);
+    border-color: var(--pst-color-seealso);
+    box-shadow: 3px 3px 0px var(--pst-color-seealso) !important;
+}
+
+div.admonition.tip {
+    background-color: var(--pst-color-seealso-bg);
+    border-color: var(--pst-color-seealso);
+    box-shadow: 3px 3px 0px var(--pst-color-seealso) !important;
 }
 
 div.nboutput.container div.output_area pre {
     color: var(--pst-color-tertiary) !important;
 }
-
-
 
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {

@@ -124,7 +124,10 @@ def trace_and_spectrum(trace: Trace) -> tuple[Figure, list[Axes]]:
 
 
 def trace_and_spectrogram(
-    trace: Trace, f_min: None | float = None, **kwargs: Any
+    trace: Trace,
+    f_min: None | float = None,
+    cmap: str = "cividis",
+    **kwargs: Any,
 ) -> tuple[Figure, list[Axes]]:
     """Plot a trace and its spectrogram.
 
@@ -139,6 +142,8 @@ def trace_and_spectrogram(
     f_min : None or float
         The minimum frequency to display. Frequencies below this value will be
         removed from the spectrogram.
+    cmap : str
+        The colormap to use for the spectrogram.
     **kwargs
         Additional arguments to pass to :func:`~covseisnet.stream.calculate_spectrogram`.
 
@@ -192,6 +197,7 @@ def trace_and_spectrogram(
         spectrogram,
         shading="nearest",
         rasterized=True,
+        cmap=cmap,
     )
     ax[1].grid()
     ax[1].set_yscale("log")
