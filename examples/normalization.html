@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=a35ea3b2" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2a9c0afe" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=50c4876b" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-gallery.css?v=26227f6e" />
   
   <!-- So that users can add custom icons -->
@@ -401,15 +401,15 @@ BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - 2009-08-24T00:20:32.990000Z | 100.0
 <h2>Normalization methods<a class="headerlink" href="#Normalization-methods" title="Link to this heading">#</a></h2>
 <p>We here show the trace normalized with different methods, namely a one-bit normalization, and a smooth envelope removal technique. The methods are applied to the stream, and the normalized traces are stored in a list. Considering the seismic trace <span class="math notranslate nohighlight">\(x(t)\)</span> the normalized trace <span class="math notranslate nohighlight">\(\hat x(t)\)</span> is obtained with</p>
 <div class="math notranslate nohighlight">
-\[\hat x(t) = \frac{x(t)}{\mathcal{A}x(t) + \epsilon}\]</div>
-<p>where <span class="math notranslate nohighlight">\(A\)</span> is an operator applied to the trace <span class="math notranslate nohighlight">\(x(t)\)</span>, and <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> is a regularization value to avoid division by 0. The operator <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined by the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter. We distinguish two cases:</p>
+\[\hat x(t) = \frac{x(t)}{Ax(t) + \epsilon}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is an function or operator applied to the trace <span class="math notranslate nohighlight">\(x(t)\)</span>, and <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> is a regularization value to avoid division by 0. The application <span class="math notranslate nohighlight">\(A\)</span> is defined by the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter. We distinguish two cases:</p>
 <ul>
-<li><p>If the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">&quot;onebit&quot;</span></code>, the operator <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined as <span class="math notranslate nohighlight">\(\mathcal{A}x(t) = |x(t)|\)</span>, and therefore</p>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">method</span> <span class="pre">=</span> <span class="pre">&quot;onebit&quot;</span></code>, the operator <span class="math notranslate nohighlight">\(A\)</span> is the modulus operation with <span class="math notranslate nohighlight">\(Ax = |x|\)</span>, and therefore</p>
 <div class="math notranslate nohighlight">
 \[\hat x(t) = \frac{x(t)}{|x(t)| + \epsilon} \approx \text{sign}(x(t))\]</div>
-<p>In this case, the method calls the <code class="docutils literal notranslate"><span class="pre">covseisnet.signal.modulus_division</span></code></p>
+<p>In this case, the method calls the <code class="docutils literal notranslate"><span class="pre">covseisnet.signal.modulus_division</span></code>.</p>
 </li>
-<li><p>If the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">&quot;smooth&quot;</span></code>, the operator <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined as a <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter" rel="noopener noreferrer" target="_blank">Savitzky-Golay filter</a> applied to the Hilbert envelope of the trace. The Savitzky-Golay filter is defined by the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> and <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code> parameters.</p></li>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">method=&quot;smooth&quot;</span></code>, the operator <span class="math notranslate nohighlight">\(A\)</span> is defined as a <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter" rel="noopener noreferrer" target="_blank">Savitzky-Golay filter</a> applied to the Hilbert envelope of the trace. The Savitzky-Golay filter is defined by the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> and <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code> parameters.</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
