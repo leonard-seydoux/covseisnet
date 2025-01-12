@@ -28,6 +28,7 @@ html[data-theme="light"]:root {
     --pst-color-success-bg: #b3b3b340;
     --pst-color-seealso: #d99f23b3;
     --pst-color-seealso-bg: #d99f232a;
+    --pst-color-inline-code-links: var(--pst-color-primary);
 }
 
 
@@ -955,4 +956,11 @@ div.nboutput.container div.output_area pre {
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     display: none;
+}
+
+dt.field-odd,
+dt.field-even {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--pst-color-border) !important;
+    padding-left: 0px !important;
 }
