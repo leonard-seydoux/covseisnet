@@ -214,7 +214,7 @@ def trace_and_spectrogram(
 
 
 def coherence(
-    times, frequencies, coherence, f_min=None, ax=None, **kwargs
+    times, frequencies, coherence, f_min=None, ax=None, kind="spectral_width", **kwargs
 ) -> tuple[Figure, Axes]:
     """Plot a coherence matrix.
 
@@ -235,6 +235,8 @@ def coherence(
         removed from the coherence matrix.
     ax : :class:`~matplotlib.axes.Axes`, optional
         The axis to plot on. If not provided, a new figure will be created.
+    kind : str, optional
+        Name of coherency measure to use in the colobar label.
     **kwargs
         Additional arguments passed to the pcolormesh method. By default, the
         shading is set to "nearest" and the colormap is set to "magma_r".
@@ -266,7 +268,7 @@ def coherence(
     ax.set_ylim(frequencies[1], frequencies[-1])
 
     # Colorbar
-    plt.colorbar(mappable, ax=ax).set_label("Spectral width")
+    plt.colorbar(mappable, ax=ax).set_label(kind)
 
     return fig, ax
 
