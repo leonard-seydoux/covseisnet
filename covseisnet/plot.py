@@ -214,7 +214,13 @@ def trace_and_spectrogram(
 
 
 def coherence(
-    times, frequencies, coherence, f_min=None, ax=None, kind="spectral_width", **kwargs
+    times,
+    frequencies,
+    coherence,
+    f_min=None,
+    ax=None,
+    coherence_kind="spectral_width",
+    **kwargs,
 ) -> tuple[Figure, Axes]:
     """Plot a coherence matrix.
 
@@ -235,8 +241,9 @@ def coherence(
         removed from the coherence matrix.
     ax : :class:`~matplotlib.axes.Axes`, optional
         The axis to plot on. If not provided, a new figure will be created.
-    kind : str, optional
-        Name of coherency measure to use in the colobar label.
+    coherence_kind : str, optional
+        Name of coherency measure to use in the colobar label. Defaults to
+        "spectral_width".
     **kwargs
         Additional arguments passed to the pcolormesh method. By default, the
         shading is set to "nearest" and the colormap is set to "magma_r".
@@ -268,7 +275,7 @@ def coherence(
     ax.set_ylim(frequencies[1], frequencies[-1])
 
     # Colorbar
-    plt.colorbar(mappable, ax=ax).set_label(kind)
+    plt.colorbar(mappable, ax=ax).set_label(coherence_kind)
 
     return fig, ax
 
@@ -280,6 +287,7 @@ def stream_and_coherence(
     coherence: np.ndarray,
     f_min: float | None = None,
     trace_factor: float = 0.1,
+    coherence_kind: str = "spectral_width",
     **kwargs: dict,
 ) -> tuple[Figure, list[Axes]]:
     """Plot a stream of traces and the coherence matrix.
@@ -303,6 +311,9 @@ def stream_and_coherence(
         removed from the coherence matrix.
     trace_factor : float, optional
         The factor to multiply the traces by for display.
+    coherence_kind : str, optional
+        Name of coherency measure to use in the colobar label. Defaults to
+        "spectral_width".
     **kwargs
         Additional arguments passed to the pcolormesh method.
     """
@@ -316,7 +327,13 @@ def stream_and_coherence(
 
     # Plot coherence
     csn.plot.coherence(
-        times, frequencies, coherence, f_min=f_min, ax=ax[1], **kwargs
+        times,
+        frequencies,
+        coherence,
+        f_min=f_min,
+        ax=ax[1],
+        coherence_kind=coherence_kind,
+        **kwargs,
     )
     ax[1].set_ylabel("Frequency (Hz)")
     ax[1].set_title("Spatial coherence")
@@ -617,12 +634,8 @@ def grid3d(
     mappable = ax["xy"].contourf(
         grid.lon, grid.lat, grid[:, :, profile_index[2]].T, **kwargs
     )
-    ax["xz"].contourf(
-        grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs
-    )
-    ax["zy"].contourf(
-        grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs
-    )
+    ax["xz"].contourf(grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs)
+    ax["zy"].contourf(grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs)
     ax["xy"].axvline(profile_coordinates[0], dashes=[8, 3], color="k", lw=0.5)
     ax["xy"].axhline(profile_coordinates[1], dashes=[8, 3], color="k", lw=0.5)
     ax["zy"].axvline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
@@ -638,9 +651,7 @@ def grid3d(
     ax["zy"].yaxis.set_label_position("right")
     ax["zy"].set_yticks(ax["xy"].get_yticks())
     ax["zy"].set_yticklabels(ax["xy"].get_yticklabels())
-    cb = plt.colorbar(
-        mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5
-    )
+    cb = plt.colorbar(mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5)
     cb.ax.xaxis.set_major_locator(MaxNLocator(4))
     if label is not None:
         cb.set_label(label)
