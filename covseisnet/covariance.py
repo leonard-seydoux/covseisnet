@@ -829,7 +829,7 @@ def calculate_covariance_matrix(
 
         # Whiten
         if whiten.lower() == "slice":
-            spectra_slice /= np.mean(
+            spectra_slice = spectra_slice / np.mean(
                 np.abs(spectra_slice), axis=-1, keepdims=True
             )
 
