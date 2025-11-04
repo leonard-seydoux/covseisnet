@@ -279,6 +279,7 @@ class CovarianceMatrix(np.ndarray):
         # Check that self is still Hermitian
         if not self.is_hermitian:
             raise ValueError("Covariance matrix is not Hermitian.")
+
         # Calculate coherence
         match kind:
             case "spectral_width":
@@ -287,11 +288,11 @@ class CovarianceMatrix(np.ndarray):
 
             case "entropy":
                 eigenvalues = self.eigenvalues(norm=np.sum)
-                return signal.entropy(eigenvalues, axis=-1)
+                return signal.entropy(eigenvalues, axis=-1, epsilon=epsilon)
 
             case "diversity":
                 eigenvalues = self.eigenvalues(norm=np.sum)
-                return signal.diversity(eigenvalues, axis=-1)
+                return signal.diversity(eigenvalues, axis=-1, epsilon=epsilon)
 
             case _:
                 raise NotImplementedError(f"{kind} coherence not implemented.")
