@@ -16,31 +16,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7584eec8" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=39f4f13d" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
@@ -55,7 +52,6 @@
     <link rel="prev" title="Home" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0" />
   </head>
   
   
@@ -71,8 +67,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -80,6 +87,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -87,8 +95,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -104,8 +112,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -135,17 +142,21 @@
     
     
     <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
-    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark pst-js-only" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -200,14 +211,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -303,16 +309,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -354,11 +368,11 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The package is not yet available on the <a class="reference external" href="https://pypi.org/" rel="noopener noreferrer" target="_blank">PyPI repository</a>. The following instructions are for installing the package directly from the GitHub repository. These installation instruction assume that you have <a class="reference external" href="https://www.python.org/downloads/" rel="noopener noreferrer" target="_blank">Python</a> and <a class="reference external" href="https://pip.pypa.io/en/stable/installing/" rel="noopener noreferrer" target="_blank">pip</a> installed on your system. We recommend using a <a class="reference external" href="https://docs.python.org/3/library/venv.html" rel="noopener noreferrer" target="_blank">virtual environment</a> to install the package.</p>
+<p>The package is not yet available on the <a class="reference external" href="https://pypi.org/" rel="noreferrer" target="_blank">PyPI repository</a>. The following instructions are for installing the package directly from the GitHub repository. These installation instruction assume that you have <a class="reference external" href="https://www.python.org/downloads/" rel="noreferrer" target="_blank">Python</a> and <a class="reference external" href="https://pip.pypa.io/en/stable/installing/" rel="noreferrer" target="_blank">pip</a> installed on your system. We recommend using a <a class="reference external" href="https://docs.python.org/3/library/venv.html" rel="noreferrer" target="_blank">virtual environment</a> to install the package.</p>
 </div>
 <section id="create-an-anaconda-virtual-environment">
 <h2>Create an Anaconda virtual environment<a class="headerlink" href="#create-an-anaconda-virtual-environment" title="Link to this heading">#</a></h2>
-<p>This example shows how to create a new virtual environment using <a class="reference external" href="https://www.anaconda.com/products/distribution" rel="noopener noreferrer" target="_blank">Anaconda</a> and install the package in it. You can also choose another virtual environment manager, such as <a class="reference external" href="https://virtualenv.pypa.io/en/latest/" rel="noopener noreferrer" target="_blank">virtualenv</a>. First, we create a new virtual environment using Anaconda. We suggest the environment name <code class="docutils literal notranslate"><span class="pre">covseisnet</span></code>, but if your environment is specific to a project, you can name it accordingly. We also install Python 3.12 in the environment, which comes with Pip (Python's package installer). Run the following command in your terminal:</p>
+<p>This example shows how to create a new virtual environment using <a class="reference external" href="https://www.anaconda.com/products/distribution" rel="noreferrer" target="_blank">Anaconda</a> and install the package in it. You can also choose another virtual environment manager, such as <a class="reference external" href="https://virtualenv.pypa.io/en/latest/" rel="noreferrer" target="_blank">virtualenv</a>. First, we create a new virtual environment using Anaconda. We suggest the environment name <code class="docutils literal notranslate"><span class="pre">covseisnet</span></code>, but if your environment is specific to a project, you can name it accordingly. We also install Python 3.12 in the environment, which comes with Pip (Python's package installer). Run the following command in your terminal:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>conda create --name covseisnet python=3.12
 </pre></div>
 </div>
@@ -380,7 +394,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
 </pre></div>
 </div>
-<p>If you don't encounter any errors, the package has been installed successfully. If you need to run more complex tests, you can run a <a class="reference external" href="https://docs.pytest.org/en/stable/" rel="noopener noreferrer" target="_blank">PyTest</a> test suite. First, install the PyTest package using Pip:</p>
+<p>If you don't encounter any errors, the package has been installed successfully. If you need to run more complex tests, you can run a <a class="reference external" href="https://docs.pytest.org/en/stable/" rel="noreferrer" target="_blank">PyTest</a> test suite. First, install the PyTest package using Pip:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pytest
 </pre></div>
 </div>
@@ -427,8 +441,7 @@
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -488,8 +501,8 @@ By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shap
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

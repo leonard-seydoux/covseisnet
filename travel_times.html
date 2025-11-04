@@ -16,31 +16,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7584eec8" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=39f4f13d" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
@@ -55,7 +52,6 @@
     <link rel="prev" title="Velocity models" href="velocity.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0" />
   </head>
   
   
@@ -71,8 +67,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -80,6 +87,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -87,8 +95,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -104,8 +112,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -135,17 +142,21 @@
     
     
     <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
-    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark pst-js-only" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -200,14 +211,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -303,16 +309,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -358,7 +372,7 @@
 <p>Module to deal with velocity models.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="covseisnet.travel_times.TravelTimes">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.travel_times.</span></span><span class="sig-name descname"><span class="pre">TravelTimes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="velocity.html#covseisnet.velocity.VelocityModel" title="covseisnet.velocity.VelocityModel"><span class="pre">VelocityModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#TravelTimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.TravelTimes" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.travel_times.</span></span><span class="sig-name descname"><span class="pre">TravelTimes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="velocity.html#covseisnet.velocity.VelocityModel" title="covseisnet.velocity.VelocityModel"><span class="pre">VelocityModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><span class="pre">Stats</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#TravelTimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.TravelTimes" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="spatial.html#covseisnet.spatial.Regular3DGrid" title="covseisnet.spatial.Regular3DGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Regular3DGrid</span></code></a></p>
 <p>Three-dimensional travel time grid.</p>
 <p>This object is a three-dimensional grid of travel times between sources
@@ -376,9 +390,9 @@ the receiver, with the <a class="reference internal" href="spatial.html#covseisn
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>velocity_model</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">VelocityModel</span></code>) -- The velocity model used to calculate the travel times.</p></li>
-<li><p><strong>stats</strong> (<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stats</span></code></a>, <em>optional</em>) -- The <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stats</span></code></a> object of the receiver. If
+<li><p><strong>stats</strong> (<a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stats</span></code></a>, <em>optional</em>) -- The <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stats</span></code></a> object of the receiver. If
 provided, the receiver coordinates are extracted from the stats.</p></li>
-<li><p><strong>receiver_coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>, <em>optional</em>) -- The geographical coordinates of the receiver in the form
+<li><p><strong>receiver_coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>, <em>optional</em>) -- The geographical coordinates of the receiver in the form
 <code class="docutils literal notranslate"><span class="pre">(longitude,</span> <span class="pre">latitude,</span> <span class="pre">depth)</span></code>. The longitudes and latitudes are
 in decimal degrees, and the depths in kilometers. If the <code class="docutils literal notranslate"><span class="pre">stats</span></code>
 is provided, the receiver coordinates are extracted from the stats
@@ -388,7 +402,7 @@ and this argument is ignored.</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="covseisnet.travel_times.TravelTimes.compute_travel_times">
-<span class="sig-name descname"><span class="pre">compute_travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#TravelTimes.compute_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.TravelTimes.compute_travel_times" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compute_travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#TravelTimes.compute_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.TravelTimes.compute_travel_times" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the travel times within a constant velocity model.</p>
 <p>Calculates the travel times of waves that travel at a constant velocity on
 the straight line between the sources and a receiver.</p>
@@ -427,7 +441,7 @@ sources are defined on the grid coordinates of the velocity model.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="covseisnet.travel_times.calculate_travel_times">
-<span class="sig-prename descclassname"><span class="pre">covseisnet.travel_times.</span></span><span class="sig-name descname"><span class="pre">calculate_travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="velocity.html#covseisnet.velocity.VelocityModel" title="covseisnet.velocity.VelocityModel"><span class="pre">VelocityModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#calculate_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.calculate_travel_times" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">covseisnet.travel_times.</span></span><span class="sig-name descname"><span class="pre">calculate_travel_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="velocity.html#covseisnet.velocity.VelocityModel" title="covseisnet.velocity.VelocityModel"><span class="pre">VelocityModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><span class="pre">Stats</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/travel_times.html#calculate_travel_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.travel_times.calculate_travel_times" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the travel times within a constant velocity model.</p>
 <p>Calculates the travel times of waves that travel at a constant velocity on
 the straight line between the sources and a receiver.</p>
@@ -476,8 +490,7 @@ straight ray distance between the sources and the receiver.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -540,8 +553,8 @@ By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shap
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

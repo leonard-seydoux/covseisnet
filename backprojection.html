@@ -16,31 +16,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7584eec8" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=39f4f13d" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
@@ -57,7 +54,6 @@
     <link rel="prev" title="Travel times" href="travel_times.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0" />
   </head>
   
   
@@ -73,8 +69,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -82,6 +89,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -89,8 +97,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -106,8 +114,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -137,17 +144,21 @@
     
     
     <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
-    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark pst-js-only" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -202,14 +213,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -305,16 +311,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -359,7 +373,7 @@
 <span id="backprojection"></span><h1>Backprojection<a class="headerlink" href="#module-covseisnet.backprojection" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="covseisnet.backprojection.DifferentialBackProjection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.backprojection.</span></span><span class="sig-name descname"><span class="pre">DifferentialBackProjection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">differential_travel_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="travel_times.html#covseisnet.travel_times.DifferentialTravelTimes" title="covseisnet.travel_times.DifferentialTravelTimes"><span class="pre">DifferentialTravelTimes</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/backprojection.html#DifferentialBackProjection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.backprojection.DifferentialBackProjection" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.backprojection.</span></span><span class="sig-name descname"><span class="pre">DifferentialBackProjection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">differential_travel_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="travel_times.html#covseisnet.travel_times.DifferentialTravelTimes" title="covseisnet.travel_times.DifferentialTravelTimes"><span class="pre">DifferentialTravelTimes</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/backprojection.html#DifferentialBackProjection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.backprojection.DifferentialBackProjection" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="spatial.html#covseisnet.spatial.Regular3DGrid" title="covseisnet.spatial.Regular3DGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Regular3DGrid</span></code></a></p>
 <dl class="simple">
 <dt>Differential travel-times backprojection from cross-correlation</dt><dd><p>functions.</p>
@@ -369,14 +383,14 @@
 the back-projection for a set of cross-correlation functions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>differential_travel_times</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- The differential travel times between several pairs of receivers.
+<dd class="field-odd"><p><strong>differential_travel_times</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) -- The differential travel times between several pairs of receivers.
 Each key of the dictionary is a pair of receivers, and the value is
 a <a class="reference internal" href="travel_times.html#covseisnet.travel_times.DifferentialTravelTimes" title="covseisnet.travel_times.DifferentialTravelTimes"><code class="xref py py-class docutils literal notranslate"><span class="pre">DifferentialTravelTimes</span></code></a> object.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood">
-<span class="sig-name descname"><span class="pre">calculate_likelihood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cross_correlation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="correlation.html#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/backprojection.html#DifferentialBackProjection.calculate_likelihood"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_likelihood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cross_correlation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="correlation.html#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/backprojection.html#DifferentialBackProjection.calculate_likelihood"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the likelihood of the back-projection.</p>
 <p>This method calculates the likelihood of the back-projection for a set
 of cross-correlation functions. The likelihood is calculated by
@@ -410,7 +424,7 @@ dz}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood_bp">
-<span class="sig-name descname"><span class="pre">calculate_likelihood_bp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cross_correlation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="correlation.html#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/backprojection.html#DifferentialBackProjection.calculate_likelihood_bp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood_bp" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_likelihood_bp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cross_correlation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="correlation.html#covseisnet.correlation.CrossCorrelationMatrix" title="covseisnet.correlation.CrossCorrelationMatrix"><span class="pre">CrossCorrelationMatrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/backprojection.html#DifferentialBackProjection.calculate_likelihood_bp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.backprojection.DifferentialBackProjection.calculate_likelihood_bp" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the likelihood of the back-projection.</p>
 <p>This method calculates the likelihood of the back-projection for a set
 of cross-correlation functions. The likelihood is calculated by
@@ -488,8 +502,7 @@ dz}\]</div>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -552,8 +565,8 @@ By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shap
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

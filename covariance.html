@@ -16,31 +16,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7584eec8" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=39f4f13d" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=f9c1cefe"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
@@ -57,7 +54,6 @@
     <link rel="prev" title="Signal processing" href="signal.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0" />
   </head>
   
   
@@ -73,8 +69,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -82,6 +89,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -89,8 +97,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -106,8 +114,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -137,17 +144,21 @@
     
     
     <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-light" alt="Covseisnet logo"/>
-    <img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark pst-js-only" alt="Covseisnet logo"/>
+    <script>document.write(`<img src="_static/logo_covseisnet_normal.svg" class="logo__image only-dark" alt="Covseisnet logo"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -202,14 +213,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -305,16 +311,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -365,8 +379,8 @@
 <p>Calculation and analysis of the network covariance matrix.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="covseisnet.covariance.CovarianceMatrix">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.covariance.</span></span><span class="sig-name descname"><span class="pre">CovarianceMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noopener noreferrer" target="_blank" title="(in ObsPy v1.4.1)"><span class="pre">Stats</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="signal.html#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><span class="pre">ShortTimeFourierTransform</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covseisnet.covariance.</span></span><span class="sig-name descname"><span class="pre">CovarianceMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Stats.html#obspy.core.trace.Stats" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><span class="pre">Stats</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="signal.html#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><span class="pre">ShortTimeFourierTransform</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 <p>This class inherits all the methods of standard numpy arrays, along with
 extra methods tailored for array processing. Any numpy method or function
 applied to an instance of CovarianceMatrix will return an instance of
@@ -437,7 +451,7 @@ function as in the following example:</p>
 <p class="admonition-title">Note</p>
 <p>If for some reason you need to create a
 <a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> object from a numpy
-array, you have the several solutions provided by the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray" rel="noopener noreferrer" target="_blank">numpy
+array, you have the several solutions provided by the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray" rel="noreferrer" target="_blank">numpy
 subclassing mechanism</a>.
 We recommend using the contructor of the class, which allows to pass
 the stats and stft attributes, as in the following example:</p>
@@ -457,10 +471,10 @@ the stats and stft attributes, as in the following example:</p>
 tests such as the Hermitian property of the two last dimensions, and
 the number of dimensions of the input array. If the input array does
 not pass the tests, a ValueError is raised. The input array can be any
-array-like object, as it is passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.asarray()</span></code></a>
+array-like object, as it is passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.asarray()</span></code></a>
 function, which also allow to turn the input array into a
 complex-valued numpy array. The input array is then cast into a
-CovarianceMatrix object with the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#view-casting" rel="noopener noreferrer" target="_blank">view casting mechanism of numpy</a>,
+CovarianceMatrix object with the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#view-casting" rel="noreferrer" target="_blank">view casting mechanism of numpy</a>,
 and the attributes stats and stft are added to the object. You can
 also directly employ the view method of the numpy array, but you will
 have to set the stats and stft attributes manually.</p>
@@ -508,17 +522,17 @@ maximal shape <code class="docutils literal notranslate"><span class="pre">(n_ti
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The type of coherence, may be &quot;spectral_width&quot; (default),
+<li><p><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The type of coherence, may be &quot;spectral_width&quot; (default),
 &quot;entropy&quot;, or &quot;diversity&quot;.</p></li>
-<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The regularization parameter for the logarithm.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The regularization parameter for the logarithm.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The coherence of maximal shape <code class="docutils literal notranslate"><span class="pre">(n_times,</span> <span class="pre">n_frequencies)</span></code>,
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The coherence of maximal shape <code class="docutils literal notranslate"><span class="pre">(n_times,</span> <span class="pre">n_frequencies)</span></code>,
 depending on the input covariance matrix shape.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><strong>ValueError</strong></a> -- If the covariance matrix is not Hermitian.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" rel="noreferrer" target="_blank" title="(in Python v3.14)"><strong>ValueError</strong></a> -- If the covariance matrix is not Hermitian.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -529,7 +543,7 @@ depending on the input covariance matrix shape.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covseisnet.covariance.CovarianceMatrix.eigenvalues">
-<span class="sig-name descname"><span class="pre">eigenvalues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">norm:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">max&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix.eigenvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.eigenvalues" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">eigenvalues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">norm:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">max&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix.eigenvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.eigenvalues" title="Link to this definition">#</a></dt>
 <dd><p>Eigenvalue decomposition.</p>
 <p>Given and Hermitian matrix <span class="math notranslate nohighlight">\(\mathbf{C} \in \mathbb{C}^{N \times
 N}\)</span>, the eigenvalue decomposition is defined as</p>
@@ -558,18 +572,18 @@ eigenvectors are orthogonal and normalized.</p>
 <p>The eigenvalue decomposition is performed onto the two last dimensions
 of the <a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> object. The
 function used for eigenvalue decomposition is
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html#numpy.linalg.eigvalsh" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.eigvalsh()</span></code></a>. It sassumes that the input matrix is 2D
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html#numpy.linalg.eigvalsh" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.eigvalsh()</span></code></a>. It sassumes that the input matrix is 2D
 and hermitian, so the decomposition is performed onto the lower
 triangular part to save time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>norm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">function</span></code>, <em>optional</em>) -- The function used to normalize the eigenvalues. Can be
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.max.html#numpy.max" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.max()</span></code></a>, (default), any other functions provided by
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.max.html#numpy.max" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.max()</span></code></a>, (default), any other functions provided by
 numpy, or a custom function. Note that the function must accept
 the <code class="docutils literal notranslate"><span class="pre">axis</span></code> keyword argument.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The eigenvalues of maximal shape <code class="docutils literal notranslate"><span class="pre">(n_times,</span> <span class="pre">n_frequencies,</span>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The eigenvalues of maximal shape <code class="docutils literal notranslate"><span class="pre">(n_times,</span> <span class="pre">n_frequencies,</span>
 <span class="pre">n_stations)</span></code>.</p>
 </dd>
 </dl>
@@ -587,7 +601,7 @@ eigenvalue decomposition.</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.eigenvectors" title="covseisnet.covariance.CovarianceMatrix.eigenvectors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eigenvectors()</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html#numpy.linalg.eigvalsh" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.eigvalsh()</span></code></a></p>
+<p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.eigenvectors" title="covseisnet.covariance.CovarianceMatrix.eigenvectors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eigenvectors()</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html#numpy.linalg.eigvalsh" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.eigvalsh()</span></code></a></p>
 </div>
 <p class="rubric">Examples</p>
 <p>Calculate the eigenvalues of the example covariance matrix:</p>
@@ -606,7 +620,7 @@ eigenvalue decomposition.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covseisnet.covariance.CovarianceMatrix.eigenvectors">
-<span class="sig-name descname"><span class="pre">eigenvectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#slice" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">slice</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_covariance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix.eigenvectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.eigenvectors" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">eigenvectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#slice" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">slice</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_covariance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix.eigenvectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.eigenvectors" title="Link to this definition">#</a></dt>
 <dd><p>Extract eigenvectors of given rank.</p>
 <p>Given a Hermitian matrix <span class="math notranslate nohighlight">\(\mathbf{C} \in \mathbb{C}^{N \times
 N}\)</span>, the eigenvector decomposition is defined as</p>
@@ -625,7 +639,7 @@ real- and positive-valued. The eigenvectors are returned as a matrix</p>
 rank of the eigenvectors. The eigenvectors are sorted in decreasing
 order of the eigenvalues, and the eigenvectors are normalized. The
 function used for extracting eigenvectors is
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a>. It assumes that the input matrix is 2D and
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noreferrer" target="_blank" title="(in SciPy v1.16.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a>. It assumes that the input matrix is 2D and
 hermitian, so the decomposition is performed onto the lower triangular
 part.</p>
 <p>If the <code class="docutils literal notranslate"><span class="pre">covariance</span></code> parameter is set to False (default), the
@@ -648,13 +662,13 @@ matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rank</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#slice" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">slice</span></code></a>, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, <em>optional</em>) -- The rank of the eigenvectors. If None, all eigenvectors are
+<li><p><strong>rank</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#slice" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">slice</span></code></a>, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, <em>optional</em>) -- The rank of the eigenvectors. If None, all eigenvectors are
 returned. If a tuple or slice, the eigenvectors are sliced
 according to the tuple or slice. If an integer is given, the
 eigenvectors are sliced according to the integer. Default is None.</p></li>
-<li><p><strong>return_covariance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) -- If True, the outer product of the eigenvectors is returned as a
+<li><p><strong>return_covariance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) -- If True, the outer product of the eigenvectors is returned as a
 covariance matrix object. Default is False.</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>, <em>optional</em>) -- The weights used to scale the eigenvectors before the outer
+<li><p><strong>weights</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>, <em>optional</em>) -- The weights used to scale the eigenvectors before the outer
 product. If None, the eigenvalues are used as weights. Default is
 None.</p></li>
 </ul>
@@ -665,12 +679,12 @@ None.</p></li>
 else <code class="docutils literal notranslate"><span class="pre">(n_times,</span> <span class="pre">n_frequencies,</span> <span class="pre">n_stations,</span> <span class="pre">n_stations)</span></code>.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><strong>ValueError</strong></a> -- If the covariance matrix is not Hermitian.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" rel="noreferrer" target="_blank" title="(in Python v3.14)"><strong>ValueError</strong></a> -- If the covariance matrix is not Hermitian.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.eigenvalues" title="covseisnet.covariance.CovarianceMatrix.eigenvalues"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eigenvalues()</span></code></a>, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noopener noreferrer" target="_blank" title="(in SciPy v1.15.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a></p>
+<p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.eigenvalues" title="covseisnet.covariance.CovarianceMatrix.eigenvalues"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eigenvalues()</span></code></a>, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" rel="noreferrer" target="_blank" title="(in SciPy v1.16.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -716,7 +730,7 @@ the covariance matrix. The last dimension of the returned matrix is
 the number of upper triangular elements of the covariance matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Keyword arguments passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.triu_indices.html#numpy.triu_indices" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.triu_indices()</span></code></a>
+<dd class="field-odd"><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Keyword arguments passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.triu_indices.html#numpy.triu_indices" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.triu_indices()</span></code></a>
 function.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -738,7 +752,7 @@ shape of <code class="docutils literal notranslate"><span class="pre">(n_times,<
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covseisnet.covariance.CovarianceMatrix.twosided">
-<span class="sig-name descname"><span class="pre">twosided</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix.twosided"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.twosided" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">twosided</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix.twosided"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.twosided" title="Link to this definition">#</a></dt>
 <dd><p>Get the full covariance spectrum.</p>
 <p>Given that the covariance matrix is Hermitian, the full covariance
 matrix can be obtained by filling the negative frequencies with the
@@ -751,7 +765,7 @@ frequencies filled with the complex conjugate of the positive
 frequencies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The frequency axis of the covariance matrix. Default is -3.</p>
+<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The frequency axis of the covariance matrix. Default is -3.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> -- The full covariance matrix.</p>
@@ -761,7 +775,7 @@ frequencies.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="covseisnet.covariance.CovarianceMatrix.is_hermitian">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_hermitian</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">bool</span></a></em><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.is_hermitian" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_hermitian</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">bool</span></a></em><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.is_hermitian" title="Link to this definition">#</a></dt>
 <dd><p>Check if the covariance matrix is Hermitian.</p>
 <p>Given a covariance matrix <span class="math notranslate nohighlight">\(\mathbf{C} \in \mathbb{C}^{N \times
 N}\)</span>, the matrix is Hermitian if the matrix is equal to its conjugate
@@ -773,10 +787,10 @@ performed on all the covariance matrices of the object, e.g., for each
 time and frequency sample if any.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The tolerance for the comparison.</p>
+<dd class="field-odd"><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The tolerance for the comparison.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> -- True if the covariance matrix is Hermitian, False otherwise.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> -- True if the covariance matrix is Hermitian, False otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -785,7 +799,7 @@ time and frequency sample if any.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="covseisnet.covariance.calculate_covariance_matrix">
-<span class="sig-prename descclassname"><span class="pre">covseisnet.covariance.</span></span><span class="sig-name descname"><span class="pre">calculate_covariance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stream.html#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><span class="pre">NetworkStream</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whiten</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#calculate_covariance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.calculate_covariance_matrix" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">covseisnet.covariance.</span></span><span class="sig-name descname"><span class="pre">calculate_covariance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stream.html#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><span class="pre">NetworkStream</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whiten</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><span class="pre">CovarianceMatrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#calculate_covariance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.calculate_covariance_matrix" title="Link to this definition">#</a></dt>
 <dd><p>Calculate covariance matrix.</p>
 <p>The covariance matrix is calculated from the Fourier transform of the
 input stream. The covariance matrix is calculated for each time window and
@@ -817,29 +831,29 @@ further whiten the covariance matrix.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream</strong> (<a class="reference internal" href="stream.html#covseisnet.stream.NetworkStream" title="covseisnet.stream.NetworkStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkStream</span></code></a>) -- The input data stream.</p></li>
-<li><p><strong>window_duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The duration of the window used to calculate the short-time Fourier
+<li><p><strong>window_duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The duration of the window used to calculate the short-time Fourier
 transform, in seconds.</p></li>
-<li><p><strong>window_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The step of the window used to calculate the short-time Fourier, in
+<li><p><strong>window_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The step of the window used to calculate the short-time Fourier, in
 seconds. Default is None, which is equivalent to half of the window
 duration.</p></li>
-<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- The number of window used to estimate the sample covariance.</p></li>
-<li><p><strong>average_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The sliding window step for covariance matrix calculation (in number
+<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- The number of window used to estimate the sample covariance.</p></li>
+<li><p><strong>average_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The sliding window step for covariance matrix calculation (in number
 of windows).</p></li>
-<li><p><strong>whiten</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The type of whitening applied to the covariance matrix. Can be &quot;none&quot;
+<li><p><strong>whiten</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The type of whitening applied to the covariance matrix. Can be &quot;none&quot;
 (default), &quot;slice&quot;, or &quot;window&quot;. This parameter can be used in
 addition to the <a class="reference internal" href="stream.html#covseisnet.stream.NetworkStream.whiten" title="covseisnet.stream.NetworkStream.whiten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whiten()</span></code></a> method
 to further whiten the covariance matrix.</p></li>
-<li><p><strong>water_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The water level used to avoid division by zero in the &quot;window&quot;
+<li><p><strong>water_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) -- The water level used to avoid division by zero in the &quot;window&quot;
 whitening method.</p></li>
-<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noopener noreferrer" target="_blank" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments passed to the
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Additional keyword arguments passed to the
 <a class="reference internal" href="signal.html#covseisnet.signal.ShortTimeFourierTransform" title="covseisnet.signal.ShortTimeFourierTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortTimeFourierTransform</span></code></a> class.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The time vector of the beginning of each covariance window, expressed
+<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The time vector of the beginning of each covariance window, expressed
 in matplotlib time.</p></li>
-<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noopener noreferrer" target="_blank" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The frequency vector.</p></li>
+<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> -- The frequency vector.</p></li>
 <li><p><a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> -- The complex covariance matrix, with a shape depending on the number of
 time windows and frequencies, maximum shape <code class="docutils literal notranslate"><span class="pre">(n_times,</span> <span class="pre">n_frequencies,</span>
 <span class="pre">n_traces,</span> <span class="pre">n_traces)</span></code>.</p></li>
@@ -864,7 +878,7 @@ windows averaged over 5 windows:</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footcite-seydoux-detecting-2016" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Léonard Seydoux, Nikolai M. Shapiro, Julien De Rosny, Florent Brenguier, and Matthieu Landès. Detecting seismic activity with a covariance matrix analysis of data recorded on seismic arrays. <em>Geophysical Journal International</em>, 204(3):1430–1442, March 2016. URL: <a class="reference external" href="https://academic.oup.com/gji/article-lookup/doi/10.1093/gji/ggv531" rel="noopener noreferrer" target="_blank">https://academic.oup.com/gji/article-lookup/doi/10.1093/gji/ggv531</a>, <a class="reference external" href="https://doi.org/10.1093/gji/ggv531" rel="noopener noreferrer" target="_blank">doi:10.1093/gji/ggv531</a>.</p>
+<p>Léonard Seydoux, Nikolai M. Shapiro, Julien De Rosny, Florent Brenguier, and Matthieu Landès. Detecting seismic activity with a covariance matrix analysis of data recorded on seismic arrays. <em>Geophysical Journal International</em>, 204(3):1430–1442, March 2016. URL: <a class="reference external" href="https://academic.oup.com/gji/article-lookup/doi/10.1093/gji/ggv531" rel="noreferrer" target="_blank">https://academic.oup.com/gji/article-lookup/doi/10.1093/gji/ggv531</a>, <a class="reference external" href="https://doi.org/10.1093/gji/ggv531" rel="noreferrer" target="_blank">doi:10.1093/gji/ggv531</a>.</p>
 </aside>
 </aside>
 </div>
@@ -908,8 +922,7 @@ windows averaged over 5 windows:</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -977,8 +990,8 @@ By Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shap
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
