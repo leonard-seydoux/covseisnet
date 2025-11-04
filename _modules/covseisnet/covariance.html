@@ -1111,10 +1111,12 @@ document.write(`
 <span class="sd">        seconds. Default is None, which is equivalent to half of the window</span>
 <span class="sd">        duration.</span>
 <span class="sd">    average: int</span>
-<span class="sd">        The number of window used to estimate the sample covariance.</span>
+<span class="sd">        The number of window used to estimate the sample covariance. If set to</span>
+<span class="sd">        -1, averages over all time windows, resulting in a single time value</span>
+<span class="sd">        and covariances as a function of frequency only.</span>
 <span class="sd">    average_step: int, optional</span>
 <span class="sd">        The sliding window step for covariance matrix calculation (in number</span>
-<span class="sd">        of windows).</span>
+<span class="sd">        of windows). Ignored when average=-1.</span>
 <span class="sd">    whiten: str, optional</span>
 <span class="sd">        The type of whitening applied to the covariance matrix. Can be &quot;none&quot;</span>
 <span class="sd">        (default), &quot;slice&quot;, or &quot;window&quot;. This parameter can be used in</span>
@@ -1175,17 +1177,27 @@ document.write(`
     <span class="p">)</span>
 
     <span class="c1"># Check whiten parameter</span>
-    <span class="k">if</span> <span class="n">whiten</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="s2">&quot;window&quot;</span><span class="p">]:</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is not an available option for whiten.&quot;</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">whiten</span><span class="p">))</span>
+    <span class="n">whiten</span> <span class="o">=</span> <span class="n">whiten</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">whiten</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="s2">&quot;window&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">whiten</span><span class="si">}</span><span class="s2"> is not an available option for whiten.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Remove modulus</span>
-    <span class="k">if</span> <span class="n">whiten</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;window&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">whiten</span> <span class="o">==</span> <span class="s2">&quot;window&quot;</span><span class="p">:</span>
         <span class="n">spectra</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectra</span><span class="p">)</span> <span class="o">+</span> <span class="n">water_level</span>
 
     <span class="c1"># Parametrization</span>
-    <span class="n">step</span> <span class="o">=</span> <span class="n">average</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">average_step</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">average</span> <span class="o">*</span> <span class="n">average_step</span>
     <span class="n">n_traces</span><span class="p">,</span> <span class="n">n_frequencies</span><span class="p">,</span> <span class="n">n_times</span> <span class="o">=</span> <span class="n">spectra</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Handle average=-1 case (average over all time windows)</span>
+    <span class="k">if</span> <span class="n">average</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">average</span> <span class="o">=</span> <span class="n">n_times</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">n_times</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">average_step</span> <span class="o">*</span> <span class="n">average</span>
+            <span class="k">if</span> <span class="n">average_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">average</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="p">)</span>
 
     <span class="c1"># Times of the covariance matrix</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_times</span> <span class="o">-</span> <span class="n">average</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
@@ -1202,7 +1214,7 @@ document.write(`
         <span class="n">spectra_slice</span> <span class="o">=</span> <span class="n">spectra</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">selection</span><span class="p">]</span>
 
         <span class="c1"># Whiten</span>
-        <span class="k">if</span> <span class="n">whiten</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;slice&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">whiten</span> <span class="o">==</span> <span class="s2">&quot;slice&quot;</span><span class="p">:</span>
             <span class="n">spectra_slice</span> <span class="o">=</span> <span class="n">spectra_slice</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectra_slice</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
@@ -1213,8 +1225,10 @@ document.write(`
         <span class="p">)</span>
 
         <span class="c1"># Center time</span>
-        <span class="n">duration</span> <span class="o">=</span> <span class="n">spectra_times</span><span class="p">[</span><span class="n">selection</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">spectra_times</span><span class="p">[</span><span class="n">selection</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">covariance_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spectra_times</span><span class="p">[</span><span class="n">selection</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">center_time</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">spectra_times</span><span class="p">[</span><span class="n">selection</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">spectra_times</span><span class="p">[</span><span class="n">selection</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">covariance_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">center_time</span><span class="p">)</span>
 
     <span class="c1"># Set covariance matrix</span>
     <span class="n">covariances</span> <span class="o">=</span> <span class="n">CovarianceMatrix</span><span class="p">(</span>

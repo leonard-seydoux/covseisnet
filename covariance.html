@@ -836,9 +836,11 @@ transform, in seconds.</p></li>
 <li><p><strong>window_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) -- The step of the window used to calculate the short-time Fourier, in
 seconds. Default is None, which is equivalent to half of the window
 duration.</p></li>
-<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- The number of window used to estimate the sample covariance.</p></li>
+<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) -- The number of window used to estimate the sample covariance. If set to
+-1, averages over all time windows, resulting in a single time value
+and covariances as a function of frequency only.</p></li>
 <li><p><strong>average_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <em>optional</em>) -- The sliding window step for covariance matrix calculation (in number
-of windows).</p></li>
+of windows). Ignored when average=-1.</p></li>
 <li><p><strong>whiten</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) -- The type of whitening applied to the covariance matrix. Can be &quot;none&quot;
 (default), &quot;slice&quot;, or &quot;window&quot;. This parameter can be used in
 addition to the <a class="reference internal" href="stream.html#covseisnet.stream.NetworkStream.whiten" title="covseisnet.stream.NetworkStream.whiten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whiten()</span></code></a> method
