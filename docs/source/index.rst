@@ -84,15 +84,20 @@ About us
 This package was mainly developed by `Léonard Seydoux
 <https://sites.google.com/view/leonard-seydoux/accueil>`_ during his PhD at
 the Institut de Physique du Globe de Paris, under the supervision of Nikolai
-Shapiro. Several contributions for the core program were made by Jean
-Soubestre and Cyril Journeau. Francis Tong contributed to the distribution of
-the packge via PyPI and Conda. 
+Shapiro. Léonard also documented the code and created the website. Several
+contributions for the core program were made by Jean Soubestre and Cyril
+Journeau. Francis Tong contributed to the distribution of the packge via PyPI
+and Conda.
+
+Thanks to Tonglin Chol for contributions on the github repository and issue
+tracking.
 
 Several other versions of this package are available (not distributed yet,
 planned for the future). A first version was developed in Matlab by Léonard
 Seydoux. For computational efficiency, a second version was developed in C++
-by Matthieu Landès. For now, it works only with SAC files. 
+by Matthieu Landès (only for SAC files). 
 
 If you have any questions, please contact us via the GitHub repository at
 https://github.com/covseisnet/covseisnet. You can also consider opening an
 issue on the repository, or creating pull requests.
+
