@@ -126,6 +126,8 @@ htmlhelp_basename = "covseisnetdoc"
 html_theme_options = {
     "logo": {"alt_text": "Covseisnet logo"},
     "repository_url": "https://github.com/leonard-seydoux/covseisnet",
+    "repository_branch": "main",
+    "path_to_docs": "docs/source",
     "use_repository_button": True,
     "use_download_button": False,
     "use_issues_button": True,
@@ -148,3 +150,41 @@ nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg'}",
     "--InlineBackend.rc={'figure.dpi': 150}",
 ]
+
+# Linkcheck configuration
+linkcheck_ignore = [
+    r"https://doi\.org/.*",  # DOI services can be intermittently slow
+    r"https://arxiv\.org/.*",  # arXiv throttling can trigger false negatives
+    r"https://academic\.oup\.com/.*",  # often blocked by 403
+    r"https://(onlinelibrary\.)?wiley\.com/.*",  # often blocked by 403
+    r"http://doi\.wiley\.com/.*",  # legacy Wiley DOI resolver 403s
+    r"https://(link\.)?aps\.org/.*",  # APS links frequently 403 without cookies
+    r"https://journals\.aps\.org/.*",  # APS journal abstracts 403
+    r"https://www\.science\.org/.*",  # Science magazine paywalled
+    r"https://www\.sciencedirect\.com/.*",  # Elsevier/SD 403 without auth
+]
+linkcheck_retries = 2
+linkcheck_timeout = 30
+linkcheck_workers = 5
+linkcheck_anchors = True
+
+# MathJax configuration: define common symbol macros for consistent notation
+mathjax3_config = {
+    "tex": {
+        "macros": {
+            # Coherence-related symbols
+            "width": r"\\sigma",
+            "entropy": r"\\mathrm{h}",
+            "diversity": r"\\mathrm{D}",
+            "eigv": r"\\lambda",
+        }
+    }
+}
+
+# Provide handy RST substitutions to keep symbols consistent in prose
+rst_prolog = r"""
+.. |sigma| replace:: :math:`\\sigma`
+.. |h| replace:: :math:`h`
+.. |D| replace:: :math:`D`
+.. |lambda| replace:: :math:`\\lambda`
+"""

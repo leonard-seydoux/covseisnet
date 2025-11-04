@@ -1,5 +1,5 @@
 """
-This module contains functions to simplify the examples in the documentation, 
+This module contains functions to simplify the examples in the documentation,
 mostly plotting functions, but also to provide basic tools to quickly visualize
 data and results from this package.
 """
@@ -131,7 +131,7 @@ def trace_and_spectrogram(
 ) -> tuple[Figure, list[Axes]]:
     """Plot a trace and its spectrogram.
 
-    This function is deliberately simple and does not allow to customize the
+    This function is deliberately simple and does not allow one to customize the
     spectrogram plot. For more advanced plotting, you should consider creating
     a derived function.
 
@@ -218,7 +218,7 @@ def coherence(
 ) -> tuple[Figure, Axes]:
     """Plot a coherence matrix.
 
-    This function is deliberately simple and does not allow to customize the
+    This function is deliberately simple and does not allow one to customize the
     coherence plot. For more advanced plotting, you should consider creating
     a derived function.
 
@@ -282,7 +282,7 @@ def stream_and_coherence(
 ) -> tuple[Figure, list[Axes]]:
     """Plot a stream of traces and the coherence matrix.
 
-    This function is deliberately simple and does not allow to customize the
+    This function is deliberately simple and does not allow one to customize the
     coherence plot. For more advanced plotting, you should consider creating
     a derived function.
 
@@ -334,7 +334,7 @@ def plot_stream(
 ) -> Axes:
     """Plot a stream of traces.
 
-    This function is deliberately simple and does not allow to customize the
+    This function is deliberately simple and does not allow one to customize the
     trace plot. For more advanced plotting, you should consider creating a
     derived function.
 

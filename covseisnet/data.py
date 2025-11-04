@@ -1,7 +1,7 @@
 """
 The data shown in this documentation is for demonstration purposes only. In
 order to deal with seismic data download and management, this module provides
-functions to download seismic data from different datacenters. 
+functions to download seismic data from different datacenters.
 
 File structure
 --------------
@@ -10,18 +10,18 @@ We download the data with the ObsPy library, in particular with the Obspy
 client interface for dealing with FDSN web services. For more information about
 the usage of this interface, please visit the user guide about `FDSN web
 service client for ObsPy
-<https://docs.obspy.org/packages/obspy.clients.fdsn.html>`_. 
+<https://docs.obspy.org/packages/obspy.clients.fdsn.html>`_.
 
 By default, the client downloads the data into the ``/data`` repository
 located at the root of this project, as shown in the following file structure
 of the project. If you would like to write the data to another location, we
 recommend you to use the ``filepath_destination`` argument of the methods
-presented in this module, and run them in your own script. 
+presented in this module, and run them in your own script.
 
 ::
 
     /
-    ├── data/datasets.mseed 
+    ├── data/datasets.mseed
     ├── covseisnet/
     ├── docs/
     ├── examples/
@@ -42,17 +42,17 @@ examples accordingly.
   UnderVolc network between 2010-10-14T09:00:00 and 2010-10-14T16:00:00.
   During these times, we observe an elevation of the seismic activity prior to
   an eruption of the Piton de la Fournaise accompanied by a co-eruptive
-  tremor. 
+  tremor.
 
 - :func:`~covseisnet.data.download_usarray_data` to download data from the US
   Transportable Array experiment between 2010-01-01 and 2010-03-01. In this
   case, we download only the channels LHZ from the stations R04C, O03C, M03C,
   L02A, I05A, allowing to show interesting results of ambient-noise
-  cross-correlation. 
+  cross-correlation.
 
 These functions all call the :func:`~covseisnet.data.download_seismic_dataset`
 with specific arguments. You can also directly use these function to download
-datasets that you would like to try the package on. 
+datasets that you would like to try the package on.
 """
 
 from os import path
@@ -85,7 +85,7 @@ def download_seismic_dataset(
     :meth:`~obspy.clients.fdsn.client.Client.get_waveforms` method. It connect
     to the FDSN client using the specified ``datacenter`` (which by default is
     set to IRIS), and download seismic waveforms between the ``starttime`` and
-    ``endtime``. Using the other arguments allow to specify the query to the
+    ``endtime``. Using the other arguments allows one to specify the query to the
     datacenter. For more information, please check the Obspy documentation.
 
     As we aim our package to be used without explicitely calling the Obspy

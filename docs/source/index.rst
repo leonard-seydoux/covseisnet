@@ -98,6 +98,6 @@ Seydoux. For computational efficiency, a second version was developed in C++
 by Matthieu Landès (only for SAC files). 
 
 If you have any questions, please contact us via the GitHub repository at
-https://github.com/covseisnet/covseisnet. You can also consider opening an
+https://github.com/leonard-seydoux/covseisnet. You can also consider opening an
 issue on the repository, or creating pull requests.
 

@@ -62,7 +62,7 @@ class CrossCorrelationMatrix(np.ndarray):
         numpy array, you have the several solutions provided by the `numpy
         subclassing mechanism
         <https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray>`_.
-        We recommend using the contructor of the class, which allows to pass
+        We recommend using the constructor of the class, which allows one to pass
         the stats and stft attributes, as in the following example:
 
         >>> import numpy as np

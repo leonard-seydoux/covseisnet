@@ -328,12 +328,12 @@ class NetworkStream(Stream):
         *args: tuple
             Arguments passed to the Trace method
             :meth:`~obspy.core.trace.Trace.times`. For instance, passing
-            ``"matplotlib"`` allows to recover matplotlib timestamps instead
+            ``"matplotlib"`` allows one to recover matplotlib timestamps instead
             of seconds from the start of the trace (default).
         **kwargs: dict, optional
             Arguments passed to the method
             :meth:`~obspy.core.trace.Trace.times`. For instance, passing
-            ``type="matplotlib"`` allows to recover matplotlib timestamps
+            ``type="matplotlib"`` allows one to recover matplotlib timestamps
             instead of seconds from the start of the trace (default).
 
         Returns
@@ -626,7 +626,7 @@ class NetworkStream(Stream):
           filter
           <https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter>`_ with
           parameters set by ``smooth_length`` and ``smooth_order``. This
-          allows to introduce less artifacts in the whitening process. In this
+          allows one to introduce fewer artifacts in the whitening process. In this
           case, the method calls the
           :func:`~covseisnet.signal.smooth_modulus_division`.
 
@@ -732,7 +732,7 @@ class NetworkStream(Stream):
           <https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter>`_
           applied to the Hilbert envelope of the trace. The Savitzky-Golay
           filter is defined by the ``smooth_length`` and ``smooth_order``
-          parameters. This allows to introduce less artifacts in the
+          parameters. This allows one to introduce fewer artifacts in the
           normalization process. In this case, the method calls the
           :func:`~covseisnet.signal.smooth_envelope_division`.
 

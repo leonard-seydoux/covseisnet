@@ -36,7 +36,7 @@ class CovarianceMatrix(np.ndarray):
     The spectral covariance matrix is defined as the average of the outer
     product of the short-time Fourier transform of the traces over a set of
     time windows :math:`\{\tau_m\}_{m=1}^M`, with :math:`M` the number of
-    windows used to estimate the covariance. This lead to the definition of
+    windows used to estimate the covariance. This leads to the definition of
     the spectral covariance matrix :math:`C_{ij}(f)` as
 
     .. math::
@@ -110,7 +110,7 @@ class CovarianceMatrix(np.ndarray):
         array, you have the several solutions provided by the `numpy
         subclassing mechanism
         <https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray>`_.
-        We recommend using the contructor of the class, which allows to pass
+        We recommend using the constructor of the class, which allows one to pass
         the stats and stft attributes, as in the following example:
 
         >>> import covseisnet as csn
@@ -125,11 +125,11 @@ class CovarianceMatrix(np.ndarray):
                           [ 0.,  0.,  0.,  0.]])
 
         In that case, the covariance matrix object passes through several
-        tests such as the Hermitian property of the two last dimensions, and
+        tests such as the Hermitian property of the last two dimensions, and
         the number of dimensions of the input array. If the input array does
         not pass the tests, a ValueError is raised. The input array can be any
         array-like object, as it is passed to the :func:`numpy.asarray`
-        function, which also allow to turn the input array into a
+        function, which also allows one to turn the input array into a
         complex-valued numpy array. The input array is then cast into a
         CovarianceMatrix object with the `view casting mechanism of numpy
         <https://numpy.org/doc/stable/user/basics.subclassing.html#view-casting>`_,
@@ -146,7 +146,7 @@ class CovarianceMatrix(np.ndarray):
         if (ndim := input_array.ndim) < 2:
             raise ValueError(f"Input array must be at least 2D, got {ndim}D.")
 
-        # Check that the two last dimensions are Hermitian. Again, this does
+        # Check that the last two dimensions are Hermitian. Again, this does
         # not need to be checked after slicing the array, but at the creation
         # of the object.
         for index in np.ndindex(input_array.shape[:-2]):
@@ -226,7 +226,7 @@ class CovarianceMatrix(np.ndarray):
 
           .. math::
 
-              \sigma = \sum_{i=0}^n i \lambda_i
+              \sigma = \sum_{i=1}^N i \, \lambda_i
 
 
         - The entropy is obtained with setting ``kind="entropy"``, and returns
@@ -235,16 +235,16 @@ class CovarianceMatrix(np.ndarray):
 
           .. math::
 
-              h = - \sum_{i=0}^n i \lambda_i \log(\lambda_i + \epsilon)
+              h = - \sum_{i=1}^N \lambda_i \, \log(\lambda_i + \epsilon)
 
-        - The Shanon diversity index is obtained with setting
+        - The Shannon diversity index is obtained with setting
           ``kind="diversity"``, and returns the diversity index :math:`D` of
           the eigenvalue distribution (obtained at each time and frequency)
           such as the exponential of the entropy:
 
           .. math::
 
-              D = \exp(h + \epsilon)
+              D = \exp(h)
 
         In each case, :math:`\epsilon` is a regularization parameter to avoid
         the logarithm of zero. The coherence is calculated for each time and
@@ -300,7 +300,7 @@ class CovarianceMatrix(np.ndarray):
     def eigenvalues(self, norm: Callable = np.max) -> np.ndarray:
         r"""Eigenvalue decomposition.
 
-        Given and Hermitian matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times
+        Given a Hermitian matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times
         N}`, the eigenvalue decomposition is defined as
 
         .. math::
@@ -334,10 +334,10 @@ class CovarianceMatrix(np.ndarray):
         definition, the eigenvalues are real- and positive-valued. Also, the
         eigenvectors are orthogonal and normalized.
 
-        The eigenvalue decomposition is performed onto the two last dimensions
+        The eigenvalue decomposition is performed onto the last two dimensions
         of the :class:`~covseisnet.covariance.CovarianceMatrix` object. The
         function used for eigenvalue decomposition is
-        :func:`numpy.linalg.eigvalsh`. It sassumes that the input matrix is 2D
+        :func:`numpy.linalg.eigvalsh`. It assumes that the input matrix is 2D
         and hermitian, so the decomposition is performed onto the lower
         triangular part to save time.
 
@@ -358,7 +358,7 @@ class CovarianceMatrix(np.ndarray):
         Notes
         -----
 
-        The eigenvalue decomposition is performed onto the two last dimensions
+        The eigenvalue decomposition is performed onto the last two dimensions
         of the :class:`~covseisnet.covariance.CovarianceMatrix` object. The
         matrices are first flattened with the
         :meth:`~covseisnet.covariance.CovarianceMatrix.flat` method, so the
@@ -378,7 +378,7 @@ class CovarianceMatrix(np.ndarray):
         --------
         Calculate the eigenvalues of the example covariance matrix:
 
-        >>> import covseisnet as cn
+        >>> import covseisnet as csn
         >>> import numpy as np
         >>> cov = np.random.randn(3, 3, 3) + 1j * np.random.randn(3, 3, 3)
         >>> cov = np.array([cov @ cov.T.conj() for cov in cov])
@@ -429,7 +429,7 @@ class CovarianceMatrix(np.ndarray):
             \mathbf{U} = \pmatrix{\mathbf{u}_1, \mathbf{u}_2, \ldots,
             \mathbf{u}_R}
 
-        with :math:`\mathbf{v}_i` the eigenvectors, and :math:`R` the maximum
+        with :math:`\mathbf{u}_i` the eigenvectors, and :math:`R` the maximum
         rank of the eigenvectors. The eigenvectors are sorted in decreasing
         order of the eigenvalues, and the eigenvectors are normalized. The
         function used for extracting eigenvectors is
@@ -538,9 +538,9 @@ class CovarianceMatrix(np.ndarray):
     def flat(self):
         r"""Covariance matrices with flatten first dimensions.
 
-        The shape of the covariance matrix depend on the number of time
+        The shape of the covariance matrix depends on the number of time
         windows and frequencies. The property
-        :attr:`~covseisnet.covariance.CovarianceMatrix.flat` allows to obtain
+        :attr:`~covseisnet.covariance.CovarianceMatrix.flat` allows one to obtain
         as many :math:`N \times N` covariance matrices as time and frequency
         samples.
 
@@ -723,7 +723,7 @@ def calculate_covariance_matrix(
         u_{i,m}(f) = \frac{u_{i,m}(f)}{|u_{i,m}(f)|}
 
     These additional whitening methods can be used in addition to the
-    trave-level :meth:`~covseisnet.stream.NetworkStream.whiten` method to
+    trace-level :meth:`~covseisnet.stream.NetworkStream.whiten` method to
     further whiten the covariance matrix.
 
     Arguments
