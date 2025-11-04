@@ -737,10 +737,12 @@ def calculate_covariance_matrix(
         seconds. Default is None, which is equivalent to half of the window
         duration.
     average: int
-        The number of window used to estimate the sample covariance.
+        The number of window used to estimate the sample covariance. If set to
+        -1, averages over all time windows, resulting in a single time value
+        and covariances as a function of frequency only.
     average_step: int, optional
         The sliding window step for covariance matrix calculation (in number
-        of windows).
+        of windows). Ignored when average=-1.
     whiten: str, optional
         The type of whitening applied to the covariance matrix. Can be "none"
         (default), "slice", or "window". This parameter can be used in
@@ -801,17 +803,27 @@ def calculate_covariance_matrix(
     )
 
     # Check whiten parameter
-    if whiten.lower() not in ["none", "slice", "window"]:
-        message = "{} is not an available option for whiten."
-        raise ValueError(message.format(whiten))
+    whiten = whiten.lower()
+    if whiten not in ["none", "slice", "window"]:
+        raise ValueError(f"{whiten} is not an available option for whiten.")
 
     # Remove modulus
-    if whiten.lower() == "window":
+    if whiten == "window":
         spectra /= np.abs(spectra) + water_level
 
     # Parametrization
-    step = average // 2 if average_step is None else average * average_step
     n_traces, n_frequencies, n_times = spectra.shape
+
+    # Handle average=-1 case (average over all time windows)
+    if average == -1:
+        average = n_times
+        step = n_times
+    else:
+        step = int(
+            average_step * average
+            if average_step is not None
+            else average // 2
+        )
 
     # Times of the covariance matrix
     indices = range(0, n_times - average + 1, step)
@@ -828,7 +840,7 @@ def calculate_covariance_matrix(
         spectra_slice = spectra[..., selection]
 
         # Whiten
-        if whiten.lower() == "slice":
+        if whiten == "slice":
             spectra_slice = spectra_slice / np.mean(
                 np.abs(spectra_slice), axis=-1, keepdims=True
             )
@@ -839,8 +851,10 @@ def calculate_covariance_matrix(
         )
 
         # Center time
-        duration = spectra_times[selection][-1] - spectra_times[selection][0]
-        covariance_times.append(spectra_times[selection][0] + duration / 2)
+        center_time = (
+            spectra_times[selection][0] + spectra_times[selection][-1]
+        ) / 2
+        covariance_times.append(center_time)
 
     # Set covariance matrix
     covariances = CovarianceMatrix(
