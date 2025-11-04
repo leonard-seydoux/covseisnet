@@ -176,3 +176,6 @@ docs/source/sg_execution_times.rst
 
 # Tutorial data
 docs/source/tutorials/data
+
+# UV package manager
+uv.lock
