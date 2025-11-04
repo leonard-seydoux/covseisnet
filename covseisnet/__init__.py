@@ -17,12 +17,16 @@ __all__ = [
     "ShortTimeFourierTransform",
     "calculate_covariance_matrix",
     "calculate_cross_correlation_matrix",
+    "calculate_travel_times",
     "pairwise_great_circle_distances_from_stats",
     "read",
     "plot",
     "signal",
     "data",
     "spatial",
+    "velocity",
+    "travel_times",
+    "backprojection",
 ]
 
 # High-level objects
@@ -40,6 +44,7 @@ from .covariance import calculate_covariance_matrix
 from .correlation import calculate_cross_correlation_matrix
 from .stream import read
 from .spatial import pairwise_great_circle_distances_from_stats
+from .travel_times import calculate_travel_times
 
 # Modules
 from . import signal

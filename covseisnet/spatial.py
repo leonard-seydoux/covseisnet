@@ -9,6 +9,18 @@ class Regular3DGrid(np.ndarray):
     r"""Base class for regular three-dimensional grid of values such as
     velocity models, travel times, and differential travel times.
 
+    The grid is a placeholder for any mathematic object :math:`f` that depends
+    on three variables :math:`(\varphi, \lambda, z) \in \mathbb{R}^3` such as
+    :math:`f(\varphi, \lambda, z)`. The grid is defined by its geographical
+    extent :math:`(\varphi_0, \varphi_1, \lambda_0, \lambda_1, z_0, z_1)` and
+    the number of points in each direction :math:`(n_{\varphi}, n_{\lambda},
+    n_{z})`.
+
+    At any coordinate :math:`(\varphi, \lambda, z)` of the grid we can assign
+    a value :math:`f(\varphi, \lambda, z)`. The assignment of the values is
+    done by either filling the grid with a constant value, a random value, or
+    a user-defined value.
+
     .. rubric:: Attributes
 
     - :attr:`lon` (:class:`numpy.ndarray`): The longitudes of the grid in
@@ -23,17 +35,38 @@ class Regular3DGrid(np.ndarray):
     .. rubric:: Methods
 
     - :meth:`flatten`: Flatten the grid to allow for faster calculations.
+
+    Example
+    -------
+
+    Create a 3D regular grid of values with random values, and plot it.
+
+    .. plot::
+
+        import numpy as np
+
+        import covseisnet as csn
+
+        np.random.seed(42)
+
+        grid = csn.spatial.Regular3DGrid(
+            extent=(40, 41, 50, 51, 0, 20), shape=(10, 10, 10),
+            fill_value="random",
+        )
+
+        csn.plot.grid3d(grid, cmap="cividis")
     """
 
-    lon: np.ndarray | None
-    lat: np.ndarray | None
-    depth: np.ndarray | None
-    mesh: list[np.ndarray] | None
+    lon: np.ndarray
+    lat: np.ndarray
+    depth: np.ndarray
+    mesh: list[np.ndarray]
 
     def __new__(
         cls,
         extent: tuple[float, float, float, float, float, float],
         shape: tuple[int, int, int],
+        fill_value: float | str = np.nan,
     ):
         r"""
         Arguments
@@ -45,9 +78,19 @@ class Regular3DGrid(np.ndarray):
         shape: tuple
             The number of points in the grid in the form ``(n_lon, n_lat,
             n_depth)``.
+        fill_value: float or str, optional
+            The fill value of the grid. By default, it is set to :attr:`np.nan`.
         """
         # Extent
-        obj = np.full(shape, np.nan).view(cls)
+        if isinstance(fill_value, float):
+            obj = np.full(shape, fill_value).view(cls)
+        elif fill_value == "random":
+            obj = np.random.rand(*shape).view(cls)
+        else:
+            raise ValueError(
+                f"Invalid fill value '{fill_value}'. "
+                "The fill value must be a float or 'random'."
+            )
 
         # Grid mesh
         obj.lon = np.linspace(extent[0], extent[1], shape[0])
@@ -60,13 +103,13 @@ class Regular3DGrid(np.ndarray):
     def __array_finalize__(self, obj):
         if obj is None:
             return
-        self.lon = getattr(obj, "lon", None)
-        self.lat = getattr(obj, "lat", None)
-        self.depth = getattr(obj, "depth", None)
-        self.mesh = getattr(obj, "mesh", None)
+        self.lon = getattr(obj, "lon", np.array([np.nan]))
+        self.lat = getattr(obj, "lat", np.array([np.nan]))
+        self.depth = getattr(obj, "depth", np.array([np.nan]))
+        self.mesh = getattr(obj, "mesh", [np.array([np.nan])])
 
     def __str__(self):
-        ax_string = "\t{}: [{:0.2g}, {:0.2g}] with {} points\n"
+        ax_string = "\t{}: [{:.2f}, {:.2f}] with {} points\n"
         if (self.lon is None) or (self.lat is None) or (self.depth is None):
             raise ValueError("The grid axes are not defined.")
         return (
@@ -80,10 +123,25 @@ class Regular3DGrid(np.ndarray):
             + ax_string.format(
                 "depth", self.depth.min(), self.depth.max(), len(self.depth)
             )
-            + f"\tmesh: {self.size} points\n"
-            + f"\tmin: {self.min():.3f}\n"
-            + f"\tmax: {self.max():.3f}\n"
+            + f"\tmesh: {self.size:,} points\n"
+            + f"\tnan values: {np.isnan(self).sum():,} points\n"
+            + f"\tmin: {np.nanmin(self):.3f}\n"
+            + f"\tmax: {np.nanmax(self):.3f}\n"
             + ")"
+        )
+
+    @property
+    def extent(self):
+        r"""Geographical extent of the grid in the form ``(lon_min, lon_max, lat_min, lat_max, depth_min, depth_max)``."""
+        if (self.lon is None) or (self.lat is None) or (self.depth is None):
+            raise ValueError("The grid axes are not defined.")
+        return (
+            self.lon.min(),
+            self.lon.max(),
+            self.lat.min(),
+            self.lat.max(),
+            self.depth.min(),
+            self.depth.max(),
         )
 
     @property

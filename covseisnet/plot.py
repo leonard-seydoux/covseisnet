@@ -7,6 +7,7 @@ data and results from this package.
 from typing import Any
 
 from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from matplotlib.ticker import MaxNLocator
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -67,7 +68,7 @@ def make_axis_symmetric(ax: Axes, axis: str = "both") -> None:
         ax.set_ylim(-max(yabs), max(yabs))
 
 
-def trace_and_spectrum(trace: Trace) -> list:
+def trace_and_spectrum(trace: Trace) -> tuple[Figure, list[Axes]]:
     """Plot a trace and its spectrum side by side.
 
     The spectrum is calculated with the :func:`scipy.fft.rfft` function, which
@@ -97,7 +98,7 @@ def trace_and_spectrum(trace: Trace) -> list:
 
     """
     # Create figure
-    _, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
+    fig, ax = plt.subplots(ncols=2, constrained_layout=True, figsize=(6, 3))
 
     # Extract data
     times = trace.times()
@@ -119,12 +120,15 @@ def trace_and_spectrum(trace: Trace) -> list:
     ax[1].set_ylabel("Spectrum")
     ax[1].grid()
 
-    return ax
+    return fig, ax
 
 
 def trace_and_spectrogram(
-    trace: Trace, f_min: None | float = None, **kwargs: Any
-) -> list:
+    trace: Trace,
+    f_min: None | float = None,
+    cmap: str = "cividis",
+    **kwargs: Any,
+) -> tuple[Figure, list[Axes]]:
     """Plot a trace and its spectrogram.
 
     This function is deliberately simple and does not allow to customize the
@@ -138,6 +142,8 @@ def trace_and_spectrogram(
     f_min : None or float
         The minimum frequency to display. Frequencies below this value will be
         removed from the spectrogram.
+    cmap : str
+        The colormap to use for the spectrogram.
     **kwargs
         Additional arguments to pass to :func:`~covseisnet.stream.calculate_spectrogram`.
 
@@ -155,7 +161,7 @@ def trace_and_spectrogram(
 
     """
     # Create figure
-    _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
+    fig, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Calculate spectrogram
     stft = ShortTimeFourierTransform(
@@ -191,6 +197,7 @@ def trace_and_spectrogram(
         spectrogram,
         shading="nearest",
         rasterized=True,
+        cmap=cmap,
     )
     ax[1].grid()
     ax[1].set_yscale("log")
@@ -203,10 +210,12 @@ def trace_and_spectrogram(
     colorbar = plt.colorbar(mappable, ax=ax[1])
     colorbar.set_label("Spectral energy (dBA)")
 
-    return ax
+    return fig, ax
 
 
-def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
+def coherence(
+    times, frequencies, coherence, f_min=None, ax=None, **kwargs
+) -> tuple[Figure, Axes]:
     """Plot a coherence matrix.
 
     This function is deliberately simple and does not allow to customize the
@@ -236,7 +245,10 @@ def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
     """
     # Create figure
     if ax is None:
+        fig = plt.gcf()
         ax = plt.gca()
+    else:
+        fig = plt.gcf()
 
     # Remove low frequencies
     if f_min is not None:
@@ -256,7 +268,7 @@ def coherence(times, frequencies, coherence, f_min=None, ax=None, **kwargs):
     # Colorbar
     plt.colorbar(mappable, ax=ax).set_label("Spectral width")
 
-    return ax
+    return fig, ax
 
 
 def stream_and_coherence(
@@ -267,7 +279,7 @@ def stream_and_coherence(
     f_min: float | None = None,
     trace_factor: float = 0.1,
     **kwargs: dict,
-) -> list[Axes]:
+) -> tuple[Figure, list[Axes]]:
     """Plot a stream of traces and the coherence matrix.
 
     This function is deliberately simple and does not allow to customize the
@@ -293,21 +305,11 @@ def stream_and_coherence(
         Additional arguments passed to the pcolormesh method.
     """
     # Create figure
-    _, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
+    fig, ax = plt.subplots(nrows=2, constrained_layout=True, sharex=True)
 
     # Show traces
-    trace_times = stream.times(type="matplotlib")
-    for index, trace in enumerate(stream):
-        waveform = trace.data * trace_factor
-        ax[0].plot(trace_times, waveform + index, color="C0", lw=0.3)
-
-    # Labels
-    stations = [trace.stats.station for trace in stream]
+    plot_stream(stream, trace_factor=trace_factor, ax=ax[0], lw=0.3, c="C0")
     ax[0].set_title("Normalized seismograms")
-    ax[0].grid()
-    ax[0].set_yticks(range(len(stations)), labels=stations, fontsize="small")
-    ax[0].set_ylabel("Normalized amplitude")
-    ax[0].set_ylim(-1, len(stations))
     xlim = ax[0].get_xlim()
 
     # Plot coherence
@@ -321,12 +323,58 @@ def stream_and_coherence(
     dateticks(ax[1])
     ax[1].set_xlim(xlim)
 
+    return fig, ax
+
+
+def plot_stream(
+    stream: csn.stream.NetworkStream,
+    trace_factor: float = 1,
+    ax: Axes | None = None,
+    **kwargs,
+) -> Axes:
+    """Plot a stream of traces.
+
+    This function is deliberately simple and does not allow to customize the
+    trace plot. For more advanced plotting, you should consider creating a
+    derived function.
+
+    Arguments
+    ---------
+    stream : :class:`~obspy.core.stream.Stream`
+        The stream to plot.
+    **kwargs
+        Additional arguments passed to the plot method.
+
+    Returns
+    -------
+    ax : :class:`~matplotlib.axes.Axes`
+    """
+    # Create figure
+    ax = ax or plt.gca()
+
+    # Default values
+    kwargs.setdefault("c", "C0")
+
+    # Show traces
+    trace_times = stream.times(type="matplotlib")
+    for index, trace in enumerate(stream):
+        waveform = trace.data * trace_factor
+        ax.plot(trace_times, waveform + index, **kwargs)
+
+    # Labels
+    ax.grid()
+    stations = [trace.stats.station for trace in stream]
+    ax.set_yticks(range(len(stations)), labels=stations, fontsize="small")
+    ax.set_ylabel("Normalized amplitude")
+    ax.set_ylim(-1, len(stations))
+    dateticks(ax)
+
     return ax
 
 
 def covariance_matrix_modulus_and_spectrum(
     covariance: csn.covariance.CovarianceMatrix,
-) -> Axes:
+) -> tuple[Figure, Axes]:
     """Plot the modulus of a covariance matrix and its spectrum.
 
     This function plots the modulus of the covariance matrix and its
@@ -366,15 +414,10 @@ def covariance_matrix_modulus_and_spectrum(
     eigenvalues = covariance.eigenvalues(norm=np.sum)
 
     # Create figure
-    _, ax = plt.subplots(ncols=2, figsize=(8, 2.7), constrained_layout=True)
+    fig, ax = plt.subplots(ncols=2, figsize=(8, 2.7), constrained_layout=True)
 
     # Plot covariance matrix
     mappable = ax[0].matshow(np.abs(covariance), cmap="viridis", vmin=0)
-
-    # Coherence
-    spectral_width = covariance.coherence(kind="spectral_width")
-    entropy = covariance.coherence(kind="entropy")
-    diversity = covariance.coherence(kind="diversity")
 
     # Labels
     if covariance.stats is None:
@@ -393,7 +436,7 @@ def covariance_matrix_modulus_and_spectrum(
 
     # Plot eigenvalues
     eigenindex = np.arange(covariance.shape[0])
-    ax[1].plot(eigenindex, eigenvalues, marker="o")
+    ax[1].stem(eigenindex, eigenvalues, basefmt="C0")
     ax[1].set_ylim(bottom=0, top=1)
     ax[1].set_xticks(eigenindex)
     ax[1].set_xlabel(r"Eigenvalue index ($n$)")
@@ -401,13 +444,7 @@ def covariance_matrix_modulus_and_spectrum(
     ax[1].set_title("Eigenspectrum")
     ax[1].grid()
 
-    # Annotations
-    ax[1].axvline(spectral_width, color="C1", label="Spectral width")
-    ax[1].axvline(entropy, color="C2", label="Entropy")
-    ax[1].axvline(diversity, color="C3", label="Diversity")
-    ax[1].legend(loc="upper left", frameon=False, bbox_to_anchor=(1, 1))
-
-    return ax
+    return fig, ax
 
 
 def dateticks(ax: Axes, locator: mdates.DateLocator | None = None) -> None:
@@ -465,7 +502,7 @@ def grid3d(
     receiver_coordinates=None,
     label=None,
     **kwargs,
-) -> dict:
+) -> tuple[Figure, dict]:
     """Plot a three-dimensional grid of data.
 
     This function plots the data of a three-dimensional grid in three
@@ -521,10 +558,10 @@ def grid3d(
     """
     # Set limits
     if grid.lon is None or grid.lat is None or grid.depth is None:
-        return {"empty": plt.gca()}
+        return plt.gcf(), {"empty": plt.gca()}
 
     # Create mosaic plot
-    _, ax = plt.subplot_mosaic(
+    fig, ax = plt.subplot_mosaic(
         figsize=(5, 5),
         mosaic=[["xy", "zy"], ["xz", "."], ["xz", "cb"], ["xz", "."]],
         gridspec_kw={
@@ -559,12 +596,12 @@ def grid3d(
 
     # Default values for contour
     if isinstance(grid, csn.travel_times.DifferentialTravelTimes):
-        vmax = max(np.abs(grid.min()), np.abs(grid.max()))
+        vmax = np.nanmax([np.abs(np.nanmin(grid)), np.abs(np.nanmax(grid))])
         vmin = -vmax
         kwargs.setdefault("cmap", "RdBu")
     else:
-        vmax = np.max(grid)
-        vmin = np.min(grid)
+        vmax = np.nanmax(grid)
+        vmin = np.nanmin(grid)
 
     # Contour levels
     contour_levels = np.linspace(vmin, vmax, kwargs.pop("levels", 20))
@@ -617,13 +654,13 @@ def grid3d(
     if receiver_coordinates is None:
         if hasattr(grid, "receiver_coordinates"):
             if grid.receiver_coordinates is None:
-                return ax
+                return fig, ax
             if not isinstance(grid.receiver_coordinates[0], (list, tuple)):
                 receiver_coordinates = (grid.receiver_coordinates,)
             else:
                 receiver_coordinates = grid.receiver_coordinates
         else:
-            return ax
+            return fig, ax
     else:
         if not isinstance(receiver_coordinates[0], (list, tuple)):
             receiver_coordinates = (receiver_coordinates,)
@@ -637,4 +674,4 @@ def grid3d(
         ax["xz"].plot(receiver[0], receiver[2], "kv", clip_on=False)
         ax["zy"].plot(receiver[2], receiver[1], "k>", clip_on=False)
 
-    return ax
+    return fig, ax

@@ -29,7 +29,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-docs = ["sphinx", "sphinx_book_theme", "sphinx_gallery", "sphinxcontrib-bibtex"]
+docs = [
+    "sphinx",
+    "sphinx_book_theme",
+    "sphinx_gallery",
+    "sphinxcontrib-bibtex",
+    "sphinx_new_tab_link",
+    "nbsphinx",
+    "pandoc",
+]
 
 [tool.hatch.version]
 path = "covseisnet/__init__.py"

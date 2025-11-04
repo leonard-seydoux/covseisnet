@@ -173,3 +173,9 @@ docs/source/sg_execution_times.rst
 # VS Code
 .vscode/
 .vscode/* 
+
+# Tutorial data
+docs/source/tutorials/data
+
+# UV package manager
+uv.lock
