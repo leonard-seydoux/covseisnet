@@ -44,7 +44,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "macros": {"width": "\\\\sigma", "entropy": "\\\\mathrm{h}", "diversity": "\\\\mathrm{D}", "eigv": "\\\\lambda"}}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'covariance';</script>
     <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
@@ -399,7 +399,7 @@ of the traces is defined as</p>
 <p>The spectral covariance matrix is defined as the average of the outer
 product of the short-time Fourier transform of the traces over a set of
 time windows <span class="math notranslate nohighlight">\(\{\tau_m\}_{m=1}^M\)</span>, with <span class="math notranslate nohighlight">\(M\)</span> the number of
-windows used to estimate the covariance. This lead to the definition of
+windows used to estimate the covariance. This leads to the definition of
 the spectral covariance matrix <span class="math notranslate nohighlight">\(C_{ij}(f)\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[C_{ij}(f) = \sum_{m=1}^M u_{i,m}(f) u_{j,m}^*(f)\]</div>
@@ -453,7 +453,7 @@ function as in the following example:</p>
 <a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> object from a numpy
 array, you have the several solutions provided by the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray" rel="noreferrer" target="_blank">numpy
 subclassing mechanism</a>.
-We recommend using the contructor of the class, which allows to pass
+We recommend using the constructor of the class, which allows one to pass
 the stats and stft attributes, as in the following example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -468,11 +468,11 @@ the stats and stft attributes, as in the following example:</p>
 </pre></div>
 </div>
 <p>In that case, the covariance matrix object passes through several
-tests such as the Hermitian property of the two last dimensions, and
+tests such as the Hermitian property of the last two dimensions, and
 the number of dimensions of the input array. If the input array does
 not pass the tests, a ValueError is raised. The input array can be any
 array-like object, as it is passed to the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.asarray()</span></code></a>
-function, which also allow to turn the input array into a
+function, which also allows one to turn the input array into a
 complex-valued numpy array. The input array is then cast into a
 CovarianceMatrix object with the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#view-casting" rel="noreferrer" target="_blank">view casting mechanism of numpy</a>,
 and the attributes stats and stft are added to the object. You can
@@ -498,20 +498,20 @@ by the <code class="docutils literal notranslate"><span class="pre">kind</span><
 the eigenvalue distribution (obtained at each time and frequency)
 such as</p>
 <div class="math notranslate nohighlight">
-\[\sigma = \sum_{i=0}^n i \lambda_i\]</div>
+\[\sigma = \sum_{i=1}^N i \, \lambda_i\]</div>
 </li>
 <li><p>The entropy is obtained with setting <code class="docutils literal notranslate"><span class="pre">kind=&quot;entropy&quot;</span></code>, and returns
 the entropy <span class="math notranslate nohighlight">\(h\)</span> of the eigenvalue distribution (obtained at
 each time and frequency) such as</p>
 <div class="math notranslate nohighlight">
-\[h = - \sum_{i=0}^n i \lambda_i \log(\lambda_i + \epsilon)\]</div>
+\[h = - \sum_{i=1}^N \lambda_i \, \log(\lambda_i + \epsilon)\]</div>
 </li>
-<li><p>The Shanon diversity index is obtained with setting
+<li><p>The Shannon diversity index is obtained with setting
 <code class="docutils literal notranslate"><span class="pre">kind=&quot;diversity&quot;</span></code>, and returns the diversity index <span class="math notranslate nohighlight">\(D\)</span> of
 the eigenvalue distribution (obtained at each time and frequency)
 such as the exponential of the entropy:</p>
 <div class="math notranslate nohighlight">
-\[D = \exp(h + \epsilon)\]</div>
+\[D = \exp(h)\]</div>
 </li>
 </ul>
 <p>In each case, <span class="math notranslate nohighlight">\(\epsilon\)</span> is a regularization parameter to avoid
@@ -545,7 +545,7 @@ depending on the input covariance matrix shape.</p>
 <dt class="sig sig-object py" id="covseisnet.covariance.CovarianceMatrix.eigenvalues">
 <span class="sig-name descname"><span class="pre">eigenvalues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">norm:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">max&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/covseisnet/covariance.html#CovarianceMatrix.eigenvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.eigenvalues" title="Link to this definition">#</a></dt>
 <dd><p>Eigenvalue decomposition.</p>
-<p>Given and Hermitian matrix <span class="math notranslate nohighlight">\(\mathbf{C} \in \mathbb{C}^{N \times
+<p>Given a Hermitian matrix <span class="math notranslate nohighlight">\(\mathbf{C} \in \mathbb{C}^{N \times
 N}\)</span>, the eigenvalue decomposition is defined as</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{C} = \mathbf{U D U}^\dagger\]</div>
@@ -569,10 +569,10 @@ maximum eigenvalue by default, but can be normalized by any function
 provided by numpy. Since the matrix <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> is Hermitian by
 definition, the eigenvalues are real- and positive-valued. Also, the
 eigenvectors are orthogonal and normalized.</p>
-<p>The eigenvalue decomposition is performed onto the two last dimensions
+<p>The eigenvalue decomposition is performed onto the last two dimensions
 of the <a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> object. The
 function used for eigenvalue decomposition is
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html#numpy.linalg.eigvalsh" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.eigvalsh()</span></code></a>. It sassumes that the input matrix is 2D
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html#numpy.linalg.eigvalsh" rel="noreferrer" target="_blank" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.eigvalsh()</span></code></a>. It assumes that the input matrix is 2D
 and hermitian, so the decomposition is performed onto the lower
 triangular part to save time.</p>
 <dl class="field-list simple">
@@ -589,7 +589,7 @@ the <code class="docutils literal notranslate"><span class="pre">axis</span></co
 </dl>
 <div class="admonition-notes admonition">
 <p class="admonition-title">Notes</p>
-<p>The eigenvalue decomposition is performed onto the two last dimensions
+<p>The eigenvalue decomposition is performed onto the last two dimensions
 of the <a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix" title="covseisnet.covariance.CovarianceMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovarianceMatrix</span></code></a> object. The
 matrices are first flattened with the
 <a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.flat" title="covseisnet.covariance.CovarianceMatrix.flat"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat()</span></code></a> method, so the
@@ -605,7 +605,7 @@ eigenvalue decomposition.</p>
 </div>
 <p class="rubric">Examples</p>
 <p>Calculate the eigenvalues of the example covariance matrix:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cn</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">covseisnet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">csn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cov</span> <span class="o">@</span> <span class="n">cov</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="k">for</span> <span class="n">cov</span> <span class="ow">in</span> <span class="n">cov</span><span class="p">])</span>
@@ -635,7 +635,7 @@ real- and positive-valued. The eigenvectors are returned as a matrix</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{U} = \pmatrix{\mathbf{u}_1, \mathbf{u}_2, \ldots,
 \mathbf{u}_R}\]</div>
-<p>with <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> the eigenvectors, and <span class="math notranslate nohighlight">\(R\)</span> the maximum
+<p>with <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> the eigenvectors, and <span class="math notranslate nohighlight">\(R\)</span> the maximum
 rank of the eigenvectors. The eigenvectors are sorted in decreasing
 order of the eigenvalues, and the eigenvectors are normalized. The
 function used for extracting eigenvectors is
@@ -692,9 +692,9 @@ else <code class="docutils literal notranslate"><span class="pre">(n_times,</spa
 <dt class="sig sig-object py" id="covseisnet.covariance.CovarianceMatrix.flat">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flat</span></span><a class="headerlink" href="#covseisnet.covariance.CovarianceMatrix.flat" title="Link to this definition">#</a></dt>
 <dd><p>Covariance matrices with flatten first dimensions.</p>
-<p>The shape of the covariance matrix depend on the number of time
+<p>The shape of the covariance matrix depends on the number of time
 windows and frequencies. The property
-<a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.flat" title="covseisnet.covariance.CovarianceMatrix.flat"><code class="xref py py-attr docutils literal notranslate"><span class="pre">flat</span></code></a> allows to obtain
+<a class="reference internal" href="#covseisnet.covariance.CovarianceMatrix.flat" title="covseisnet.covariance.CovarianceMatrix.flat"><code class="xref py py-attr docutils literal notranslate"><span class="pre">flat</span></code></a> allows one to obtain
 as many <span class="math notranslate nohighlight">\(N \times N\)</span> covariance matrices as time and frequency
 samples.</p>
 <dl class="field-list simple">
@@ -825,7 +825,7 @@ so that</p>
 <div class="math notranslate nohighlight">
 \[u_{i,m}(f) = \frac{u_{i,m}(f)}{|u_{i,m}(f)|}\]</div>
 <p>These additional whitening methods can be used in addition to the
-trave-level <a class="reference internal" href="stream.html#covseisnet.stream.NetworkStream.whiten" title="covseisnet.stream.NetworkStream.whiten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whiten()</span></code></a> method to
+trace-level <a class="reference internal" href="stream.html#covseisnet.stream.NetworkStream.whiten" title="covseisnet.stream.NetworkStream.whiten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whiten()</span></code></a> method to
 further whiten the covariance matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

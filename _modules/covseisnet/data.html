@@ -355,7 +355,7 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">The data shown in this documentation is for demonstration purposes only. In</span>
 <span class="sd">order to deal with seismic data download and management, this module provides</span>
-<span class="sd">functions to download seismic data from different datacenters. </span>
+<span class="sd">functions to download seismic data from different datacenters.</span>
 
 <span class="sd">File structure</span>
 <span class="sd">--------------</span>
@@ -364,18 +364,18 @@ document.write(`
 <span class="sd">client interface for dealing with FDSN web services. For more information about</span>
 <span class="sd">the usage of this interface, please visit the user guide about `FDSN web</span>
 <span class="sd">service client for ObsPy</span>
-<span class="sd">&lt;https://docs.obspy.org/packages/obspy.clients.fdsn.html&gt;`_. </span>
+<span class="sd">&lt;https://docs.obspy.org/packages/obspy.clients.fdsn.html&gt;`_.</span>
 
 <span class="sd">By default, the client downloads the data into the ``/data`` repository</span>
 <span class="sd">located at the root of this project, as shown in the following file structure</span>
 <span class="sd">of the project. If you would like to write the data to another location, we</span>
 <span class="sd">recommend you to use the ``filepath_destination`` argument of the methods</span>
-<span class="sd">presented in this module, and run them in your own script. </span>
+<span class="sd">presented in this module, and run them in your own script.</span>
 
 <span class="sd">::</span>
 
 <span class="sd">    /</span>
-<span class="sd">    ├── data/datasets.mseed </span>
+<span class="sd">    ├── data/datasets.mseed</span>
 <span class="sd">    ├── covseisnet/</span>
 <span class="sd">    ├── docs/</span>
 <span class="sd">    ├── examples/</span>
@@ -396,17 +396,17 @@ document.write(`
 <span class="sd">  UnderVolc network between 2010-10-14T09:00:00 and 2010-10-14T16:00:00.</span>
 <span class="sd">  During these times, we observe an elevation of the seismic activity prior to</span>
 <span class="sd">  an eruption of the Piton de la Fournaise accompanied by a co-eruptive</span>
-<span class="sd">  tremor. </span>
+<span class="sd">  tremor.</span>
 
 <span class="sd">- :func:`~covseisnet.data.download_usarray_data` to download data from the US</span>
 <span class="sd">  Transportable Array experiment between 2010-01-01 and 2010-03-01. In this</span>
 <span class="sd">  case, we download only the channels LHZ from the stations R04C, O03C, M03C,</span>
 <span class="sd">  L02A, I05A, allowing to show interesting results of ambient-noise</span>
-<span class="sd">  cross-correlation. </span>
+<span class="sd">  cross-correlation.</span>
 
 <span class="sd">These functions all call the :func:`~covseisnet.data.download_seismic_dataset`</span>
 <span class="sd">with specific arguments. You can also directly use these function to download</span>
-<span class="sd">datasets that you would like to try the package on. </span>
+<span class="sd">datasets that you would like to try the package on.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
@@ -441,7 +441,7 @@ document.write(`
 <span class="sd">    :meth:`~obspy.clients.fdsn.client.Client.get_waveforms` method. It connect</span>
 <span class="sd">    to the FDSN client using the specified ``datacenter`` (which by default is</span>
 <span class="sd">    set to IRIS), and download seismic waveforms between the ``starttime`` and</span>
-<span class="sd">    ``endtime``. Using the other arguments allow to specify the query to the</span>
+<span class="sd">    ``endtime``. Using the other arguments allows one to specify the query to the</span>
 <span class="sd">    datacenter. For more information, please check the Obspy documentation.</span>
 
 <span class="sd">    As we aim our package to be used without explicitely calling the Obspy</span>

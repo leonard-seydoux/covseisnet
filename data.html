@@ -44,6 +44,8 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "macros": {"width": "\\\\sigma", "entropy": "\\\\mathrm{h}", "diversity": "\\\\mathrm{D}", "eigv": "\\\\lambda"}}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'data';</script>
     <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -424,7 +426,7 @@ datasets that you would like to try the package on.</p>
 <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.clients.fdsn.client.Client.get_waveforms.html#obspy.clients.fdsn.client.Client.get_waveforms" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_waveforms()</span></code></a> method. It connect
 to the FDSN client using the specified <code class="docutils literal notranslate"><span class="pre">datacenter</span></code> (which by default is
 set to IRIS), and download seismic waveforms between the <code class="docutils literal notranslate"><span class="pre">starttime</span></code> and
-<code class="docutils literal notranslate"><span class="pre">endtime</span></code>. Using the other arguments allow to specify the query to the
+<code class="docutils literal notranslate"><span class="pre">endtime</span></code>. Using the other arguments allows one to specify the query to the
 datacenter. For more information, please check the Obspy documentation.</p>
 <p>As we aim our package to be used without explicitely calling the Obspy
 library, the dates are possible to be passed as strings.</p>

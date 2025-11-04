@@ -44,7 +44,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "macros": {"width": "\\\\sigma", "entropy": "\\\\mathrm{h}", "diversity": "\\\\mathrm{D}", "eigv": "\\\\lambda"}}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'stream';</script>
     <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
@@ -620,11 +620,11 @@ of the first trace with the Trace method
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>) -- Arguments passed to the Trace method
 <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.times.html#obspy.core.trace.Trace.times" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">times()</span></code></a>. For instance, passing
-<code class="docutils literal notranslate"><span class="pre">&quot;matplotlib&quot;</span></code> allows to recover matplotlib timestamps instead
+<code class="docutils literal notranslate"><span class="pre">&quot;matplotlib&quot;</span></code> allows one to recover matplotlib timestamps instead
 of seconds from the start of the trace (default).</p></li>
 <li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" rel="noreferrer" target="_blank" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) -- Arguments passed to the method
 <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.times.html#obspy.core.trace.Trace.times" rel="noreferrer" target="_blank" title="(in ObsPy v1.4.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">times()</span></code></a>. For instance, passing
-<code class="docutils literal notranslate"><span class="pre">type=&quot;matplotlib&quot;</span></code> allows to recover matplotlib timestamps
+<code class="docutils literal notranslate"><span class="pre">type=&quot;matplotlib&quot;</span></code> allows one to recover matplotlib timestamps
 instead of seconds from the start of the trace (default).</p></li>
 </ul>
 </dd>
@@ -828,7 +828,7 @@ by the <code class="docutils literal notranslate"><span class="pre">smooth_lengt
 the operator <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is defined as a <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter" rel="noreferrer" target="_blank">Savitzky-Golay
 filter</a> with
 parameters set by <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> and <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code>. This
-allows to introduce less artifacts in the whitening process. In this
+allows one to introduce fewer artifacts in the whitening process. In this
 case, the method calls the
 <a class="reference internal" href="signal.html#covseisnet.signal.smooth_modulus_division" title="covseisnet.signal.smooth_modulus_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_modulus_division()</span></code></a>.</p></li>
 </ul>
@@ -876,7 +876,7 @@ and therefore</p>
 <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is defined as a <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter" rel="noreferrer" target="_blank">Savitzky-Golay filter</a>
 applied to the Hilbert envelope of the trace. The Savitzky-Golay
 filter is defined by the <code class="docutils literal notranslate"><span class="pre">smooth_length</span></code> and <code class="docutils literal notranslate"><span class="pre">smooth_order</span></code>
-parameters. This allows to introduce less artifacts in the
+parameters. This allows one to introduce fewer artifacts in the
 normalization process. In this case, the method calls the
 <a class="reference internal" href="signal.html#covseisnet.signal.smooth_envelope_division" title="covseisnet.signal.smooth_envelope_division"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_envelope_division()</span></code></a>.</p></li>
 </ul>

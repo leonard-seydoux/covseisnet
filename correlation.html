@@ -44,7 +44,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "macros": {"width": "\\\\sigma", "entropy": "\\\\mathrm{h}", "diversity": "\\\\mathrm{D}", "eigv": "\\\\lambda"}}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'correlation';</script>
     <link rel="icon" href="_static/logo_covseisnet_small.svg"/>
@@ -411,7 +411,7 @@ with adequate attributes.</p>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">CrossCorrelationMatrix</span></code> object from a
 numpy array, you have the several solutions provided by the <a class="reference external" href="https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray" rel="noreferrer" target="_blank">numpy
 subclassing mechanism</a>.
-We recommend using the contructor of the class, which allows to pass
+We recommend using the constructor of the class, which allows one to pass
 the stats and stft attributes, as in the following example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">covseisnet.correlation</span><span class="w"> </span><span class="kn">import</span> <span class="n">CrossCorrelationMatrix</span>

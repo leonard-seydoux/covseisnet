@@ -392,7 +392,7 @@ document.write(`
 <span class="sd">    The spectral covariance matrix is defined as the average of the outer</span>
 <span class="sd">    product of the short-time Fourier transform of the traces over a set of</span>
 <span class="sd">    time windows :math:`\{\tau_m\}_{m=1}^M`, with :math:`M` the number of</span>
-<span class="sd">    windows used to estimate the covariance. This lead to the definition of</span>
+<span class="sd">    windows used to estimate the covariance. This leads to the definition of</span>
 <span class="sd">    the spectral covariance matrix :math:`C_{ij}(f)` as</span>
 
 <span class="sd">    .. math::</span>
@@ -466,7 +466,7 @@ document.write(`
 <span class="sd">        array, you have the several solutions provided by the `numpy</span>
 <span class="sd">        subclassing mechanism</span>
 <span class="sd">        &lt;https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray&gt;`_.</span>
-<span class="sd">        We recommend using the contructor of the class, which allows to pass</span>
+<span class="sd">        We recommend using the constructor of the class, which allows one to pass</span>
 <span class="sd">        the stats and stft attributes, as in the following example:</span>
 
 <span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
@@ -481,11 +481,11 @@ document.write(`
 <span class="sd">                          [ 0.,  0.,  0.,  0.]])</span>
 
 <span class="sd">        In that case, the covariance matrix object passes through several</span>
-<span class="sd">        tests such as the Hermitian property of the two last dimensions, and</span>
+<span class="sd">        tests such as the Hermitian property of the last two dimensions, and</span>
 <span class="sd">        the number of dimensions of the input array. If the input array does</span>
 <span class="sd">        not pass the tests, a ValueError is raised. The input array can be any</span>
 <span class="sd">        array-like object, as it is passed to the :func:`numpy.asarray`</span>
-<span class="sd">        function, which also allow to turn the input array into a</span>
+<span class="sd">        function, which also allows one to turn the input array into a</span>
 <span class="sd">        complex-valued numpy array. The input array is then cast into a</span>
 <span class="sd">        CovarianceMatrix object with the `view casting mechanism of numpy</span>
 <span class="sd">        &lt;https://numpy.org/doc/stable/user/basics.subclassing.html#view-casting&gt;`_,</span>
@@ -502,7 +502,7 @@ document.write(`
         <span class="k">if</span> <span class="p">(</span><span class="n">ndim</span> <span class="o">:=</span> <span class="n">input_array</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input array must be at least 2D, got </span><span class="si">{</span><span class="n">ndim</span><span class="si">}</span><span class="s2">D.&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Check that the two last dimensions are Hermitian. Again, this does</span>
+        <span class="c1"># Check that the last two dimensions are Hermitian. Again, this does</span>
         <span class="c1"># not need to be checked after slicing the array, but at the creation</span>
         <span class="c1"># of the object.</span>
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="n">input_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]):</span>
@@ -584,7 +584,7 @@ document.write(`
 
 <span class="sd">          .. math::</span>
 
-<span class="sd">              \sigma = \sum_{i=0}^n i \lambda_i</span>
+<span class="sd">              \sigma = \sum_{i=1}^N i \, \lambda_i</span>
 
 
 <span class="sd">        - The entropy is obtained with setting ``kind=&quot;entropy&quot;``, and returns</span>
@@ -593,16 +593,16 @@ document.write(`
 
 <span class="sd">          .. math::</span>
 
-<span class="sd">              h = - \sum_{i=0}^n i \lambda_i \log(\lambda_i + \epsilon)</span>
+<span class="sd">              h = - \sum_{i=1}^N \lambda_i \, \log(\lambda_i + \epsilon)</span>
 
-<span class="sd">        - The Shanon diversity index is obtained with setting</span>
+<span class="sd">        - The Shannon diversity index is obtained with setting</span>
 <span class="sd">          ``kind=&quot;diversity&quot;``, and returns the diversity index :math:`D` of</span>
 <span class="sd">          the eigenvalue distribution (obtained at each time and frequency)</span>
 <span class="sd">          such as the exponential of the entropy:</span>
 
 <span class="sd">          .. math::</span>
 
-<span class="sd">              D = \exp(h + \epsilon)</span>
+<span class="sd">              D = \exp(h)</span>
 
 <span class="sd">        In each case, :math:`\epsilon` is a regularization parameter to avoid</span>
 <span class="sd">        the logarithm of zero. The coherence is calculated for each time and</span>
@@ -661,7 +661,7 @@ document.write(`
     <span class="k">def</span><span class="w"> </span><span class="nf">eigenvalues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Eigenvalue decomposition.</span>
 
-<span class="sd">        Given and Hermitian matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times</span>
+<span class="sd">        Given a Hermitian matrix :math:`\mathbf{C} \in \mathbb{C}^{N \times</span>
 <span class="sd">        N}`, the eigenvalue decomposition is defined as</span>
 
 <span class="sd">        .. math::</span>
@@ -695,10 +695,10 @@ document.write(`
 <span class="sd">        definition, the eigenvalues are real- and positive-valued. Also, the</span>
 <span class="sd">        eigenvectors are orthogonal and normalized.</span>
 
-<span class="sd">        The eigenvalue decomposition is performed onto the two last dimensions</span>
+<span class="sd">        The eigenvalue decomposition is performed onto the last two dimensions</span>
 <span class="sd">        of the :class:`~covseisnet.covariance.CovarianceMatrix` object. The</span>
 <span class="sd">        function used for eigenvalue decomposition is</span>
-<span class="sd">        :func:`numpy.linalg.eigvalsh`. It sassumes that the input matrix is 2D</span>
+<span class="sd">        :func:`numpy.linalg.eigvalsh`. It assumes that the input matrix is 2D</span>
 <span class="sd">        and hermitian, so the decomposition is performed onto the lower</span>
 <span class="sd">        triangular part to save time.</span>
 
@@ -719,7 +719,7 @@ document.write(`
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 
-<span class="sd">        The eigenvalue decomposition is performed onto the two last dimensions</span>
+<span class="sd">        The eigenvalue decomposition is performed onto the last two dimensions</span>
 <span class="sd">        of the :class:`~covseisnet.covariance.CovarianceMatrix` object. The</span>
 <span class="sd">        matrices are first flattened with the</span>
 <span class="sd">        :meth:`~covseisnet.covariance.CovarianceMatrix.flat` method, so the</span>
@@ -739,7 +739,7 @@ document.write(`
 <span class="sd">        --------</span>
 <span class="sd">        Calculate the eigenvalues of the example covariance matrix:</span>
 
-<span class="sd">        &gt;&gt;&gt; import covseisnet as cn</span>
+<span class="sd">        &gt;&gt;&gt; import covseisnet as csn</span>
 <span class="sd">        &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">        &gt;&gt;&gt; cov = np.random.randn(3, 3, 3) + 1j * np.random.randn(3, 3, 3)</span>
 <span class="sd">        &gt;&gt;&gt; cov = np.array([cov @ cov.T.conj() for cov in cov])</span>
@@ -793,7 +793,7 @@ document.write(`
 <span class="sd">            \mathbf{U} = \pmatrix{\mathbf{u}_1, \mathbf{u}_2, \ldots,</span>
 <span class="sd">            \mathbf{u}_R}</span>
 
-<span class="sd">        with :math:`\mathbf{v}_i` the eigenvectors, and :math:`R` the maximum</span>
+<span class="sd">        with :math:`\mathbf{u}_i` the eigenvectors, and :math:`R` the maximum</span>
 <span class="sd">        rank of the eigenvectors. The eigenvectors are sorted in decreasing</span>
 <span class="sd">        order of the eigenvalues, and the eigenvectors are normalized. The</span>
 <span class="sd">        function used for extracting eigenvectors is</span>
@@ -903,9 +903,9 @@ document.write(`
     <span class="k">def</span><span class="w"> </span><span class="nf">flat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Covariance matrices with flatten first dimensions.</span>
 
-<span class="sd">        The shape of the covariance matrix depend on the number of time</span>
+<span class="sd">        The shape of the covariance matrix depends on the number of time</span>
 <span class="sd">        windows and frequencies. The property</span>
-<span class="sd">        :attr:`~covseisnet.covariance.CovarianceMatrix.flat` allows to obtain</span>
+<span class="sd">        :attr:`~covseisnet.covariance.CovarianceMatrix.flat` allows one to obtain</span>
 <span class="sd">        as many :math:`N \times N` covariance matrices as time and frequency</span>
 <span class="sd">        samples.</span>
 
@@ -1097,7 +1097,7 @@ document.write(`
 <span class="sd">        u_{i,m}(f) = \frac{u_{i,m}(f)}{|u_{i,m}(f)|}</span>
 
 <span class="sd">    These additional whitening methods can be used in addition to the</span>
-<span class="sd">    trave-level :meth:`~covseisnet.stream.NetworkStream.whiten` method to</span>
+<span class="sd">    trace-level :meth:`~covseisnet.stream.NetworkStream.whiten` method to</span>
 <span class="sd">    further whiten the covariance matrix.</span>
 
 <span class="sd">    Arguments</span>
