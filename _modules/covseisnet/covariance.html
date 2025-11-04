@@ -1203,7 +1203,7 @@ document.write(`
 
         <span class="c1"># Whiten</span>
         <span class="k">if</span> <span class="n">whiten</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;slice&quot;</span><span class="p">:</span>
-            <span class="n">spectra_slice</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+            <span class="n">spectra_slice</span> <span class="o">=</span> <span class="n">spectra_slice</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectra_slice</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
