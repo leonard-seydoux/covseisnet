@@ -637,6 +637,7 @@ document.write(`
         <span class="c1"># Check that self is still Hermitian</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_hermitian</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Covariance matrix is not Hermitian.&quot;</span><span class="p">)</span>
+
         <span class="c1"># Calculate coherence</span>
         <span class="k">match</span> <span class="n">kind</span><span class="p">:</span>
             <span class="k">case</span> <span class="s2">&quot;spectral_width&quot;</span><span class="p">:</span>
@@ -645,11 +646,11 @@ document.write(`
 
             <span class="k">case</span> <span class="s2">&quot;entropy&quot;</span><span class="p">:</span>
                 <span class="n">eigenvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">signal</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">signal</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
 
             <span class="k">case</span> <span class="s2">&quot;diversity&quot;</span><span class="p">:</span>
                 <span class="n">eigenvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">signal</span><span class="o">.</span><span class="n">diversity</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">signal</span><span class="o">.</span><span class="n">diversity</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
 
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> coherence not implemented.&quot;</span><span class="p">)</span></div>
