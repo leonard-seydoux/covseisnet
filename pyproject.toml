@@ -26,6 +26,7 @@ dependencies = [
     "ipython",
     "matplotlib",
     "pytest",
+    "setuptools==71",
 ]
 
 [project.optional-dependencies]

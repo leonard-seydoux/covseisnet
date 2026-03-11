@@ -8,9 +8,7 @@ from covseisnet import NetworkStream
 
 
 PACKAGE_DIRECTORY_PATH = os.path.dirname(os.path.abspath(__file__))
-DATA_DIRECTORY_PATH = os.path.join(
-    PACKAGE_DIRECTORY_PATH, "..", "docs", "source", "data"
-)
+DATA_DIRECTORY_PATH = os.path.join(PACKAGE_DIRECTORY_PATH, "..", "docs", "source", "data")
 
 
 def test_network_stream_instance():
