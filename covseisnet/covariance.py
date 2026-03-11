@@ -146,13 +146,6 @@ class CovarianceMatrix(np.ndarray):
         if (ndim := input_array.ndim) < 2:
             raise ValueError(f"Input array must be at least 2D, got {ndim}D.")
 
-        # Check that the last two dimensions are Hermitian. Again, this does
-        # not need to be checked after slicing the array, but at the creation
-        # of the object.
-        for index in np.ndindex(input_array.shape[:-2]):
-            if not ishermitian(input_array[index], rtol=1e-4):
-                raise ValueError("Input last dimensions must be Hermitian.")
-
         # Cast the input array into CovarianceMatrix and add the stats and
         # stft attributes.
         obj = input_array.view(cls)
