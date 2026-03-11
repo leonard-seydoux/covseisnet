@@ -269,10 +269,6 @@ class CovarianceMatrix(np.ndarray):
         --------
         :meth:`~covseisnet.covariance.CovarianceMatrix.eigenvalues`
         """
-        # Check that self is still Hermitian
-        if not self.is_hermitian:
-            raise ValueError("Covariance matrix is not Hermitian.")
-
         # Calculate coherence
         match kind:
             case "spectral_width":
@@ -381,10 +377,6 @@ class CovarianceMatrix(np.ndarray):
                    [1.        , 0.13510247, 0.00369051],
                    [1.        , 0.22129766, 0.0148769 ]])
         """
-        # Check that self is still Hermitian
-        if not self.is_hermitian:
-            raise ValueError("Covariance matrix is not Hermitian.")
-
         # Parallel computation of eigenvalues.
         eigenvalues = eigvalsh(self.flat)
 
@@ -485,10 +477,6 @@ class CovarianceMatrix(np.ndarray):
         :func:`scipy.linalg.eigh`
 
         """
-        # Check that self is still Hermitian.
-        if not self.is_hermitian:
-            raise ValueError("Covariance matrix is not Hermitian.")
-
         # Calculate eigenvectors.
         eigenvalues, eigenvectors = eigh(self.flat)
 
