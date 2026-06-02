@@ -201,7 +201,7 @@ class MatchedFieldProcessing(GeographicalGrid):
 
         power = np.real(
             np.einsum(
-                "si,st,ti->i", steering_flat, covariance, steering_flat.conj()
+                "si,st,ti->i", steering_flat.conj(), covariance, steering_flat
             )
         )
         self[...] = power.reshape(self.shape) / n_stations**2
@@ -266,7 +266,7 @@ class MatchedFieldProcessing(GeographicalGrid):
 
         denominator = np.real(
             np.einsum(
-                "si,st,ti->i", steering_flat, cov_inv, steering_flat.conj()
+                "si,st,ti->i", steering_flat.conj(), cov_inv, steering_flat
             )
         )
         self[...] = (1.0 / np.maximum(denominator, 1e-30)).reshape(self.shape)
