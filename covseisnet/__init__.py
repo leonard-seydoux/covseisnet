@@ -28,6 +28,9 @@ __all__ = [
     "velocity",
     "travel_times",
     "backprojection",
+    "slowness",
+    "beamforming",
+    "matchedfield",
 ]
 
 # High-level objects
@@ -40,6 +43,9 @@ from . import synthetic
 from . import velocity
 from . import travel_times
 from . import backprojection
+from . import slowness
+from . import beamforming
+from . import matchedfield
 
 # High-level methods
 from .covariance import calculate_covariance_matrix

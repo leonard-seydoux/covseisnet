@@ -5,7 +5,7 @@ from obspy.core.trace import Stats
 from obspy.geodetics.base import locations2degrees
 
 
-class Regular3DGrid(np.ndarray):
+class GeographicalGrid(np.ndarray):
     r"""Base class for regular three-dimensional grid of values such as
     velocity models, travel times, and differential travel times.
 
@@ -266,6 +266,86 @@ def straight_ray_distance(
     distance = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
 
     return distance
+
+
+def station_local_coordinates(
+    stats: list[Stats],
+) -> tuple[np.ndarray, np.ndarray]:
+    r"""Flat-Earth east-north station coordinates in kilometres.
+
+    Projects geographical coordinates onto a local Cartesian frame centred on
+    the array barycentre using a first-order flat-Earth approximation:
+
+    .. math::
+
+        x_i &= (\varphi_i - \bar\varphi)\,\cos(\bar\lambda)\times 111.195
+        \quad [\text{km, East}] \\
+        y_i &= (\lambda_i - \bar\lambda)\times 111.195
+        \quad [\text{km, North}]
+
+    where :math:`\bar\varphi` and :math:`\bar\lambda` are the mean longitude
+    and latitude of the array.  The approximation is accurate to better than
+    1 % for array apertures up to about 500 km.
+
+    Arguments
+    ---------
+    stats : list of :class:`~obspy.core.trace.Stats`
+        Stats objects of the stations. Each must have a ``coordinates``
+        attribute with ``longitude`` and ``latitude`` keys (decimal degrees).
+
+    Returns
+    -------
+    x, y : :class:`numpy.ndarray`
+        East and North displacements in kilometres from the barycentre,
+        both of shape ``(n_stations,)``.
+    """
+    lons = np.array([s.coordinates["longitude"] for s in stats])
+    lats = np.array([s.coordinates["latitude"] for s in stats])
+    lon_ref = np.mean(lons)
+    lat_ref = np.mean(lats)
+    deg_to_km = 111.195
+    x = (lons - lon_ref) * np.cos(np.radians(lat_ref)) * deg_to_km
+    y = (lats - lat_ref) * deg_to_km
+    return x, y
+
+
+def pairwise_distance_matrix_from_stats(stats: list[Stats]) -> np.ndarray:
+    r"""Symmetric pairwise straight-ray distance matrix in kilometres.
+
+    Computes the full :math:`N \times N` matrix :math:`D` where
+    :math:`D_{ij}` is the straight-ray (chord) distance in km between
+    stations :math:`i` and :math:`j`, using
+    :func:`~covseisnet.spatial.straight_ray_distance`.
+
+    Arguments
+    ---------
+    stats : list of :class:`~obspy.core.trace.Stats`
+        Stats objects of the stations.  Each must have a ``coordinates``
+        attribute with ``longitude``, ``latitude``, and ``elevation``
+        (metres above sea level) keys.
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+        Symmetric distance matrix of shape ``(n_stations, n_stations)``
+        in kilometres.  Diagonal entries are zero.
+    """
+    n = len(stats)
+    coords = [
+        (
+            s.coordinates["longitude"],
+            s.coordinates["latitude"],
+            -1e-3 * s.coordinates.get("elevation", 0.0),
+        )
+        for s in stats
+    ]
+    distances = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i + 1, n):
+            d = straight_ray_distance(*coords[i], *coords[j])
+            distances[i, j] = d
+            distances[j, i] = d
+    return distances
 
 
 def pairwise_great_circle_distances_from_stats(

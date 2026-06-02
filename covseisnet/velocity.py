@@ -4,10 +4,10 @@ import numpy as np
 
 from scipy.interpolate import RegularGridInterpolator
 
-from .spatial import Regular3DGrid
+from .spatial import GeographicalGrid
 
 
-class VelocityModel(Regular3DGrid):
+class VelocityModel(GeographicalGrid):
     r"""Base class to create a velocity model."""
 
     velocity: np.ndarray | float | None
@@ -60,14 +60,14 @@ class VelocityModel(Regular3DGrid):
             depth = np.linspace(self.extent[4], self.extent[5], shape[2])
         elif resolution is not None:
             lon = np.arange(
-                    self.extent[0], self.extent[1] + resolution[0], resolution[0]
-                    )
+                self.extent[0], self.extent[1] + resolution[0], resolution[0]
+            )
             lat = np.arange(
-                    self.extent[2], self.extent[3] + resolution[1], resolution[1]
-                    )
+                self.extent[2], self.extent[3] + resolution[1], resolution[1]
+            )
             depth = np.arange(
-                    self.extent[4], self.extent[5] + resolution[2], resolution[2]
-                    )
+                self.extent[4], self.extent[5] + resolution[2], resolution[2]
+            )
         return self.interpolate(lon, lat, depth)
 
     def interpolate(
@@ -103,7 +103,7 @@ class VelocityModel(Regular3DGrid):
             depth.max(),
         )
         new_shape = (len(lon), len(lat), len(depth))
-        new_grid = Regular3DGrid(extent=new_extent, shape=new_shape)
+        new_grid = GeographicalGrid(extent=new_extent, shape=new_shape)
 
         # Initialize interpolators. Points outside the original grid are given
         # the values of the nearest neighbors.
@@ -135,10 +135,16 @@ class VelocityModel(Regular3DGrid):
         velocity = np.zeros(new_grid.shape, dtype=self.dtype)
 
         # Interpolate and extrapolate
-        velocity[inside] = interpolator((lon[inside], lat[inside], depth[inside]))
-        velocity[~inside] = extrapolator((lon[~inside], lat[~inside], depth[~inside]))
+        velocity[inside] = interpolator(
+            (lon[inside], lat[inside], depth[inside])
+        )
+        velocity[~inside] = extrapolator(
+            (lon[~inside], lat[~inside], depth[~inside])
+        )
 
-        return VelocityModel(extent=new_extent, shape=new_grid.shape, velocity=velocity)
+        return VelocityModel(
+            extent=new_extent, shape=new_grid.shape, velocity=velocity
+        )
 
     def is_constant(self):
         r"""Check if the velocity model is constant."""

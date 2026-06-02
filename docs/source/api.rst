@@ -17,4 +17,7 @@ API Reference
     velocity
     travel_times
     backprojection
+    slowness
+    beamforming
+    matchedfield
 

@@ -614,7 +614,7 @@ def grid3d(
     )
 
     # Default values for contour
-    if isinstance(grid, csn.travel_times.DifferentialTravelTimes):
+    if isinstance(grid, csn.travel_times.Delays):
         vmax = np.nanmax([np.abs(np.nanmin(grid)), np.abs(np.nanmax(grid))])
         vmin = -vmax
         kwargs.setdefault("cmap", "RdBu")
@@ -634,8 +634,12 @@ def grid3d(
     mappable = ax["xy"].contourf(
         grid.lon, grid.lat, grid[:, :, profile_index[2]].T, **kwargs
     )
-    ax["xz"].contourf(grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs)
-    ax["zy"].contourf(grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs)
+    ax["xz"].contourf(
+        grid.lon, grid.depth, grid[:, profile_index[1], :].T, **kwargs
+    )
+    ax["zy"].contourf(
+        grid.depth, grid.lat, grid[profile_index[0], :, :], **kwargs
+    )
     ax["xy"].axvline(profile_coordinates[0], dashes=[8, 3], color="k", lw=0.5)
     ax["xy"].axhline(profile_coordinates[1], dashes=[8, 3], color="k", lw=0.5)
     ax["zy"].axvline(profile_coordinates[2], dashes=[8, 3], color="k", lw=0.5)
@@ -651,7 +655,9 @@ def grid3d(
     ax["zy"].yaxis.set_label_position("right")
     ax["zy"].set_yticks(ax["xy"].get_yticks())
     ax["zy"].set_yticklabels(ax["xy"].get_yticklabels())
-    cb = plt.colorbar(mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5)
+    cb = plt.colorbar(
+        mappable, cax=ax["cb"], orientation="horizontal", shrink=0.5
+    )
     cb.ax.xaxis.set_major_locator(MaxNLocator(4))
     if label is not None:
         cb.set_label(label)

@@ -4,11 +4,11 @@ import numpy as np
 import warnings
 from obspy.core.trace import Stats
 
-from .spatial import straight_ray_distance, Regular3DGrid
+from .spatial import straight_ray_distance, GeographicalGrid
 from .velocity import VelocityModel
 
 
-class TravelTimes(Regular3DGrid):
+class TravelTimes(GeographicalGrid):
     r"""Three-dimensional travel time grid.
 
     This object is a three-dimensional grid of travel times between sources
@@ -96,7 +96,7 @@ class TravelTimes(Regular3DGrid):
             raise ValueError("The object must be a TravelTimes object.")
         if not np.allclose(self.velocity_model, other.velocity_model):
             raise ValueError("The velocity model must be the same.")
-        return DifferentialTravelTimes(self, other)
+        return Delays(self, other)
 
     def compute_travel_times(
         self, receiver_coordinates: tuple[float, float, float]
@@ -189,7 +189,7 @@ class TravelTimes(Regular3DGrid):
         return travel_times
 
 
-class DifferentialTravelTimes(TravelTimes):
+class Delays(TravelTimes):
     r"""Three-dimensional differential travel time grid.
 
     This object is a three-dimensional grid of differential travel times

@@ -8,9 +8,10 @@ compare against observed data.
 
 The station geometry is described by a list of
 :class:`~obspy.core.trace.Stats` objects with assigned geographical
-coordinates. All spatial calculations are performed in kilometres, using the
-:func:`~covseisnet.spatial.straight_ray_distance` function and a flat-Earth
-projection for local coordinates.
+coordinates. All spatial calculations delegate to
+:func:`~covseisnet.spatial.station_local_coordinates` and
+:func:`~covseisnet.spatial.pairwise_distance_matrix_from_stats` from the
+:mod:`covseisnet.spatial` module.
 
 Functions
 ---------
@@ -36,97 +37,11 @@ from scipy.special import j0
 from obspy.core.trace import Stats
 
 from .covariance import CovarianceMatrix
-from .spatial import straight_ray_distance
-
-
-# ---------------------------------------------------------------------------
-# Private helpers
-# ---------------------------------------------------------------------------
-
-
-def _station_local_coordinates(
-    stats: list[Stats],
-) -> tuple[np.ndarray, np.ndarray]:
-    r"""Flat-Earth east-north station coordinates in kilometres.
-
-    Projects geographical coordinates onto a local Cartesian frame centred on
-    the array barycentre using a first-order flat-Earth approximation:
-
-    .. math::
-
-        x_i &= (\varphi_i - \bar\varphi)\,\cos(\bar\lambda)\times 111.195
-        \quad [\text{km, East}] \\
-        y_i &= (\lambda_i - \bar\lambda)\times 111.195
-        \quad [\text{km, North}]
-
-    where :math:`\bar\varphi` and :math:`\bar\lambda` are the mean longitude
-    and latitude of the array.  The approximation is accurate to better than
-    1 % for array apertures up to about 500 km.
-
-    Arguments
-    ---------
-    stats : list of :class:`~obspy.core.trace.Stats`
-        Stats objects of the stations. Each must have a ``coordinates``
-        attribute with ``longitude`` and ``latitude`` keys (decimal degrees).
-
-    Returns
-    -------
-    x, y : :class:`numpy.ndarray`
-        East and North displacements in kilometres from the barycentre,
-        both of shape ``(n_stations,)``.
-    """
-    lons = np.array([s.coordinates["longitude"] for s in stats])
-    lats = np.array([s.coordinates["latitude"] for s in stats])
-    lon_ref = np.mean(lons)
-    lat_ref = np.mean(lats)
-    deg_to_km = 111.195
-    x = (lons - lon_ref) * np.cos(np.radians(lat_ref)) * deg_to_km
-    y = (lats - lat_ref) * deg_to_km
-    return x, y
-
-
-def _pairwise_distance_matrix(stats: list[Stats]) -> np.ndarray:
-    r"""Symmetric pairwise straight-ray distance matrix in kilometres.
-
-    Computes the full :math:`N \times N` matrix :math:`D` where
-    :math:`D_{ij}` is the straight-ray (chord) distance in km between
-    stations :math:`i` and :math:`j`, using
-    :func:`~covseisnet.spatial.straight_ray_distance`.
-
-    Arguments
-    ---------
-    stats : list of :class:`~obspy.core.trace.Stats`
-        Stats objects of the stations.  Each must have a ``coordinates``
-        attribute with ``longitude``, ``latitude``, and ``elevation``
-        (metres above sea level) keys.
-
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        Symmetric distance matrix of shape ``(n_stations, n_stations)``
-        in kilometres.  Diagonal entries are zero.
-    """
-    n = len(stats)
-    coords = [
-        (
-            s.coordinates["longitude"],
-            s.coordinates["latitude"],
-            -1e-3 * s.coordinates.get("elevation", 0.0),
-        )
-        for s in stats
-    ]
-    distances = np.zeros((n, n))
-    for i in range(n):
-        for j in range(i + 1, n):
-            d = straight_ray_distance(*coords[i], *coords[j])
-            distances[i, j] = d
-            distances[j, i] = d
-    return distances
-
-
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
+from .spatial import (
+    straight_ray_distance,
+    station_local_coordinates,
+    pairwise_distance_matrix_from_stats,
+)
 
 
 def plane_wave_field(
@@ -150,7 +65,7 @@ def plane_wave_field(
     where :math:`k = 2\pi f s_0` is the apparent wavenumber (rad/km), and
     :math:`\theta` is the propagation azimuth measured clockwise from north.
     The local coordinates are computed with a flat-Earth projection (see
-    :func:`~covseisnet.synthetic._station_local_coordinates`).
+    :func:`~covseisnet.spatial.station_local_coordinates`).
 
     Arguments
     ---------
@@ -207,7 +122,7 @@ def plane_wave_field(
         ax.set_title("Plane-wave phase across the array")
 
     """
-    x, y = _station_local_coordinates(stats)
+    x, y = station_local_coordinates(stats)
     wavenumber = 2 * np.pi * frequency * slowness
     azimuth_rad = np.radians(azimuth)
     phase = wavenumber * (np.sin(azimuth_rad) * x + np.cos(azimuth_rad) * y)
@@ -304,7 +219,7 @@ def surface_noise_covariance(
     --------
     :func:`~covseisnet.synthetic.volume_noise_covariance`
     """
-    distances = _pairwise_distance_matrix(stats)
+    distances = pairwise_distance_matrix_from_stats(stats)
     wavenumber = 2 * np.pi * frequency * slowness
     covariance = j0(wavenumber * distances).astype(complex)
     return CovarianceMatrix(covariance)
@@ -358,9 +273,8 @@ def volume_noise_covariance(
     --------
     :func:`~covseisnet.synthetic.surface_noise_covariance`
     """
-    distances = _pairwise_distance_matrix(stats)
+    distances = pairwise_distance_matrix_from_stats(stats)
     wavenumber = 2 * np.pi * frequency * slowness
-    # np.sinc(x) = sin(pi*x)/(pi*x); use x = k*d/pi to obtain sin(k*d)/(k*d)
     covariance = np.sinc(wavenumber * distances / np.pi).astype(complex)
     return CovarianceMatrix(covariance)
 
