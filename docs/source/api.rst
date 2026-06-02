@@ -13,6 +13,7 @@ API Reference
     plot
     data
     spatial
+    synthetic
     velocity
     travel_times
     backprojection

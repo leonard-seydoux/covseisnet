@@ -20,6 +20,7 @@ Covariance matrix analysis
 
    examples/coherence
    examples/coherence_preprocess
+   examples/synthetic_covariance
 
 Correlation analysis
 --------------------
