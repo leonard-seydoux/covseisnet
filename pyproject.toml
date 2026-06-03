@@ -28,6 +28,7 @@ dependencies = [
     "pytest",
     "setuptools==71",
     "jupyter>=1.1.1",
+    "pandas>=3.0.3",
 ]
 
 [project.optional-dependencies]
