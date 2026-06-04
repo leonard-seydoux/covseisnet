@@ -543,17 +543,13 @@ def bandpass_filter(x, sampling_rate, frequency_band, filter_order=4):
     """
     # Turn frequencies into normalized frequencies
     nyquist = 0.5 * sampling_rate
-    ddigital_freqs = [f / nyquist for f in frequency_band]
+    normalized_frequency_band = [f / nyquist for f in frequency_band]
 
     # Extract filter
-    butter = signal.butter(filter_order, ddigital_freqs, btype="band")
+    b, a = signal.butter(filter_order, normalized_frequency_band, btype="band")
 
-    if butter is not None:
-        return signal.filtfilt(butter[0], butter[1], x, axis=-1)
-    else:
-        ValueError(
-            f"The butter function returned None for the frequency band {frequency_band} and filter order {filter_order}. Check the parameters and try again."
-        )
+    # Apply filter
+    return signal.filtfilt(b, a, x, axis=-1)
 
 
 def hilbert_envelope(x: np.ndarray, **kwargs) -> np.ndarray:
