@@ -2,7 +2,7 @@
 The package provides tools for spectral analysis of seismic data. The main
 class is the :class:`~ShortTimeFourierTransform` class, which extends the
 :class:`~scipy.signal.ShortTimeFFT` class to provide a more user-friendly
-interface for the Short-Time Fourier Transform with streams. 
+interface for the Short-Time Fourier Transform with streams.
 
 Other functions are provided to normalize seismic traces in the spectral
 domain, such as the :func:`~modulus_division` and :func:`~smooth_modulus_division` functions. Also, we provide the :func:`~smooth_envelope_division` function to normalize seismic traces by a smooth version of its envelope.
@@ -98,7 +98,7 @@ class ShortTimeFourierTransform(signal.ShortTimeFFT):
 
         # Initialize the Short-Time Fourier Transform class
         kwargs.setdefault("fs", sampling_rate)
-        super().__init__(window_array, window_step_size, **kwargs)
+        super().__init__(np.array(window_array), window_step_size, **kwargs)
 
     def __str__(self):
         k0, p0 = self.lower_border_end
@@ -543,17 +543,17 @@ def bandpass_filter(x, sampling_rate, frequency_band, filter_order=4):
     """
     # Turn frequencies into normalized frequencies
     nyquist = 0.5 * sampling_rate
-    normalized_frequency_band = [f / nyquist for f in frequency_band]
+    ddigital_freqs = [f / nyquist for f in frequency_band]
 
     # Extract filter
-    b, a = signal.butter(
-        filter_order,
-        normalized_frequency_band,
-        btype="band",
-    )
+    butter = signal.butter(filter_order, ddigital_freqs, btype="band")
 
-    # Apply filter
-    return signal.filtfilt(b, a, x, axis=-1)
+    if butter is not None:
+        return signal.filtfilt(butter[0], butter[1], x, axis=-1)
+    else:
+        ValueError(
+            f"The butter function returned None for the frequency band {frequency_band} and filter order {filter_order}. Check the parameters and try again."
+        )
 
 
 def hilbert_envelope(x: np.ndarray, **kwargs) -> np.ndarray:
