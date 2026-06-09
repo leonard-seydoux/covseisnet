@@ -98,6 +98,22 @@ class TravelTimes(Regular3DGrid):
             raise ValueError("The velocity model must be the same.")
         return DifferentialTravelTimes(self, other)
 
+    @classmethod
+    def from_grid(cls, grid, grid_extent, receiver_coordinates):
+        obj = Regular3DGrid(
+                extent=grid_extent,
+                shape=grid.shape
+                )
+        obj.receiver_coordinates = receiver_coordinates
+        obj.velocity_model = Regular3DGrid(
+                extent=grid_extent,
+                shape=grid.shape,
+                fill_value=np.nan
+                )
+        obj[...] = grid
+        return obj
+
+
     def compute_travel_times(
         self, receiver_coordinates: tuple[float, float, float]
     ):
