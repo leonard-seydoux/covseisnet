@@ -1,5 +1,6 @@
 """Calculation and analysis of the network covariance matrix."""
 
+import pickle
 from typing import Callable
 
 import numpy as np
@@ -198,6 +199,46 @@ class CovarianceMatrix(np.ndarray):
 
         # Set the additional attributes
         self.__dict__.update(attributes)
+
+    @classmethod
+    def load(cls, filename: str) -> "CovarianceMatrix":
+        r"""Load a covariance matrix from a pickle file.
+
+        This method is used to load a covariance matrix from a pickle file. The
+        covariance matrix is expected to be saved with the :meth:`save` method
+        of the class, which uses the pickle module to save the covariance
+        matrix along with its attributes. The loaded covariance matrix is an
+        instance of the :class:`~covseisnet.covariance.CovarianceMatrix` class, so
+        it has all the methods and attributes of the class, including the stats
+        and stft attributes.
+
+        Arguments
+        ---------
+        filename: str
+            The path to the pickle file containing the covariance matrix.
+        """
+        with open(filename, "rb") as f:
+            obj = pickle.load(f)
+        return obj
+
+    def save(self, filename: str):
+        r"""Save the covariance matrix to a pickle file.
+
+        This method is used to save the covariance matrix to a pickle file. The
+        covariance matrix is saved along with its attributes, so that it can be
+        loaded with the :meth:`load` method of the class. The covariance matrix
+        is saved as an instance of the :class:`~covseisnet.covariance.CovarianceMatrix`
+        class, so it has all the methods and attributes of the class, including
+        the stats and stft attributes.
+
+        Arguments
+        ---------
+        filename: str
+            The path to the pickle file where the covariance matrix will be
+            saved.
+        """
+        with open(filename, "wb") as f:
+            pickle.dump(self, f)
 
     def coherence(self, kind="spectral_width", epsilon=1e-10):
         r"""Covariance-based coherence estimation.
