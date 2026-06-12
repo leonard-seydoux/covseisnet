@@ -1,11 +1,11 @@
 import numpy as np
 
-from .spatial import Regular3DGrid
-from .travel_times import DifferentialTravelTimes
+from .spatial import GeographicalGrid
+from .travel_times import Delays
 from .correlation import CrossCorrelationMatrix
 
 
-class DifferentialBackProjection(Regular3DGrid):
+class DifferentialBackProjection(GeographicalGrid):
     r"""Differential travel-times backprojection from cross-correlation
      functions.
 
@@ -13,12 +13,10 @@ class DifferentialBackProjection(Regular3DGrid):
     the back-projection for a set of cross-correlation functions.
     """
 
-    moveouts: dict[str, DifferentialTravelTimes]
+    moveouts: dict[str, Delays]
     pairs: list[str]
 
-    def __new__(
-        cls, differential_travel_times: dict[str, DifferentialTravelTimes]
-    ):
+    def __new__(cls, differential_travel_times: dict[str, Delays]):
         r"""
         Arguments
         ---------
