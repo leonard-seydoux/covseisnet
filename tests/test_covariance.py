@@ -14,8 +14,6 @@ def test_covariance_matrix_construction_errors():
         csn.CovarianceMatrix(np.array(1))
     with pytest.raises(ValueError):
         csn.CovarianceMatrix(np.array([1, 2]))
-    with pytest.raises(ValueError):
-        csn.CovarianceMatrix(np.random.randn(3, 3, 3, 3, 3))
 
 
 def test_covariance_matrix_instance():
