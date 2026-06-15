@@ -117,12 +117,12 @@ class TravelTimes(GeographicalGrid):
         tt : :class:`~covseisnet.travel_times.TravelTimes`
             The requested TravelTimes instance.
         """
-        obj = Regular3DGrid(
+        obj = GeographicalGrid(
                 extent=grid_extent,
                 shape=grid.shape
                 )
         obj.receiver_coordinates = receiver_coordinates
-        obj.velocity_model = Regular3DGrid(
+        obj.velocity_model = GeographicalGrid(
                 extent=grid_extent,
                 shape=grid.shape,
                 fill_value=np.nan
