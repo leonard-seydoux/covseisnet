@@ -100,6 +100,23 @@ class TravelTimes(GeographicalGrid):
 
     @classmethod
     def from_grid(cls, grid, grid_extent, receiver_coordinates):
+        r"""Instantiate TravelTimes from existing travel-time table.
+
+        Arguments
+        ---------
+        grid : numpy.ndarray
+            3D array with pre-computed travel times. Grid dimensions must be:
+            (longitude, latitude, depth).
+        grid_extent : tuple
+            Shape of the grid: (size_longitude, size_latitude, size_depth).
+        receiver_coordinates : tuple
+            Coordinates of the receiver: (longitude, latitude, depth_km).
+
+        Returns
+        -------
+        tt : :class:`~covseisnet.travel_times.TravelTimes`
+            The requested TravelTimes instance.
+        """
         obj = Regular3DGrid(
                 extent=grid_extent,
                 shape=grid.shape
