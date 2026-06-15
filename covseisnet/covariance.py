@@ -4,6 +4,7 @@ import pickle
 from typing import Callable
 
 import numpy as np
+import matplotlib.dates as mdates
 from numpy.linalg import eigvalsh, eigh
 from scipy.linalg import ishermitian
 from obspy.core.trace import Stats
@@ -101,6 +102,7 @@ class CovarianceMatrix(np.ndarray):
         input_array: "np.ndarray | CovarianceMatrix | list",
         stats: list[Stats] | list[dict] | None = None,
         stft: signal.ShortTimeFourierTransform | None = None,
+        window_times: np.ndarray | list | None = None,
     ) -> "CovarianceMatrix":
         r"""
         Note
@@ -117,7 +119,7 @@ class CovarianceMatrix(np.ndarray):
         >>> import covseisnet as csn
         >>> import numpy as np
         >>> covariance = csn.CovarianceMatrix(
-        ...     np.zeros((4, 4)), stats=None, stft=None
+        ...     np.zeros((4, 4)), stats=None, stft=None, window_times=None
         ... )
         >>> covariance
         CovarianceMatrix([[ 0.,  0.,  0.,  0.],
@@ -152,6 +154,7 @@ class CovarianceMatrix(np.ndarray):
         obj = input_array.view(cls)
         obj.stats = stats
         obj.stft = stft
+        obj.window_times = window_times
         return obj
 
     def __array_finalize__(self, obj):
@@ -167,6 +170,7 @@ class CovarianceMatrix(np.ndarray):
             return
         self.stats = getattr(obj, "stats", None)
         self.stft = getattr(obj, "stft", None)
+        self.window_times = getattr(obj, "window_times", None)
 
     def __reduce__(self):
         r"""Reduce the object.
@@ -199,6 +203,25 @@ class CovarianceMatrix(np.ndarray):
 
         # Set the additional attributes
         self.__dict__.update(attributes)
+
+    @property
+    def frequencies(self):
+        if self.stft is None:
+            return
+        return self.stft.frequencies
+
+    @property
+    def times(self):
+        if self.window_times is None:
+            return
+        return np.asarray(mdates.num2date(self.window_times)).astype("datetime64[ms]")
+
+    @property
+    def stations(self):
+        if self.stats is None:
+            return
+        return [self.stats[i].station for i in range(len(self.stats))]
+
 
     @classmethod
     def load(cls, filename: str) -> "CovarianceMatrix":
@@ -879,14 +902,15 @@ def calculate_covariance_matrix(
         ) / 2
         covariance_times.append(center_time)
 
+    # Turn times into array
+    covariance_times = np.array(covariance_times)
+
     # Set covariance matrix
     covariances = CovarianceMatrix(
         input_array=covariances,
         stft=short_time_fourier_transform,
         stats=[trace.stats for trace in stream],
+        window_times=covariance_times,
     )
-
-    # Turn times into array
-    covariance_times = np.array(covariance_times)
 
     return covariance_times, frequencies, covariances
