@@ -214,7 +214,14 @@ class CovarianceMatrix(np.ndarray):
     def times(self):
         if self.window_times is None:
             return
-        return np.asarray(mdates.num2date(self.window_times)).astype("datetime64[ms]")
+        try:
+            # if time already in matplotlib format
+            return np.asarray(mdates.num2date(self.window_times)).astype("datetime64[ms]")
+        except TypeError:
+            # if time is in a datetime-like format
+            return np.asarray(
+                    mdates.num2date(mdates.date2num(self.window_times))
+                    ).astype("datetime64[ms]")
 
     @property
     def stations(self):
