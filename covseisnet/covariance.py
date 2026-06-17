@@ -216,19 +216,20 @@ class CovarianceMatrix(np.ndarray):
             return
         try:
             # if time already in matplotlib format
-            return np.asarray(mdates.num2date(self.window_times)).astype("datetime64[ms]")
+            return np.asarray(mdates.num2date(self.window_times)).astype(
+                "datetime64[ms]"
+            )
         except TypeError:
             # if time is in a datetime-like format
             return np.asarray(
-                    mdates.num2date(mdates.date2num(self.window_times))
-                    ).astype("datetime64[ms]")
+                mdates.num2date(mdates.date2num(self.window_times))
+            ).astype("datetime64[ms]")
 
     @property
     def stations(self):
         if self.stats is None:
             return
         return [self.stats[i].station for i in range(len(self.stats))]
-
 
     @classmethod
     def load(cls, filename: str) -> "CovarianceMatrix":
@@ -554,9 +555,7 @@ class CovarianceMatrix(np.ndarray):
         # Sort according to eigenvalues.
         isort = np.argsort(np.abs(eigenvalues)[:, ::-1])[:, ::-1]
         eigenvalues = np.take_along_axis(np.abs(eigenvalues), isort, axis=1)
-        eigenvectors = np.take_along_axis(
-            eigenvectors, isort[:, :, np.newaxis], axis=1
-        )
+        eigenvectors = np.take_along_axis(eigenvectors, isort[:, :, np.newaxis], axis=1)
 
         # Select according to rank.
         if rank is not None:
@@ -582,9 +581,7 @@ class CovarianceMatrix(np.ndarray):
             )
 
         else:
-            return eigenvectors.reshape(
-                (*self.shape[:-1], eigenvectors.shape[-1])
-            )
+            return eigenvectors.reshape((*self.shape[:-1], eigenvectors.shape[-1]))
 
     @property
     def flat(self):
@@ -851,8 +848,8 @@ def calculate_covariance_matrix(
     )
 
     # Extract spectra
-    spectra_times, frequencies, spectra = (
-        short_time_fourier_transform.map_transform(stream)
+    spectra_times, frequencies, spectra = short_time_fourier_transform.map_transform(
+        stream
     )
 
     # Check whiten parameter
@@ -872,11 +869,7 @@ def calculate_covariance_matrix(
         average = n_times
         step = n_times
     else:
-        step = int(
-            average_step * average
-            if average_step is not None
-            else average // 2
-        )
+        step = int(average_step * average if average_step is not None else average // 2)
 
     # Times of the covariance matrix
     indices = range(0, n_times - average + 1, step)
@@ -904,9 +897,7 @@ def calculate_covariance_matrix(
         )
 
         # Center time
-        center_time = (
-            spectra_times[selection][0] + spectra_times[selection][-1]
-        ) / 2
+        center_time = (spectra_times[selection][0] + spectra_times[selection][-1]) / 2
         covariance_times.append(center_time)
 
     # Turn times into array
@@ -921,3 +912,91 @@ def calculate_covariance_matrix(
     )
 
     return covariance_times, frequencies, covariances
+
+
+def _align_covariance_matrices(covariance_matrices):
+    """Align the station-pair axis of covariance matrices.
+
+    Arguments
+    ---------
+    covariance_matrices: list
+        List of :class:`~covseisnet.stream.CovarianceMatrix` to align.
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+        Array of aligned covariance matrices with dimensions 
+        (num_cov_mats, num_freqs, num_stations, num_stations)
+    list
+        List of the station names, in order, of the new, aligned station axis.
+    """
+    all_stations = set()
+    for covmat in covariance_matrices:
+        all_stations.update(covmat.stations)
+    all_stations = list(all_stations)
+    all_stations.sort()
+    num_all_stations = len(all_stations)
+    station_to_idx = {sta: idx for idx, sta in enumerate(all_stations)}
+
+    num_freqs = len(covariance_matrices[0].frequencies)
+    aligned_covmats = np.zeros(
+        (
+            len(covariance_matrices),
+            len(covariance_matrices[0].frequencies),
+            len(all_stations) * len(all_stations),
+        ),
+        dtype=covariance_matrices[0].dtype,
+    )
+    for i, covmat in enumerate(covariance_matrices):
+        # map from old station indices to new station indices
+        station_indices = np.array([station_to_idx[sta] for sta in covmat.stations])
+        # unwrap station pair indices
+        station_pair_indices = (
+            station_indices[:, None] * num_all_stations + station_indices
+        ).ravel()
+        #
+        aligned_covmats[i, :, station_pair_indices] = (
+            covmat[0, ...].reshape(num_freqs, -1).T
+        )
+    return (
+        aligned_covmats.reshape(
+            len(covariance_matrices), num_freqs, num_all_stations, num_all_stations
+        ),
+        all_stations,
+    )
+
+
+def stack_covariance_matrices(covariance_matrices):
+    """Stack covariance matrices.
+
+    The station-pair axis of the covariance matrices is first aligned
+    using :func:`~covseisnet.covariance._align_covariance_matrices` and then
+    the covariance matrices are averaged.
+
+    Arguments
+    ---------
+    covariance_matrices: list
+        List of :class:`~covseisnet.stream.CovarianceMatrix` to stack.
+
+    Returns
+    -------
+    :class:`~covseisnet.stream.CovarianceMatrix`
+        The average covariance matrix.
+    """
+    aligned_covmats, stations = _align_covariance_matrices(covariance_matrices)
+    all_stats = {}
+    for covmat in covariance_matrices:
+        for stats in covmat.stats:
+            # station_id = f"{stats.network}.{stats.station}"
+            station_id = stats.station
+            if station_id in all_stats:
+                continue
+            all_stats[station_id] = stats
+    all_stats = [all_stats[sta] for sta in stations]
+    stacked_covmat = csn.covariance.CovarianceMatrix(
+        aligned_covmats.mean(axis=0, keepdims=True),
+        stft=covariance_matrices[0].stft,
+        window_times=np.atleast_1d(covariance_matrices[0].window_times),
+        stats=all_stats,
+    )
+    return stacked_covmat
