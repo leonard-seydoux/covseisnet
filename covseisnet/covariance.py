@@ -993,10 +993,13 @@ def stack_covariance_matrices(covariance_matrices):
                 continue
             all_stats[station_id] = stats
     all_stats = [all_stats[sta] for sta in stations]
-    stacked_covmat = csn.covariance.CovarianceMatrix(
+    window_times = np.hstack(
+            [covmat.window_times for covmat in covariance_matrices]
+            )
+    stacked_covmat = CovarianceMatrix(
         aligned_covmats.mean(axis=0, keepdims=True),
         stft=covariance_matrices[0].stft,
-        window_times=np.atleast_1d(covariance_matrices[0].window_times),
+        window_times=np.array([window_times.mean()]),
         stats=all_stats,
     )
     return stacked_covmat
