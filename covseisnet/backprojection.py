@@ -96,6 +96,7 @@ class DifferentialBackProjection(GeographicalGrid):
         self,
         cross_correlation: CrossCorrelationMatrix,
         normalize: bool = True,
+        num_threads=1,
     ):
         r"""Calculate the likelihood of the back-projection.
 
@@ -159,6 +160,7 @@ class DifferentialBackProjection(GeographicalGrid):
             weights_sources,
             mode="differential",
             reduce=None,
+            num_threads=num_threads,
         ).flat
 
         # Normalize the likelihood
