@@ -16,6 +16,7 @@ __all__ = [
     "NetworkStream",
     "ShortTimeFourierTransform",
     "calculate_covariance_matrix",
+    "stack_covariance_matrices",
     "calculate_cross_correlation_matrix",
     "calculate_travel_times",
     "pairwise_great_circle_distances_from_stats",
@@ -49,6 +50,7 @@ from . import matchedfield
 
 # High-level methods
 from .covariance import calculate_covariance_matrix
+from .covariance import stack_covariance_matrices
 from .correlation import calculate_cross_correlation_matrix
 from .stream import read
 from .spatial import pairwise_great_circle_distances_from_stats
