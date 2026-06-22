@@ -221,7 +221,7 @@ class CovarianceMatrix(np.ndarray):
                     t.replace(tzinfo=None)
                     for t in mdates.num2date(self.window_times)
                 ]
-            ).astype("datetime64[ms]")
+            ).astype("datetime64[ms]").squeeze()
         except TypeError:
             # if time is in a datetime-like format
             return np.asarray(
