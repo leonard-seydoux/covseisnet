@@ -155,7 +155,162 @@ class CovarianceMatrix(np.ndarray):
         obj.stats = stats
         obj.stft = stft
         obj.window_times = window_times
+        obj._validate_station_axis()
         return obj
+
+    @staticmethod
+    def _get_station_name(stats: Stats | dict) -> str:
+        r"""Return the station name from an ObsPy Stats object or a dict."""
+        if isinstance(stats, dict):
+            return stats["station"]
+        return stats.station
+
+    @staticmethod
+    def _contains_station_name(key) -> bool:
+        r"""Return True if an indexing key contains at least one station name."""
+        if isinstance(key, str):
+            return True
+        if isinstance(key, (list, tuple, np.ndarray)):
+            array = np.asarray(key, dtype=object)
+            return any(isinstance(item, str) for item in array.ravel())
+        return False
+
+    def _validate_station_axis(self):
+        r"""Validate that the station metadata matches the covariance axes."""
+        if self.stats is None:
+            return
+
+        if self.shape[-2] != self.shape[-1]:
+            raise ValueError(
+                "The last two dimensions of a covariance matrix must be square."
+            )
+
+        n_stations = self.shape[-1]
+        if len(self.stats) != n_stations:
+            raise ValueError(
+                f"The covariance matrix has {n_stations} stations along its "
+                f"last two axes, but {len(self.stats)} station metadata "
+                "entries were provided."
+            )
+
+        stations = [self._get_station_name(stats) for stats in self.stats]
+        if len(set(stations)) != len(stations):
+            raise ValueError(
+                "Station names must be unique to allow name-based indexing, "
+                f"got {stations}."
+            )
+
+    @property
+    def station_indices(self) -> dict[str, int]:
+        r"""Dictionary mapping station names to covariance-axis indices."""
+        if self.stats is None:
+            raise ValueError("Station metadata are not available.")
+        return {station: i for i, station in enumerate(self.stations)}
+
+    def _station_to_index(self, key):
+        r"""Convert station-name indices to integer indices."""
+        if isinstance(key, str):
+            try:
+                return self.station_indices[key]
+            except KeyError as exc:
+                raise KeyError(
+                    f"Unknown station {key!r}. Available stations are: "
+                    f"{self.stations}."
+                ) from exc
+
+        if isinstance(key, list):
+            return [self._station_to_index(item) for item in key]
+
+        if isinstance(key, tuple):
+            return tuple(self._station_to_index(item) for item in key)
+
+        if isinstance(key, np.ndarray) and key.dtype.kind in {"U", "S", "O"}:
+            if self._contains_station_name(key):
+                return np.vectorize(self._station_to_index, otypes=[int])(key)
+
+        return key
+
+    def _expand_ellipsis(self, key: tuple) -> tuple:
+        r"""Expand ellipsis in an indexing tuple to explicit slices."""
+        ellipsis_positions = [
+            i for i, item in enumerate(key) if item is Ellipsis
+        ]
+
+        if not ellipsis_positions:
+            return key
+
+        if len(ellipsis_positions) > 1:
+            raise IndexError("An index can only have a single ellipsis.")
+
+        index = ellipsis_positions[0]
+        n_missing = self.ndim - (len(key) - 1)
+        if n_missing < 0:
+            raise IndexError("Too many indices for covariance matrix.")
+
+        return key[:index] + (slice(None),) * n_missing + key[index + 1 :]
+
+    def __getitem__(self, key):
+        r"""Index the covariance matrix, allowing station names on station axes.
+
+        Station names are only interpreted on the last two axes, which encode
+        the covariance station pair. For example, ``cov[..., "STA1", "STA2"]``
+        is equivalent to ``cov[..., i, j]`` where ``i`` and ``j`` are the
+        indices of stations ``STA1`` and ``STA2``.
+        """
+        if isinstance(key, tuple) and self.stats is not None:
+            expanded_key = list(self._expand_ellipsis(key))
+            has_station_names = any(
+                self._contains_station_name(item) for item in expanded_key
+            )
+
+            if has_station_names and len(expanded_key) != self.ndim:
+                raise IndexError(
+                    "Station names can only be used when the indexing tuple "
+                    "addresses the covariance axes explicitly. Use an ellipsis "
+                    "or provide all dimensions, e.g. cov[..., 'STA1', 'STA2'] "
+                    "or cov[:, :, 'STA1', 'STA2']."
+                )
+
+            # Convert station names only on the two covariance axes.
+            if has_station_names:
+                for axis in (-2, -1):
+                    if self._contains_station_name(expanded_key[axis]):
+                        expanded_key[axis] = self._station_to_index(
+                            expanded_key[axis]
+                        )
+
+            key = tuple(expanded_key)
+
+        elif isinstance(key, str):
+            raise IndexError(
+                "Station names can only be used on the last two covariance "
+                "axes, e.g. cov[..., 'STA1', 'STA2']."
+            )
+
+        return super().__getitem__(key)
+
+    def pair(self, station_i: str, station_j: str) -> np.ndarray:
+        r"""Return the covariance values for one station pair."""
+        return self[..., station_i, station_j]
+
+    def select_stations(self, stations: list[str]) -> "CovarianceMatrix":
+        r"""Return a covariance matrix restricted to a station subset.
+
+        This method keeps the station metadata aligned with the last two
+        covariance axes.
+        """
+        indices = [self.station_indices[station] for station in stations]
+        data = np.asarray(self)[..., indices, :][..., :, indices]
+        if self.stats is None:
+            return CovarianceMatrix(
+                data, stft=self.stft, window_times=self.window_times
+            )
+        return CovarianceMatrix(
+            data,
+            stats=[self.stats[index] for index in indices],
+            stft=self.stft,
+            window_times=self.window_times,
+        )
 
     def __array_finalize__(self, obj):
         r"""Finalize the array.
@@ -235,8 +390,8 @@ class CovarianceMatrix(np.ndarray):
     @property
     def stations(self):
         if self.stats is None:
-            return
-        return [self.stats[i].station for i in range(len(self.stats))]
+            return [f"station_{i}" for i in range(self.shape[-1])]
+        return [self._get_station_name(stats) for stats in self.stats]
 
     @classmethod
     def load(cls, filename: str) -> "CovarianceMatrix":
@@ -932,96 +1087,41 @@ def calculate_covariance_matrix(
 
 
 def _align_covariance_matrices(covariance_matrices):
-    """Align the station-pair axis of covariance matrices.
+    all_stations = sorted(
+        set().union(*(covmat.stations for covmat in covariance_matrices))
+    )
 
-    Arguments
-    ---------
-    covariance_matrices: list
-        List of :class:`~covseisnet.stream.CovarianceMatrix` to align.
+    aligned = []
 
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        Array of aligned covariance matrices with dimensions
-        (num_cov_mats, num_freqs, num_stations, num_stations)
-    list
-        List of the station names, in order, of the new, aligned station axis.
-    """
-    all_stations = set()
     for covmat in covariance_matrices:
-        all_stations.update(covmat.stations)
-    all_stations = list(all_stations)
-    all_stations.sort()
-    num_all_stations = len(all_stations)
-    station_to_idx = {sta: idx for idx, sta in enumerate(all_stations)}
+        n = len(all_stations)
+        data = np.zeros((*covmat.shape[:-2], n, n), dtype=covmat.dtype)
 
-    num_freqs = len(covariance_matrices[0].frequencies)
-    aligned_covmats = np.zeros(
-        (
-            len(covariance_matrices),
-            len(covariance_matrices[0].frequencies),
-            len(all_stations) * len(all_stations),
-        ),
-        dtype=covariance_matrices[0].dtype,
-    )
-    for i, covmat in enumerate(covariance_matrices):
-        # map from old station indices to new station indices
-        station_indices = np.array(
-            [station_to_idx[sta] for sta in covmat.stations]
-        )
-        # unwrap station pair indices
-        station_pair_indices = (
-            station_indices[:, None] * num_all_stations + station_indices
-        ).ravel()
-        #
-        aligned_covmats[i, :, station_pair_indices] = (
-            covmat[0, ...].reshape(num_freqs, -1).T
-        )
-    return (
-        aligned_covmats.reshape(
-            len(covariance_matrices),
-            num_freqs,
-            num_all_stations,
-            num_all_stations,
-        ),
-        all_stations,
-    )
+        old_to_new = [all_stations.index(sta) for sta in covmat.stations]
+
+        for old_i, new_i in enumerate(old_to_new):
+            for old_j, new_j in enumerate(old_to_new):
+                data[..., new_i, new_j] = np.asarray(covmat)[..., old_i, old_j]
+
+        aligned.append(data)
+
+    return np.asarray(aligned), all_stations
 
 
 def stack_covariance_matrices(covariance_matrices):
-    """Stack covariance matrices.
-
-    The station-pair axis of the covariance matrices is first aligned
-    using :func:`~covseisnet.covariance._align_covariance_matrices` and then
-    the covariance matrices are averaged.
-
-    Arguments
-    ---------
-    covariance_matrices: list
-        List of :class:`~covseisnet.stream.CovarianceMatrix` to stack.
-
-    Returns
-    -------
-    :class:`~covseisnet.stream.CovarianceMatrix`
-        The average covariance matrix.
-    """
     aligned_covmats, stations = _align_covariance_matrices(covariance_matrices)
+
     all_stats = {}
     for covmat in covariance_matrices:
         for stats in covmat.stats:
-            # station_id = f"{stats.network}.{stats.station}"
-            station_id = stats.station
-            if station_id in all_stats:
-                continue
-            all_stats[station_id] = stats
-    all_stats = [all_stats[sta] for sta in stations]
-    window_times = np.hstack(
-        [covmat.window_times for covmat in covariance_matrices]
-    )
+            station = CovarianceMatrix._get_station_name(stats)
+            all_stats.setdefault(station, stats)
+
     stacked_covmat = CovarianceMatrix(
-        aligned_covmats.mean(axis=0, keepdims=True),
+        aligned_covmats.mean(axis=0),
         stft=covariance_matrices[0].stft,
-        window_times=np.array([window_times.mean()]),
-        stats=all_stats,
+        window_times=None,
+        stats=[all_stats[station] for station in stations],
     )
+
     return stacked_covmat

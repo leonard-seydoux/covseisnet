@@ -12,102 +12,57 @@ from .signal import ShortTimeFourierTransform
 
 
 class CrossCorrelationMatrix(np.ndarray):
-    r"""
+    r"""Cross-correlation matrix in the time domain.
 
-    .. rubric:: Mathematical definition
-
-    This class is used to store the correlation matrix in the time domain. The
-    cross-correlation is defined as the inverse Fourier transform of the
-    covariance. Given a covariance matrix :math:`C_{ij}(f)`, the correlation
-    matrix :math:`R_{ij}(\tau)` is defined as:
-
-    .. math::
-
-        R_{ij}(\tau) = \mathcal{F}^{-1} \{ C_{ij}(f) \}
-
-    where :math:`\mathcal{F}^{-1}` is the inverse Fourier transform,
-    :math:`\tau` is the lag time, and :math:`i` and :math:`j` are the station
-    indices. Note that the correlation matrix is a symmetric matrix, with the
-    diagonal elements being the auto-correlation. Therefore, we do not store
-    the lower triangular part of the matrix.
-
-    .. rubric:: Practical implementation
-
-    The correlation matrix is stored as a 3D array with the first dimension
-    being the number of pairs, the second dimension the number of windows, and
-    the third dimension the number of lags. The correlation matrix can be
-    visualized as a 2D array with the pairs and windows in the first dimension
-    and the lags in the second dimension with the method :meth:`~flat`.
-
-    Tip
-    ---
-
-    The correlation matrix is usually calculated from the covariance matrix
-    using the method :func:`~calculate_cross_correlation_matrix`. The method
-    returns a :class:`~covseisnet.correlation.CrossCorrelationMatrix` object
-    with adequate attributes.
+    The correlation matrix is stored with pairwise correlations along the
+    first axis. Pair metadata are stored explicitly in the ``pairs`` attribute,
+    because the station-pair axis is a compressed representation of the upper
+    triangular part of the original covariance matrix.
     """
 
     def __new__(
         cls,
         input_array: np.ndarray,
-        stats: list[Stats] | None = None,
+        stats: list[Stats] | list[dict] | None = None,
         stft: ShortTimeFourierTransform | None = None,
+        pairs: list[tuple[str, str]] | list[str] | None = None,
     ) -> "CrossCorrelationMatrix":
-        r"""Note
-        ----
+        r"""Create a cross-correlation matrix.
 
-        If for some reason you need to create a
-        :class:`~covseisnet.covariance.CrossCorrelationMatrix` object from a
-        numpy array, you have the several solutions provided by the `numpy
-        subclassing mechanism
-        <https://numpy.org/doc/stable/user/basics.subclassing.html#subclassing-ndarray>`_.
-        We recommend using the constructor of the class, which allows one to pass
-        the stats and stft attributes, as in the following example:
-
-        >>> import numpy as np
-        >>> from covseisnet.correlation import CrossCorrelationMatrix
-        >>> correlation = CrossCorrelationMatrix(
-        ...     np.random.rand(10, 5, 100),
-        ...     stats=None,
-        ...     stft=None,
-        ... )
+        Parameters
+        ----------
+        input_array: :class:`numpy.ndarray`
+            Correlation array. The first axis is expected to represent station
+            pairs whenever pair metadata are provided.
+        stats: list, optional
+            Station metadata inherited from the covariance matrix.
+        stft: :class:`~covseisnet.signal.ShortTimeFourierTransform`, optional
+            STFT parameters inherited from the covariance matrix.
+        pairs: list, optional
+            Pair metadata associated with the first axis. Each pair should be a
+            tuple ``(station_i, station_j)``. For metadata-free objects, strings
+            such as ``"pair 0"`` are also accepted.
         """
-        # Enforce the input array to be a complex-valued numpy array.
         input_array = np.asarray(input_array)
 
-        # Cast the input array into CovarianceMatrix and add the stats and
-        # stft attributes.
         obj = input_array.view(cls)
         obj.stats = stats
         obj.stft = stft
+        obj.pairs = pairs
+        obj._validate_pair_axis()
         return obj
 
     def __array_finalize__(self, obj):
-        r"""Finalize the array.
-
-        This method is essential to the subclassing mechanism of numpy. It
-        guarantees that the attributes of the object are correctly set when
-        slicing or reducing the array. The method is called after the
-        creation of the object, and is used to set the attributes of the
-        object to the attributes of the input array.
-        """
+        r"""Finalize the array after NumPy view casting or slicing."""
         if obj is None:
             return
         self.stats = getattr(obj, "stats", None)
         self.stft = getattr(obj, "stft", None)
+        self.pairs = getattr(obj, "pairs", None)
 
     def __reduce__(self):
-        r"""Reduce the object.
-
-        This method is used to preserve the attributes and methods of the object
-        over pickling and unpickling.
-        """
-        # Get the reduction tuple from the base ndarray
+        r"""Reduce the object for pickling."""
         pickled_state = super().__reduce__()
-
-        # Combine the ndarray state with the additional attributes saved in
-        # the __dict__ attribute.
         return (
             pickled_state[0],
             pickled_state[1],
@@ -115,198 +70,156 @@ class CrossCorrelationMatrix(np.ndarray):
         )
 
     def __setstate__(self, state):
-        r"""Set the state of the object.
-
-        This method is used to set the state of the object after pickling and
-        unpickling.
-        """
-        # Extract the ndarray part of the state and the additional attributes
+        r"""Restore the object after unpickling."""
         ndarray_state, attributes = state
-
-        # Set the ndarray part of the state
         super().__setstate__(ndarray_state)
-
-        # Set the additional attributes
         self.__dict__.update(attributes)
+
+    @staticmethod
+    def _get_station_name(stats: Stats | dict) -> str:
+        r"""Return the station name from an ObsPy Stats object or a dict."""
+        if isinstance(stats, dict):
+            return stats["station"]
+        return stats.station
+
+    def _validate_pair_axis(self):
+        r"""Validate that pair metadata match the first correlation axis."""
+        if self.pairs is None:
+            return
+
+        if self.ndim == 0:
+            raise ValueError("Pair metadata cannot be attached to a scalar.")
+
+        n_pairs = self.shape[0]
+        if len(self.pairs) != n_pairs:
+            raise ValueError(
+                f"The correlation matrix has {n_pairs} pairs along its first "
+                f"axis, but {len(self.pairs)} pair metadata entries were "
+                "provided."
+            )
+
+        if len(set(self.pairs)) != len(self.pairs):
+            raise ValueError(
+                "Pair metadata must be unique to allow pair-based selection, "
+                f"got {self.pairs}."
+            )
+
+    @property
+    def stations(self) -> list[str] | None:
+        r"""Return station names when station metadata are available."""
+        if self.stats is None:
+            return None
+        return [self._get_station_name(stats) for stats in self.stats]
+
+    @property
+    def pair_indices(self) -> dict[tuple[str, str] | str, int]:
+        r"""Dictionary mapping pair metadata to first-axis indices."""
+        if self.pairs is None:
+            raise ValueError("Pair metadata are not available.")
+        return {pair: i for i, pair in enumerate(self.pairs)}
+
+    def _normalize_pair(self, pair: tuple[str, str] | str):
+        r"""Return a pair key present in the object, allowing reversed order."""
+        indices = self.pair_indices
+
+        if pair in indices:
+            return pair
+
+        if isinstance(pair, tuple) and len(pair) == 2:
+            reversed_pair = (pair[1], pair[0])
+            if reversed_pair in indices:
+                return reversed_pair
+
+        raise KeyError(
+            f"Unknown pair {pair!r}. Available pairs are: {self.pairs}."
+        )
+
+    def pair(self, station_i: str, station_j: str) -> np.ndarray:
+        r"""Return one pairwise cross-correlation.
+
+        The returned object is a plain :class:`numpy.ndarray`, because the pair
+        axis has been consumed and the result is no longer a
+        :class:`CrossCorrelationMatrix`.
+        """
+        pair = self._normalize_pair((station_i, station_j))
+        return np.asarray(
+            np.ndarray.__getitem__(self, self.pair_indices[pair])
+        )
+
+    def select_pairs(
+        self, pairs: list[tuple[str, str] | str]
+    ) -> "CrossCorrelationMatrix":
+        r"""Return a correlation matrix restricted to selected pairs.
+
+        The pair metadata are updated consistently with the first axis.
+        """
+        normalized_pairs = [self._normalize_pair(pair) for pair in pairs]
+        indices = [self.pair_indices[pair] for pair in normalized_pairs]
+
+        return CrossCorrelationMatrix(
+            np.asarray(self)[indices],
+            stats=self.stats,
+            stft=self.stft,
+            pairs=normalized_pairs,
+        )
 
     @property
     def sampling_rate(self) -> float:
-        r"""Return the sampling rate in Hz.
-
-        The sampling rate is extracted from the first stats in the list of
-        stats extracted from the covariance matrix. Note that if the
-        covariance matrix was calculated with the
-        :func:`~covseisnet.covariance.calculate_covariance_matrix`, all streams
-        must be synchronized and have the same sampling rate.
-
-        Returns
-        -------
-        float
-            The sampling rate in Hz.
-
-        Raises
-        ------
-        ValueError
-            If the stats attribute is not set.
-        """
+        r"""Return the sampling rate in Hz."""
         if self.stats is None:
             raise ValueError("Stats are needed to get the sampling rate.")
         return self.stats[0].sampling_rate
 
     def envelope(self, **kwargs) -> "CrossCorrelationMatrix":
-        r"""Hilbert envelope of the correlation matrix.
-
-        The Hilbert envelope is calculated using the Hilbert transform of the
-        pairwise cross-correlation:
-
-        .. math::
-
-            E_{ij}(\tau) = | R_{ij}(\tau) + i \mathcal{H} R_{ij}(\tau)  |
-
-        where :math:`\mathcal{H}` is the Hilbert transform, and :math:`i` is
-        the imaginary unit. The Hilbert envelope is the absolute value of the
-        Hilbert transform of the correlation matrix.
-
-
-        Arguments
-        ---------
-        **kwargs: dict
-            Additional arguments to pass to :func:`~scipy.signal.hilbert`. By
-            default, the axis is set to the last axis (lags).
-
-        Returns
-        -------
-        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
-            The Hilbert envelope of the correlation matrix.
-        """
+        r"""Hilbert envelope of the correlation matrix."""
         kwargs.setdefault("axis", -1)
         return CrossCorrelationMatrix(
             hilbert_envelope(self, **kwargs),
             stats=self.stats,
             stft=self.stft,
+            pairs=self.pairs,
         )
 
     def taper(self, max_percentage: float = 0.1) -> "CrossCorrelationMatrix":
-        r"""Taper the correlation matrix.
-
-        Taper the correlation matrix with the given taper. The taper is
-        applied to the last axis (lags) of the correlation matrix. The tapered
-        correlation matrix is defined as:
-
-        .. math::
-
-            R'_{ij}(\tau) = w_T(\tau) R_{ij}(\tau)
-
-        where :math:`w_T(\tau)` is the taper of maximum duration :math:`T`.
-
-        Arguments
-        ---------
-        max_percentage: float
-            The maximum percentage of the taper. The taper is a Tukey window
-            with the given percentage of the window duration. Default is 0.1.
-
-        Returns
-        -------
-        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
-            The tapered correlation matrix.
-        """
+        r"""Taper the correlation matrix along the lag axis."""
         return CrossCorrelationMatrix(
             self * windows.tukey(self.shape[-1], max_percentage),
             stats=self.stats,
             stft=self.stft,
+            pairs=self.pairs,
         )
 
     def smooth(self, sigma: float = 1, **kwargs) -> "CrossCorrelationMatrix":
-        r"""Use a Gaussian kernel to smooth the correlation matrix.
-
-        This function is usually applied to the envelope of the correlation
-        matrix to smooth the envelope. The smoothing is done using a Gaussian
-        kernel with a standard deviation :math:`\sigma`. The smoothing is done
-        along the last axis (lags). The smoothed correlation matrix is
-        :math:`R'` is defined as:
-
-        .. math::
-
-            R'_{ij}(\tau) = G_{\sigma} * R_{ij}(\tau)
-
-        where :math:`G_{\sigma}` is the Gaussian kernel with standard
-        deviation :math:`\sigma`.
-
-        Arguments
-        ---------
-        sigma: float
-            Standard deviation of the Gaussian kernel. The larger the value,
-            the smoother the correlation matrix. Default is 1.
-        **kwargs: dict
-            Additional arguments passed to
-            :func:`~scipy.ndimage.gaussian_filter1d`.
-
-        Returns
-        -------
-        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
-            The smoothed cross-correlation matrix.
-        """
+        r"""Use a Gaussian kernel to smooth the correlation matrix."""
         return CrossCorrelationMatrix(
             gaussian_filter1d(self, sigma=sigma, **kwargs),
             stats=self.stats,
             stft=self.stft,
+            pairs=self.pairs,
         )
 
     def flat(self):
-        r"""Flatten the first dimensions.
-
-        The shape of the pairwise cross-correlation is at maximum 3D, with the
-        first dimension being the number of pairs, the second dimension the
-        number of windows, and the third dimension the number of lags. This
-        method flattens the first two dimensions to have a 2D array with the
-        pairs and windows in the first dimension and the lags in the second
-        dimension. This method also works for smaller dimensions.
-
-        Returns
-        -------
-        :class:`np.ndarray`
-            The flattened pairwise cross-correlation.s
-        """
+        r"""Flatten all dimensions except the lag axis."""
         return self.reshape(-1, self.shape[-1])
 
     def bandpass(
         self, frequency_band: tuple | list, filter_order: int = 4
     ) -> "CrossCorrelationMatrix":
-        r"""Bandpass filter the correlation functions.
-
-        Apply a Butterworth bandpass filter to the correlation functions. Uses
-        :func:`~scipy.signal.butter` and :func:`~scipy.signal.filtfilt` to
-        avoid phase shift.
-
-        Parameters
-        ----------
-        frequency_band: tuple
-            The frequency band to filter in Hz.
-        filter_order: int, optional
-            The order of the Butterworth filter.
-
-        Returns
-        -------
-        :class:`~covseisnet.correlation.CrossCorrelationMatrix`
-            The bandpass filtered correlation functions.
-        """
-        # Flatten the correlation functions
+        r"""Bandpass filter the correlation functions."""
         correlation_flat = self.flat()
-
-        # Apply bandpass filter
         correlation_filtered = bandpass_filter(
             correlation_flat,
             self.sampling_rate,
             frequency_band,
             filter_order,
         )
-
-        # Reshape the correlation functions
         correlation_filtered = correlation_filtered.reshape(self.shape)
 
-        # Update self array
         return CrossCorrelationMatrix(
-            correlation_filtered, stats=self.stats, stft=self.stft
+            correlation_filtered,
+            stats=self.stats,
+            stft=self.stft,
+            pairs=self.pairs,
         )
 
 
@@ -316,60 +229,32 @@ def calculate_cross_correlation_matrix(
 ) -> tuple[np.ndarray, list, CrossCorrelationMatrix]:
     r"""Extract correlation in time domain from the given covariance matrix.
 
-    This method calculates the correlation in the time domain from the given
-    covariance matrix. The covariance matrix is expected to be obtained from
-    the method :func:`~covseisnet.covariance.calculate_covariance_matrix`, in
-    the :class:`~covseisnet.covariance.CovarianceMatrix` class.
-
-    The method first duplicate the covariance matrix to have a two-sided
-    covariance matrix and perform the inverse Fourier transform to obtain the
-    correlation matrix. The attributes of the covariance matrix are used to
-    calculate the lags and pairs names of the correlation matrix.
-
-    For more details, see the
-    :class:`~covseisnet.correlation.CrossCorrelationMatrix` class, in the
-    rubric **Mathematical definition**.
-
-    Parameters
-    ----------
-    covariance_matrix: :class:`~covseisnet.covariance.CovarianceMatrix`
-        The covariance matrix.
-    include_autocorrelation: bool, optional
-        Include the auto-correlation in the correlation matrix. Default is
-        True.
-
-
-    Returns
-    -------
-    :class:`~numpy.ndarray`
-        The lag time between stations.
-    list
-        The list of pairs.
-    :class:`~covseisnet.correlation.CrossCorrelationMatrix`
-        The correlations with shape ``(n_pairs, n_windows, n_lags)``.
-
+    The returned :class:`CrossCorrelationMatrix` stores the pair metadata in its
+    ``pairs`` attribute, so pairwise correlations can be retrieved with
+    :meth:`CrossCorrelationMatrix.pair` or selected with
+    :meth:`CrossCorrelationMatrix.select_pairs`.
     """
-    # Two-sided covariance matrix
+    # Two-sided covariance matrix.
     covariance_matrix_twosided = covariance_matrix.twosided()
 
-    # Extract upper triangular
-    distante_to_diagonal = 0 if include_autocorrelation else 1
-    covariance_triu = covariance_matrix_twosided.triu(k=distante_to_diagonal)
+    # Extract upper triangular station pairs.
+    distance_to_diagonal = 0 if include_autocorrelation else 1
+    covariance_triu = covariance_matrix_twosided.triu(k=distance_to_diagonal)
 
-    # Extract pairs names from the combination of stations
+    # Extract pair names from the covariance station metadata.
     if covariance_matrix.stats is not None:
-        stations = [stat.station for stat in covariance_matrix.stats]
+        stations = covariance_matrix.stations
         pairs = []
         for i in range(len(stations)):
-            for j in range(i + distante_to_diagonal, len(stations)):
+            for j in range(i + distance_to_diagonal, len(stations)):
                 pairs.append((stations[i], stations[j]))
     else:
-        pairs = [f"pair {i}" for i in range(covariance_triu.shape[0])]
+        pairs = [f"pair {i}" for i in range(covariance_triu.shape[-1])]
 
-    # Change axes position to have the pairs first
+    # Change axes position to have the pair axis first.
     covariance_triu = covariance_triu.transpose(2, 0, 1)
 
-    # Get transform parameters
+    # Get transform parameters.
     if covariance_matrix.stft is None:
         raise ValueError(
             "STFT parameters are needed to calculate correlation."
@@ -377,15 +262,18 @@ def calculate_cross_correlation_matrix(
     n_samples = len(covariance_matrix.stft.win)
     sampling_rate = covariance_matrix.stft.fs
 
-    # Inverse Fourier transform
+    # Inverse Fourier transform.
     correlation = np.fft.fftshift(np.fft.ifft(covariance_triu), axes=-1).real
 
-    # Calculate lags
+    # Calculate lags.
     lags = correlation_lags(n_samples, n_samples, mode="same") / sampling_rate
 
-    # Turn into CrossCorrelationMatrix
+    # Turn into CrossCorrelationMatrix.
     correlation = CrossCorrelationMatrix(
-        correlation, stats=covariance_matrix.stats, stft=covariance_matrix.stft
+        correlation,
+        stats=covariance_matrix.stats,
+        stft=covariance_matrix.stft,
+        pairs=pairs,
     )
 
     return lags, pairs, correlation
