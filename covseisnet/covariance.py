@@ -1087,6 +1087,21 @@ def calculate_covariance_matrix(
 
 
 def _align_covariance_matrices(covariance_matrices):
+    """Align the station-pair axis of covariance matrices.
+
+    Arguments
+    ---------
+    covariance_matrices: list
+        List of :class:`~covseisnet.stream.CovarianceMatrix` to align.
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+        Array of aligned covariance matrices with dimensions
+        (num_cov_mats, num_freqs, num_stations, num_stations)
+    list
+        List of the station names, in order, of the new, aligned station axis.
+    """
     all_stations = sorted(
         set().union(*(covmat.stations for covmat in covariance_matrices))
     )
@@ -1105,10 +1120,26 @@ def _align_covariance_matrices(covariance_matrices):
 
         aligned.append(data)
 
-    return np.asarray(aligned), all_stations
+    return np.concatenate(aligned, axis=0), all_stations
 
 
 def stack_covariance_matrices(covariance_matrices):
+    """Stack covariance matrices.
+
+    The station-pair axis of the covariance matrices is first aligned
+    using :func:`~covseisnet.covariance._align_covariance_matrices` and then
+    the covariance matrices are averaged.
+
+    Arguments
+    ---------
+    covariance_matrices: list
+        List of :class:`~covseisnet.stream.CovarianceMatrix` to stack.
+
+    Returns
+    -------
+    :class:`~covseisnet.stream.CovarianceMatrix`
+        The average covariance matrix.
+    """
     aligned_covmats, stations = _align_covariance_matrices(covariance_matrices)
 
     all_stats = {}
@@ -1117,10 +1148,13 @@ def stack_covariance_matrices(covariance_matrices):
             station = CovarianceMatrix._get_station_name(stats)
             all_stats.setdefault(station, stats)
 
+    window_times = np.hstack(
+        [covmat.window_times for covmat in covariance_matrices]
+    )
     stacked_covmat = CovarianceMatrix(
-        aligned_covmats.mean(axis=0),
+        aligned_covmats.mean(axis=0, keepdims=True),
         stft=covariance_matrices[0].stft,
-        window_times=None,
+        window_times=np.array([window_times.mean()]),
         stats=[all_stats[station] for station in stations],
     )
 
