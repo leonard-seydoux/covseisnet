@@ -715,7 +715,7 @@ class CovarianceMatrix(np.ndarray):
         eigenvalues, eigenvectors = eigh(self.flat)
 
         # Sort according to eigenvalues.
-        isort = np.argsort(np.abs(eigenvalues)[:, ::-1])[:, ::-1]
+        isort = np.argsort(np.abs(eigenvalues))[:, ::-1]
         eigenvalues = np.take_along_axis(np.abs(eigenvalues), isort, axis=1)
         eigenvectors = np.take_along_axis(
             eigenvectors, isort[:, :, np.newaxis], axis=1
