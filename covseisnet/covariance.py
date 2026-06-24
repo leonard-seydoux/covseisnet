@@ -1130,7 +1130,7 @@ def _align_covariance_matrices(covariance_matrices):
     return np.concatenate(aligned, axis=0), all_stations
 
 
-def stack_covariance_matrices(covariance_matrices):
+def stack_covariance_matrices(covariance_matrices, whiten=False):
     """Stack covariance matrices.
 
     The station-pair axis of the covariance matrices is first aligned
@@ -1158,6 +1158,12 @@ def stack_covariance_matrices(covariance_matrices):
     window_times = np.hstack(
         [covmat.window_times for covmat in covariance_matrices]
     )
+
+    # Whiten the covariance matrices if requested
+    if whiten:
+        aligned_covmats /= np.mean(
+            np.abs(aligned_covmats), axis=(-1, -2), keepdims=True
+        )
     stacked_covmat = CovarianceMatrix(
         aligned_covmats.mean(axis=0, keepdims=True),
         stft=covariance_matrices[0].stft,
