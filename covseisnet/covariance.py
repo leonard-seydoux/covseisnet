@@ -714,12 +714,19 @@ class CovarianceMatrix(np.ndarray):
         # Calculate eigenvectors.
         eigenvalues, eigenvectors = eigh(self.flat)
 
+        # Although the eigenvalues are supposed to be real-valued, we take the absolute
+        # in case of numerical errors.
+        eigenvalues = np.abs(eigenvalues)
+
         # Sort according to eigenvalues.
-        isort = np.argsort(np.abs(eigenvalues))[:, ::-1]
-        eigenvalues = np.take_along_axis(np.abs(eigenvalues), isort, axis=1)
-        eigenvectors = np.take_along_axis(
-            eigenvectors, isort[:, :, np.newaxis], axis=1
-        )
+        isort = np.flip(np.argsort(eigenvalues), axis=1)
+        eigenvalues_sorted = np.empty_like(eigenvalues)
+        eigenvectors_sorted = np.empty_like(eigenvectors)
+        for index in range(eigenvalues.shape[0]):
+            eigenvalues_sorted[index] = eigenvalues[index][isort[index]]
+            eigenvectors_sorted[index] = eigenvectors[index][:, isort[index]]
+        eigenvalues = eigenvalues_sorted
+        eigenvectors = eigenvectors_sorted
 
         # Select according to rank.
         if rank is not None:
