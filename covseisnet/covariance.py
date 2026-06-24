@@ -216,12 +216,16 @@ class CovarianceMatrix(np.ndarray):
             return
         try:
             # if time already in matplotlib format
-            return np.asarray(
-                [
-                    t.replace(tzinfo=None)
-                    for t in mdates.num2date(self.window_times)
-                ]
-            ).astype("datetime64[ms]").squeeze()
+            return (
+                np.asarray(
+                    [
+                        t.replace(tzinfo=None)
+                        for t in mdates.num2date(self.window_times)
+                    ]
+                )
+                .astype("datetime64[ms]")
+                .squeeze()
+            )
         except TypeError:
             # if time is in a datetime-like format
             return np.asarray(
@@ -844,7 +848,7 @@ def calculate_covariance_matrix(
 
     """
     # Assert stream is synchronized
-    assert stream.synced, "Stream is not synchronized."
+    assert stream.synced, "Stream contained asynchronous traces."
 
     # Calculate spectrogram
     short_time_fourier_transform = signal.ShortTimeFourierTransform(
