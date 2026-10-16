@@ -193,19 +193,18 @@ class CovarianceMatrix(np.ndarray):
                 "entries were provided."
             )
 
-        stations = [self._get_station_name(stats) for stats in self.stats]
-        if len(set(stations)) != len(stations):
-            raise ValueError(
-                "Station names must be unique to allow name-based indexing, "
-                f"got {stations}."
-            )
-
     @property
     def station_indices(self) -> dict[str, int]:
         r"""Dictionary mapping station names to covariance-axis indices."""
         if self.stats is None:
             raise ValueError("Station metadata are not available.")
-        return {station: i for i, station in enumerate(self.stations)}
+        stations = self.stations
+        if len(set(stations)) != len(stations):
+            raise ValueError(
+                "Station names must be unique to allow name-based indexing, "
+                f"got {stations}."
+            )
+        return {station: i for i, station in enumerate(stations)}
 
     def _station_to_index(self, key):
         r"""Convert station-name indices to integer indices."""

@@ -117,7 +117,7 @@ def test_pickle_persistance():
             cov[i, j] = np.random.randn(10, 10) + 1j * np.random.randn(10, 10)
             cov[i, j] = cov[i, j] @ cov[i, j].T.conj()
     cov = csn.CovarianceMatrix(
-        cov, stats=[{"station": station} for station in "ABCDE"]
+        cov, stats=[{"station": station} for station in "ABCDEFGHIJ"]
     )
 
     # Save and load

@@ -98,12 +98,6 @@ class CrossCorrelationMatrix(np.ndarray):
                 "provided."
             )
 
-        if len(set(self.pairs)) != len(self.pairs):
-            raise ValueError(
-                "Pair metadata must be unique to allow pair-based selection, "
-                f"got {self.pairs}."
-            )
-
     @property
     def stations(self) -> list[str] | None:
         r"""Return station names when station metadata are available."""
@@ -116,6 +110,11 @@ class CrossCorrelationMatrix(np.ndarray):
         r"""Dictionary mapping pair metadata to first-axis indices."""
         if self.pairs is None:
             raise ValueError("Pair metadata are not available.")
+        if len(set(self.pairs)) != len(self.pairs):
+            raise ValueError(
+                "Pair metadata must be unique to allow pair-based selection, "
+                f"got {self.pairs}."
+            )
         return {pair: i for i, pair in enumerate(self.pairs)}
 
     def _normalize_pair(self, pair: tuple[str, str] | str):

@@ -235,7 +235,7 @@ def volume_noise_covariance(
     Under the assumption of uniformly distributed isotropic noise sources
     in three dimensions (body-wave diffuse field), the cross-spectral density
     between two receivers separated by distance :math:`d_{ij}` is
-    :cite:p:`weaver_diffuse_2001`:
+    :cite:p:`weaver_ultrasonics_2001`:
 
     .. math::
 

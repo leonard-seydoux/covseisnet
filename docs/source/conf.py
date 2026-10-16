@@ -80,6 +80,11 @@ plot_include_source = True
 plot_html_show_source_link = False
 plot_html_show_formats = False
 plot_formats = [("svg", 150)]
+# Run plot code from the repository root so that docstrings can use paths
+# such as "docs/source/data/undervolc.mseed", as the doctests do.
+plot_working_directory = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..")
+)
 
 # Napoleon settings
 napoleon_google_docstring = False
@@ -111,7 +116,7 @@ master_doc = "index"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = []
+exclude_patterns = ["examples/matched_field_processing_fuji.ipynb"]
 add_module_names = True
 
 # Theme

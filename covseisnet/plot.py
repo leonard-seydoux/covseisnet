@@ -562,7 +562,7 @@ def grid3d(
         import numpy as np
 
         # Create a random grid
-        grid = csn.spatial.Regular3DGrid(extent=(-10, 10, -10, 10, 0, 10), shape=(10, 10, 10))
+        grid = csn.spatial.GeographicalGrid(extent=(-10, 10, -10, 10, 0, 10), shape=(10, 10, 10))
         grid[:] = grid.mesh[0] + grid.mesh[1] + grid.mesh[2]
 
         # Show the grid

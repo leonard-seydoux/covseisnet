@@ -49,7 +49,7 @@ class GeographicalGrid(np.ndarray):
 
         np.random.seed(42)
 
-        grid = csn.spatial.Regular3DGrid(
+        grid = csn.spatial.GeographicalGrid(
             extent=(40, 41, 50, 51, 0, 20), shape=(10, 10, 10),
             fill_value="random",
         )
