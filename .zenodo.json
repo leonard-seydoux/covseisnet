@@ -3,12 +3,29 @@
   "upload_type": "software",
   "description": "Covseisnet is a Python package for array signal processing, with a focus on data from seismic networks. The core mathematical object of the package is the network covariance matrix, used for signal detection, source separation, localisation, and plane-wave beamforming. Version 2 is a complete rewrite of the original package (https://github.com/covseisnet/covseisnet).",
   "creators": [
-    { "name": "Seydoux, Léonard" },
-    { "name": "Beaucé, Éric" },
-    { "name": "Tong, Francis" },
-    { "name": "Soubestre, Jean" },
-    { "name": "Journeau, Cyril" },
-    { "name": "Shapiro, Nikolai" }
+    {
+      "name": "Seydoux, Léonard",
+      "orcid": "0000-0002-6596-5896"
+    },
+    {
+      "name": "Beaucé, Éric",
+      "orcid": "0000-0003-3138-9082"
+    },
+    {
+      "name": "Tong, Francis"
+    },
+    {
+      "name": "Soubestre, Jean",
+      "orcid": "0000-0002-9403-8821"
+    },
+    {
+      "name": "Journeau, Cyril",
+      "orcid": "0000-0002-1195-3996"
+    },
+    {
+      "name": "Shapiro, Nikolai",
+      "orcid": "0000-0002-0144-723X"
+    }
   ],
   "license": "GPL-3.0-only",
   "keywords": [

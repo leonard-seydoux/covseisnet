@@ -5,7 +5,7 @@
 **Covseisnet** <br>
 Covariance analyses of seismic networks in Python <br><br>
 
-![](https://img.shields.io/github/license/leonard-seydoux/covseisnet) ![](https://img.shields.io/github/issues/leonard-seydoux/covseisnet) ![](https://img.shields.io/github/forks/leonard-seydoux/covseisnet) ![](https://img.shields.io/github/stars/leonard-seydoux/covseisnet) 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23434120.svg)](https://doi.org/10.5281/zenodo.23434120) ![](https://img.shields.io/github/license/leonard-seydoux/covseisnet) ![](https://img.shields.io/github/issues/leonard-seydoux/covseisnet) ![](https://img.shields.io/github/forks/leonard-seydoux/covseisnet) ![](https://img.shields.io/github/stars/leonard-seydoux/covseisnet) 
 
 </div>
 

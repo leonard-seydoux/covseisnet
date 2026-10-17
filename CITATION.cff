@@ -10,16 +10,21 @@ type: software
 authors:
   - given-names: Léonard
     family-names: Seydoux
+    orcid: "https://orcid.org/0000-0002-6596-5896"
   - given-names: Éric
     family-names: Beaucé
+    orcid: "https://orcid.org/0000-0003-3138-9082"
   - given-names: Francis
     family-names: Tong
   - given-names: Jean
     family-names: Soubestre
+    orcid: "https://orcid.org/0000-0002-9403-8821"
   - given-names: Cyril
     family-names: Journeau
+    orcid: "https://orcid.org/0000-0002-1195-3996"
   - given-names: Nikolai
     family-names: Shapiro
+    orcid: "https://orcid.org/0000-0002-0144-723X"
 version: 2.0.0
 date-released: 2026-10-17
 license: GPL-3.0-only
