@@ -20,7 +20,7 @@ authors:
     family-names: Journeau
   - given-names: Nikolai
     family-names: Shapiro
-version: 0.2.0
+version: 2.0.0
 date-released: 2026-10-17
 license: GPL-3.0-only
 repository-code: "https://github.com/leonard-seydoux/covseisnet"
