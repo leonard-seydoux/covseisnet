@@ -45,7 +45,8 @@ one the paper listed in the :ref:`references` section below.
 
    This work made use of Covseisnet, a Python package for array signal
    processing, developed by Léonard Seydoux, Éric Beaucé, Francis Tong, Jean
-   Soubestre, Cyril Journeau & Nikolai Shapiro.
+   Soubestre, Cyril Journeau & Nikolai Shapiro
+   (https://doi.org/10.5281/zenodo.23434120).
 
 Software citation
 ~~~~~~~~~~~~~~~~~
