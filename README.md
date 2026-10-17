@@ -15,5 +15,13 @@ To provide user-friendly and efficient tools, the package builds on [ObsPy](http
 
 This library is distributed under the GNU General Public License v3.0. Contributions are welcome, and can be made via pull requests on the GitHub repository.
 
+## How to cite
+
+If you use Covseisnet in your work, please cite the software archive on Zenodo:
+
+> Seydoux, L., Beaucé, É., Tong, F., Soubestre, J., Journeau, C., & Shapiro, N. Covseisnet: covariance matrix analysis of network seismic data. Zenodo. https://doi.org/10.5281/zenodo.23434120
+
+This DOI always resolves to the latest version; each release also has its own DOI, listed on the [Zenodo record](https://doi.org/10.5281/zenodo.23434120). You can also use the "Cite this repository" button on GitHub.
+
 
 

@@ -40,12 +40,24 @@ Citation statement
    
 This package is released under the GNU General Public License v3.0 (see the
 :ref:`license` section for more information). Please include the following
-statement in the ackowledgements section of your publication, and/or reference
+statement in the acknowledgements section of your publication, and/or reference
 one the paper listed in the :ref:`references` section below.
 
    This work made use of Covseisnet, a Python package for array signal
    processing, developed by Léonard Seydoux, Éric Beaucé, Francis Tong, Jean
    Soubestre, Cyril Journeau & Nikolai Shapiro.
+
+Software citation
+~~~~~~~~~~~~~~~~~
+
+The source code is archived on Zenodo. Please cite it as:
+
+   Seydoux, L., Beaucé, É., Tong, F., Soubestre, J., Journeau, C., & Shapiro,
+   N. Covseisnet: covariance matrix analysis of network seismic data. Zenodo.
+   https://doi.org/10.5281/zenodo.23434120
+
+This DOI always resolves to the latest version; each release also has its own
+DOI, listed on the `Zenodo record <https://doi.org/10.5281/zenodo.23434120>`_.
 
 Publications summary
 ~~~~~~~~~~~~~~~~~~~~
