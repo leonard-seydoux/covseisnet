@@ -4,6 +4,7 @@ This file does only contain a selection of the most common options. For a full
 list see the documentation: http://www.sphinx-doc.org/en/stable/config.
 """
 
+import importlib.metadata
 import os
 import sys
 
@@ -44,13 +45,13 @@ sphinxcontrib.bibtex.plugin.register_plugin(
 # Project information
 project = "covseisnet"
 copyright = "2022, The Covseisnet Team"
-author = "Léonard Seydoux, Jean Soubestre, Cyril Journeau, Francis Tong & Nikolai Shapiro"
-
-# The short X.Y version
-version = "1.0"
+author = "Léonard Seydoux, Éric Beaucé, Francis Tong, Jean Soubestre, Cyril Journeau & Nikolai Shapiro"
 
 # The full version, including alpha/beta/rc tags
-release = "1.0.0"
+release = importlib.metadata.version("covseisnet")
+
+# The short X.Y version
+version = ".".join(release.split(".")[:2])
 
 # Sphinx extensions
 extensions = [

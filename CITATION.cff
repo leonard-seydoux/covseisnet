@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Covseisnet: covariance matrix analysis of network seismic data"
+abstract: >-
+  Covseisnet is a Python package for array signal processing, with a focus on
+  data from seismic networks. The core mathematical object of the package is
+  the network covariance matrix, used for signal detection, source
+  separation, localisation, and plane-wave beamforming.
+type: software
+authors:
+  - given-names: Léonard
+    family-names: Seydoux
+  - given-names: Éric
+    family-names: Beaucé
+  - given-names: Francis
+    family-names: Tong
+  - given-names: Jean
+    family-names: Soubestre
+  - given-names: Cyril
+    family-names: Journeau
+  - given-names: Nikolai
+    family-names: Shapiro
+version: 0.2.0
+date-released: 2026-10-17
+license: GPL-3.0-only
+repository-code: "https://github.com/leonard-seydoux/covseisnet"
+url: "https://leonard-seydoux.github.io/covseisnet/"
+keywords:
+  - seismology
+  - array processing
+  - covariance matrix
+  - beamforming
+  - matched-field processing

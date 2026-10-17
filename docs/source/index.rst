@@ -44,8 +44,8 @@ statement in the ackowledgements section of your publication, and/or reference
 one the paper listed in the :ref:`references` section below.
 
    This work made use of Covseisnet, a Python package for array signal
-   processing, developed by Léonard Seydoux, Jean Soubestre, Cyril Journeau,
-   Francis Tong & Nikolai Shapiro.
+   processing, developed by Léonard Seydoux, Éric Beaucé, Francis Tong, Jean
+   Soubestre, Cyril Journeau & Nikolai Shapiro.
 
 Publications summary
 ~~~~~~~~~~~~~~~~~~~~
@@ -86,8 +86,9 @@ This package was mainly developed by `Léonard Seydoux
 the Institut de Physique du Globe de Paris, under the supervision of Nikolai
 Shapiro. Léonard also documented the code and created the website. Several
 contributions for the core program were made by Jean Soubestre and Cyril
-Journeau. Francis Tong contributed to the distribution of the packge via PyPI
-and Conda.
+Journeau. Éric Beaucé contributed the velocity models, travel-time computation and
+backprojection, as well as covariance-matrix stacking and I/O. Francis Tong contributed to the
+distribution of the package via PyPI and Conda.
 
 Thanks to Tonglin Chol for contributions on the github repository and issue
 tracking.

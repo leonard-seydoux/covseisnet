@@ -4,35 +4,42 @@ build-backend = "hatchling.build"
 
 [project]
 name = "covseisnet"
-version = "0.1.1"
+version = "0.2.0"
 description = "Covariance matrix analysis of network seismic data"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12, <3.14"
-authors = [{ name = "Leonard Seydoux" }]
+authors = [
+    { name = "Léonard Seydoux" },
+    { name = "Éric Beaucé" },
+    { name = "Francis Tong" },
+    { name = "Jean Soubestre" },
+    { name = "Cyril Journeau" },
+    { name = "Nikolai Shapiro" },
+]
 keywords = ["covariance", "data", "seismic"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Software Development :: Build Tools",
+    "Topic :: Scientific/Engineering :: Physics",
 ]
 dependencies = [
     "numpy",
     "obspy",
     "scipy",
-    "cartopy",
-    "ipython",
     "matplotlib",
-    "pytest",
-    "setuptools==71",
-    "jupyter>=1.1.1",
-    "pandas>=3.0.3",
+    # ObsPy still imports pkg_resources, removed in setuptools 81
+    "setuptools<81",
 ]
 
 [project.optional-dependencies]
+test = ["pytest>=8"]
 docs = [
+    "cartopy",
+    "ipython",
+    "jupyter>=1.1.1",
     "sphinx",
     "sphinx_book_theme",
     "sphinx_gallery",
@@ -41,9 +48,6 @@ docs = [
     "nbsphinx",
     "pandoc",
 ]
-
-[tool.hatch.version]
-path = "covseisnet/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = ["covseisnet/**", "README.md", "LICENSE", "tests/**"]
